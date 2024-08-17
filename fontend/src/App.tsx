@@ -1,16 +1,21 @@
 
-import {BrowserRouter as Route, Router,  Routes} from "react-router-dom";
+import { RouterProvider } from 'react-router-dom';
+import router from './layout/Router';
 import './App.css'
-import Login from "./pages/login/Login.tsx";
+// import {BrowserRouter as Route, Router,  Routes} from "react-router-dom";
+
+// import Login from "./pages/login/Login.tsx";
 
 
 function App() {
   return (
-      <Router>
-          <Routes>
-              <Route path="/" element={<Login />} />
-          </Routes>
-      </Router>
+    //   <Router>
+    //       <Routes>
+    //           <Route path="/" element={<Login />} />
+    //       </Routes>
+    //   </Router>
+
+    <RouterProvider router={router}></RouterProvider>
   );
 }
 

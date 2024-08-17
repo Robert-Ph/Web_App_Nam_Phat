@@ -1,63 +1,80 @@
 // ui-admin/src/pages/system/login.scss
-.login{
+.login {
   width: 100%;
   height: 100vh;
-  background: linear-gradient(#004E92, #000428);
+  background: linear-gradient(#004e92, #000428);
 
-  .header{
+  .header {
     height: 30vh;
+    display: flex;
 
-    .title{
+    .title {
       align-items: center;
-      margin-top: 100px;
+      margin-top: 5%;
       justify-content: center;
-      height: 100px;
+      height: 35%;
       float: left;
       color: white;
       display: inline-block;
       width: 50%;
     }
-    .text{
-      border-right: 4px solid white;
+    .text {
+      border-right: 2px solid white;
     }
-    .text h1{
+    .text h1 {
       margin-right: 10px;
-      font-size: 76px;
+      font-size: 60px;
       float: right;
+      margin-block-start: 0px;
+      margin-block-end: 0px;
     }
 
-    .text_2 h1{
+    .text_2 h1 {
+      font-weight: 600;
       margin-left: 10px;
-      font-size: 40px;
+      font-size: 32px;
       float: left;
       line-height: 1.2;
+      margin-block-start: 0px;
+      margin-block-end: 0px;
     }
   }
-  .body{
-    padding-top: 7%;
-    padding-left: 40%;
+  .body {
+    // padding-top: 7%;
+    // padding-left: 5%;
     color: white;
-    input{
-      width: 400px;
-      height: 50px;
+    width: 40%;
+    padding-left: 10%;
+    margin: 0px auto;
+
+    input {
+      width: 90%;
+      // height: 50px;
+      padding: 15px 10px;
       border-radius: 10px;
+      font-size: 16px;
+      font-weight: 600;
+      background-color: var(--color-gray);
     }
-    .pass{
+    h2 {
+      font-size: 20px;
+      margin-bottom: 7px;
+    }
+    .pass {
       margin-top: 20px;
     }
-    button{
-      font-size: 28px;
+    button {
+      font-size: 24px;
       border-radius: 10px;
       color: white;
       border: none;
-      background-color: #0000FF;
+      background-color: var(--color-main);
       margin-top: 70px;
-      width: 400px;
-      height: 50px;
+      width: 90%;
+      // height: 50px;
     }
-    button:active{
+    button:active {
       background-color: #747bff;
     }
-
   }
 }
