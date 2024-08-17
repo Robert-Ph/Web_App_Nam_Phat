@@ -1,0 +1,12 @@
+.main-layout {
+  height: 100vh;
+}
+.flex-2 {
+  flex: 2;
+}
+.flex-4 {
+  flex: 5;
+}
+.flex-14 {
+  flex: 40;
+}
