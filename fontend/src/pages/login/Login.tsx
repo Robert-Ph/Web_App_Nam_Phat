@@ -1,5 +1,6 @@
 // ui-admin/src/pages/system/Login.tsx
 import "./login.scss";
+import logo from "../../assets/logoNamPhat.svg";
 
 const Login = () => {
   return (
@@ -13,6 +14,9 @@ const Login = () => {
             SYSTEM <br /> MANAGERMENT
           </h1>
         </div>
+      </div>
+      <div className="logo">
+        <img alt="Logo Nam Phát" src={logo}></img>
       </div>
       <div className="body">
         <div>

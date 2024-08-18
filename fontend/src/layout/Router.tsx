@@ -1,7 +1,8 @@
 import { createBrowserRouter, Outlet, RouteObject } from "react-router-dom";
 import Login from "../pages/login/Login";
 import MainLayout from "./MainLayout";
-import HomePage from "../pages/login/HomePage";
+import HomePage from "../pages/HomePage/HomePage";
+import OrderPage from "../pages/OrderPage/OrderPage";
 
 const appRoutes: RouteObject[] = [
   {
@@ -16,6 +17,10 @@ const appRoutes: RouteObject[] = [
       {
         index: true,
         element: <HomePage></HomePage>,
+      },
+      {
+        path: "/order",
+        element: <OrderPage></OrderPage>,
       },
     ],
   },

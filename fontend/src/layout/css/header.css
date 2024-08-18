@@ -13,9 +13,11 @@
 .bg-primary {
   background: var(--color-bg-header);
 }
-.header-page .container {
-  width: 90%;
-  margin: 0px auto;
+.header-page .container-header {
+  padding-left: 6%;
+  padding-right: 3%;
+  width: 100%;
+  /* margin: 0px auto; */
   height: 100%;
   align-items: center;
 }
