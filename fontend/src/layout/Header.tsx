@@ -5,11 +5,11 @@ const Header = () => {
   return (
     <div className="wrap-container">
       <div className="bg-primary header-page">
-        <div className="container d-flex justify-space-bettwen">
+        <div className="container-header  d-flex justify-space-bettwen">
           <div>
             <h2>Logo</h2>
           </div>
-          <div className="d-flex mr-5-percent">
+          <div className="d-flex ">
             <AccountCircleIcon
               className="icon"
               style={{ marginTop: "2.7%" }}

@@ -1,0 +1,43 @@
+.wrap-form {
+  margin-top: 20px;
+  display: flex;
+}
+.flex-8 {
+  flex: 8;
+}
+.flex-2 {
+  flex: 2.5;
+}
+.color-blue {
+  color: var(--color-bg-header);
+}
+.text-center {
+  text-align: center;
+}
+.wrap-vat {
+  margin-top: 20px;
+  border: 1px solid var(--color-gray);
+  padding: 5px 20px 10px 20px;
+  border-radius: 5px;
+  flex: 7;
+}
+.mt-30 {
+  margin-top: 30px;
+}
+.table-container {
+  max-height: 110px; /* Đặt chiều cao tối đa cho container */
+  overflow-y: auto; /* Thêm thanh cuộn dọc */
+  min-height: 110px;
+}
+.flex-3 {
+  flex: 3;
+}
+.flex-2 {
+  flex: 2;
+}
+.flex-5 {
+  flex: 5;
+}
+.flex-6 {
+  flex: 6;
+}
