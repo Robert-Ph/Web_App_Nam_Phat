@@ -1,5 +1,5 @@
 .navbar {
-  padding: 4px;
+  padding-left: 4px;
   height: 100%;
 }
 .navbar-item {
@@ -12,6 +12,16 @@
 .navbar-item :hover {
   opacity: 0.8;
   background-color: var(--color-gray);
+}
+.active {
+  background-color: #dee4bd;
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
+}
+.active-item {
+  background-color: #fff;
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
 }
 .bg-navbar {
   background-color: var(--color-bg-navbar);
@@ -44,6 +54,6 @@
   padding: 8px;
 }
 .wrap-nav-item {
-  border-radius: 20px;
+  border-right: 1px solid #ccc;
   padding-left: 12px;
 }

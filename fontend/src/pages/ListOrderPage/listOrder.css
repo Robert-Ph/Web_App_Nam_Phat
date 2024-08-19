@@ -1,0 +1,42 @@
+.btn-filter {
+  background-color: #fff;
+  rotate: 180deg;
+  margin-top: 6%;
+}
+.btn-filter:focus {
+  outline: none;
+}
+
+/* filter left */
+.filter-select {
+  background-color: #00bfff;
+  color: white;
+  padding: 4px 10px 4px 10px;
+  font-size: 16px;
+  border: none;
+  border-radius: 5px;
+  -webkit-appearance: none; /* Xóa kiểu mặc định của trình duyệt */
+  -moz-appearance: none; /* Xóa kiểu mặc định của Firefox */
+  appearance: none; /* Xóa kiểu mặc định cho tất cả trình duyệt */
+  cursor: pointer;
+  text-align: left;
+  display: inline-block;
+  align-content: center;
+}
+
+.filter-select option {
+  background-color: #00bfff;
+  color: white;
+}
+
+.icon-filter {
+  rotate: 90deg;
+  position: absolute;
+  top: -2px;
+  right: 10px;
+  color: #fff;
+}
+.btn-more {
+  padding: 0px;
+  background-color: #fff;
+}

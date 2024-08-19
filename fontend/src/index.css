@@ -14,7 +14,7 @@
   --color-main: #0db6ff;
   --color-gray: #ebebeb;
   --color-bg-header: #0000ff;
-  --color-bg-box: #1A55EE;
+  --color-bg-box: #1a55ee;
   --color-main-text: #fff;
   --color-black: #000;
   --color-bg-navbar: #f7ffc7;
@@ -80,6 +80,14 @@ button:focus-visible {
 .justify-end {
   justify-content: end;
 }
+.justify-center {
+  justify-items: center;
+}
+.main-body {
+  margin-top: 20px;
+  margin-left: 20px;
+  margin-right: 20px;
+}
 .btn {
   padding: 6px 18px !important;
   font-size: 16px !important;
@@ -144,6 +152,14 @@ button:focus-visible {
 }
 .font-w-500 {
   font-weight: 500;
+}
+.font-size-small {
+  font-size: 14px !important;
+}
+.td-table {
+  word-wrap: break-word; /* Tự động xuống dòng nếu từ quá dài */
+  white-space: normal; /* Đảm bảo nội dung không vượt quá ô */
+  padding-right: 10px;
 }
 @media (prefers-color-scheme: light) {
   :root {

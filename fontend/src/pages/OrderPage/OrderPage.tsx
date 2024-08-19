@@ -3,6 +3,10 @@ import { useState } from "react";
 import ProductModal from "./ProductModal";
 import product from "../../model/product.model";
 
+import MenuItem from "@mui/material/MenuItem";
+import FormControl from "@mui/material/FormControl";
+import Select, { SelectChangeEvent } from "@mui/material/Select";
+import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 const OrderPage = () => {
   const [products, setProducts] = useState<product[]>([
     {
@@ -15,6 +19,8 @@ const OrderPage = () => {
     },
   ]);
 
+  const [invoice, setInvoice] = useState<string>("personally");
+
   const [open, setOpen] = useState<boolean>(false);
 
   const handleOnclose = () => {
@@ -23,6 +29,10 @@ const OrderPage = () => {
 
   const handleOpen = () => {
     setOpen(true);
+  };
+
+  const handleChange = (event: SelectChangeEvent) => {
+    setInvoice(event.target.value);
   };
 
   const addProduct = (product: product) => {
@@ -56,7 +66,19 @@ const OrderPage = () => {
 
             <div className="form-group flex-2">
               <span>Hóa đơn</span>
-              <input placeholder="Số Hóa Đơn"></input>
+              <FormControl sx={{ minWidth: 120 }} size="small">
+                <Select
+                  labelId="demo-select-small-label"
+                  id="demo-select-small"
+                  value={invoice}
+                  onChange={handleChange}
+                >
+                  <MenuItem value={"personally"} className="">
+                    Cá Nhân
+                  </MenuItem>
+                  <MenuItem value={"enterprise"}>Doanh Nghiệp</MenuItem>
+                </Select>
+              </FormControl>
             </div>
           </div>
 
@@ -98,7 +120,12 @@ const OrderPage = () => {
                       <td className="pb-7 pt-7">{product.paperCount || "-"}</td>
                       <td className="pb-7 pt-7">{product.price || "-"}</td>
                       <td className="pb-7 pt-7">{product.totalPrice || "-"}</td>
-                      <td className="pb-7 pt-7">...</td>
+                      <td className="pb-7 pt-7">
+                        {" "}
+                        <button className="btn-more">
+                          <MoreHorizIcon></MoreHorizIcon>
+                        </button>
+                      </td>
                     </tr>
                   ))}
                 </tbody>
