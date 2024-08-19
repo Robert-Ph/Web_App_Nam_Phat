@@ -1,6 +1,5 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import "./css/navbar.css";
-import { useState } from "react";
 
 type LinkNav = {
   id: string;
@@ -8,35 +7,34 @@ type LinkNav = {
   link: string;
 };
 
-const MoreInfor = () => {
-  const [listNav, setListNav] = useState<LinkNav[]>([
-    {
-      id: "1",
-      name: "Đơn hàng",
-      link: "",
-    },
-    {
-      id: "2",
-      name: "Danh sách đơn hàng",
-      link: "",
-    },
-    {
-      id: "3",
-      name: "Đơn hàng chưa hoàn thành",
-      link: "",
-    },
-  ]);
+export type MoreNav = {
+  title: string;
+  listNav: LinkNav[];
+};
+
+const isActive = (path: string, location: string) => {
+  return location == path;
+};
+
+const MoreInfor = ({ morenav }: { morenav: MoreNav }) => {
+  const location = useLocation();
+
   return (
     <div className="d-flex bg-more dicrect-col pd-20-px">
-      <h3 style={{ textAlign: "center" }}>Đơn Hàng</h3>
+      <h3 style={{ textAlign: "center" }}>{morenav.title}</h3>
 
       <div className="">
-        {listNav.map((item: LinkNav) => {
+        {morenav.listNav.map((item: LinkNav) => {
           return (
-            <div key={item.id} className="mt-20 mb-20-px pd-8 wrap-nav-item ">
+            <div
+              key={item.id}
+              className={`mt-20 mb-20-px pd-8 wrap-nav-item  ${
+                isActive(item.link, location.pathname) ? "active-item" : ""
+              }`}
+            >
               <Link
                 to={item.link}
-                className="text-black text-nav "
+                className={`text-black text-nav `}
                 style={{ padding: "10px 0px" }}
               >
                 {" "}

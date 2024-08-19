@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import HomeIcon from "@mui/icons-material/Home";
 import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
 import Groups2OutlinedIcon from "@mui/icons-material/Groups2Outlined";
@@ -10,13 +10,33 @@ import SettingsSuggestOutlinedIcon from "@mui/icons-material/SettingsSuggestOutl
 import "./css/header.css";
 import "./css/navbar.css";
 
+export const isActive = (path: string, location: string) => {
+  if (path == "/" && location != "/") {
+    return false;
+  }
+  return location.search(path) != -1;
+};
+
 const Navbar = () => {
+  const location = useLocation();
+  console.log(location.pathname);
+
   return (
     <div className="d-flex dicrect-col bg-navbar navbar pd-20-px">
-      <Link to={""} className="navbar-item color-black">
+      <Link
+        to={"/"}
+        className={`navbar-item color-black ${
+          isActive("/", location.pathname) ? " active" : ""
+        }`}
+      >
         <HomeIcon className="icon-size"></HomeIcon>
       </Link>
-      <Link to={""} className="navbar-item color-black ">
+      <Link
+        to={"/order/create"}
+        className={`navbar-item color-black ${
+          isActive("/order", location.pathname) ? " active" : ""
+        }`}
+      >
         <ShoppingCartOutlinedIcon className="icon-size"></ShoppingCartOutlinedIcon>
       </Link>
       <Link to={""} className="navbar-item color-black">
