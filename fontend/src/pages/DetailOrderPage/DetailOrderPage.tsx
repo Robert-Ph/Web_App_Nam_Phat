@@ -1,13 +1,12 @@
-import "./order.css";
 import { useState } from "react";
-import ProductModal from "./ProductModal";
-import product from "../../model/product.model";
-
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
-const OrderPage = () => {
+import ProductModal from "../OrderPage/ProductModal";
+import product from "../../model/product.model";
+
+const DetailOrderPage = () => {
   const [products, setProducts] = useState<product[]>([
     {
       id: 1,
@@ -18,11 +17,10 @@ const OrderPage = () => {
       totalPrice: "",
     },
   ]);
-
   const [invoice, setInvoice] = useState<string>("personally");
-
   const [open, setOpen] = useState<boolean>(false);
 
+  //   Sự kiện mở đóng modal chỉnh sửa sản phẩm
   const handleOnclose = () => {
     setOpen(false);
   };
@@ -31,27 +29,38 @@ const OrderPage = () => {
     setOpen(true);
   };
 
-  const handleChange = (event: SelectChangeEvent) => {
-    setInvoice(event.target.value);
-  };
-
   const addProduct = (product: product) => {
     setOpen(false);
     setProducts([...products, product]);
   };
 
+  //Bắt sự kiện thay đổi select trong option của hóa đơn
+  const handleChange = (event: SelectChangeEvent) => {
+    setInvoice(event.target.value);
+  };
   return (
     <div>
       <div className="container">
-        <div className="d-flex justify-end">
-          <button className="btn btn-danger">Hủy</button>
-          <button className="btn btn-warning">Reset</button>
-          <button className="btn btn-primary" style={{ marginRight: "0px;" }}>
-            Tạo đơn hàng
-          </button>
+        <div className="d-flex justify-space-bettwen">
+          <div className="d-flex dicrect-col">
+            <div>
+              <strong>Mã đơn hàng:</strong>
+              <span> #51235</span>
+            </div>
+            <div>
+              <strong>Ngày:</strong>
+              <span> 31/12/2024</span>
+            </div>
+          </div>
+          <div>
+            <button className="btn btn-danger">Hủy</button>
+            <button className="btn btn-primary" style={{ marginRight: "0px;" }}>
+              Cập nhật
+            </button>
+          </div>
         </div>
 
-        <div className="mt-20">
+        <div className="mt-15">
           <h3>Thông tin khách hàng </h3>
           <div className="wrap-form">
             <div className="form-group flex-8">
@@ -122,7 +131,7 @@ const OrderPage = () => {
                       <td className="pb-7 pt-7">{product.totalPrice || "-"}</td>
                       <td className="pb-7 pt-7">
                         {" "}
-                        <button className="btn-more">
+                        <button className="btn-more" onClick={handleOpen}>
                           <MoreHorizIcon></MoreHorizIcon>
                         </button>
                       </td>
@@ -136,13 +145,13 @@ const OrderPage = () => {
               <div
                 style={{
                   flex: "3",
-                  textAlign: "center",
                   alignContent: "center",
+                  display: "block",
                 }}
+                className="form-group "
               >
-                <button className="btn btn-primary mt-20" onClick={handleOpen}>
-                  Thêm sản phẩm
-                </button>
+                <span>Trạng thái</span>
+                <input disabled style={{ width: "80%" }}></input>
               </div>
 
               <div className="wrap-vat d-flex">
@@ -178,4 +187,4 @@ const OrderPage = () => {
   );
 };
 
-export default OrderPage;
+export default DetailOrderPage;
