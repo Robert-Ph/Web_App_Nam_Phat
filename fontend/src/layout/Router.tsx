@@ -3,6 +3,7 @@ import Login from "../pages/login/Login";
 import MainLayout from "./MainLayout";
 import HomePage from "../pages/HomePage/HomePage";
 import OrderPage from "../pages/OrderPage/OrderPage";
+import CustomerManagement from "../pages/Customer/CustomerManagement.tsx";
 import ListOrderPage from "../pages/ListOrderPage/ListOrderPage";
 import DetailOrderPage from "../pages/DetailOrderPage/DetailOrderPage";
 import InvoicePage from "../pages/InvoicePage/InvoicePaee";
@@ -20,6 +21,10 @@ const appRoutes: RouteObject[] = [
       {
         index: true,
         element: <HomePage></HomePage>,
+      },
+      {
+        path: "/customer",
+        element: <CustomerManagement></CustomerManagement>
       },
       {
         path: "/order/create",
