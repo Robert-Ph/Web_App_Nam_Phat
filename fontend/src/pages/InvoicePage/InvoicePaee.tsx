@@ -95,7 +95,7 @@ const InvoicePage = () => {
             </div> */}
           </div>
         </div>
-        <div style={{ padding: "20px" }}>
+        <div style={{ padding: "10px" }}>
           <div className="table-more">
             <table style={{ width: "100%", borderCollapse: "collapse" }}>
               <thead>

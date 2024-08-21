@@ -68,6 +68,15 @@ button:focus-visible {
 .d-flex {
   display: flex;
 }
+.flex-1 {
+  flex: 1 !important;
+}
+.flex-2 {
+  flex: 2 !important;
+}
+.flex-3 {
+  flex: 3 !important;
+}
 .dicrect-col {
   flex-direction: column;
 }
@@ -76,6 +85,9 @@ button:focus-visible {
 }
 .justify-space-bettwen {
   justify-content: space-between;
+}
+.justify-space-arround {
+  justify-content: space-around;
 }
 .justify-end {
   justify-content: end;
@@ -97,6 +109,9 @@ button:focus-visible {
   font-weight: 400;
   box-shadow: 4px 7px 6px rgba(0, 0, 0, 0.2);
 }
+.shadow {
+  box-shadow: 0px 6px 3px rgba(0, 0, 0, 0.2);
+}
 .container {
   width: 100%;
   padding: 14px 20px 14px 16px;
@@ -117,7 +132,14 @@ button:focus-visible {
   background-color: var(--color-warning);
   color: var(--color-main-text);
 }
-
+.btn-black {
+  background-color: #212529;
+  color: var(--color-main-text);
+}
+.btn-more {
+  padding: 0px;
+  background-color: #fff;
+}
 .form-group {
   display: flex;
   flex-direction: column;
@@ -133,12 +155,20 @@ button:focus-visible {
   border-radius: 7px;
   border: 2px var(--color-gray) solid;
 }
+.input-select {
+  padding: 10px 8px 10px 8px !important;
+  border-radius: 7px !important;
+  border: 2px var(--color-gray) solid !important;
+}
 .header-table {
   font-size: 14px;
   font-weight: 400;
 }
 .text-left {
   text-align: left;
+}
+.text-center {
+  text-align: center;
 }
 .border-header-table {
   margin-bottom: 5px;
@@ -160,6 +190,10 @@ button:focus-visible {
   word-wrap: break-word; /* Tự động xuống dòng nếu từ quá dài */
   white-space: normal; /* Đảm bảo nội dung không vượt quá ô */
   padding-right: 10px;
+}
+
+.mt-10 {
+  margin-top: 10px !important;
 }
 .mt-15 {
   margin-top: 15px;

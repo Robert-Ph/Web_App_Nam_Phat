@@ -6,6 +6,10 @@ import TuneIcon from "@mui/icons-material/Tune";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import "./listOrder.css";
 import { order } from "../../model/person.model";
+
+import Pagination from "@mui/material/Pagination";
+import Stack from "@mui/material/Stack";
+import SettingsIcon from "@mui/icons-material/Settings";
 const ListOrderPage = () => {
   const [products, setProducts] = useState<order[]>([
     {
@@ -17,6 +21,12 @@ const ListOrderPage = () => {
       status: "Chưa giao",
     },
   ]);
+
+  const [page, setPage] = useState<number>(1);
+
+  const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
+    setPage(value);
+  };
   return (
     <div>
       <div className="main-body">
@@ -62,8 +72,8 @@ const ListOrderPage = () => {
             </div>
           </div>
         </div>
-        <div style={{ padding: "20px" }}>
-          <div className="table-container">
+        <div>
+          {/* <div className="table-container">
             <table style={{ width: "100%", borderCollapse: "collapse" }}>
               <thead>
                 <tr className="color-blue header-table text-left border-header-table">
@@ -124,6 +134,86 @@ const ListOrderPage = () => {
                 ))}
               </tbody>
             </table>
+          </div> */}
+
+          <div style={{ padding: "10px" }}>
+            <div className="table-more">
+              <table style={{ width: "100%", borderCollapse: "collapse" }}>
+                <thead>
+                  <tr className="color-blue header-table text-left border-header-table">
+                    <th className="pb-7 font-w-500" style={{ width: "7%" }}>
+                      ID
+                    </th>
+                    <th
+                      className="pb-7 font-w-500"
+                      style={{ width: "25%", paddingRight: "10px" }}
+                    >
+                      Tên khách hàng
+                    </th>
+                    <th className="pb-7 font-w-500" style={{ width: "12%" }}>
+                      Ngày
+                    </th>
+                    <th className="pb-7 font-w-500" style={{ width: "18%" }}>
+                      Giá (vnđ)
+                    </th>
+                    <th className="pb-7 font-w-500" style={{ width: "15%" }}>
+                      Thanh toán
+                    </th>
+                    <th className="pb-7 font-w-500" style={{ width: "12%" }}>
+                      Trạng thái
+                    </th>
+                    <th
+                      className="pb-7 font-w-500 text-black"
+                      style={{ width: "5%" }}
+                    >
+                      <SettingsIcon></SettingsIcon>
+                    </th>
+                  </tr>
+                </thead>
+                <tbody className="border-header-table">
+                  {products.map((product) => (
+                    <tr key={product.id} className="border-header-table">
+                      <td className="pb-7 pt-7 font-size-small td-table font-w-500 ">
+                        {product.id}
+                      </td>
+                      <td
+                        className="pb-7 pt-7 font-size-small font-w-500 "
+                        style={{ paddingRight: "20px" }}
+                      >
+                        {product.name || "-"}
+                      </td>
+                      <td className="pb-7 pt-7 font-size-small td-table font-w-500">
+                        {product.date || "-"}
+                      </td>
+                      <td className="pb-7 pt-7 font-size-small td-table font-w-500">
+                        {product.price || "-"}
+                      </td>
+                      <td className="pb-7 pt-7 font-size-small td-table font-w-500">
+                        {product.isPay || "-"}
+                      </td>
+                      <td className="pb-7 pt-7 font-size-small td-table font-w-500">
+                        {product.status || "-"}
+                      </td>
+                      <td className="pb-7 pt-7 font-size-small td-table font-w-500">
+                        <button className="btn-more">
+                          <MoreHorizIcon></MoreHorizIcon>
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+            <div className="pagination">
+              <Stack spacing={2}>
+                <Pagination
+                  count={10}
+                  color="primary"
+                  page={page}
+                  onChange={handleChange}
+                />
+              </Stack>
+            </div>
           </div>
         </div>
       </div>

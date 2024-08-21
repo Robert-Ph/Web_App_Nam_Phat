@@ -7,6 +7,8 @@ import CustomerManagement from "../pages/Customer/CustomerManagement.tsx";
 import ListOrderPage from "../pages/ListOrderPage/ListOrderPage";
 import DetailOrderPage from "../pages/DetailOrderPage/DetailOrderPage";
 import InvoicePage from "../pages/InvoicePage/InvoicePaee";
+import ListEmployee from "../pages/EmployeePage/ListEmployee.tsx";
+import DetailEmployee from "../pages/EmployeePage/DetailEmployee.tsx";
 
 const appRoutes: RouteObject[] = [
   {
@@ -24,7 +26,7 @@ const appRoutes: RouteObject[] = [
       },
       {
         path: "/customer",
-        element: <CustomerManagement></CustomerManagement>
+        element: <CustomerManagement></CustomerManagement>,
       },
       {
         path: "/order/create",
@@ -41,6 +43,15 @@ const appRoutes: RouteObject[] = [
       {
         path: "/order/invoice",
         element: <InvoicePage></InvoicePage>,
+      },
+      //Setting router cho đường dẫn tới quản lí nhân viên
+      {
+        path: "/employees/list",
+        element: <ListEmployee></ListEmployee>,
+      },
+      {
+        path: "employees/detail/:id",
+        element: <DetailEmployee></DetailEmployee>,
       },
     ],
   },
