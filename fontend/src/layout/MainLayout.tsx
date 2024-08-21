@@ -46,6 +46,35 @@ const MainLayout = () => {
         title: "Tổng quan",
         listNav: [],
       });
+    } else if (isActive("/employees", location.pathname)) {
+      setNavMore({
+        title: "Quản lí",
+        listNav: [
+          {
+            id: "1",
+            name: "Nhân viên",
+            link: "/employees/list",
+          },
+        ],
+      });
+    }
+    //Nếu đường dẫn là customer
+    else if (isActive("/customer", location.pathname)) {
+      setNavMore({
+        title: "Quản lí",
+        listNav: [
+          {
+            id: "1",
+            name: "Khách hàng",
+            link: "/customer",
+          },
+          {
+            id: "2",
+            name: "Công nợ khách hàng",
+            link: "/customer/debt", // Chỉnh sửa cái link này,
+          },
+        ],
+      });
     }
   }, [location]);
 

@@ -1,5 +1,6 @@
 import "./css/header.css";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import vflt from "../assets/logo.svg";
 
 const Header = () => {
   return (
@@ -7,7 +8,7 @@ const Header = () => {
       <div className="bg-primary header-page">
         <div className="container-header  d-flex justify-space-bettwen">
           <div>
-            <h2>Logo</h2>
+            <img src={vflt} style={{ width: "100px" }}></img>
           </div>
           <div className="d-flex ">
             <AccountCircleIcon

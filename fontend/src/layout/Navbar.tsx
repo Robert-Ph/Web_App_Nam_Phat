@@ -28,6 +28,7 @@ const Navbar = () => {
         className={`navbar-item color-black ${
           isActive("/", location.pathname) ? " active" : ""
         }`}
+        title="Tổng quan"
       >
         <HomeIcon className="icon-size"></HomeIcon>
       </Link>
@@ -36,22 +37,35 @@ const Navbar = () => {
         className={`navbar-item color-black ${
           isActive("/order", location.pathname) ? " active" : ""
         }`}
+        title="Đơn hàng"
       >
         <ShoppingCartOutlinedIcon className="icon-size"></ShoppingCartOutlinedIcon>
       </Link>
-      <Link to={""} className="navbar-item color-black">
+      <Link
+        to={"/customer"}
+        className={`navbar-item color-black ${
+          isActive("/customer", location.pathname) ? " active" : ""
+        }`}
+        title="Khách hàng"
+      >
         <Groups2OutlinedIcon className="icon-size"></Groups2OutlinedIcon>
       </Link>
-      <Link to={""} className="navbar-item color-black">
+      <Link
+        to={"/employees/list"}
+        className={`navbar-item color-black ${
+          isActive("/employees", location.pathname) ? " active" : ""
+        }`}
+        title="Nhân viên (nhân sự)"
+      >
         <Diversity3OutlinedIcon className="icon-size"></Diversity3OutlinedIcon>
       </Link>
-      <Link to={""} className="navbar-item color-black">
+      <Link to={""} className="navbar-item color-black" title="Thống kê">
         <QueryStatsOutlinedIcon className="icon-size"></QueryStatsOutlinedIcon>
       </Link>
-      <Link to={""} className="navbar-item color-black">
+      <Link to={""} className="navbar-item color-black" title="Kho hàng">
         <DvrOutlinedIcon className="icon-size"></DvrOutlinedIcon>
       </Link>
-      <Link to={""} className="navbar-item color-black">
+      <Link to={""} className="navbar-item color-black" title="Hệ thống">
         <SettingsSuggestOutlinedIcon className="icon-size"></SettingsSuggestOutlinedIcon>
       </Link>
     </div>
