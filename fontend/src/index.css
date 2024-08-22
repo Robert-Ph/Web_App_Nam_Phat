@@ -58,10 +58,10 @@ button {
 /* button:hover {
   border-color: #646cff;
 } */
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
-}
+/* button:focus,
+  button:focus-visible {
+    outline: 4px auto -webkit-focus-ring-color;
+  } */
 .icon-size {
   font-size: 32px !important;
 }
@@ -87,13 +87,16 @@ button:focus-visible {
   justify-content: space-between;
 }
 .justify-space-arround {
-  justify-content: space-around;
+  justify-content: space-around !important;
 }
 .justify-end {
-  justify-content: end;
+  justify-content: end !important;
 }
 .justify-center {
-  justify-items: center;
+  justify-items: center !important;
+}
+.justify-space-evenly {
+  justify-content: space-evenly !important;
 }
 .main-body {
   margin-top: 20px;
@@ -191,12 +194,24 @@ button:focus-visible {
   white-space: normal; /* Đảm bảo nội dung không vượt quá ô */
   padding-right: 10px;
 }
-
+input:disabled {
+  background-color: var(--color-gray);
+}
 .mt-10 {
   margin-top: 10px !important;
 }
 .mt-15 {
   margin-top: 15px;
+}
+
+.mt-20 {
+  margin-top: 20px !important;
+}
+.mt-30 {
+  margin-top: 30px !important;
+}
+.color-danger {
+  color: var(--color-danger);
 }
 .table-more {
   min-height: 55vh;

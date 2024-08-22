@@ -1,6 +1,8 @@
 import { Link, useLocation } from "react-router-dom";
 import "./css/navbar.css";
 
+//Link Nav thể hiện khi bấm vào Kho hàng sẽ có Tồn kho, Nhập Kho, Xuất kho
+
 type LinkNav = {
   id: string;
   name: string;

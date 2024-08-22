@@ -62,7 +62,13 @@ const Navbar = () => {
       <Link to={""} className="navbar-item color-black" title="Thống kê">
         <QueryStatsOutlinedIcon className="icon-size"></QueryStatsOutlinedIcon>
       </Link>
-      <Link to={""} className="navbar-item color-black" title="Kho hàng">
+      <Link
+        to={"/warehouse/list"}
+        className={`navbar-item color-black ${
+          isActive("/warehouse", location.pathname) ? " active" : ""
+        }`}
+        title="Kho hàng"
+      >
         <DvrOutlinedIcon className="icon-size"></DvrOutlinedIcon>
       </Link>
       <Link to={""} className="navbar-item color-black" title="Hệ thống">
