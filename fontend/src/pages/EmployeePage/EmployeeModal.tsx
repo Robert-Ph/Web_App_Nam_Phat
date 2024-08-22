@@ -2,7 +2,6 @@ import { useState } from "react";
 
 import Modal from "@mui/material/Modal";
 import Box from "@mui/material/Box";
-import { Employee } from "../../model/employee.model";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select, { SelectChangeEvent } from "@mui/material/Select";

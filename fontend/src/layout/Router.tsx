@@ -9,6 +9,9 @@ import DetailOrderPage from "../pages/DetailOrderPage/DetailOrderPage";
 import InvoicePage from "../pages/InvoicePage/InvoicePaee";
 import ListEmployee from "../pages/EmployeePage/ListEmployee.tsx";
 import DetailEmployee from "../pages/EmployeePage/DetailEmployee.tsx";
+import WageHousePage from "../pages/WarehousePage/WageHousePage.tsx";
+import ProductDetail from "../pages/WarehousePage/ProductDetail.tsx";
+import ImportWarehouse from "../pages/WarehousePage/ImportWarehouse.tsx";
 
 const appRoutes: RouteObject[] = [
   {
@@ -52,6 +55,20 @@ const appRoutes: RouteObject[] = [
       {
         path: "employees/detail/:id",
         element: <DetailEmployee></DetailEmployee>,
+      },
+
+      //Setting router cho đường dẫn kho hàng
+      {
+        path: "warehouse/list",
+        element: <WageHousePage></WageHousePage>,
+      },
+      {
+        path: "/warehouse/product/detail/:1",
+        element: <ProductDetail></ProductDetail>,
+      },
+      {
+        path: "warehouse/import",
+        element: <ImportWarehouse></ImportWarehouse>,
       },
     ],
   },

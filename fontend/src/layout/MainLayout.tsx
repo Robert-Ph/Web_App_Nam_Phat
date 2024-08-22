@@ -75,6 +75,28 @@ const MainLayout = () => {
           },
         ],
       });
+    } else if (isActive("/warehouse", location.pathname)) {
+      setNavMore({
+        title: "Quản lí",
+        listNav: [
+          {
+            id: "1",
+            name: "Kho hàng",
+            link: "/warehouse/list",
+          },
+          {
+            id: "2",
+            name: "Nhập kho",
+            link: "/warehouse/import", // Chỉnh sửa cái link này,
+          },
+
+          {
+            id: "3",
+            name: "Xuất kho",
+            link: "/warehouse/export", // Chỉnh sửa cái link này,
+          },
+        ],
+      });
     }
   }, [location]);
 

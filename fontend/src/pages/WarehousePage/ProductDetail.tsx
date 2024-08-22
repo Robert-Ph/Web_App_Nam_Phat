@@ -5,24 +5,10 @@ import Select, { SelectChangeEvent } from "@mui/material/Select";
 import Modal from "@mui/material/Modal";
 import Box from "@mui/material/Box";
 import { useNavigate, useParams } from "react-router-dom";
+import { styleModalNotify } from "../EmployeePage/DetailEmployee";
+import NotifyDeleteModal from "../UtilsPage/NotifyDeleteModal";
 
-export const styleModalNotify = {
-  position: "absolute" as "absolute",
-  top: "40%",
-  left: "53%",
-  transform: "translate(-50%, -50%)",
-  width: "30%",
-  bgcolor: "background.paper",
-  //   border: "2px solid #000",
-  boxShadow: 24,
-  p: 4,
-  maxHeight: "90vh", // Giới hạn chiều cao tối đa của modal
-  overflowY: "auto", // Kích hoạt cuộn dọc khi nội dung quá lớn
-  borderRadius: "20px",
-  paddingBottom: "40px",
-};
-
-const DetailEmployee = () => {
+const ProductDetail = () => {
   const [isEdit, setIsEdit] = useState<boolean>(false);
 
   const [locaiton, setLocation] = useState<string>("employee");
@@ -56,44 +42,56 @@ const DetailEmployee = () => {
   return (
     <div>
       <div className="container">
-        <div className="d-flex justify-end">
-          <button
-            className="btn btn-black"
-            onClick={() => {
-              navigate("/employees/list");
-            }}
-          >
-            Quay về
-          </button>
-          <button className="btn btn-danger" onClick={handleOpen}>
-            Xóa
-          </button>
-          <button className="btn btn-warning">Reset</button>
-          {!isEdit && (
+        <div className="d-flex justify-space-bettwen">
+          <div>
+            <div>
+              <strong>Tên:</strong>
+              <span> Giấy Decal Cứng</span>
+            </div>
+            <div>
+              <strong>ID:</strong>
+              <span> #51235</span>
+            </div>
+          </div>
+          <div>
             <button
-              className="btn btn-primary"
-              style={{ marginRight: "0px;" }}
-              onClick={handleEdit}
+              className="btn btn-black"
+              onClick={() => {
+                navigate("/warehouse/list");
+              }}
             >
-              Chỉnh sửa
+              Quay về
             </button>
-          )}
-          {isEdit && (
-            <button
-              className="btn btn-primary"
-              style={{ marginRight: "0px;" }}
-              onClick={handleSubmitEdit}
-            >
-              Cập nhật
+            <button className="btn btn-danger" onClick={handleOpen}>
+              Xóa
             </button>
-          )}
+            <button className="btn btn-warning">Reset</button>
+            {!isEdit && (
+              <button
+                className="btn btn-primary"
+                style={{ marginRight: "0px;" }}
+                onClick={handleEdit}
+              >
+                Chỉnh sửa
+              </button>
+            )}
+            {isEdit && (
+              <button
+                className="btn btn-primary"
+                style={{ marginRight: "0px;" }}
+                onClick={handleSubmitEdit}
+              >
+                Cập nhật
+              </button>
+            )}
+          </div>
         </div>
 
         <div className="mt-20">
-          <h3>Thông tin nhân viên </h3>
+          <h3>Thông tin loại hàng </h3>
           <div className="wrap-form">
             <div className="form-group flex-1">
-              <span>Mã nhân viên</span>
+              <span>Mã loại hàng</span>
               <input
                 disabled={!isEdit}
                 className="font-font-size-small"
@@ -101,7 +99,7 @@ const DetailEmployee = () => {
             </div>
 
             <div className="form-group flex-1" style={{ margin: "0px 20px" }}>
-              <span>Ngày vào làm</span>
+              <span>Loại</span>
               <input
                 disabled={!isEdit}
                 className="font-font-size-small"
@@ -110,7 +108,7 @@ const DetailEmployee = () => {
           </div>
           <div className="wrap-form">
             <div className="form-group flex-1">
-              <span>Tên nhân viên </span>
+              <span>Tên </span>
               <input
                 disabled={!isEdit}
                 className="font-font-size-small"
@@ -118,25 +116,7 @@ const DetailEmployee = () => {
             </div>
 
             <div className="form-group flex-1" style={{ margin: "0px 20px" }}>
-              <span>Số điện thoại</span>
-              <input
-                disabled={!isEdit}
-                className="font-font-size-small"
-              ></input>
-            </div>
-          </div>
-
-          <div className="wrap-form">
-            <div className="form-group flex-1">
-              <span>Email </span>
-              <input
-                disabled={!isEdit}
-                className="font-font-size-small"
-              ></input>
-            </div>
-
-            <div className="form-group flex-1" style={{ margin: "0px 20px" }}>
-              <span>Lương cơ bản</span>
+              <span>Đơn vị tính</span>
               <input
                 disabled={!isEdit}
                 className="font-font-size-small"
@@ -146,21 +126,57 @@ const DetailEmployee = () => {
 
           <div className="wrap-form">
             <div className="form-group flex-1">
-              <span>Vị trí (Thử việc hoặc chính thức) </span>
-              <FormControl sx={{ minWidth: 120 }} size="small">
-                <Select
-                  labelId="demo-select-small-label"
-                  id="demo-select-small"
-                  value={locaiton}
-                  onChange={handleChange}
-                  className="font-size-small"
-                >
-                  <MenuItem value={"employee"} className="">
-                    Thử việc
-                  </MenuItem>
-                  <MenuItem value={"enterprise"}>Chính thức</MenuItem>
-                </Select>
-              </FormControl>
+              <span>Đơn giá /đơn vị tính</span>
+              <input
+                disabled={!isEdit}
+                className="font-font-size-small"
+              ></input>
+            </div>
+
+            <div className="form-group flex-1" style={{ margin: "0px 20px" }}>
+              <span>Kích thước sp (ví dụ: 30x30 mm)</span>
+              <div>
+                <div>
+                  <span className="align-content-center">Cao:</span>
+                  <input
+                    type="number"
+                    className="size"
+                    style={{
+                      padding: "12px 4px 10px 4px",
+                      width: "20%",
+                      marginLeft: "1%",
+                    }}
+                    disabled={!isEdit}
+                  ></input>
+
+                  <span
+                    className="align-content-center"
+                    style={{ marginLeft: "3%" }}
+                  >
+                    ,Rộng:
+                  </span>
+                  <input
+                    type="number"
+                    className="size"
+                    style={{
+                      padding: "12px 4px 10px 4px",
+                      width: "20%",
+                      marginLeft: "1%",
+                    }}
+                    disabled={!isEdit}
+                  ></input>
+                  <span style={{ marginLeft: "1%" }}>(mm)</span>
+                </div>
+
+                <div></div>
+              </div>
+            </div>
+          </div>
+
+          <div className="wrap-form">
+            <div className="form-group flex-1">
+              <span>Số lượng tồn kho</span>
+              <input disabled={true} className="font-font-size-small"></input>
             </div>
 
             <div
@@ -170,7 +186,7 @@ const DetailEmployee = () => {
           </div>
         </div>
       </div>
-      <Modal
+      {/* <Modal
         open={open}
         onClose={handleClose}
         aria-labelledby="modal-modal-title"
@@ -179,7 +195,7 @@ const DetailEmployee = () => {
         <Box sx={styleModalNotify}>
           <h3 className="text-center">Thông báo</h3>
           <div className=" mt-10 " style={{ textAlign: "justify" }}>
-            <span>Bạn Có Chắc Chắn Muốn Xóa Nhân Viên Này Không?</span>
+            <span>Bạn Có Chắc Chắn Muốn Xóa Sản phẩm Này Không?</span>
           </div>
           <div className="d-flex mt-20 justify-space-arround">
             <button className="btn btn-black" onClick={handleClose}>
@@ -188,9 +204,16 @@ const DetailEmployee = () => {
             <button className="btn btn-danger">Xóa</button>
           </div>
         </Box>
-      </Modal>
+      </Modal> */}
+
+      <NotifyDeleteModal
+        open={open}
+        handleClose={handleClose}
+        handleDelete={() => {}}
+        message="Bạn có chắc chắn muốn xóa sản phẩm này?"
+      ></NotifyDeleteModal>
     </div>
   );
 };
 
-export default DetailEmployee;
+export default ProductDetail;
