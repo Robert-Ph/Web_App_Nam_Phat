@@ -12,6 +12,7 @@ import DetailEmployee from "../pages/EmployeePage/DetailEmployee.tsx";
 import WageHousePage from "../pages/WarehousePage/WageHousePage.tsx";
 import ProductDetail from "../pages/WarehousePage/ProductDetail.tsx";
 import ImportWarehouse from "../pages/WarehousePage/ImportWarehouse.tsx";
+import ExportWarehouse from "../pages/WarehousePage/ExportWarehouse.tsx";
 
 const appRoutes: RouteObject[] = [
   {
@@ -69,6 +70,10 @@ const appRoutes: RouteObject[] = [
       {
         path: "warehouse/import",
         element: <ImportWarehouse></ImportWarehouse>,
+      },
+      {
+        path: "warehouse/export",
+        element: <ExportWarehouse></ExportWarehouse>,
       },
     ],
   },
