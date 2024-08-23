@@ -61,7 +61,7 @@ const HomePage = () => {
                   <p className="text" >Tháng {currentMonth}</p>
               </div>
               <div className="div-body">
-                    <table className="table-container">
+                    <table className="table-home">
                         <tbody>
                         <tr>
                             <td>Tổng doanh thu:</td>
@@ -104,7 +104,7 @@ const HomePage = () => {
                   <p className="text">Ngày {formattedDate}</p>
               </div>
               <div className="div-body">
-                  <table className="table-container">
+                  <table className="table-home">
                       <tbody>
                       <tr>
                           <td>Tổng đơn hàng:</td>
@@ -147,12 +147,12 @@ const HomePage = () => {
                       <p className="text">Công nợ khách hàng</p>
                   </div>
                   <div className="div-body-1">
-                      <table className="table-container">
+                      <table className="table-home">
                           <tbody>
                           <tr>
                               <td>Tổng công nợ:</td>
                               <td>0</td>
-                              <td>vnđ</td>
+                              <td >vnđ</td>
                           </tr>
                           <tr>
                               <td>Tổng số khách hàng:</td>
@@ -168,7 +168,7 @@ const HomePage = () => {
                       <p className="text">Lợi nhuận</p>
                   </div>
                   <div className="div-body-1">
-                      <table className="table-container">
+                      <table className="table-home">
                           <tbody>
                           <tr>
                               <td>Tổng lợi nhuận tháng:</td>
@@ -190,7 +190,7 @@ const HomePage = () => {
                   <p className="text">Chi tiêu</p>
               </div>
               <div className="div-body">
-                  <table className="table-container">
+                  <table className="table-home">
                       <tbody>
                       <tr>
                           <td>Tổng chi:</td>

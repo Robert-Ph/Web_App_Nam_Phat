@@ -39,8 +39,8 @@
         }
     }
     .table-main{
-        max-height: 90%; /* Đặt chiều cao tối đa cho container */
+        max-height: 75%; /* Đặt chiều cao tối đa cho container */
         overflow-y: auto; /* Thêm thanh cuộn dọc */
-        min-height: 90%;
+        min-height: 75%;
     }
 }

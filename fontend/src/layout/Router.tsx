@@ -13,6 +13,9 @@ import WageHousePage from "../pages/WarehousePage/WageHousePage.tsx";
 import ProductDetail from "../pages/WarehousePage/ProductDetail.tsx";
 import ImportWarehouse from "../pages/WarehousePage/ImportWarehouse.tsx";
 import ExportWarehouse from "../pages/WarehousePage/ExportWarehouse.tsx";
+import CustomerHistoryOrder from "../pages/Customer/CustomerHistoryOrder.tsx";
+import CustomerInfomation from "../pages/Customer/CustomerInfomation.tsx";
+import CustomerCreate from "../pages/Customer/CustomerCreate.tsx";
 
 const appRoutes: RouteObject[] = [
   {
@@ -31,6 +34,18 @@ const appRoutes: RouteObject[] = [
       {
         path: "/customer",
         element: <CustomerManagement></CustomerManagement>,
+      },
+      {
+        path: "/customer/historyoder/:id",
+        element: <CustomerHistoryOrder></CustomerHistoryOrder>,
+      },
+      {
+        path: "/customer/infomation/:id",
+        element: <CustomerInfomation></CustomerInfomation>,
+      },
+      {
+        path: "customer/create",
+        element: <CustomerCreate></CustomerCreate>
       },
       {
         path: "/order/create",
