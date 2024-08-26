@@ -1,11 +1,9 @@
 import { useState } from "react";
-import MenuItem from "@mui/material/MenuItem";
-import FormControl from "@mui/material/FormControl";
+
 import Select, { SelectChangeEvent } from "@mui/material/Select";
-import Modal from "@mui/material/Modal";
-import Box from "@mui/material/Box";
+
 import { useNavigate, useParams } from "react-router-dom";
-import { styleModalNotify } from "../EmployeePage/DetailEmployee";
+
 import NotifyDeleteModal from "../UtilsPage/NotifyDeleteModal";
 
 const ProductDetail = () => {

@@ -1,0 +1,24 @@
+.wrap-logo {
+  width: 150px;
+  margin: 0px auto;
+}
+.wrap-content {
+  margin-top: 10% !important;
+  margin-bottom: 20px;
+}
+
+.company-info-container {
+  text-align: center;
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  background-color: white;
+}
+
+.wrap-content p {
+  text-align: left;
+  font-size: 16px;
+  line-height: 2;
+}

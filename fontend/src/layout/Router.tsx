@@ -4,8 +4,8 @@ import MainLayout from "./MainLayout";
 import HomePage from "../pages/HomePage/HomePage";
 import OrderPage from "../pages/OrderPage/OrderPage";
 import CustomerManagement from "../pages/Customer/CustomerManagement.tsx";
-import ListOrderPage from "../pages/ListOrderPage/ListOrderPage";
-import DetailOrderPage from "../pages/DetailOrderPage/DetailOrderPage";
+import ListOrderPage from "../pages/OrderPage/ListOrderPage.tsx";
+import DetailOrderPage from "../pages/OrderPage/DetailOrderPage.tsx";
 import InvoicePage from "../pages/InvoicePage/InvoicePaee";
 import ListEmployee from "../pages/EmployeePage/ListEmployee.tsx";
 import DetailEmployee from "../pages/EmployeePage/DetailEmployee.tsx";
@@ -13,6 +13,9 @@ import WageHousePage from "../pages/WarehousePage/WageHousePage.tsx";
 import ProductDetail from "../pages/WarehousePage/ProductDetail.tsx";
 import ImportWarehouse from "../pages/WarehousePage/ImportWarehouse.tsx";
 import ExportWarehouse from "../pages/WarehousePage/ExportWarehouse.tsx";
+import LogPage from "../pages/SystemPage/LogPage.tsx";
+import AccountPage from "../pages/SystemPage/AccountPage.tsx";
+import InformartionPage from "../pages/SystemPage/InformationPage.tsx";
 
 const appRoutes: RouteObject[] = [
   {
@@ -74,6 +77,20 @@ const appRoutes: RouteObject[] = [
       {
         path: "warehouse/export",
         element: <ExportWarehouse></ExportWarehouse>,
+      },
+
+      //URL system page
+      {
+        path: "/system/log",
+        element: <LogPage></LogPage>,
+      },
+      {
+        path: "/system/accounts",
+        element: <AccountPage></AccountPage>,
+      },
+      {
+        path: "/system/information",
+        element: <InformartionPage></InformartionPage>,
       },
     ],
   },
