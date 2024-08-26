@@ -97,6 +97,33 @@ const MainLayout = () => {
           },
         ],
       });
+    } else if (isActive("/system", location.pathname)) {
+      setNavMore({
+        title: "System",
+        listNav: [
+          {
+            id: "1",
+            name: "Log",
+            link: "/system/log",
+          },
+          {
+            id: "2",
+            name: "Accounts",
+            link: "/system/accounts",
+          },
+
+          {
+            id: "3",
+            name: "Backup",
+            link: "/system/backup",
+          },
+          {
+            id: "4",
+            name: "Informartion",
+            link: "/system/information",
+          },
+        ],
+      });
     }
   }, [location]);
 

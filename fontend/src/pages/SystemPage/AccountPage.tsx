@@ -4,78 +4,24 @@ import TextField from "@mui/material/TextField";
 import FilterListIcon from "@mui/icons-material/FilterList";
 import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
-import "../OrderPage/listOrder.css";
-import { Employee } from "../../model/employee.model";
-import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import SettingsIcon from "@mui/icons-material/Settings";
+import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
+import "../OrderPage/listOrder.css";
 import { useNavigate } from "react-router-dom";
-import EmployeeModal from "./EmployeeModal";
 
-const ListEmployee = () => {
-  const [emplyees, setEmployees] = useState<Employee[]>([
+import account from "../../model/account.model";
+import Span from "../../component/Span";
+import AccountModal from "./AccountModal";
+
+const AccountPage = () => {
+  const [accounts, setAccounts] = useState<account[]>([
     {
-      id: "1",
-      name: "Nguyễn Ngọc Phương",
-      phone: "031231312312",
-      email: "nguyenphuong12312321@gmail.com",
-      dateEnjoy: "31/12/2024",
-      wage: "12000000",
-    },
-    {
-      id: "2",
-      name: "Nguyễn Ngọc Phương",
-      phone: "031231312312",
-      email: "nguyenphuong12312321@gmail.com",
-      dateEnjoy: "31/12/2024",
-      wage: "12000000",
-    },
-    {
-      id: "3",
-      name: "Nguyễn Ngọc Phương",
-      phone: "031231312312",
-      email: "nguyenphuong12312321@gmail.com",
-      dateEnjoy: "31/12/2024",
-      wage: "12000000",
-    },
-    {
-      id: "4",
-      name: "Nguyễn Ngọc Phương",
-      phone: "031231312312",
-      email: "nguyenphuong12312321@gmail.com",
-      dateEnjoy: "31/12/2024",
-      wage: "12000000",
-    },
-    {
-      id: "5",
-      name: "Nguyễn Ngọc Phương",
-      phone: "031231312312",
-      email: "nguyenphuong12312321@gmail.com",
-      dateEnjoy: "31/12/2024",
-      wage: "12000000",
-    },
-    {
-      id: "6",
-      name: "Nguyễn Ngọc Phương",
-      phone: "031231312312",
-      email: "nguyenphuong12312321@gmail.com",
-      dateEnjoy: "31/12/2024",
-      wage: "12000000",
-    },
-    {
-      id: "7",
-      name: "Nguyễn Ngọc Phương",
-      phone: "031231312312",
-      email: "nguyenphuong12312321@gmail.com",
-      dateEnjoy: "31/12/2024",
-      wage: "12000000",
-    },
-    {
-      id: "8",
-      name: "Nguyễn Ngọc Phương",
-      phone: "031231312312",
-      email: "nguyenphuong12312321@gmail.com",
-      dateEnjoy: "31/12/2024",
-      wage: "12000000",
+      id: "1203",
+      idEmployee: "NV0111",
+      username: "nguyenngocphuong11072002@gmail.com",
+      level: "Nhân viên",
+      dateCreate: "12/12/2024 15:15:30",
+      status: "Đang sử dụng",
     },
   ]);
 
@@ -99,7 +45,7 @@ const ListEmployee = () => {
   return (
     <div>
       <div className="main-body">
-        <h3>Danh sách nhân viên</h3>
+        <h3>Account</h3>
         <div style={{ marginBottom: "10px" }}>
           <div
             className="d-flex justify-space-bettwen "
@@ -124,8 +70,7 @@ const ListEmployee = () => {
                 />
               </Box>
             </div>
-
-            <div style={{ position: "relative", marginRight: "5%" }}>
+            <div style={{ paddingRight: "5%" }}>
               <button className="btn btn-primary" onClick={handleOpen}>
                 Thêm mới
               </button>
@@ -137,31 +82,30 @@ const ListEmployee = () => {
             <table style={{ width: "100%", borderCollapse: "collapse" }}>
               <thead>
                 <tr className="color-blue header-table text-left border-header-table">
-                  <th className="pb-7 font-w-500" style={{ width: "5%" }}>
+                  <th className="pb-7 font-w-500" style={{ width: "6%" }}>
                     ID
-                  </th>
-                  <th
-                    className="pb-7 font-w-500"
-                    style={{ width: "15%", paddingRight: "10px" }}
-                  >
-                    Tên nhân viên
                   </th>
                   <th
                     className="pb-7 font-w-500"
                     style={{ width: "10%", paddingRight: "10px" }}
                   >
-                    Số điện thoại
+                    Mã Nhân Viên
                   </th>
-                  <th className="pb-7 font-w-500" style={{ width: "20%" }}>
-                    Email
+                  <th
+                    className="pb-7 font-w-500"
+                    style={{ width: "10%", paddingRight: "10px" }}
+                  >
+                    Tên đăng nhập
+                  </th>
+                  <th className="pb-7 font-w-500" style={{ width: "9%" }}>
+                    Quyền
                   </th>
                   <th className="pb-7 font-w-500" style={{ width: "10%" }}>
-                    Bắt đầu làm việc (ngày)
+                    Ngày tạo
                   </th>
-                  <th className="pb-7 font-w-500" style={{ width: "10%" }}>
-                    Lương cơ bản (VNĐ)
+                  <th className="pb-7 font-w-500" style={{ width: "12%" }}>
+                    Trạng thái
                   </th>
-
                   <th
                     className="pb-7 font-w-500 text-black"
                     style={{ width: "5%" }}
@@ -171,36 +115,38 @@ const ListEmployee = () => {
                 </tr>
               </thead>
               <tbody className="border-header-table">
-                {emplyees.map((employee) => (
-                  <tr key={employee.id} className="border-header-table">
+                {accounts.map((item) => (
+                  <tr key={item.id} className="border-header-table">
                     <td className="pb-7 pt-7 font-size-small td-table font-w-500 ">
-                      {employee.id}
+                      {item.id}
                     </td>
                     <td className="pb-7 pt-7 font-size-small font-w-500 ">
-                      {employee.name || "-"}
+                      {item.idEmployee || "-"}
                     </td>
                     <td
                       className="pb-7 pt-7 font-size-small td-table font-w-500"
                       style={{ paddingRight: "20px" }}
                     >
-                      {employee.phone || "-"}
+                      {item.username || "-"}
                     </td>
                     <td className="pb-7 pt-7 font-size-small td-table font-w-500">
-                      {employee.email || "-"}
+                      {item.level || "-"}
                     </td>
-                    <td className="pb-7 pt-7 font-size-small td-table font-w-500">
-                      {employee.dateEnjoy || "-"}
+                    <td
+                      className="pb-7 pt-7 font-size-small td-table font-w-500"
+                      style={{ paddingRight: "5%" }}
+                    >
+                      {item.dateCreate || "-"}
                     </td>
 
                     <td className="pb-7 pt-7 font-size-small td-table font-w-500">
-                      {employee.wage || "-"}
+                      <Span type="success" message="Đang sử dụng"></Span>
                     </td>
-
                     <td className="pb-7 pt-7 font-size-small td-table font-w-500">
                       <button
                         className="btn-more"
                         onClick={() => {
-                          navigate(`/employees/detail/${employee.id}`);
+                          handleOpen();
                         }}
                       >
                         <MoreHorizIcon></MoreHorizIcon>
@@ -223,9 +169,9 @@ const ListEmployee = () => {
           </div>
         </div>
       </div>
-      <EmployeeModal open={open} onClose={handleOnclose}></EmployeeModal>
+      <AccountModal open={open} onClose={handleOnclose}></AccountModal>
     </div>
   );
 };
 
-export default ListEmployee;
+export default AccountPage;

@@ -57,7 +57,7 @@ const ListOrderPage = () => {
             </div>
 
             <div style={{ position: "relative" }}>
-              <select className="filter-select">
+              <select className="filter-select btn btn-primary">
                 <option value="all">Tất cả</option>
                 <option value="newest">Mới nhất</option>
                 <option value="confirmed">Xác nhận</option>

@@ -4,7 +4,7 @@ import TextField from "@mui/material/TextField";
 import FilterListIcon from "@mui/icons-material/FilterList";
 import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
-import "../ListOrderPage/listOrder.css";
+import "../OrderPage/listOrder.css";
 import { useNavigate } from "react-router-dom";
 
 import exportProduct from "../../model/export.product.model";
@@ -23,7 +23,7 @@ const ExportWarehouse = () => {
         type: "Decal",
         unit: "Tờ",
       },
-      date: "12/12/2024",
+      date: "12/12/2024 15:15:30",
       reson:
         "Xuất hàng cho kho xuất cho công ty TPHCM Đơn vị vận chuyển hàng hóa 12345 Huyện Bình Chánh TPHCM",
     },
@@ -39,7 +39,7 @@ const ExportWarehouse = () => {
         type: "Decal",
         unit: "Tờ",
       },
-      date: "12/12/2024",
+      date: "12/12/2024 15:15:30",
       reson:
         "Xuất hàng cho kho xuất cho công ty TPHCM Đơn vị vận chuyển hàng hóa 12345 Huyện Bình Chánh TPHCM",
     },
@@ -117,13 +117,13 @@ const ExportWarehouse = () => {
                   >
                     Loại
                   </th>
-                  <th className="pb-7 font-w-500" style={{ width: "8%" }}>
+                  <th className="pb-7 font-w-500" style={{ width: "7%" }}>
                     Số lượng
                   </th>
                   <th className="pb-7 font-w-500" style={{ width: "8%" }}>
                     Đơn vị tính
                   </th>
-                  <th className="pb-7 font-w-500" style={{ width: "10%" }}>
+                  <th className="pb-7 font-w-500" style={{ width: "12%" }}>
                     Ngày
                   </th>
 

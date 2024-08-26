@@ -4,7 +4,7 @@ import TextField from "@mui/material/TextField";
 import FilterListIcon from "@mui/icons-material/FilterList";
 import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
-import "../ListOrderPage/listOrder.css";
+import "../OrderPage/listOrder.css";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import SettingsIcon from "@mui/icons-material/Settings";
 import { useNavigate } from "react-router-dom";
@@ -48,13 +48,13 @@ const WageHousePage = () => {
   const [page, setPage] = useState<number>(1);
   const [open, setOpen] = useState<boolean>(false);
 
-  const handleOnclose = () => {
-    setOpen(false);
-  };
+  // const handleOnclose = () => {
+  //   setOpen(false);
+  // };
 
-  const handleOpen = () => {
-    setOpen(true);
-  };
+  // const handleOpen = () => {
+  //   setOpen(true);
+  // };
 
   const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
     setPage(value);

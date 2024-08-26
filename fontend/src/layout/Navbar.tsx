@@ -71,7 +71,13 @@ const Navbar = () => {
       >
         <DvrOutlinedIcon className="icon-size"></DvrOutlinedIcon>
       </Link>
-      <Link to={""} className="navbar-item color-black" title="Hệ thống">
+      <Link
+        to={"/system/log"}
+        className={`navbar-item color-black ${
+          isActive("/system", location.pathname) ? " active" : ""
+        }`}
+        title="Hệ thống"
+      >
         <SettingsSuggestOutlinedIcon className="icon-size"></SettingsSuggestOutlinedIcon>
       </Link>
     </div>

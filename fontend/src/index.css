@@ -158,6 +158,11 @@ button {
   border-radius: 7px;
   border: 2px var(--color-gray) solid;
 }
+.form-group textarea {
+  padding: 10px 8px 10px 8px;
+  border-radius: 7px;
+  border: 2px var(--color-gray) solid;
+}
 .input-select {
   padding: 10px 8px 10px 8px !important;
   border-radius: 7px !important;

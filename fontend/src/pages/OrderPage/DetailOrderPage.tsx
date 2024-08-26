@@ -3,7 +3,7 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
-import ProductModal from "../OrderPage/ProductModal";
+import ProductModal from "./ProductModal";
 import product from "../../model/product.model";
 
 const DetailOrderPage = () => {
