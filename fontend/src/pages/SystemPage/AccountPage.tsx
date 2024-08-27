@@ -27,6 +27,7 @@ const AccountPage = () => {
 
   const [page, setPage] = useState<number>(1);
   const [open, setOpen] = useState<boolean>(false);
+  const [title, setTitle] = useState<string>("");
 
   const handleOnclose = () => {
     setOpen(false);
@@ -42,6 +43,7 @@ const AccountPage = () => {
 
   console.log(page);
   const navigate = useNavigate();
+
   return (
     <div>
       <div className="main-body">
@@ -71,7 +73,13 @@ const AccountPage = () => {
               </Box>
             </div>
             <div style={{ paddingRight: "5%" }}>
-              <button className="btn btn-primary" onClick={handleOpen}>
+              <button
+                className="btn btn-primary"
+                onClick={() => {
+                  setTitle("Thêm mới tài khoản");
+                  handleOpen();
+                }}
+              >
                 Thêm mới
               </button>
             </div>
@@ -146,6 +154,7 @@ const AccountPage = () => {
                       <button
                         className="btn-more"
                         onClick={() => {
+                          setTitle("Chỉnh sửa tài khoản");
                           handleOpen();
                         }}
                       >
@@ -169,7 +178,11 @@ const AccountPage = () => {
           </div>
         </div>
       </div>
-      <AccountModal open={open} onClose={handleOnclose}></AccountModal>
+      <AccountModal
+        tittle={title}
+        open={open}
+        onClose={handleOnclose}
+      ></AccountModal>
     </div>
   );
 };
