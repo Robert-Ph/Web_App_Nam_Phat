@@ -27,9 +27,10 @@ type props = {
   open: boolean;
   onClose: () => void;
   isUpdate?: (account: account) => void;
+  tittle: string;
   //   handleAdd: (employee: Employee) => void;
 };
-const AccountModal = ({ open, onClose, isUpdate }: props) => {
+const AccountModal = ({ open, tittle, onClose, isUpdate }: props) => {
   const [role, setRole] = useState<string>("employee");
   const [status, setStatus] = useState<string>("use");
 
@@ -50,7 +51,7 @@ const AccountModal = ({ open, onClose, isUpdate }: props) => {
       >
         <Box sx={style}>
           <div className="mt-10">
-            <h3 className="text-center">Thêm Tài Khoản</h3>
+            <h3 className="text-center">{tittle}</h3>
           </div>
 
           <div
