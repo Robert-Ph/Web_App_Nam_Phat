@@ -26,7 +26,7 @@ const style = {
 type props = {
   open: boolean;
   onClose: () => void;
-  isUpdate?: (account: account) => void;
+  isUpdate?: boolean;
   tittle: string;
   //   handleAdd: (employee: Employee) => void;
 };
@@ -42,108 +42,107 @@ const AccountModal = ({ open, tittle, onClose, isUpdate }: props) => {
     setStatus(event.target.value);
   };
   return (
-    <div>
-      <Modal
-        open={open}
-        // onClose={onClose}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      >
-        <Box sx={style}>
-          <div className="mt-10">
-            <h3 className="text-center">{tittle}</h3>
-          </div>
+    <Modal
+      open={open}
+      // onClose={onClose}
+      aria-labelledby="modal-modal-title"
+      aria-describedby="modal-modal-description"
+    >
+      <Box sx={style}>
+        <div className="mt-10">
+          <h3 className="text-center">{tittle}</h3>
+        </div>
 
-          <div
-            className="d-flex dicrect-col"
-            style={{ paddingLeft: "20px", paddingRight: "10px" }}
-          >
-            <div className="">
-              <div className="form-group mt-10">
-                <span>
-                  User name <span style={{ color: "red" }}>*</span> :
-                </span>
-                <input className="shadow"></input>
-              </div>
+        <div
+          className="d-flex dicrect-col"
+          style={{ paddingLeft: "20px", paddingRight: "10px" }}
+        >
+          <div className="">
+            <div className="form-group mt-10">
+              <span>
+                User name <span style={{ color: "red" }}>*</span> :
+              </span>
+              <input className={`shadow `} disabled={isUpdate}></input>
+            </div>
 
-              <div className="form-group mt-10">
-                <span>
-                  Password <span style={{ color: "red" }}>*</span> :
-                </span>
-                <input className="shadow" type="password"></input>
-              </div>
+            <div className="form-group mt-10">
+              <span>
+                Password <span style={{ color: "red" }}>*</span> :
+              </span>
+              <input className="shadow" type="password"></input>
+            </div>
 
-              <div className="form-group mt-10">
-                <span>
-                  Mã nhân viên <span style={{ color: "red" }}>*</span> :
-                </span>
-                <input className="shadow"></input>
-              </div>
+            <div className="form-group mt-10">
+              <span>
+                Mã nhân viên <span style={{ color: "red" }}>*</span> :
+              </span>
+              <input className="shadow"></input>
+            </div>
 
-              <div className="form-group mt-10">
-                <span>Quyền :</span>
-                <FormControl size="small">
-                  <Select
-                    labelId="demo-select-small-label"
-                    id="demo-select-small"
-                    value={role}
-                    onChange={handleRole}
-                    className="font-size-small shadow"
-                    style={{
-                      borderRadius: "7px;",
-                    }}
+            <div className="form-group mt-10">
+              <span>Quyền :</span>
+              <FormControl size="small">
+                <Select
+                  labelId="demo-select-small-label"
+                  id="demo-select-small"
+                  value={role}
+                  onChange={handleRole}
+                  className="font-size-small shadow"
+                  style={{
+                    borderRadius: "7px;",
+                  }}
+                >
+                  <MenuItem
+                    value={"employee"}
+                    style={{ padding: "10px 12px;" }}
                   >
-                    <MenuItem
-                      value={"employee"}
-                      style={{ padding: "10px 12px;" }}
-                    >
-                      Nhân viên
-                    </MenuItem>
-                    <MenuItem
-                      value={"enterprise"}
-                      style={{ padding: "10px 12px;" }}
-                    >
-                      Quản lí
-                    </MenuItem>
-                  </Select>
-                </FormControl>
-              </div>
-
-              <div className="form-group mt-10">
-                <span>Trạng thái :</span>
-                <FormControl size="small">
-                  <Select
-                    labelId="demo-select-small-label"
-                    id="demo-select-small"
-                    value={status}
-                    onChange={handleStatus}
-                    className="font-size-small shadow"
-                    style={{
-                      borderRadius: "7px;",
-                    }}
+                    Nhân viên
+                  </MenuItem>
+                  <MenuItem
+                    value={"enterprise"}
+                    style={{ padding: "10px 12px;" }}
                   >
-                    <MenuItem value={"use"} style={{ padding: "10px 12px;" }}>
-                      Đang sử dụng
-                    </MenuItem>
-                    <MenuItem value={"block"} style={{ padding: "10px 12px;" }}>
-                      Khóa
-                    </MenuItem>
-                  </Select>
-                </FormControl>
-              </div>
+                    Quản lí
+                  </MenuItem>
+                </Select>
+              </FormControl>
+            </div>
 
-              <div className="d-flex mt-30 justify-space-arround ">
-                <button className="btn btn-danger" onClick={onClose}>
-                  Hủy
-                </button>
-                <button className="btn btn-primary">Thêm </button>
-              </div>
+            <div className="form-group mt-10">
+              <span>Trạng thái :</span>
+              <FormControl size="small">
+                <Select
+                  labelId="demo-select-small-label"
+                  id="demo-select-small"
+                  value={status}
+                  onChange={handleStatus}
+                  className="font-size-small shadow"
+                  style={{
+                    borderRadius: "7px;",
+                  }}
+                >
+                  <MenuItem value={"use"} style={{ padding: "10px 12px;" }}>
+                    Đang sử dụng
+                  </MenuItem>
+                  <MenuItem value={"block"} style={{ padding: "10px 12px;" }}>
+                    Khóa
+                  </MenuItem>
+                </Select>
+              </FormControl>
+            </div>
+
+            <div className="d-flex mt-30 justify-space-arround ">
+              <button className="btn btn-danger" onClick={onClose}>
+                Hủy
+              </button>
+              <button className="btn btn-primary">
+                {isUpdate ? "Chỉnh sửa" : "Thêm"}
+              </button>
             </div>
           </div>
-        </Box>
-      </Modal>
-      ;
-    </div>
+        </div>
+      </Box>
+    </Modal>
   );
 };
 export default AccountModal;
