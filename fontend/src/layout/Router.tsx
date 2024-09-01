@@ -16,6 +16,7 @@ import ExportWarehouse from "../pages/WarehousePage/ExportWarehouse.tsx";
 import LogPage from "../pages/SystemPage/LogPage.tsx";
 import AccountPage from "../pages/SystemPage/AccountPage.tsx";
 import InformartionPage from "../pages/SystemPage/InformationPage.tsx";
+import BackupPage from "../pages/SystemPage/BackupPage.tsx";
 
 const appRoutes: RouteObject[] = [
   {
@@ -92,6 +93,8 @@ const appRoutes: RouteObject[] = [
         path: "/system/information",
         element: <InformartionPage></InformartionPage>,
       },
+
+      { path: "/system/backup", element: <BackupPage></BackupPage> },
     ],
   },
 ];

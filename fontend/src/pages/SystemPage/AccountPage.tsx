@@ -6,12 +6,16 @@ import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
 import SettingsIcon from "@mui/icons-material/Settings";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
+
 import "../OrderPage/listOrder.css";
 import { useNavigate } from "react-router-dom";
 
 import account from "../../model/account.model";
 import Span from "../../component/Span";
 import AccountModal from "./AccountModal";
+import NotifyDeleteModal from "../UtilsPage/NotifyDeleteModal";
 
 const AccountPage = () => {
   const [accounts, setAccounts] = useState<account[]>([
@@ -27,7 +31,22 @@ const AccountPage = () => {
 
   const [page, setPage] = useState<number>(1);
   const [open, setOpen] = useState<boolean>(false);
-  const [title, setTitle] = useState<string>("");
+  const [isUpdate, setIsUpdate] = useState<boolean>(false);
+
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const [notify, setNotify] = useState<boolean>(false);
+
+  const handleCloseNotify = () => setNotify(false);
+  const handleOpenNotify = () => setNotify(true);
+
+  const openSetting = Boolean(anchorEl);
+
+  const handleClickOnSetting = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleCloseSetting = () => {
+    setAnchorEl(null);
+  };
 
   const handleOnclose = () => {
     setOpen(false);
@@ -39,6 +58,12 @@ const AccountPage = () => {
 
   const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
     setPage(value);
+  };
+
+  const handleOnClickSettingUpdate = () => {
+    setIsUpdate(true);
+    setOpen(true);
+    handleCloseSetting();
   };
 
   console.log(page);
@@ -76,7 +101,7 @@ const AccountPage = () => {
               <button
                 className="btn btn-primary"
                 onClick={() => {
-                  setTitle("Thêm mới tài khoản");
+                  setIsUpdate(false);
                   handleOpen();
                 }}
               >
@@ -153,13 +178,36 @@ const AccountPage = () => {
                     <td className="pb-7 pt-7 font-size-small td-table font-w-500">
                       <button
                         className="btn-more"
-                        onClick={() => {
-                          setTitle("Chỉnh sửa tài khoản");
-                          handleOpen();
-                        }}
+                        onClick={handleClickOnSetting}
                       >
                         <MoreHorizIcon></MoreHorizIcon>
                       </button>
+
+                      <Menu
+                        id="basic-menu"
+                        anchorEl={anchorEl}
+                        open={openSetting}
+                        onClose={handleCloseSetting}
+                        // MenuListProps={{
+                        //   "aria-labelledby": "basic-button",
+                        // }}
+                      >
+                        <MenuItem
+                          onClick={() => {
+                            handleOnClickSettingUpdate();
+                          }}
+                        >
+                          Chỉnh sửa
+                        </MenuItem>
+                        <MenuItem
+                          onClick={() => {
+                            handleCloseSetting();
+                            handleOpenNotify();
+                          }}
+                        >
+                          Xóa
+                        </MenuItem>
+                      </Menu>
                     </td>
                   </tr>
                 ))}
@@ -179,10 +227,18 @@ const AccountPage = () => {
         </div>
       </div>
       <AccountModal
-        tittle={title}
+        tittle={isUpdate ? "Chỉnh sửa tài khoản" : "Thêm mới tài khoản"}
         open={open}
         onClose={handleOnclose}
+        isUpdate={isUpdate}
       ></AccountModal>
+
+      <NotifyDeleteModal
+        message="Bạn có chắn chắc xóa tài khoản này không?"
+        open={notify}
+        handleClose={handleCloseNotify}
+        handleDelete={() => {}}
+      ></NotifyDeleteModal>
     </div>
   );
 };
