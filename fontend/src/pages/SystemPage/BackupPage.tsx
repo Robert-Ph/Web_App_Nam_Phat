@@ -36,7 +36,7 @@ const BackupPage = () => {
     setProgress(0);
     setBackupError(false);
 
-    // Simulate a backup process with progress
+    // Thanh progress hiển thị
     const interval = setInterval(() => {
       setProgress((prevProgress) => {
         if (prevProgress >= 100) {
@@ -148,13 +148,6 @@ const BackupPage = () => {
           </DialogContentText>
         </DialogContent>
         <DialogActions style={{ padding: "25px" }}>
-          {/* <Button onClick={() => setOpenDialog(false)} color="secondary">
-            Hủy
-          </Button>
-          <Button onClick={confirmBackup} color="primary">
-            Xác nhận
-          </Button> */}
-
           <button
             className="btn btn-danger"
             onClick={() => setOpenDialog(false)}

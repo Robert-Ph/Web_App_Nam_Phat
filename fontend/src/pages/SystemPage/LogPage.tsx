@@ -7,7 +7,7 @@ import Stack from "@mui/material/Stack";
 import "../OrderPage/listOrder.css";
 
 import log from "../../model/log.model";
-import Span from "../../component/Span";
+import Span from "../../component/Span/Span";
 
 const LogPage = () => {
   const [logs, setLogs] = useState<log[]>([
