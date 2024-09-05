@@ -1,0 +1,40 @@
+.wrap-content-pie {
+  padding-left: 4px;
+  padding-top: 4px;
+}
+.title-pie {
+  font-weight: 400;
+  font-size: 16px;
+}
+.wrap-content-pie .text-bold {
+  font-size: 25px;
+}
+
+.group-analyse {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+}
+
+.group-analyse .icon {
+  width: 35px;
+  height: 50px;
+}
+
+.wrap-analyse_content {
+  padding-left: 2%;
+}
+
+.wrap-analyse_content > span > strong {
+  font-size: 14px !important;
+  margin-right: 4%;
+}
+.wrap-analyse_content > span {
+  font-weight: 500;
+  font-size: 12px;
+}
+
+.wrap-analyse_content > .descreption {
+  font-size: 10px !important;
+  font-weight: 400 !important ;
+}

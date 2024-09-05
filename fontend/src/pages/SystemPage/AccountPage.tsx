@@ -13,7 +13,7 @@ import "../OrderPage/listOrder.css";
 import { useNavigate } from "react-router-dom";
 
 import account from "../../model/account.model";
-import Span from "../../component/Span";
+import Span from "../../component/Span/Span";
 import AccountModal from "./AccountModal";
 import NotifyDeleteModal from "../UtilsPage/NotifyDeleteModal";
 

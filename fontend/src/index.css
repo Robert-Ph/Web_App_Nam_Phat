@@ -178,6 +178,13 @@ button {
 .text-center {
   text-align: center;
 }
+.text-bold {
+  font-weight: bold;
+}
+
+.text-color-blue {
+  color: rgb(46, 150, 255) !important;
+}
 .border-header-table {
   margin-bottom: 5px;
   border-bottom: 1px solid var(--color-gray);

@@ -59,7 +59,13 @@ const Navbar = () => {
       >
         <Diversity3OutlinedIcon className="icon-size"></Diversity3OutlinedIcon>
       </Link>
-      <Link to={""} className="navbar-item color-black" title="Thống kê">
+      <Link
+        to={"/statictis/finance"}
+        className={`navbar-item color-black ${
+          isActive("/statictis", location.pathname) ? " active" : ""
+        }`}
+        title="Thống kê"
+      >
         <QueryStatsOutlinedIcon className="icon-size"></QueryStatsOutlinedIcon>
       </Link>
       <Link
