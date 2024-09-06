@@ -83,6 +83,13 @@ button {
 .dicrect-row {
   flex-direction: row;
 }
+
+/* @media (max-width: 768px) {
+  .dicrect-row {
+    flex-direction: column !important;
+    margin-top: 10px;
+  }
+} */
 .justify-space-bettwen {
   justify-content: space-between;
 }

@@ -41,6 +41,7 @@ const PieChartCustom = ({ children, heigth, width, data }: props) => {
             },
           }}
           height={heigth}
+          width={width}
         />
       </div>
     </div>
