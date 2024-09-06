@@ -24,6 +24,14 @@ const Analyse = () => {
     []
   );
 
+  const [employees, setEmployees] = useState<
+    MakeOptional<PieValueType, "id">[] | []
+  >([]);
+
+  const [oldEmployee, setOldEmployee] = useState<
+    MakeOptional<PieValueType, "id">[] | []
+  >([]);
+
   //data doanh số theo hàng hóa
   const [saleProduct, setSaleProduct] = useState<(string | number)[][]>([
     ["Category", "Percent"],
@@ -32,6 +40,13 @@ const Analyse = () => {
   //Cơ cấu đơn hàng
   const [saleOrder, setSaleOrder] = useState<(string | number)[][]>([
     ["Type", "Percent"],
+  ]);
+
+  const [detailEmployee, setDetailEmployee] = useState<(string | number)[][]>([
+    ["Type", "Percent"],
+    ["Chính thức", 8],
+    ["Thử việc", 2],
+    ["Thực tập", 1],
   ]);
 
   useEffect(() => {
@@ -51,6 +66,25 @@ const Analyse = () => {
       },
     ]);
 
+    setEmployees([
+      { id: 1, label: "Nhân sự cũ", value: 85, color: Colors.Old },
+      {
+        id: 2,
+        label: "Nhân sự mới",
+        value: 25,
+        color: Colors.New, //Standard là màu cam cam
+      },
+    ]);
+
+    setOldEmployee([
+      { id: 1, label: "Dưới 30 tuổi", value: 30, color: Colors.Old },
+      {
+        id: 2,
+        label: "Trên 30 tuổi",
+        value: 5,
+        color: Colors.New, //Standard là màu cam cam
+      },
+    ]);
     setSaleProduct([
       ...saleProduct,
       ["Temp", 2],
@@ -77,6 +111,13 @@ const Analyse = () => {
 
   const TOTAL_ORDER = useMemo(() => {
     const TOTAL = orders.map((item) => item.value).reduce((a, b) => a + b, 0);
+    return TOTAL;
+  }, [data]);
+
+  const TOTAL_EMPLOYEE = useMemo(() => {
+    const TOTAL = employees
+      .map((item) => item.value)
+      .reduce((a, b) => a + b, 0);
     return TOTAL;
   }, [data]);
 
@@ -208,8 +249,8 @@ const Analyse = () => {
           </PieChartCustom>
           <PieChartCustom data={data} heigth={300}>
             <div className="wrap-content-pie ">
-              <p className="title-pie">Tổng doanh thu</p>
-              <p className="text-bold">100 Triệu</p>
+              <p className="title-pie">Tổng doanh đơn hàng</p>
+              <p className="text-bold">1000</p>
               {data.map((item) => {
                 return (
                   <div className="group-analyse mt-10">
@@ -238,10 +279,6 @@ const Analyse = () => {
 
         <div className="mt-20 " style={{ marginBottom: "20px" }}>
           <div className="d-flex mt-10">
-            {/* <AreaChartCustom
-              title="Chi tiết lưu lượng khách hàng"
-              heigth={300}
-            ></AreaChartCustom> */}
             <LineChartCustom
               title="Chi tiết đơn hàng"
               labelY="Số lượng đơn hàng"
@@ -297,6 +334,91 @@ const Analyse = () => {
                 })}
               </div>
             </PieChartCustom>
+          </div>
+        </div>
+
+        <div className="mt-20 " style={{ marginBottom: "20px" }}></div>
+      </div>
+
+      {/* Phân tích nhân sự */}
+      <div className="wrap-employee">
+        <h3 style={{ marginLeft: "1%" }}>Phân tích nhân sự</h3>
+
+        <div className="d-flex mt-10 ">
+          <PieChartCustom heigth={300} data={employees}>
+            <div className="wrap-content-pie ">
+              <p className="title-pie">Tổng nhân sự</p>
+              <p className="text-bold">100</p>
+              {employees.map((item) => {
+                return (
+                  <div className="group-analyse mt-10">
+                    <div>
+                      {" "}
+                      <PersonOutlineOutlinedIcon
+                        className="icon"
+                        style={{ color: `${item.color}` }}
+                      ></PersonOutlineOutlinedIcon>
+                    </div>
+                    <div className="d-flex dicrect-col wrap-analyse_content">
+                      <span>{item.label?.toString()}</span>
+                      <span className="descreption">
+                        <strong style={{ color: `${item.color}` }}>
+                          {item.value}
+                        </strong>{" "}
+                        ({getArcLabel(item.value, TOTAL_EMPLOYEE)})
+                      </span>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </PieChartCustom>
+          <PieChartCustom data={oldEmployee} heigth={300}>
+            <div className="wrap-content-pie ">
+              <p className="title-pie">Cơ cấu theo tuổi</p>
+              <div className="mt-20">
+                <h3>Độ tuổi trung bình</h3>
+                <h2 style={{ marginLeft: "20%" }}>25</h2>
+              </div>
+            </div>
+          </PieChartCustom>
+        </div>
+
+        <div className="mt-20 " style={{ marginBottom: "20px" }}>
+          <div className="d-flex mt-10">
+            <LineChartCustom
+              title="Biến động nhân sự"
+              heigth={300}
+            ></LineChartCustom>
+
+            <BarChart3DCustom
+              title="Chi tiết nhân sự"
+              heigth={300}
+              data={detailEmployee}
+              postionNote="bottom"
+              children={
+                <div className="mt-20">
+                  {detailEmployee.map((item) => {
+                    if (parseInt(item[1].toString()))
+                      return (
+                        <div className="group-analyse mt-10">
+                          <div>
+                            {" "}
+                            <PersonOutlineOutlinedIcon className="icon"></PersonOutlineOutlinedIcon>
+                          </div>
+                          <div className="d-flex dicrect-col wrap-analyse_content">
+                            <span>{item[0]}</span>
+                            <span className="descreption">
+                              <strong>{item[1]}</strong> (
+                              {getArcLabel(parseInt(item[1].toString()), 11)})
+                            </span>
+                          </div>
+                        </div>
+                      );
+                  })}
+                </div>
+              }
+            ></BarChart3DCustom>
           </div>
         </div>
       </div>

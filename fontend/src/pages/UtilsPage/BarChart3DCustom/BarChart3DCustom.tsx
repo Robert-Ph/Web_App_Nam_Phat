@@ -39,16 +39,41 @@ const BarChart3DCustom = ({
   return (
     <div className="wrap-card">
       <span className="title-bar">{title}</span>
-      {children}
-      <Chart
-        chartType="PieChart"
-        data={data}
-        options={options}
-        width={width}
-        height={heigth}
-      />
+      <div>
+        {children ? (
+          <div className="d-flex">
+            <div style={{ flex: 3 }}>{children}</div>
+            <div style={{ flex: 8 }}>
+              <Chart
+                chartType="PieChart"
+                data={data}
+                options={options}
+                width={width}
+                height={heigth}
+              />
+            </div>
+          </div>
+        ) : (
+          <Chart
+            chartType="PieChart"
+            data={data}
+            options={options}
+            width={width}
+            height={heigth}
+          /> // Hiển thị nếu không có children
+        )}
+      </div>
     </div>
   );
 };
 
 export default BarChart3DCustom;
+{
+  /* <Chart
+  chartType="PieChart"
+  data={data}
+  options={options}
+  width={width}
+  height={heigth}
+/>; */
+}
