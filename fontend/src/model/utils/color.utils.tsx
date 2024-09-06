@@ -1,5 +1,5 @@
 export const Colors = {
-  Old: "#0088FE",
-  New: "#2ecc71",
-  Standard: "#FFBB28",
+  Old: "#0088FE", //Xanh
+  New: "#2ecc71", //Xanh lá
+  Standard: "#FFBB28", //Cam
 };

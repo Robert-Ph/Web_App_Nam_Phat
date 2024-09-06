@@ -3,8 +3,8 @@
   padding-top: 4px;
 }
 .title-pie {
-  font-weight: 400;
-  font-size: 16px;
+  font-weight: 500 !important;
+  font-size: 14px !important;
 }
 .wrap-content-pie .text-bold {
   font-size: 25px;
@@ -37,4 +37,8 @@
 .wrap-analyse_content > .descreption {
   font-size: 10px !important;
   font-weight: 400 !important ;
+}
+
+.wrap-order {
+  margin-top: 30px !important;
 }

@@ -4,14 +4,35 @@ import "./analyse.css";
 import PieChartCustom from "../../UtilsPage/PieChart/PieChartCustom";
 import DateRangePicker from "../../UtilsPage/DateRangePicker/DateRangePicker";
 import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
+import PaymentIcon from "@mui/icons-material/Payment";
 
 import { MakeOptional } from "@mui/x-charts/internals";
 import { PieValueType } from "@mui/x-charts";
 import { Colors } from "../../../model/utils/color.utils";
-import { DefaultizedPieValueType } from "@mui/x-charts/models";
+
+import BarChartCustom from "../../UtilsPage/BarChartCustom/BarChartCustom";
+import AreaChartCustom from "../../UtilsPage/AreaChartCustom/AreaChartCustom";
+import LineChartCustom from "../../UtilsPage/LineChartCustom/LineChartCustom";
+import BarChart3DCustom from "../../UtilsPage/BarChart3DCustom/BarChart3DCustom";
+import ScrollButton from "../../UtilsPage/RollPage/ScrollButton";
+import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
 
 const Analyse = () => {
   const [data, setData] = useState<MakeOptional<PieValueType, "id">[] | []>([]);
+
+  const [orders, setOrders] = useState<MakeOptional<PieValueType, "id">[] | []>(
+    []
+  );
+
+  //data doanh số theo hàng hóa
+  const [saleProduct, setSaleProduct] = useState<(string | number)[][]>([
+    ["Category", "Percent"],
+  ]);
+
+  //Cơ cấu đơn hàng
+  const [saleOrder, setSaleOrder] = useState<(string | number)[][]>([
+    ["Type", "Percent"],
+  ]);
 
   useEffect(() => {
     setData([
@@ -19,14 +40,49 @@ const Analyse = () => {
       { id: 2, label: "Khách hàng mới", value: 300, color: Colors.New },
       { id: 3, label: "Khách hàng lẻ", value: 0, color: Colors.Standard },
     ]);
+
+    setOrders([
+      { id: 1, label: "Đơn hàng đã thanh toán", value: 85, color: Colors.Old },
+      {
+        id: 2,
+        label: "Đơn hàng chưa thanh toán",
+        value: 25,
+        color: Colors.Standard, //Standard là màu cam cam
+      },
+    ]);
+
+    setSaleProduct([
+      ...saleProduct,
+      ["Temp", 2],
+      ["Danh thiếp", 3],
+      ["Tem bảo hành", 12],
+      ["Catalog", 5],
+      ["Khác", 6],
+    ]);
+
+    setSaleOrder([
+      ...saleOrder,
+      [">10.000.000", 2],
+      ["<10.000.000", 3],
+      ["<5.000.000", 12],
+      ["<3.000.000", 5],
+      ["<1.000.000", 6],
+    ]);
   }, []);
 
   const TOTAL = useMemo(() => {
     const TOTAL = data.map((item) => item.value).reduce((a, b) => a + b, 0);
     return TOTAL;
   }, [data]);
-  const getArcLabel = (value: number) => {
-    const percent = value / TOTAL;
+
+  const TOTAL_ORDER = useMemo(() => {
+    const TOTAL = orders.map((item) => item.value).reduce((a, b) => a + b, 0);
+    return TOTAL;
+  }, [data]);
+
+  //Function tính phần trăm
+  const getArcLabel = (value: number, total: number) => {
+    const percent = value / total;
     return `${(percent * 100).toFixed(0)}%`;
   };
 
@@ -38,9 +94,12 @@ const Analyse = () => {
         <div className="d-flex justify-end" style={{ marginRight: "5%" }}>
           <DateRangePicker></DateRangePicker>
         </div>
+      </div>
+
+      <div className="wrap-customer">
         <h3 style={{ marginLeft: "1%" }}>Phân tích khách hàng</h3>
         {/* Phân tích khách hàng */}
-        <div className="d-flex mt-10">
+        <div className="d-flex mt-10 ">
           <PieChartCustom heigth={300} data={data}>
             <div className="wrap-content-pie ">
               <p className="title-pie">Tổng khách hàng</p>
@@ -61,7 +120,7 @@ const Analyse = () => {
                         <strong style={{ color: `${item.color}` }}>
                           {item.value}
                         </strong>{" "}
-                        ({getArcLabel(item.value)})
+                        ({getArcLabel(item.value, TOTAL)})
                       </span>
                     </div>
                   </div>
@@ -69,7 +128,7 @@ const Analyse = () => {
               })}
             </div>
           </PieChartCustom>
-          <PieChartCustom data={data}>
+          <PieChartCustom data={data} heigth={300}>
             <div className="wrap-content-pie ">
               <p className="title-pie">Tổng doanh thu</p>
               <p className="text-bold">100 Triệu</p>
@@ -89,7 +148,7 @@ const Analyse = () => {
                         <strong style={{ color: `${item.color}` }}>
                           {item.value}
                         </strong>{" "}
-                        ({getArcLabel(item.value)})
+                        ({getArcLabel(item.value, TOTAL)})
                       </span>
                     </div>
                   </div>
@@ -98,23 +157,40 @@ const Analyse = () => {
             </div>
           </PieChartCustom>
         </div>
+
+        <div className="mt-20 " style={{ marginBottom: "20px" }}>
+          <div className="d-flex mt-10">
+            <AreaChartCustom
+              title="Chi tiết lưu lượng khách hàng"
+              heigth={300}
+            ></AreaChartCustom>
+
+            <BarChartCustom
+              title={"Chi tiết lưu lượng khách hàng"}
+              heigth={300}
+            ></BarChartCustom>
+          </div>
+        </div>
       </div>
 
-      <div className="mt-20 " style={{ marginBottom: "20px" }}>
+      {/* Phân tích đơn hàng */}
+      <div className="wrap-order">
+        <h3 style={{ marginLeft: "1%" }}>Phân tích đơn hàng</h3>
+
         <div className="d-flex mt-10">
           <PieChartCustom heigth={300} data={data}>
             <div className="wrap-content-pie ">
-              <p className="title-pie">Tổng khách hàng</p>
-              <p className="text-bold">100</p>
+              <p className="title-pie">Tổng đơn hàng</p>
+              <p className="text-bold">1000</p>
               {data.map((item) => {
                 return (
                   <div className="group-analyse mt-10">
                     <div>
                       {" "}
-                      <PersonOutlineOutlinedIcon
+                      <PaymentIcon
                         className="icon"
                         style={{ color: `${item.color}` }}
-                      ></PersonOutlineOutlinedIcon>
+                      ></PaymentIcon>
                     </div>
                     <div className="d-flex dicrect-col wrap-analyse_content">
                       <span>{item.label?.toString()}</span>
@@ -122,7 +198,7 @@ const Analyse = () => {
                         <strong style={{ color: `${item.color}` }}>
                           {item.value}
                         </strong>{" "}
-                        ({getArcLabel(item.value)})
+                        ({getArcLabel(item.value, TOTAL)})
                       </span>
                     </div>
                   </div>
@@ -130,8 +206,7 @@ const Analyse = () => {
               })}
             </div>
           </PieChartCustom>
-
-          <PieChartCustom data={data}>
+          <PieChartCustom data={data} heigth={300}>
             <div className="wrap-content-pie ">
               <p className="title-pie">Tổng doanh thu</p>
               <p className="text-bold">100 Triệu</p>
@@ -140,10 +215,10 @@ const Analyse = () => {
                   <div className="group-analyse mt-10">
                     <div>
                       {" "}
-                      <PersonOutlineOutlinedIcon
+                      <PaymentIcon
                         className="icon"
                         style={{ color: `${item.color}` }}
-                      ></PersonOutlineOutlinedIcon>
+                      ></PaymentIcon>
                     </div>
                     <div className="d-flex dicrect-col wrap-analyse_content">
                       <span>{item.label?.toString()}</span>
@@ -151,7 +226,7 @@ const Analyse = () => {
                         <strong style={{ color: `${item.color}` }}>
                           {item.value}
                         </strong>{" "}
-                        ({getArcLabel(item.value)})
+                        ({getArcLabel(item.value, TOTAL)})
                       </span>
                     </div>
                   </div>
@@ -160,7 +235,79 @@ const Analyse = () => {
             </div>
           </PieChartCustom>
         </div>
+
+        <div className="mt-20 " style={{ marginBottom: "20px" }}>
+          <div className="d-flex mt-10">
+            {/* <AreaChartCustom
+              title="Chi tiết lưu lượng khách hàng"
+              heigth={300}
+            ></AreaChartCustom> */}
+            <LineChartCustom
+              title="Chi tiết đơn hàng"
+              labelY="Số lượng đơn hàng"
+              heigth={300}
+            ></LineChartCustom>
+
+            <BarChart3DCustom
+              title="Doanh số theo hàng hóa"
+              heigth={300}
+              data={saleProduct}
+            ></BarChart3DCustom>
+          </div>
+        </div>
+
+        <div className="mt-20 " style={{ marginBottom: "20px" }}>
+          <div className="d-flex mt-10">
+            {/* Cơ cấu giá trị đơn hàng */}
+            <BarChart3DCustom
+              title="Cơ cấu giá trị đơn hàng"
+              heigth={300}
+              data={saleOrder}
+            >
+              <h3 className="">Giá trị trung bình: 840.000 VNĐ</h3>
+            </BarChart3DCustom>
+
+            {/* Chi tiết thanh toán chart */}
+            <PieChartCustom heigth={300} data={orders}>
+              <div className="wrap-content-pie ">
+                <p className="title-pie" style={{ marginBottom: "10%" }}>
+                  Chi tiết thanh toán
+                </p>
+                {orders.map((item) => {
+                  return (
+                    <div className="group-analyse mt-10">
+                      <div>
+                        {" "}
+                        <PaymentIcon
+                          className="icon"
+                          style={{ color: `${item.color}` }}
+                        ></PaymentIcon>
+                      </div>
+                      <div className="d-flex dicrect-col wrap-analyse_content">
+                        <span>{item.label?.toString()}</span>
+                        <span className="descreption">
+                          <strong style={{ color: `${item.color}` }}>
+                            {item.value}
+                          </strong>{" "}
+                          ({getArcLabel(item.value, TOTAL_ORDER)})
+                        </span>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </PieChartCustom>
+          </div>
+        </div>
       </div>
+      <ScrollButton
+        title="Trở về đầu"
+        chidren={
+          <div style={{ height: "18px", marginBottom: "6%" }}>
+            <ArrowUpwardIcon></ArrowUpwardIcon>
+          </div>
+        }
+      ></ScrollButton>
     </div>
   );
 };
