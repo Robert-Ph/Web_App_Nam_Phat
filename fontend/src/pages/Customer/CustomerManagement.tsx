@@ -2,6 +2,8 @@ import "./customnerManagement.css";
 import ManageSearchIcon from '@mui/icons-material/ManageSearch';
 import {useState} from "react";
 import product from "../../model/product.model.tsx";
+import Stack from "@mui/material/Stack";
+import Pagination from "@mui/material/Pagination";
 
 const CustomerManagement = () => {
     const [products, setProducts] = useState<product[]>([
@@ -23,7 +25,11 @@ const CustomerManagement = () => {
         },
     ]);
 
+    const [page, setPage] = useState<number>(1);
 
+    const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
+        setPage(value);
+    };
   return(
       <div className="container">
           <div className="hear">
@@ -39,13 +45,13 @@ const CustomerManagement = () => {
           </div>
 
           <div className="table-main pd-20-px">
-              <table className="table" style={{width: "100%",height:"100%", borderCollapse: "collapse"}}>
+              <table className="table" style={{width: "100%", height: "100%", borderCollapse: "collapse"}}>
                   <thead>
                   <tr className="color-blue header-table text-left border-header-table">
-                      <th className="pb-7 font-w-500" style={{paddingRight:"20px"}}>ID</th>
-                      <th className="pb-7  font-w-500" style={{paddingRight:"50px"}}>Tên khách hàng</th>
-                      <th className="pb-7 font-w-500" >Số điện thoại</th>
-                      <th className="pb-7 font-w-500" style={{paddingRight:"40px"}}>Email</th>
+                      <th className="pb-7 font-w-500" style={{paddingRight: "20px"}}>ID</th>
+                      <th className="pb-7  font-w-500" style={{paddingRight: "50px"}}>Tên khách hàng</th>
+                      <th className="pb-7 font-w-500">Số điện thoại</th>
+                      <th className="pb-7 font-w-500" style={{paddingRight: "40px"}}>Email</th>
                       <th className="pb-7 font-w-500">Loại khách hàng</th>
                       <th className="pb-7 font-w-500">Lịch sử đặt hàng</th>
                       <th className="pb-7 font-w-500"></th>
@@ -65,6 +71,16 @@ const CustomerManagement = () => {
                   ))}
                   </tbody>
               </table>
+          </div>
+          <div className="pagination">
+              <Stack spacing={2}>
+                  <Pagination
+                      count={10}
+                      color="primary"
+                      page={page}
+                      onChange={handleChange}
+                  />
+              </Stack>
           </div>
       </div>
 
