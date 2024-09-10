@@ -83,6 +83,13 @@ button {
 .dicrect-row {
   flex-direction: row;
 }
+
+/* @media (max-width: 768px) {
+  .dicrect-row {
+    flex-direction: column !important;
+    margin-top: 10px;
+  }
+} */
 .justify-space-bettwen {
   justify-content: space-between;
 }
@@ -158,6 +165,11 @@ button {
   border-radius: 7px;
   border: 2px var(--color-gray) solid;
 }
+.form-group textarea {
+  padding: 10px 8px 10px 8px;
+  border-radius: 7px;
+  border: 2px var(--color-gray) solid;
+}
 .input-select {
   padding: 10px 8px 10px 8px !important;
   border-radius: 7px !important;
@@ -172,6 +184,13 @@ button {
 }
 .text-center {
   text-align: center;
+}
+.text-bold {
+  font-weight: bold;
+}
+
+.text-color-blue {
+  color: rgb(46, 150, 255) !important;
 }
 .border-header-table {
   margin-bottom: 5px;

@@ -10,6 +10,7 @@ import { order } from "../../model/person.model";
 import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
 import SettingsIcon from "@mui/icons-material/Settings";
+import { useNavigate } from "react-router-dom";
 const ListOrderPage = () => {
   const [products, setProducts] = useState<order[]>([
     {
@@ -23,6 +24,8 @@ const ListOrderPage = () => {
   ]);
 
   const [page, setPage] = useState<number>(1);
+
+  const navigate = useNavigate();
 
   const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
     setPage(value);
@@ -57,7 +60,7 @@ const ListOrderPage = () => {
             </div>
 
             <div style={{ position: "relative" }}>
-              <select className="filter-select">
+              <select className="filter-select btn btn-primary">
                 <option value="all">Tất cả</option>
                 <option value="newest">Mới nhất</option>
                 <option value="confirmed">Xác nhận</option>
@@ -195,7 +198,12 @@ const ListOrderPage = () => {
                         {product.status || "-"}
                       </td>
                       <td className="pb-7 pt-7 font-size-small td-table font-w-500">
-                        <button className="btn-more">
+                        <button
+                          className="btn-more"
+                          onClick={() => {
+                            navigate(`/order/detail/${product.id}`);
+                          }}
+                        >
                           <MoreHorizIcon></MoreHorizIcon>
                         </button>
                       </td>

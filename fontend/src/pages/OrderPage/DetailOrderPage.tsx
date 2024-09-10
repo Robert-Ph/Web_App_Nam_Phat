@@ -3,8 +3,9 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
-import ProductModal from "../OrderPage/ProductModal";
+import ProductModal from "./ProductModal";
 import product from "../../model/product.model";
+import { useNavigate } from "react-router-dom";
 
 const DetailOrderPage = () => {
   const [products, setProducts] = useState<product[]>([
@@ -19,6 +20,7 @@ const DetailOrderPage = () => {
   ]);
   const [invoice, setInvoice] = useState<string>("personally");
   const [open, setOpen] = useState<boolean>(false);
+  const navigate = useNavigate();
 
   //   Sự kiện mở đóng modal chỉnh sửa sản phẩm
   const handleOnclose = () => {
@@ -32,6 +34,10 @@ const DetailOrderPage = () => {
   const addProduct = (product: product) => {
     setOpen(false);
     setProducts([...products, product]);
+  };
+
+  const goBack = () => {
+    navigate(-1);
   };
 
   //Bắt sự kiện thay đổi select trong option của hóa đơn
@@ -53,7 +59,9 @@ const DetailOrderPage = () => {
             </div>
           </div>
           <div>
-            <button className="btn btn-danger">Hủy</button>
+            <button className="btn btn-danger" onClick={goBack}>
+              Hủy
+            </button>
             <button className="btn btn-primary" style={{ marginRight: "0px;" }}>
               Cập nhật
             </button>

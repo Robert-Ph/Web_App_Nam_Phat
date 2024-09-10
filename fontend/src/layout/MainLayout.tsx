@@ -29,13 +29,13 @@ const MainLayout = () => {
             name: "Danh sách đơn hàng",
             link: "/order/list",
           },
+          // {
+          //   id: "3",
+          //   name: "Đơn hàng chưa hoàn thành",
+          //   link: "/order/unfulfilled",
+          // },
           {
             id: "3",
-            name: "Đơn hàng chưa hoàn thành",
-            link: "/order/unfulfilled",
-          },
-          {
-            id: "4",
             name: "Hóa đơn",
             link: "/order/invoice",
           },
@@ -94,6 +94,71 @@ const MainLayout = () => {
             id: "3",
             name: "Xuất kho",
             link: "/warehouse/export", // Chỉnh sửa cái link này,
+          },
+        ],
+      });
+    } else if (isActive("/statictis", location.pathname)) {
+      setNavMore({
+        title: "Tổng quan",
+        listNav: [
+          {
+            id: "1",
+            name: "Tài chính",
+            link: "/statictis/finance",
+          },
+          {
+            id: "2",
+            name: "Sổ quỹ",
+            link: "/statictis/cash",
+          },
+
+          {
+            id: "3",
+            name: "Phân tích",
+            link: "/statictis/analyse",
+          },
+
+          {
+            id: "4",
+            name: "Báo cáo ngày",
+            link: "/statictis/report/day",
+          },
+          {
+            id: "5",
+            name: "Báo cáo tháng",
+            link: "/statictis/report/month",
+          },
+          {
+            id: "6",
+            name: "Báo cáo đặt hàng",
+            link: "/statictis/report/order",
+          },
+        ],
+      });
+    } else if (isActive("/system", location.pathname)) {
+      setNavMore({
+        title: "System",
+        listNav: [
+          {
+            id: "1",
+            name: "Log",
+            link: "/system/log",
+          },
+          {
+            id: "2",
+            name: "Accounts",
+            link: "/system/accounts",
+          },
+
+          {
+            id: "3",
+            name: "Backup",
+            link: "/system/backup",
+          },
+          {
+            id: "4",
+            name: "Informartion",
+            link: "/system/information",
           },
         ],
       });

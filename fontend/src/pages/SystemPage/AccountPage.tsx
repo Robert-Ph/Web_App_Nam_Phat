@@ -4,83 +4,49 @@ import TextField from "@mui/material/TextField";
 import FilterListIcon from "@mui/icons-material/FilterList";
 import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
-import "../OrderPage/listOrder.css";
-import { Employee } from "../../model/employee.model";
-import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import SettingsIcon from "@mui/icons-material/Settings";
-import { useNavigate } from "react-router-dom";
-import EmployeeModal from "./EmployeeModal";
+import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
 
-const ListEmployee = () => {
-  const [emplyees, setEmployees] = useState<Employee[]>([
+import "../OrderPage/listOrder.css";
+import { useNavigate } from "react-router-dom";
+
+import account from "../../model/account.model";
+import Span from "../../component/Span/Span";
+import AccountModal from "./AccountModal";
+import NotifyDeleteModal from "../UtilsPage/NotifyDeleteModal";
+
+const AccountPage = () => {
+  const [accounts, setAccounts] = useState<account[]>([
     {
-      id: "1",
-      name: "Nguyễn Ngọc Phương",
-      phone: "031231312312",
-      email: "nguyenphuong12312321@gmail.com",
-      dateEnjoy: "31/12/2024",
-      wage: "12000000",
-    },
-    {
-      id: "2",
-      name: "Nguyễn Ngọc Phương",
-      phone: "031231312312",
-      email: "nguyenphuong12312321@gmail.com",
-      dateEnjoy: "31/12/2024",
-      wage: "12000000",
-    },
-    {
-      id: "3",
-      name: "Nguyễn Ngọc Phương",
-      phone: "031231312312",
-      email: "nguyenphuong12312321@gmail.com",
-      dateEnjoy: "31/12/2024",
-      wage: "12000000",
-    },
-    {
-      id: "4",
-      name: "Nguyễn Ngọc Phương",
-      phone: "031231312312",
-      email: "nguyenphuong12312321@gmail.com",
-      dateEnjoy: "31/12/2024",
-      wage: "12000000",
-    },
-    {
-      id: "5",
-      name: "Nguyễn Ngọc Phương",
-      phone: "031231312312",
-      email: "nguyenphuong12312321@gmail.com",
-      dateEnjoy: "31/12/2024",
-      wage: "12000000",
-    },
-    {
-      id: "6",
-      name: "Nguyễn Ngọc Phương",
-      phone: "031231312312",
-      email: "nguyenphuong12312321@gmail.com",
-      dateEnjoy: "31/12/2024",
-      wage: "12000000",
-    },
-    {
-      id: "7",
-      name: "Nguyễn Ngọc Phương",
-      phone: "031231312312",
-      email: "nguyenphuong12312321@gmail.com",
-      dateEnjoy: "31/12/2024",
-      wage: "12000000",
-    },
-    {
-      id: "8",
-      name: "Nguyễn Ngọc Phương",
-      phone: "031231312312",
-      email: "nguyenphuong12312321@gmail.com",
-      dateEnjoy: "31/12/2024",
-      wage: "12000000",
+      id: "1203",
+      idEmployee: "NV0111",
+      username: "nguyenngocphuong11072002@gmail.com",
+      level: "Nhân viên",
+      dateCreate: "12/12/2024 15:15:30",
+      status: "Đang sử dụng",
     },
   ]);
 
   const [page, setPage] = useState<number>(1);
   const [open, setOpen] = useState<boolean>(false);
+  const [isUpdate, setIsUpdate] = useState<boolean>(false);
+
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const [notify, setNotify] = useState<boolean>(false);
+
+  const handleCloseNotify = () => setNotify(false);
+  const handleOpenNotify = () => setNotify(true);
+
+  const openSetting = Boolean(anchorEl);
+
+  const handleClickOnSetting = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleCloseSetting = () => {
+    setAnchorEl(null);
+  };
 
   const handleOnclose = () => {
     setOpen(false);
@@ -94,12 +60,19 @@ const ListEmployee = () => {
     setPage(value);
   };
 
+  const handleOnClickSettingUpdate = () => {
+    setIsUpdate(true);
+    setOpen(true);
+    handleCloseSetting();
+  };
+
   console.log(page);
   const navigate = useNavigate();
+
   return (
     <div>
       <div className="main-body">
-        <h3>Danh sách nhân viên</h3>
+        <h3>Account</h3>
         <div style={{ marginBottom: "10px" }}>
           <div
             className="d-flex justify-space-bettwen "
@@ -124,9 +97,14 @@ const ListEmployee = () => {
                 />
               </Box>
             </div>
-
-            <div style={{ position: "relative", marginRight: "5%" }}>
-              <button className="btn btn-primary" onClick={handleOpen}>
+            <div style={{ paddingRight: "5%" }}>
+              <button
+                className="btn btn-primary"
+                onClick={() => {
+                  setIsUpdate(false);
+                  handleOpen();
+                }}
+              >
                 Thêm mới
               </button>
             </div>
@@ -137,31 +115,30 @@ const ListEmployee = () => {
             <table style={{ width: "100%", borderCollapse: "collapse" }}>
               <thead>
                 <tr className="color-blue header-table text-left border-header-table">
-                  <th className="pb-7 font-w-500" style={{ width: "5%" }}>
+                  <th className="pb-7 font-w-500" style={{ width: "6%" }}>
                     ID
-                  </th>
-                  <th
-                    className="pb-7 font-w-500"
-                    style={{ width: "15%", paddingRight: "10px" }}
-                  >
-                    Tên nhân viên
                   </th>
                   <th
                     className="pb-7 font-w-500"
                     style={{ width: "10%", paddingRight: "10px" }}
                   >
-                    Số điện thoại
+                    Mã Nhân Viên
                   </th>
-                  <th className="pb-7 font-w-500" style={{ width: "20%" }}>
-                    Email
+                  <th
+                    className="pb-7 font-w-500"
+                    style={{ width: "10%", paddingRight: "10px" }}
+                  >
+                    Tên đăng nhập
+                  </th>
+                  <th className="pb-7 font-w-500" style={{ width: "9%" }}>
+                    Quyền
                   </th>
                   <th className="pb-7 font-w-500" style={{ width: "10%" }}>
-                    Bắt đầu làm việc (ngày)
+                    Ngày tạo
                   </th>
-                  <th className="pb-7 font-w-500" style={{ width: "10%" }}>
-                    Lương cơ bản (VNĐ)
+                  <th className="pb-7 font-w-500" style={{ width: "12%" }}>
+                    Trạng thái
                   </th>
-
                   <th
                     className="pb-7 font-w-500 text-black"
                     style={{ width: "5%" }}
@@ -171,40 +148,66 @@ const ListEmployee = () => {
                 </tr>
               </thead>
               <tbody className="border-header-table">
-                {emplyees.map((employee) => (
-                  <tr key={employee.id} className="border-header-table">
+                {accounts.map((item) => (
+                  <tr key={item.id} className="border-header-table">
                     <td className="pb-7 pt-7 font-size-small td-table font-w-500 ">
-                      {employee.id}
+                      {item.id}
                     </td>
                     <td className="pb-7 pt-7 font-size-small font-w-500 ">
-                      {employee.name || "-"}
+                      {item.idEmployee || "-"}
                     </td>
                     <td
                       className="pb-7 pt-7 font-size-small td-table font-w-500"
                       style={{ paddingRight: "20px" }}
                     >
-                      {employee.phone || "-"}
+                      {item.username || "-"}
                     </td>
                     <td className="pb-7 pt-7 font-size-small td-table font-w-500">
-                      {employee.email || "-"}
+                      {item.level || "-"}
                     </td>
-                    <td className="pb-7 pt-7 font-size-small td-table font-w-500">
-                      {employee.dateEnjoy || "-"}
+                    <td
+                      className="pb-7 pt-7 font-size-small td-table font-w-500"
+                      style={{ paddingRight: "5%" }}
+                    >
+                      {item.dateCreate || "-"}
                     </td>
 
                     <td className="pb-7 pt-7 font-size-small td-table font-w-500">
-                      {employee.wage || "-"}
+                      <Span type="success" message="Đang sử dụng"></Span>
                     </td>
-
                     <td className="pb-7 pt-7 font-size-small td-table font-w-500">
                       <button
                         className="btn-more"
-                        onClick={() => {
-                          navigate(`/employees/detail/${employee.id}`);
-                        }}
+                        onClick={handleClickOnSetting}
                       >
                         <MoreHorizIcon></MoreHorizIcon>
                       </button>
+
+                      <Menu
+                        id="basic-menu"
+                        anchorEl={anchorEl}
+                        open={openSetting}
+                        onClose={handleCloseSetting}
+                        // MenuListProps={{
+                        //   "aria-labelledby": "basic-button",
+                        // }}
+                      >
+                        <MenuItem
+                          onClick={() => {
+                            handleOnClickSettingUpdate();
+                          }}
+                        >
+                          Chỉnh sửa
+                        </MenuItem>
+                        <MenuItem
+                          onClick={() => {
+                            handleCloseSetting();
+                            handleOpenNotify();
+                          }}
+                        >
+                          Xóa
+                        </MenuItem>
+                      </Menu>
                     </td>
                   </tr>
                 ))}
@@ -223,9 +226,21 @@ const ListEmployee = () => {
           </div>
         </div>
       </div>
-      <EmployeeModal open={open} onClose={handleOnclose}></EmployeeModal>
+      <AccountModal
+        tittle={isUpdate ? "Chỉnh sửa tài khoản" : "Thêm mới tài khoản"}
+        open={open}
+        onClose={handleOnclose}
+        isUpdate={isUpdate}
+      ></AccountModal>
+
+      <NotifyDeleteModal
+        message="Bạn có chắn chắc xóa tài khoản này không?"
+        open={notify}
+        handleClose={handleCloseNotify}
+        handleDelete={() => {}}
+      ></NotifyDeleteModal>
     </div>
   );
 };
 
-export default ListEmployee;
+export default AccountPage;

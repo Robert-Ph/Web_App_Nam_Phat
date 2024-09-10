@@ -4,7 +4,7 @@ import TextField from "@mui/material/TextField";
 import FilterListIcon from "@mui/icons-material/FilterList";
 import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
-import "../ListOrderPage/listOrder.css";
+import "../OrderPage/listOrder.css";
 import { order } from "../../model/person.model";
 
 const InvoicePage = () => {
