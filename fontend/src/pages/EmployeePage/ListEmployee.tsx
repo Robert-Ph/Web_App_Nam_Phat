@@ -200,7 +200,7 @@ const ListEmployee = () => {
                       <button
                         className="btn-more"
                         onClick={() => {
-                          navigate(`/employees/detail/${employee.id}`);
+                          navigate(`/employees/list/detail/${employee.id}`);
                         }}
                       >
                         <MoreHorizIcon></MoreHorizIcon>

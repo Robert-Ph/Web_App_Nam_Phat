@@ -42,7 +42,7 @@ const DateRangePicker: React.FC = () => {
           dateFormat="dd/MM/yyyy"
           className="date-picker-input"
         />
-        <button className="btn-filter d-flex">
+        <button className="btn-filter_date d-flex">
           <EditCalendarIcon className="calendar-icon" />
         </button>
       </div>

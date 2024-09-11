@@ -6,6 +6,7 @@ import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import ProductModal from "./ProductModal";
 import product from "../../model/product.model";
 import { useNavigate } from "react-router-dom";
+import "./order.css";
 
 const DetailOrderPage = () => {
   const [products, setProducts] = useState<product[]>([
@@ -154,7 +155,7 @@ const DetailOrderPage = () => {
                 style={{
                   flex: "3",
                   alignContent: "center",
-                  display: "block",
+                  marginTop: "12px",
                 }}
                 className="form-group "
               >

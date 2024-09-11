@@ -15,8 +15,13 @@ export type MoreNav = {
 };
 
 const isActive = (path: string, location: string) => {
-  return location == path;
+  return location == path || location.indexOf(path) != -1;
 };
+
+// const isChildrenActive = (path: string, location: string) => {
+//   return local
+
+// };
 
 const MoreInfor = ({ morenav }: { morenav: MoreNav }) => {
   const location = useLocation();

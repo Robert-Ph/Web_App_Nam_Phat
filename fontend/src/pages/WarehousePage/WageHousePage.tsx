@@ -160,7 +160,9 @@ const WageHousePage = () => {
                       <button
                         className="btn-more"
                         onClick={() => {
-                          navigate(`/warehouse/product/detail/${product.id}`);
+                          navigate(
+                            `/warehouse/list/product/detail/${product.id}`
+                          );
                         }}
                       >
                         <MoreHorizIcon></MoreHorizIcon>

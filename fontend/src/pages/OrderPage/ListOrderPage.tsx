@@ -201,7 +201,7 @@ const ListOrderPage = () => {
                         <button
                           className="btn-more"
                           onClick={() => {
-                            navigate(`/order/detail/${product.id}`);
+                            navigate(`/order/list/detail/${product.id}`);
                           }}
                         >
                           <MoreHorizIcon></MoreHorizIcon>
