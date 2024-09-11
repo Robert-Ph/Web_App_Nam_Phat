@@ -60,7 +60,7 @@ const DetailEmployee = () => {
           <button
             className="btn btn-black"
             onClick={() => {
-              navigate("/employees/list");
+              navigate(-1);
             }}
           >
             Quay về
