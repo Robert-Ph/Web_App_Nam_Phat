@@ -170,6 +170,55 @@ const Login = React.lazy(() => import("../pages/login/Login"));
 const HomePage = React.lazy(() => import("../pages/HomePage/HomePage"));
 const OrderPage = React.lazy(() => import("../pages/OrderPage/OrderPage"));
 const CustomerManagement = React.lazy(
+
+    () => import("../pages/Customer/CustomerManagement.tsx")
+);
+const CustomerHistoryOrder = React.lazy(
+    () => import("../pages/Customer/CustomerHistoryOrder.tsx")
+);
+const CustomerInfomation = React.lazy(
+    () => import("../pages/Customer/CustomerInfomation.tsx")
+);
+const CustomerCreate = React.lazy(
+    () => import("../pages/Customer/CustomerCreate.tsx")
+);
+const ListOrderPage = React.lazy(
+    () => import("../pages/OrderPage/ListOrderPage.tsx")
+);
+const DetailOrderPage = React.lazy(
+    () => import("../pages/OrderPage/DetailOrderPage.tsx")
+);
+const InvoicePage = React.lazy(
+    () => import("../pages/InvoicePage/InvoicePage.tsx")
+);
+const ListEmployee = React.lazy(
+    () => import("../pages/EmployeePage/ListEmployee.tsx")
+);
+const DetailEmployee = React.lazy(
+    () => import("../pages/EmployeePage/DetailEmployee.tsx")
+);
+const WageHousePage = React.lazy(
+    () => import("../pages/WarehousePage/WageHousePage.tsx")
+);
+const ProductDetail = React.lazy(
+    () => import("../pages/WarehousePage/ProductDetail.tsx")
+);
+const ImportWarehouse = React.lazy(
+    () => import("../pages/WarehousePage/ImportWarehouse.tsx")
+);
+const ExportWarehouse = React.lazy(
+    () => import("../pages/WarehousePage/ExportWarehouse.tsx")
+);
+const LogPage = React.lazy(() => import("../pages/SystemPage/LogPage.tsx"));
+const AccountPage = React.lazy(
+    () => import("../pages/SystemPage/AccountPage.tsx")
+);
+const InformartionPage = React.lazy(
+    () => import("../pages/SystemPage/InformationPage.tsx")
+);
+const BackupPage = React.lazy(
+    () => import("../pages/SystemPage/BackupPage.tsx")
+=======
   () => import("../pages/Customer/CustomerManagement.tsx")
 );
 const ListOrderPage = React.lazy(
@@ -216,9 +265,11 @@ const appRoutes: RouteObject[] = [
     index: true,
     // Sử dụng Suspense để bao bọc component được lazy load
     element: (
+
       <Suspense fallback={<Spiner />}>
         <Login />
       </Suspense>
+
     ),
   },
   {
@@ -228,6 +279,7 @@ const appRoutes: RouteObject[] = [
       {
         index: true,
         element: (
+
           <Suspense fallback={<Spiner />}>
             <HomePage />
           </Suspense>
@@ -236,25 +288,55 @@ const appRoutes: RouteObject[] = [
       {
         path: "/customer",
         element: (
-          <Suspense fallback={<Spiner />}>
-            <CustomerManagement />
-          </Suspense>
+
+            <Suspense fallback={<Spiner />}>
+              <CustomerManagement />
+            </Suspense>
+        ),
+      },
+      {
+        path: "/customer/infomation/:id",
+        element: (
+            <Suspense fallback={<Spiner />}>
+              <CustomerInfomation />
+            </Suspense>
+        ),
+      },
+      {
+        path: "/customer/historyoder/:id",
+        element: (
+            <Suspense fallback={<Spiner />}>
+              <CustomerHistoryOrder/>
+            </Suspense>
+        ),
+      },
+      {
+        path: "/customer/create",
+        element: (
+            <Suspense fallback={<Spiner />}>
+              <CustomerCreate />
+            </Suspense>
+
         ),
       },
       {
         path: "/order/create",
         element: (
+
           <Suspense fallback={<Spiner />}>
             <OrderPage />
           </Suspense>
+
         ),
       },
       {
         path: "/order/list",
         element: (
+
           <Suspense fallback={<Spiner />}>
             <ListOrderPage />
           </Suspense>
+
         ),
       },
       {
@@ -263,30 +345,37 @@ const appRoutes: RouteObject[] = [
           <Suspense fallback={<Spiner />}>
             <DetailOrderPage />
           </Suspense>
+
         ),
       },
       {
         path: "/order/invoice",
         element: (
+
           <Suspense fallback={<Spiner />}>
             <InvoicePage />
           </Suspense>
+
         ),
       },
       {
         path: "/employees/list",
         element: (
+
           <Suspense fallback={<Spiner />}>
             <ListEmployee />
           </Suspense>
+
         ),
       },
       {
         path: "employees/detail/:id",
         element: (
+
           <Suspense fallback={<Spiner />}>
             <DetailEmployee />
           </Suspense>
+
         ),
       },
 
@@ -294,17 +383,21 @@ const appRoutes: RouteObject[] = [
       {
         path: "/statictis/finance",
         element: (
+
           <Suspense fallback={<Spiner />}>
             <Finance />
           </Suspense>
+
         ),
       },
       {
         path: "/statictis/analyse",
         element: (
+
           <Suspense fallback={<Spiner />}>
             <Analyse />
           </Suspense>
+
         ),
       },
 
@@ -312,14 +405,17 @@ const appRoutes: RouteObject[] = [
       {
         path: "warehouse/list",
         element: (
+
           <Suspense fallback={<Spiner />}>
             <WageHousePage />
           </Suspense>
+
         ),
       },
       {
         path: "/warehouse/product/detail/:1",
         element: (
+
           <Suspense fallback={<Spiner />}>
             <ProductDetail />
           </Suspense>
@@ -328,17 +424,21 @@ const appRoutes: RouteObject[] = [
       {
         path: "warehouse/import",
         element: (
+
           <Suspense fallback={<Spiner />}>
             <ImportWarehouse />
           </Suspense>
+
         ),
       },
       {
         path: "warehouse/export",
         element: (
+
           <Suspense fallback={<Spiner />}>
             <ExportWarehouse />
           </Suspense>
+
         ),
       },
 
@@ -346,33 +446,41 @@ const appRoutes: RouteObject[] = [
       {
         path: "/system/log",
         element: (
+
           <Suspense fallback={<Spiner />}>
             <LogPage />
           </Suspense>
+
         ),
       },
       {
         path: "/system/accounts",
         element: (
+
           <Suspense fallback={<Spiner />}>
             <AccountPage />
           </Suspense>
+
         ),
       },
       {
         path: "/system/information",
         element: (
+
           <Suspense fallback={<Spiner />}>
             <InformartionPage />
           </Suspense>
+
         ),
       },
       {
         path: "/system/backup",
         element: (
+
           <Suspense fallback={<Spiner />}>
             <BackupPage />
           </Suspense>
+
         ),
       },
     ],
