@@ -5,12 +5,12 @@ import product from "../../model/product.model";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
-import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
+
 import FilterListIcon from "@mui/icons-material/FilterList";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import TuneIcon from "@mui/icons-material/Tune";
-import SettingsIcon from "@mui/icons-material/Settings";
+
 import Stack from "@mui/material/Stack";
 import Pagination from "@mui/material/Pagination";
 const OrderPage = () => {
@@ -155,7 +155,7 @@ const OrderPage = () => {
               </div>
             </div>
           </div>
-          <div style={{ height: "100px" }}>
+          <div>
             <div style={{ padding: "10px" }}>
               <div className="table-more">
                 <table
@@ -206,7 +206,7 @@ const OrderPage = () => {
                   </tbody>
                 </table>
               </div>
-              <div className="pagination">
+              <div className="pagination" style={{ marginBottom: "20px" }}>
                 <Stack spacing={2}>
                   <Pagination
                     count={10}

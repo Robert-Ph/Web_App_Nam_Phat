@@ -1,6 +1,6 @@
 import "./span.css";
 type props = {
-  type: "danger" | "warning" | "infor" | "success";
+  type: string | "danger" | "infor" | "warning";
   message: string;
 };
 const Span = ({ type, message }: props) => {

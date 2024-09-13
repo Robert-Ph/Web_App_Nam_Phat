@@ -66,7 +66,7 @@ const BackupPage = () => {
         transition={{ duration: 0.5 }}
       >
         <div>
-          <div className="d-flex justify-space-bettwen">
+          <div className="d-flex justify-space-bettwen mt-10">
             {" "}
             <h3>Sao lưu dữ liệu</h3>
             <div>

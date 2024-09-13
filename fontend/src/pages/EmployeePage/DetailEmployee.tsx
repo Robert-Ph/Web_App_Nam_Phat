@@ -154,6 +154,7 @@ const DetailEmployee = () => {
                   value={locaiton}
                   onChange={handleChange}
                   className="font-size-small"
+                  disabled={!isEdit}
                 >
                   <MenuItem value={"employee"} className="">
                     Thử việc
