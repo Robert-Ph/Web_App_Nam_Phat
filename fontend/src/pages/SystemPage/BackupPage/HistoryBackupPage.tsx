@@ -30,6 +30,14 @@ const HistoryBackupPage = () => {
       actionBy: "NV01",
       capacity: 120,
     },
+
+    {
+      id: "3",
+      date: "31/12/2024 24:24:00",
+      status: "danger",
+      actionBy: "NV01",
+      capacity: 120,
+    },
   ]);
 
   const navigate = useNavigate();
@@ -127,10 +135,13 @@ const HistoryBackupPage = () => {
                         className="pbt-td font-size-small td-table font-w-500"
                         style={{ paddingRight: "20px", paddingLeft: "0px" }}
                       >
-                        <Span type={"danger"} message={log.status}></Span>
+                        <Span
+                          type={log.status.toString()}
+                          message={log.status.toString()}
+                        ></Span>
                       </td>
                       <td className="pbt-td font-size-small td-table font-w-500">
-                        {log.capacity || "-"}
+                        {`${log.capacity} MB ` || "-"}
                       </td>
                       <td
                         className="pbt-td font-size-small td-table font-w-500"

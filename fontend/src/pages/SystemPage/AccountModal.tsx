@@ -76,7 +76,7 @@ const AccountModal = ({ open, tittle, onClose, isUpdate }: props) => {
               <span>
                 Mã nhân viên <span style={{ color: "red" }}>*</span> :
               </span>
-              <input className="shadow"></input>
+              <input className="shadow" disabled={isUpdate}></input>
             </div>
 
             <div className="form-group mt-10">

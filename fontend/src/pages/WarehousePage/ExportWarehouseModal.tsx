@@ -143,7 +143,7 @@ const ExportWarehouseModal = ({ open, onClose }: props) => {
               <div className="mt-10">
                 <div className="form-group">
                   <span>Lí do xuất kho:</span>
-                  <textarea className="shadow"></textarea>
+                  <textarea className="shadow" rows={5}></textarea>
                 </div>
               </div>
               <div className="d-flex mt-30 justify-space-evenly ">

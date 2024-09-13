@@ -15,7 +15,7 @@ const ListEmployee = () => {
   const [emplyees, setEmployees] = useState<Employee[]>([
     {
       id: "1",
-      name: "Nguyễn Ngọc Phương",
+      name: "Nguyễn Ngọc Phương Trâm Hoàng Thượng Đế",
       phone: "031231312312",
       email: "nguyenphuong12312321@gmail.com",
       dateEnjoy: "31/12/2024",
@@ -176,13 +176,13 @@ const ListEmployee = () => {
                     <td className="pb-7 pt-7 font-size-small td-table font-w-500 ">
                       {employee.id}
                     </td>
-                    <td className="pb-7 pt-7 font-size-small font-w-500 ">
+                    <td
+                      className="pb-7 pt-7 font-size-small font-w-500 "
+                      style={{ paddingRight: "10px" }}
+                    >
                       {employee.name || "-"}
                     </td>
-                    <td
-                      className="pb-7 pt-7 font-size-small td-table font-w-500"
-                      style={{ paddingRight: "20px" }}
-                    >
+                    <td className="pb-7 pt-7 font-size-small td-table font-w-500">
                       {employee.phone || "-"}
                     </td>
                     <td className="pb-7 pt-7 font-size-small td-table font-w-500">

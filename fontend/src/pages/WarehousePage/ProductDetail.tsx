@@ -5,6 +5,7 @@ import Select, { SelectChangeEvent } from "@mui/material/Select";
 import { useNavigate, useParams } from "react-router-dom";
 
 import NotifyDeleteModal from "../UtilsPage/NotifyDeleteModal";
+import "../OrderPage/order.css";
 
 const ProductDetail = () => {
   const [isEdit, setIsEdit] = useState<boolean>(false);
@@ -39,7 +40,7 @@ const ProductDetail = () => {
   };
   return (
     <div>
-      <div className="container">
+      <div className="container mt-10">
         <div className="d-flex justify-space-bettwen">
           <div>
             <div>
@@ -60,10 +61,24 @@ const ProductDetail = () => {
             >
               Quay về
             </button>
-            <button className="btn btn-danger" onClick={handleOpen}>
-              Xóa
-            </button>
-            <button className="btn btn-warning">Reset</button>
+            {!isEdit && (
+              <button className="btn btn-danger" onClick={handleOpen}>
+                Xóa
+              </button>
+            )}
+            {isEdit && (
+              <button
+                className="btn btn-danger"
+                onClick={() => {
+                  setIsEdit(false);
+                }}
+              >
+                Hủy
+              </button>
+            )}
+
+            {isEdit && <button className="btn btn-warning">Reset</button>}
+
             {!isEdit && (
               <button
                 className="btn btn-primary"
