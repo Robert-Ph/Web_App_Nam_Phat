@@ -60,7 +60,7 @@ const DetailEmployee = () => {
           <button
             className="btn btn-black"
             onClick={() => {
-              navigate("/employees/list");
+              navigate(-1);
             }}
           >
             Quay về
@@ -154,6 +154,7 @@ const DetailEmployee = () => {
                   value={locaiton}
                   onChange={handleChange}
                   className="font-size-small"
+                  disabled={!isEdit}
                 >
                   <MenuItem value={"employee"} className="">
                     Thử việc

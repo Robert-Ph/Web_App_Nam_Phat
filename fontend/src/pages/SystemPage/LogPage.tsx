@@ -27,6 +27,38 @@ const LogPage = () => {
       action:
         "Thay đổi tên hệ thống từ ngày sang ngày. Nhập hàng hóa cho đơn hàng #10120102010 bao gồm 12 hàng hóa và tổng chi phí là 1200000 VNĐ. Được nhập vào ngày 11/07/2002 15:15:30",
     },
+    {
+      id: "1",
+      date: "31/12/2024 24:24:00",
+      level: "infor",
+      actionBy: "NV01",
+      action:
+        "Thay đổi tên hệ thống từ ngày sang ngày. Nhập hàng hóa cho đơn hàng #10120102010 bao gồm 12 hàng hóa và tổng chi phí là 1200000 VNĐ. Được nhập vào ngày 11/07/2002 15:15:30",
+    },
+    {
+      id: "2",
+      date: "31/12/2024 24:24:00",
+      level: "warning",
+      actionBy: "NV01",
+      action:
+        "Thay đổi tên hệ thống từ ngày sang ngày. Nhập hàng hóa cho đơn hàng #10120102010 bao gồm 12 hàng hóa và tổng chi phí là 1200000 VNĐ. Được nhập vào ngày 11/07/2002 15:15:30",
+    },
+    {
+      id: "1",
+      date: "31/12/2024 24:24:00",
+      level: "infor",
+      actionBy: "NV01",
+      action:
+        "Thay đổi tên hệ thống từ ngày sang ngày. Nhập hàng hóa cho đơn hàng #10120102010 bao gồm 12 hàng hóa và tổng chi phí là 1200000 VNĐ. Được nhập vào ngày 11/07/2002 15:15:30",
+    },
+    {
+      id: "2",
+      date: "31/12/2024 24:24:00",
+      level: "warning",
+      actionBy: "NV01",
+      action:
+        "Thay đổi tên hệ thống từ ngày sang ngày. Nhập hàng hóa cho đơn hàng #10120102010 bao gồm 12 hàng hóa và tổng chi phí là 1200000 VNĐ. Được nhập vào ngày 11/07/2002 15:15:30",
+    },
   ]);
   const [page, setPage] = useState<number>(1);
   const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
@@ -82,7 +114,7 @@ const LogPage = () => {
                       className="pb-7 pt-7 font-size-small td-table font-w-500"
                       style={{ paddingRight: "20px", paddingLeft: "0px" }}
                     >
-                      <Span type={"danger"} message={log.level}></Span>
+                      <Span type={log.level} message={log.level}></Span>
                     </td>
                     <td className="pb-7 pt-7 font-size-small td-table font-w-500">
                       {log.actionBy || "-"}

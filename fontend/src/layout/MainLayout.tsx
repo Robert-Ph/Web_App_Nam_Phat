@@ -5,6 +5,7 @@ import Navbar, { isActive } from "./Navbar";
 import "./css/mainlayout.css";
 import { useEffect, useState } from "react";
 import { MoreNav } from "./MoreInfor";
+import ScrollToTop from "./ScrollToTop";
 
 const MainLayout = () => {
   const location = useLocation();
@@ -167,6 +168,7 @@ const MainLayout = () => {
 
   return (
     <div>
+      <ScrollToTop></ScrollToTop>
       <Header></Header>
       <div className="d-flex main-layout">
         <div className="flex-2">
