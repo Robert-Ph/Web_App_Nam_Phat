@@ -182,6 +182,12 @@ const CustomerInfomation = React.lazy(
 const CustomerCreate = React.lazy(
     () => import("../pages/Customer/CustomerCreate.tsx")
 );
+const CustomerDebt = React.lazy(
+    () => import("../pages/Customer/CustomerDebt.tsx")
+);
+const CustomerInformationDebt = React.lazy(
+    () => import("../pages/Customer/CustomerInformationDebt.tsx")
+);
 const ListOrderPage = React.lazy(
     () => import("../pages/OrderPage/ListOrderPage.tsx")
 );
@@ -218,47 +224,7 @@ const InformartionPage = React.lazy(
 );
 const BackupPage = React.lazy(
     () => import("../pages/SystemPage/BackupPage.tsx")
-=======
-  () => import("../pages/Customer/CustomerManagement.tsx")
 );
-const ListOrderPage = React.lazy(
-  () => import("../pages/OrderPage/ListOrderPage.tsx")
-);
-const DetailOrderPage = React.lazy(
-  () => import("../pages/OrderPage/DetailOrderPage.tsx")
-);
-const InvoicePage = React.lazy(
-  () => import("../pages/InvoicePage/InvoicePage.tsx")
-);
-const ListEmployee = React.lazy(
-  () => import("../pages/EmployeePage/ListEmployee.tsx")
-);
-const DetailEmployee = React.lazy(
-  () => import("../pages/EmployeePage/DetailEmployee.tsx")
-);
-const WageHousePage = React.lazy(
-  () => import("../pages/WarehousePage/WageHousePage.tsx")
-);
-const ProductDetail = React.lazy(
-  () => import("../pages/WarehousePage/ProductDetail.tsx")
-);
-const ImportWarehouse = React.lazy(
-  () => import("../pages/WarehousePage/ImportWarehouse.tsx")
-);
-const ExportWarehouse = React.lazy(
-  () => import("../pages/WarehousePage/ExportWarehouse.tsx")
-);
-const LogPage = React.lazy(() => import("../pages/SystemPage/LogPage.tsx"));
-const AccountPage = React.lazy(
-  () => import("../pages/SystemPage/AccountPage.tsx")
-);
-const InformartionPage = React.lazy(
-  () => import("../pages/SystemPage/InformationPage.tsx")
-);
-const BackupPage = React.lazy(
-  () => import("../pages/SystemPage/BackupPage.tsx")
-);
-
 const appRoutes: RouteObject[] = [
   {
     path: "/login",
@@ -315,6 +281,24 @@ const appRoutes: RouteObject[] = [
         element: (
             <Suspense fallback={<Spiner />}>
               <CustomerCreate />
+            </Suspense>
+
+        ),
+      },
+      {
+        path: "/customer/debt",
+        element: (
+            <Suspense fallback={<Spiner />}>
+              <CustomerDebt />
+            </Suspense>
+
+        ),
+      },
+      {
+        path: "/customer/debt/:id",
+        element: (
+            <Suspense fallback={<Spiner />}>
+              <CustomerInformationDebt />
             </Suspense>
 
         ),
