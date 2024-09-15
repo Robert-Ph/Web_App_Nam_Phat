@@ -179,8 +179,16 @@ const CustomerInfomation = React.lazy(
   () => import("../pages/Customer/CustomerInfomation.tsx")
 );
 const CustomerCreate = React.lazy(
-  () => import("../pages/Customer/CustomerCreate.tsx")
+
+    () => import("../pages/Customer/CustomerCreate.tsx")
 );
+const CustomerDebt = React.lazy(
+    () => import("../pages/Customer/CustomerDebt.tsx")
+);
+const CustomerInformationDebt = React.lazy(
+    () => import("../pages/Customer/CustomerInformationDebt.tsx")
+);
+
 
 const HistoryBackupPage = React.lazy(
   () => import("../pages/SystemPage/BackupPage/HistoryBackupPage.tsx")
@@ -261,7 +269,6 @@ const InformartionPage = React.lazy(
 const BackupPage = React.lazy(
   () => import("../pages/SystemPage/BackupPage/BackupPage.tsx")
 );
-
 const appRoutes: RouteObject[] = [
   {
     path: "/login",
@@ -315,6 +322,24 @@ const appRoutes: RouteObject[] = [
           <Suspense fallback={<Spiner />}>
             <CustomerCreate />
           </Suspense>
+        ),
+      },
+      {
+        path: "/customer/debt",
+        element: (
+            <Suspense fallback={<Spiner />}>
+              <CustomerDebt />
+            </Suspense>
+
+        ),
+      },
+      {
+        path: "/customer/debt/:id",
+        element: (
+            <Suspense fallback={<Spiner />}>
+              <CustomerInformationDebt />
+            </Suspense>
+
         ),
       },
       {
