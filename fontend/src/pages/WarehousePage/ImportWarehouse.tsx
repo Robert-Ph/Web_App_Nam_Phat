@@ -3,7 +3,7 @@ import product from "../../model/product.model";
 
 import RemoveCircleOutlineIcon from "@mui/icons-material/RemoveCircleOutline";
 
-import "../OrderPage/order.css";
+import "../OrderPage/OrderPage/order.css";
 import InvoiceImage from "../UtilsPage/InvoiceImage";
 import ImportWarehouseModal from "./ImportWarehouseModal";
 

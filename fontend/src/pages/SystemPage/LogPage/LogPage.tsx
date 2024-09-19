@@ -4,10 +4,10 @@ import TextField from "@mui/material/TextField";
 import FilterListIcon from "@mui/icons-material/FilterList";
 import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
-import "../OrderPage/listOrder.css";
+import "../../OrderPage/ListOrderPage/listOrder.css";
 
-import log from "../../model/log.model";
-import Span from "../../component/Span/Span";
+import log from "../../../model/log.model";
+import Span from "../../../component/Span/Span";
 
 const LogPage = () => {
   const [logs, setLogs] = useState<log[]>([

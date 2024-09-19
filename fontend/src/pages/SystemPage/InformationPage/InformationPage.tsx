@@ -1,4 +1,4 @@
-import logo from "../../assets/logoNamPhat.svg";
+import logo from "../../../assets/logoNamPhat.svg";
 import "./information.css";
 import React, { useState, ChangeEvent } from "react";
 
@@ -34,16 +34,22 @@ const InformartionPage = () => {
           <h3>Information</h3>
         </div>
         <div style={{ marginRight: "5%" }}>
-          {!isEditing && (
+          {isEditing && (
+            <button
+              className="btn btn-danger"
+              onClick={() => setIsEditing(false)}
+            >
+              Hủy
+            </button>
+          )}
+          {!isEditing ? (
             <button
               className="btn btn-primary"
               onClick={() => setIsEditing(true)}
             >
               Chỉnh sửa
             </button>
-          )}
-
-          {isEditing && (
+          ) : (
             <button
               className="btn btn-warning"
               onClick={() => setIsEditing(false)}

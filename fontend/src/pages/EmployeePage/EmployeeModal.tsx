@@ -130,7 +130,6 @@ const EmployeeModal = ({ open, onClose }: props) => {
           </div>
         </Box>
       </Modal>
-      ;
     </div>
   );
 };

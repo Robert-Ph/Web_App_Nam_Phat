@@ -1,13 +1,14 @@
-import "./order.css";
 import { useState } from "react";
-import ProductModal from "./ProductModal";
-import product from "../../model/product.model";
-
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
-const OrderPage = () => {
+import ProductModal from "../ProductModal/ProductModal";
+import product from "../../../model/product.model";
+import { useNavigate } from "react-router-dom";
+import "../OrderPage/order.css";
+
+const DetailOrderPage = () => {
   const [products, setProducts] = useState<product[]>([
     {
       id: 1,
@@ -18,11 +19,13 @@ const OrderPage = () => {
       totalPrice: "",
     },
   ]);
-
   const [invoice, setInvoice] = useState<string>("personally");
-
   const [open, setOpen] = useState<boolean>(false);
+  const [isEdit, setIsEdit] = useState<boolean>(false);
 
+  const navigate = useNavigate();
+
+  //   Sự kiện mở đóng modal chỉnh sửa sản phẩm
   const handleOnclose = () => {
     setOpen(false);
   };
@@ -31,37 +34,76 @@ const OrderPage = () => {
     setOpen(true);
   };
 
-  const handleChange = (event: SelectChangeEvent) => {
-    setInvoice(event.target.value);
-  };
-
   const addProduct = (product: product) => {
     setOpen(false);
     setProducts([...products, product]);
   };
 
+  const goBack = () => {
+    navigate(-1);
+  };
+
+  //Bắt sự kiện thay đổi select trong option của hóa đơn
+  const handleChange = (event: SelectChangeEvent) => {
+    setInvoice(event.target.value);
+  };
   return (
     <div>
       <div className="container">
-        <div className="d-flex justify-end">
-          <button className="btn btn-danger">Hủy</button>
-          <button className="btn btn-warning">Reset</button>
-          <button className="btn btn-primary" style={{ marginRight: "0px;" }}>
-            Tạo đơn hàng
-          </button>
+        <div className="d-flex justify-space-bettwen">
+          <div className="d-flex dicrect-col">
+            <div>
+              <strong>Mã đơn hàng:</strong>
+              <span> #51235</span>
+            </div>
+            <div>
+              <strong>Ngày:</strong>
+              <span> 31/12/2024</span>
+            </div>
+          </div>
+          <div>
+            {isEdit ? (
+              <button
+                className="btn btn-danger"
+                onClick={() => setIsEdit(false)}
+              >
+                Hủy
+              </button>
+            ) : (
+              <button className="btn btn-black" onClick={goBack}>
+                Trở về
+              </button>
+            )}
+            {isEdit ? (
+              <button
+                className="btn btn-warning"
+                style={{ marginRight: "0px;" }}
+              >
+                Cập nhật
+              </button>
+            ) : (
+              <button
+                className="btn btn-primary"
+                style={{ marginRight: "0px;" }}
+                onClick={() => setIsEdit(true)}
+              >
+                Chỉnh sửa
+              </button>
+            )}
+          </div>
         </div>
 
-        <div className="mt-20">
+        <div className="mt-15">
           <h3>Thông tin khách hàng </h3>
           <div className="wrap-form">
             <div className="form-group flex-8">
               <span>Tên khách hàng</span>
-              <input placeholder="Tên khách hàng"></input>
+              <input placeholder="Tên khách hàng" disabled={!isEdit}></input>
             </div>
 
             <div className="form-group flex-2" style={{ margin: "0px 20px" }}>
               <span>Số điện thoại</span>
-              <input placeholder="Số điện thoại"></input>
+              <input placeholder="Số điện thoại" disabled={!isEdit}></input>
             </div>
 
             <div className="form-group flex-2">
@@ -72,6 +114,7 @@ const OrderPage = () => {
                   id="demo-select-small"
                   value={invoice}
                   onChange={handleChange}
+                  disabled={!isEdit}
                 >
                   <MenuItem value={"personally"} className="">
                     Cá Nhân
@@ -85,12 +128,12 @@ const OrderPage = () => {
           <div className="wrap-form" style={{ marginTop: "10px" }}>
             <div className="form-group flex-2">
               <span>Email</span>
-              <input placeholder="Tên khách hàng"></input>
+              <input placeholder="Tên khách hàng" disabled={!isEdit}></input>
             </div>
 
             <div className="form-group flex-8" style={{ marginLeft: "20px" }}>
               <span>Địa chỉ giao hàng</span>
-              <input placeholder="Số điện thoại"></input>
+              <input placeholder="Số điện thoại" disabled={!isEdit}></input>
             </div>
           </div>
         </div>
@@ -122,7 +165,11 @@ const OrderPage = () => {
                       <td className="pb-7 pt-7">{product.totalPrice || "-"}</td>
                       <td className="pb-7 pt-7">
                         {" "}
-                        <button className="btn-more">
+                        <button
+                          className="btn-more"
+                          onClick={handleOpen}
+                          disabled={!isEdit}
+                        >
                           <MoreHorizIcon></MoreHorizIcon>
                         </button>
                       </td>
@@ -136,13 +183,13 @@ const OrderPage = () => {
               <div
                 style={{
                   flex: "3",
-                  textAlign: "center",
                   alignContent: "center",
+                  marginTop: "12px",
                 }}
+                className="form-group "
               >
-                <button className="btn btn-primary mt-20" onClick={handleOpen}>
-                  Thêm sản phẩm
-                </button>
+                <span>Trạng thái</span>
+                <input disabled style={{ width: "80%" }}></input>
               </div>
 
               <div className="wrap-vat d-flex">
@@ -178,4 +225,4 @@ const OrderPage = () => {
   );
 };
 
-export default OrderPage;
+export default DetailOrderPage;

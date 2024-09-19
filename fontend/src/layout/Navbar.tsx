@@ -14,7 +14,7 @@ export const isActive = (path: string, location: string) => {
   if (path == "/" && location != "/") {
     return false;
   }
-  return location.search(path) != -1;
+  return location.search(path) != -1 && location.search(path) == 0;
 };
 
 const Navbar = () => {
@@ -42,7 +42,7 @@ const Navbar = () => {
         <ShoppingCartOutlinedIcon className="icon-size"></ShoppingCartOutlinedIcon>
       </Link>
       <Link
-        to={"/customer"}
+        to={"/customer/list"}
         className={`navbar-item color-black ${
           isActive("/customer", location.pathname) ? " active" : ""
         }`}

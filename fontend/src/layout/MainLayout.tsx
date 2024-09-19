@@ -67,12 +67,12 @@ const MainLayout = () => {
           {
             id: "1",
             name: "Khách hàng",
-            link: "/customer",
+            link: "/customer/list",
           },
           {
             id: "2",
             name: "Công nợ khách hàng",
-            link: "/customer/debt", // Chỉnh sửa cái link này,
+            link: "/customer/debt/list", // Chỉnh sửa cái link này,
           },
         ],
       });
