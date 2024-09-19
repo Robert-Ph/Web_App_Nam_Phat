@@ -9,13 +9,13 @@ import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 
-import "../OrderPage/listOrder.css";
+import "../../OrderPage/ListOrderPage/listOrder.css";
 import { useNavigate } from "react-router-dom";
 
-import account from "../../model/account.model";
-import Span from "../../component/Span/Span";
-import AccountModal from "./AccountModal";
-import NotifyDeleteModal from "../UtilsPage/NotifyDeleteModal";
+import account from "../../../model/account.model";
+import Span from "../../../component/Span/Span";
+import AccountModal from "./AccountModal/AccountModal";
+import NotifyDeleteModal from "../../UtilsPage/NotifyDeleteModal";
 
 const AccountPage = () => {
   const [accounts, setAccounts] = useState<account[]>([

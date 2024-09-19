@@ -1,6 +1,6 @@
 import "./customerInfomation.css";
 import { useState } from "react";
-import product from "../../model/product.model";
+import product from "../../../model/product.model";
 
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
@@ -13,6 +13,9 @@ import TuneIcon from "@mui/icons-material/Tune";
 
 import Stack from "@mui/material/Stack";
 import Pagination from "@mui/material/Pagination";
+import { useNavigate } from "react-router-dom";
+
+import NotifyDeleteModal from "../../UtilsPage/NotifyDeleteModal";
 const OrderPage = () => {
   const [products, setProducts] = useState<product[]>([
     // {
@@ -24,56 +27,85 @@ const OrderPage = () => {
   ]);
 
   const [page, setPage] = useState<number>(1);
+  const [invoice, setInvoice] = useState<string>("personally");
+  const [isEdit, setIsEdit] = useState(false);
+  const [openDelte, setOpenDelete] = useState<boolean>(false);
+
+  const navigate = useNavigate();
 
   const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
     setPage(value);
   };
-  const [invoice, setInvoice] = useState<string>("personally");
 
-  const [open, setOpen] = useState<boolean>(false);
-
-  const handleOnclose = () => {
-    setOpen(false);
-  };
-
-  const handleOpen = () => {
-    setOpen(true);
-  };
-
-  // const handleChange = (event: SelectChangeEvent) => {
-  //     setInvoice(event.target.value);
-  // };
-
-  const addProduct = (product: product) => {
-    setOpen(false);
-    setProducts([...products, product]);
+  const handleChangeSelect = (event: SelectChangeEvent) => {
+    setInvoice(event.target.value);
   };
 
   return (
     <div>
-      <div className="container">
-        <div className="d-flex justify-end">
-          <button className="btn btn-danger">Xóa</button>
-          <button className="btn btn-warning">Reset</button>
-          <button className="btn btn-primary" style={{ marginRight: "0px;" }}>
-            Cập nhật
-          </button>
+      <div className="container" style={{ paddingBottom: "5%" }}>
+        <div className="d-flex justify-end mt-10">
+          {!isEdit && (
+            <button
+              className="btn btn-black"
+              onClick={() => {
+                navigate(-1);
+              }}
+            >
+              Trở về
+            </button>
+          )}
+
+          {!isEdit ? (
+            <button
+              className="btn btn-danger"
+              onClick={() => setOpenDelete(true)}
+            >
+              Xóa
+            </button>
+          ) : (
+            <button className="btn btn-danger" onClick={() => setIsEdit(false)}>
+              Hủy
+            </button>
+          )}
+
+          {isEdit && <button className="btn btn-warning">Reset</button>}
+
+          {isEdit ? (
+            <button
+              className="btn btn-primary"
+              style={{ marginRight: "0px;" }}
+              onClick={() => setIsEdit(false)}
+            >
+              Cập nhật
+            </button>
+          ) : (
+            <button
+              className="btn btn-primary"
+              style={{ marginRight: "0px;" }}
+              onClick={() => {
+                setIsEdit(true);
+              }}
+            >
+              Chỉnh sửa
+            </button>
+          )}
         </div>
 
         <div className="mt-20">
           <h3>Thông tin khách hàng </h3>
           <div className="wrap-form">
-            <div className="form-group flex-8">
-              <span>Tên khách hàng</span>
-              <input placeholder="Tên khách hàng"></input>
+            <div className="form-group flex-1" style={{ marginRight: "5%" }}>
+              <span>Mã khách hàng</span>
+              <input placeholder="Tên khách hàng" disabled={true}></input>
             </div>
 
-            <div className="form-group flex-2" style={{ margin: "0px 20px" }}>
-              <span>Số điện thoại</span>
-              <input placeholder="Số điện thoại"></input>
+            <div className="form-group flex-1" style={{ marginLeft: "5%" }}>
+              <span>Ngày tạo</span>
+              <input placeholder="Ngày tạo" disabled={true} type="date"></input>
             </div>
 
-            <div className="form-group flex-2">
+            {/* <div className="form-group flex-2">
               <span>Loại khách hàng</span>
               <FormControl sx={{ minWidth: 120 }} size="small">
                 <Select
@@ -81,6 +113,46 @@ const OrderPage = () => {
                   id="demo-select-small"
                   value={invoice}
                   // onChange={handleChange}
+                  disabled={!isEdit}
+                >
+                  <MenuItem value={"personally"} className="">
+                    Cá Nhân
+                  </MenuItem>
+                  <MenuItem value={"enterprise"}>Doanh Nghiệp</MenuItem>
+                </Select>
+              </FormControl>
+            </div> */}
+          </div>
+          <div className="wrap-form">
+            <div className="form-group flex-1" style={{ marginRight: "5%" }}>
+              <span>Tên khách hàng</span>
+              <input placeholder="Tên khách hàng" disabled={!isEdit}></input>
+            </div>
+
+            <div className="form-group flex-1" style={{ marginLeft: "5%" }}>
+              <span>Số điện thoại</span>
+              <input placeholder="Số điện thoại" disabled={!isEdit}></input>
+            </div>
+          </div>
+          <div className="wrap-form">
+            <div className="form-group flex-1" style={{ marginRight: "5%" }}>
+              <span>Email</span>
+              <input
+                placeholder="Email"
+                disabled={!isEdit}
+                type="email"
+              ></input>
+            </div>
+
+            <div className="form-group flex-1" style={{ marginLeft: "5%" }}>
+              <span>Loại khách hàng</span>
+              <FormControl sx={{ minWidth: 120 }} size="small">
+                <Select
+                  labelId="demo-select-small-label"
+                  id="demo-select-small"
+                  value={invoice}
+                  onChange={handleChangeSelect}
+                  disabled={!isEdit}
                 >
                   <MenuItem value={"personally"} className="">
                     Cá Nhân
@@ -90,24 +162,11 @@ const OrderPage = () => {
               </FormControl>
             </div>
           </div>
-          <div className="wrap-form" style={{ marginTop: "10px" }}>
-            <div className="form-group flex-4">
-              <span>Mã khách hàng</span>
-              <input placeholder="Mã khách hàng"></input>
-            </div>
-            <div className="form-group flex-4" style={{ marginLeft: "20px" }}>
-              <span>Ngày tạo</span>
-              <input placeholder="Ngày tạo"></input>
-            </div>
-            <div className="form-group flex-6" style={{ marginLeft: "20px" }}>
-              <span>Email</span>
-              <input placeholder="Email"></input>
-            </div>
-          </div>
-          <div className="wrap-form" style={{ marginTop: "10px" }}>
+
+          <div className="wrap-form" style={{ marginTop: "15px" }}>
             <div className="form-group flex-8" style={{ marginLeft: "0px" }}>
               <span>Địa chỉ giao hàng</span>
-              <input placeholder="Địa chỉ giao hàng"></input>
+              <input placeholder="Địa chỉ giao hàng" disabled={!isEdit}></input>
             </div>
           </div>
         </div>
@@ -138,20 +197,26 @@ const OrderPage = () => {
                   />
                 </Box>
               </div>
+              <div className="d-flex justify-space-arround">
+                {/* <div style={{ width: "150px" }}>
+                  <button
+                    className="btn btn-primary btn-add-pay "
+                    onClick={handleOpen}
+                  >
+                    Thêm
+                  </button>
+                </div> */}
 
-              <div style={{ position: "relative" }}>
-                <select className="filter-select">
-                  <option value="all">Tất cả</option>
-                  <option value="newest">Mới nhất</option>
-                  <option value="confirmed">Xác nhận</option>
-                  <option value="completed">Hoàn thành</option>
-                  <option value="delivered">Đã giao</option>
-                  <option value="paid">Đã thanh toán</option>
-                  <option value="unpaid">Chưa thanh toán</option>
-                </select>
-                <i className="icon-filter">
-                  <TuneIcon></TuneIcon>
-                </i>
+                <div style={{ position: "relative" }}>
+                  <select className="filter-select btn btn-primary pd-r-40">
+                    <option value="all">Tất cả</option>
+                    <option value="newest">Tiền mặt</option>
+                    <option value="confirmed"> Chuyển khoản</option>
+                  </select>
+                  <i className="icon-filter">
+                    <TuneIcon></TuneIcon>
+                  </i>
+                </div>
               </div>
             </div>
           </div>
@@ -206,7 +271,7 @@ const OrderPage = () => {
                   </tbody>
                 </table>
               </div>
-              <div className="pagination" style={{ marginBottom: "20px" }}>
+              <div className="pagination" style={{ right: "4%" }}>
                 <Stack spacing={2}>
                   <Pagination
                     count={10}
@@ -220,6 +285,13 @@ const OrderPage = () => {
           </div>
         </div>
       </div>
+
+      <NotifyDeleteModal
+        message="Bạn có chắc chắn muốn xóa khách hàng này?"
+        open={openDelte}
+        handleClose={() => setOpenDelete(false)}
+        handleDelete={() => {}}
+      ></NotifyDeleteModal>
     </div>
   );
 };

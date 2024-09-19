@@ -62,6 +62,10 @@ button {
   button:focus-visible {
     outline: 4px auto -webkit-focus-ring-color;
   } */
+
+button:disabled {
+  cursor: no-drop !important;
+}
 .icon-size {
   font-size: 32px !important;
 }
@@ -184,7 +188,7 @@ button {
   text-align: left;
 }
 .text-center {
-  text-align: center;
+  text-align: center !important;
 }
 .text-bold {
   font-weight: bold;
@@ -230,6 +234,9 @@ input:disabled {
 .mt-30 {
   margin-top: 30px !important;
 }
+.pd-r-40 {
+  padding-right: 40px !important;
+}
 .color-danger {
   color: var(--color-danger);
 }
@@ -256,8 +263,17 @@ td {
 }
 .pagination {
   margin-top: 10px;
-  position: absolute;
+  position: absolute !important;
   right: 2%;
+}
+
+.btn-filter {
+  background-color: #fff;
+  rotate: 180deg;
+  margin-top: 6%;
+}
+.btn-filter:focus {
+  outline: none;
 }
 @media (prefers-color-scheme: light) {
   :root {

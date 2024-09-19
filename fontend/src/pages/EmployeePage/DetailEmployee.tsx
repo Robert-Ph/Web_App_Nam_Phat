@@ -6,6 +6,7 @@ import Modal from "@mui/material/Modal";
 import Box from "@mui/material/Box";
 import { useNavigate, useParams } from "react-router-dom";
 
+import "./css/detailEmployee.css";
 export const styleModalNotify = {
   position: "absolute" as "absolute",
   top: "40%",
@@ -41,6 +42,7 @@ const DetailEmployee = () => {
 
   //Sự kiện khi bấm vào nút chỉnh sửa sẽ thay đổi các ô input cho phép chỉnh sửa
   const handleEdit = () => {
+    console.log("debug");
     setIsEdit(true);
   };
 
@@ -57,19 +59,28 @@ const DetailEmployee = () => {
     <div>
       <div className="container">
         <div className="d-flex justify-end">
-          <button
-            className="btn btn-black"
-            onClick={() => {
-              navigate(-1);
-            }}
-          >
-            Quay về
-          </button>
-          <button className="btn btn-danger" onClick={handleOpen}>
-            Xóa
-          </button>
-          <button className="btn btn-warning">Reset</button>
           {!isEdit && (
+            <button
+              className="btn btn-black"
+              onClick={() => {
+                navigate(-1);
+              }}
+            >
+              Quay về
+            </button>
+          )}
+          {!isEdit ? (
+            <button className="btn btn-danger" onClick={handleOpen}>
+              Xóa
+            </button>
+          ) : (
+            <button className="btn btn-danger" onClick={() => setIsEdit(false)}>
+              Hủy
+            </button>
+          )}
+
+          {isEdit && <button className="btn btn-warning">Reset</button>}
+          {!isEdit ? (
             <button
               className="btn btn-primary"
               style={{ marginRight: "0px;" }}
@@ -77,8 +88,7 @@ const DetailEmployee = () => {
             >
               Chỉnh sửa
             </button>
-          )}
-          {isEdit && (
+          ) : (
             <button
               className="btn btn-primary"
               style={{ marginRight: "0px;" }}

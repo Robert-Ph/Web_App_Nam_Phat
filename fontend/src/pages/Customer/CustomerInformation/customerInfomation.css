@@ -24,18 +24,6 @@
 .mt-30 {
   margin-top: 30px;
 }
-.flex-3 {
-  flex: 3;
-}
-.flex-2 {
-  flex: 2;
-}
-.flex-5 {
-  flex: 5;
-}
-.flex-6 {
-  flex: 6;
-}
 
 .div-main .table-more table {
   max-height: 15%; /* Đặt chiều cao tối đa cho container */
@@ -65,7 +53,7 @@
 .icon-filter {
   rotate: 90deg;
   position: absolute;
-  top: -2px;
+  top: -1px !important  ;
   right: 10px;
   color: #fff;
 }
@@ -80,4 +68,8 @@
 }
 .btn-filter:focus {
   outline: none;
+}
+.btn-add-pay {
+  padding: 4px 10px !important;
+  width: 90%;
 }

@@ -5,7 +5,7 @@ import FilterListIcon from "@mui/icons-material/FilterList";
 import TuneIcon from "@mui/icons-material/Tune";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import "./listOrder.css";
-import { order } from "../../model/person.model";
+import { order } from "../../../model/person.model";
 
 import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
@@ -60,7 +60,7 @@ const ListOrderPage = () => {
             </div>
 
             <div style={{ position: "relative" }}>
-              <select className="filter-select btn btn-primary">
+              <select className="filter-select btn btn-primary pd-r-40">
                 <option value="all">Tất cả</option>
                 <option value="newest">Mới nhất</option>
                 <option value="confirmed">Xác nhận</option>
