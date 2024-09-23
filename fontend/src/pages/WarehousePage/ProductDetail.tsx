@@ -5,7 +5,7 @@ import Select, { SelectChangeEvent } from "@mui/material/Select";
 import { useNavigate, useParams } from "react-router-dom";
 
 import NotifyDeleteModal from "../UtilsPage/NotifyDeleteModal";
-import "../OrderPage/order.css";
+import "../OrderPage/OrderPage/order.css";
 
 const ProductDetail = () => {
   const [isEdit, setIsEdit] = useState<boolean>(false);
@@ -53,14 +53,16 @@ const ProductDetail = () => {
             </div>
           </div>
           <div>
-            <button
-              className="btn btn-black"
-              onClick={() => {
-                navigate("/warehouse/list");
-              }}
-            >
-              Quay về
-            </button>
+            {!isEdit && (
+              <button
+                className="btn btn-black"
+                onClick={() => {
+                  navigate("/warehouse/list");
+                }}
+              >
+                Quay về
+              </button>
+            )}
             {!isEdit && (
               <button className="btn btn-danger" onClick={handleOpen}>
                 Xóa
@@ -79,7 +81,7 @@ const ProductDetail = () => {
 
             {isEdit && <button className="btn btn-warning">Reset</button>}
 
-            {!isEdit && (
+            {!isEdit ? (
               <button
                 className="btn btn-primary"
                 style={{ marginRight: "0px;" }}
@@ -87,8 +89,7 @@ const ProductDetail = () => {
               >
                 Chỉnh sửa
               </button>
-            )}
-            {isEdit && (
+            ) : (
               <button
                 className="btn btn-primary"
                 style={{ marginRight: "0px;" }}

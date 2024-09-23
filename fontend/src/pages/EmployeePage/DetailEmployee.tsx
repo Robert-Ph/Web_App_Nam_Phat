@@ -6,6 +6,7 @@ import Modal from "@mui/material/Modal";
 import Box from "@mui/material/Box";
 import { useNavigate, useParams } from "react-router-dom";
 
+import "./css/detailEmployee.css";
 export const styleModalNotify = {
   position: "absolute" as "absolute",
   top: "40%",
@@ -26,6 +27,7 @@ const DetailEmployee = () => {
   const [isEdit, setIsEdit] = useState<boolean>(false);
 
   const [locaiton, setLocation] = useState<string>("employee");
+  const [work, setWork] = useState<string>("true");
 
   const [open, setOpen] = useState<boolean>(false);
 
@@ -41,6 +43,7 @@ const DetailEmployee = () => {
 
   //Sự kiện khi bấm vào nút chỉnh sửa sẽ thay đổi các ô input cho phép chỉnh sửa
   const handleEdit = () => {
+    console.log("debug");
     setIsEdit(true);
   };
 
@@ -53,23 +56,35 @@ const DetailEmployee = () => {
   const handleChange = (event: SelectChangeEvent) => {
     setLocation(event.target.value);
   };
+  const handleChangeWork = (event: SelectChangeEvent) => {
+    setWork(event.target.value);
+  };
   return (
     <div>
       <div className="container">
         <div className="d-flex justify-end">
-          <button
-            className="btn btn-black"
-            onClick={() => {
-              navigate(-1);
-            }}
-          >
-            Quay về
-          </button>
-          <button className="btn btn-danger" onClick={handleOpen}>
-            Xóa
-          </button>
-          <button className="btn btn-warning">Reset</button>
           {!isEdit && (
+            <button
+              className="btn btn-black"
+              onClick={() => {
+                navigate(-1);
+              }}
+            >
+              Quay về
+            </button>
+          )}
+          {!isEdit ? (
+            <button className="btn btn-danger" onClick={handleOpen}>
+              Xóa
+            </button>
+          ) : (
+            <button className="btn btn-danger" onClick={() => setIsEdit(false)}>
+              Hủy
+            </button>
+          )}
+
+          {isEdit && <button className="btn btn-warning">Reset</button>}
+          {!isEdit ? (
             <button
               className="btn btn-primary"
               style={{ marginRight: "0px;" }}
@@ -77,8 +92,7 @@ const DetailEmployee = () => {
             >
               Chỉnh sửa
             </button>
-          )}
-          {isEdit && (
+          ) : (
             <button
               className="btn btn-primary"
               style={{ marginRight: "0px;" }}
@@ -164,10 +178,24 @@ const DetailEmployee = () => {
               </FormControl>
             </div>
 
-            <div
-              className="form-group flex-1"
-              style={{ margin: "0px 20px" }}
-            ></div>
+            <div className="form-group flex-1" style={{ margin: "0px 20px" }}>
+              <span>Trạng thái </span>
+              <FormControl sx={{ minWidth: 120 }} size="small">
+                <Select
+                  labelId="demo-select-small-label"
+                  id="demo-select-small"
+                  value={work}
+                  onChange={handleChangeWork}
+                  className="font-size-small"
+                  disabled={!isEdit}
+                >
+                  <MenuItem value={"true"} className="">
+                    Đang làm việc
+                  </MenuItem>
+                  <MenuItem value={"false"}>Đã nghĩ</MenuItem>
+                </Select>
+              </FormControl>
+            </div>
           </div>
         </div>
       </div>
