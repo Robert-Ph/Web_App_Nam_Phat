@@ -1,9 +1,11 @@
 package org.example.beckend.validation.imp;
 
+import jakarta.validation.Constraint;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 import org.example.beckend.validation.ValidEmail;
 
+import java.lang.annotation.Retention;
 import java.util.Objects;
 import java.util.regex.Pattern;
 
@@ -20,6 +22,6 @@ public class EmailValidator implements ConstraintValidator<ValidEmail,String> {
         if(Objects.isNull(value)){
             return true;
         }
-        return Pattern.compile(EMAIL_PATTERN).matcher(value).matches();
+        return  Pattern.compile(EMAIL_PATTERN).matcher(value).matches();
     }
 }

@@ -27,6 +27,7 @@ const DetailEmployee = () => {
   const [isEdit, setIsEdit] = useState<boolean>(false);
 
   const [locaiton, setLocation] = useState<string>("employee");
+  const [work, setWork] = useState<string>("true");
 
   const [open, setOpen] = useState<boolean>(false);
 
@@ -54,6 +55,9 @@ const DetailEmployee = () => {
   //Sự kiện khi bấm ô select vị trí
   const handleChange = (event: SelectChangeEvent) => {
     setLocation(event.target.value);
+  };
+  const handleChangeWork = (event: SelectChangeEvent) => {
+    setWork(event.target.value);
   };
   return (
     <div>
@@ -174,10 +178,24 @@ const DetailEmployee = () => {
               </FormControl>
             </div>
 
-            <div
-              className="form-group flex-1"
-              style={{ margin: "0px 20px" }}
-            ></div>
+            <div className="form-group flex-1" style={{ margin: "0px 20px" }}>
+              <span>Trạng thái </span>
+              <FormControl sx={{ minWidth: 120 }} size="small">
+                <Select
+                  labelId="demo-select-small-label"
+                  id="demo-select-small"
+                  value={work}
+                  onChange={handleChangeWork}
+                  className="font-size-small"
+                  disabled={!isEdit}
+                >
+                  <MenuItem value={"true"} className="">
+                    Đang làm việc
+                  </MenuItem>
+                  <MenuItem value={"false"}>Đã nghĩ</MenuItem>
+                </Select>
+              </FormControl>
+            </div>
           </div>
         </div>
       </div>

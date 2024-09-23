@@ -1,6 +1,8 @@
 package org.example.beckend.entity;
 
+import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
+
 import lombok.*;
 
 import java.util.UUID;
@@ -23,6 +25,7 @@ public class Account {
     private String  permission;
     private boolean status;
 
-    @OneToOne @MapsId
+    @OneToOne
+    @JoinColumn(name = "employee_id", nullable = true)
     private Employee employee;
 }
