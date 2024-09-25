@@ -15,6 +15,8 @@ public class EnumValidator implements ConstraintValidator<EnumValid, String> {
         this.annotation = annotation;
     }
 
+
+
     //Verify các enum hợp lệ
     @Override
     public boolean isValid(String value, ConstraintValidatorContext context) {
