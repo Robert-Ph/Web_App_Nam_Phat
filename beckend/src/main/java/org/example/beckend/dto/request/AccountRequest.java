@@ -1,5 +1,7 @@
 package org.example.beckend.dto.request;
 
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
@@ -24,9 +26,8 @@ public class AccountRequest {
     String password;
 
     @NotNull(message = "Permission require")
-    @NotEmpty(message = "Permission is not emtry")
-    @EnumValid(enumClass = Permission.class, message = "Permission must be one of:USER | ADMIN ")
-    String permission;
+    @Enumerated(EnumType.STRING)
+    private Permission permission;;
 
     @NotNull(message = "Id Employee is require")
 

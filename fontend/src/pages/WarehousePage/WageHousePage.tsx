@@ -14,13 +14,13 @@ import product from "../../model/product.model";
 const WageHousePage = () => {
   const [products, setProducts] = useState<product[]>([
     {
-      id: 1,
-      name: "Giấy khổ to",
-      quantity: "123",
+      id: 123456,
+      name: "Giấy khổ to dành cho đóng bìa sách",
+      quantity: "12300",
       paperCount: "123",
-      price: "100000000",
+      price: "10000000",
       totalPrice: "123123",
-      type: "Decal",
+      type: "Decal giấy cứng dành cho bìa tập",
       unit: "Tờ",
     },
     {
@@ -90,6 +90,10 @@ const WageHousePage = () => {
                 />
               </Box>
             </div>
+
+            <div>
+              <button className="btn btn-warning">Lịch sử nhập kho</button>
+            </div>
           </div>
         </div>
         <div style={{ padding: "10px" }}>
@@ -102,24 +106,37 @@ const WageHousePage = () => {
                   </th>
                   <th
                     className="pb-7 font-w-500"
-                    style={{ width: "20%", paddingRight: "10px" }}
+                    style={{ width: "15%", paddingRight: "25px" }}
                   >
                     Tên hàng hóa
                   </th>
                   <th
                     className="pb-7 font-w-500"
-                    style={{ width: "10%", paddingRight: "10px" }}
+                    style={{ width: "8%", paddingRight: "10px" }}
                   >
                     Loại
                   </th>
-                  <th className="pb-7 font-w-500" style={{ width: "10%" }}>
+                  <th
+                    className="pb-7 font-w-500 text-center"
+                    style={{ width: "8%" }}
+                  >
                     Số lượng
                   </th>
-                  <th className="pb-7 font-w-500" style={{ width: "10%" }}>
+                  <th
+                    className="pb-7 font-w-500 text-center"
+                    style={{ width: "10%" }}
+                  >
                     Đơn vị tính
                   </th>
-                  <th className="pb-7 font-w-500" style={{ width: "15%" }}>
+                  <th
+                    className="pb-7 font-w-500 text-center"
+                    style={{ width: "15%" }}
+                  >
                     Giá/ đơn vị tính (VNĐ)
+                  </th>
+
+                  <th className="pb-7 font-w-500" style={{ width: "15%" }}>
+                    Ngày nhập gần nhất
                   </th>
 
                   <th
@@ -136,7 +153,10 @@ const WageHousePage = () => {
                     <td className="pb-7 pt-7 font-size-small td-table font-w-500 ">
                       {product.id}
                     </td>
-                    <td className="pb-7 pt-7 font-size-small font-w-500 ">
+                    <td
+                      className="pb-7 pt-7 font-size-small font-w-500 "
+                      style={{ paddingRight: "25px" }}
+                    >
                       {product.name || "-"}
                     </td>
                     <td
@@ -145,17 +165,20 @@ const WageHousePage = () => {
                     >
                       {product.type || "-"}
                     </td>
-                    <td className="pb-7 pt-7 font-size-small td-table font-w-500">
+                    <td className="pb-7 pt-7 font-size-small td-table font-w-500 text-center">
                       {product.quantity || "-"}
                     </td>
-                    <td className="pb-7 pt-7 font-size-small td-table font-w-500">
+                    <td className="pb-7 pt-7 font-size-small td-table font-w-500 text-center">
                       {product.unit || "-"}
                     </td>
 
-                    <td className="pb-7 pt-7 font-size-small td-table font-w-500">
+                    <td className="pb-7 pt-7 font-size-small td-table font-w-500 text-center">
                       {product.price || "-"}
                     </td>
 
+                    <td className="pb-7 pt-7 font-size-small td-table font-w-500">
+                      {"01/12/2024 15:30:30" || "-"}
+                    </td>
                     <td className="pb-7 pt-7 font-size-small td-table font-w-500">
                       <button
                         className="btn-more"
