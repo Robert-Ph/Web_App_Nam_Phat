@@ -31,25 +31,16 @@ public class InventoryController {
                 .data(inventoryService.getAll(pageable))
                 .build());
     }
-    @PostMapping
-    public ResponseEntity<ApiResponse> create(@RequestBody InventoryRequest request) {
-        return ResponseEntity.ok(ApiResponse.builder()
-                .code(SuccessMessage.CREATE_DATA_SUCCESS.getCode())
-                .message(SuccessMessage.CREATE_DATA_SUCCESS.getMessage())
-                .data(inventoryService.create(request))
-                .build());
+
+    @GetMapping("/{id}")
+    public ResponseEntity<ApiResponse> getById(@PathVariable Long id){
+        return ResponseEntity.ok(
+                ApiResponse.builder()
+                        .code(SuccessMessage.GET_DATA_SUCCESS.getCode())
+                        .message(SuccessMessage.GET_DATA_SUCCESS.getMessage())
+                        .data(inventoryService.getInventoryByProductId(id))
+                        .build()
+        );
     }
 
-    @PutMapping
-    public ResponseEntity<ApiResponse> updateQuanlity(@RequestParam(value = "quanlity",required = true)
-                                                      int quanlity
-            , @RequestParam(value = "productId",required = true) Long productId)
-
-    {
-        return ResponseEntity.ok(ApiResponse.builder()
-                .code(SuccessMessage.UPDATE_DATE_SUCCESS.getCode())
-                .message(SuccessMessage.UPDATE_DATE_SUCCESS.getMessage())
-                .data(inventoryService.updateQuanlity(quanlity, productId))
-                .build());
-    }
 }

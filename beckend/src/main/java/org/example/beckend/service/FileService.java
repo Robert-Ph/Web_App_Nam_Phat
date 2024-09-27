@@ -14,13 +14,17 @@ import java.nio.file.StandardCopyOption;
 @Service
 public class FileService {
 
-
-    public InputStream getResourceFile(String path, String name) throws FileNotFoundException {
+    //Get resource file in system
+    public InputStream getResourceFile(String path, String name)  {
         String filePath = path + File.separator + name;
-        return new FileInputStream(filePath);
+        try {
+            return new FileInputStream(filePath);
+        } catch (FileNotFoundException e) {
+            throw new AppException(ErrorMessage.IMAGE_NOT_FOUND);
+        }
     }
 
-
+    //Method for upload file on system
     public File uploadFile(String path, String name, MultipartFile multipartFile) {
         String filePath = path + File.separator + name;
         File f = new File(path);

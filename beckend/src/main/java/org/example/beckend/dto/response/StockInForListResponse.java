@@ -2,8 +2,7 @@ package org.example.beckend.dto.response;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-import org.example.beckend.dto.request.ProductRequest;
-import org.example.beckend.entity.Product;
+import org.springframework.beans.factory.annotation.Value;
 
 import java.time.LocalDateTime;
 
@@ -11,10 +10,19 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+@ToString
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class InventoryReponse {
+public class StockInForListResponse {
 
-    Product product;
-    int quanlity;
-    private LocalDateTime lastDateIn;
+    Long id;
+
+    LocalDateTime dateCreate;
+
+    String supplier;
+
+    Long totalPrice;
+
+    String imageInvoice;
+
+
 }
