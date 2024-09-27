@@ -2,19 +2,22 @@ package org.example.beckend.dto.response;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-import org.example.beckend.dto.request.ProductRequest;
 import org.example.beckend.entity.Product;
 
-import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+@ToString
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class InventoryReponse {
-
+public class StockInDetailResponse {
     Product product;
+
     int quanlity;
-    private LocalDateTime lastDateIn;
+
+    int priceImport;
+
+
 }

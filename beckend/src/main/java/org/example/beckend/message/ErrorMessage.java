@@ -20,8 +20,18 @@ public enum ErrorMessage {
 
     PRODUCT_NOT_FOUND(ErrorCode.BAD_REQUEST,"Product not found",HttpStatus.BAD_REQUEST),
     INVENTORY_NOT_FOUND(ErrorCode.BAD_REQUEST,"Inventory not found",HttpStatus.BAD_REQUEST),
+    INVENTORY_QUANLITY_NOT_ALLOW(ErrorCode.BAD_REQUEST,"Insufficient quantity of products in stock",HttpStatus.BAD_REQUEST),
 
 
+    IMAGE_IS_REQUIRE(ErrorCode.IMAGE_IS_REQUIRE,"File image not emtry",HttpStatus.BAD_REQUEST),
+    IMAGE_NOT_VALID(ErrorCode.IMAGE_NOT_VALID,"Image must end with .jpg or .png",HttpStatus.BAD_REQUEST),
+    IMAGE_NOT_FOUND(ErrorCode.IMAGE_NOT_FOUND,"Image not found in server",HttpStatus.BAD_REQUEST),
+
+    FILE_NOT_FOUND(ErrorCode.SERVER_NOT_FOUND,"File not found",HttpStatus.BAD_REQUEST),
+
+
+    MISSING_ARGUMENT(ErrorCode.MISSING_ARGUMENT,"Missing argument for request",HttpStatus.BAD_REQUEST),
+    SERVER_NOT_FOUND(ErrorCode.SERVER_NOT_FOUND,"Not found", HttpStatus.BAD_REQUEST),
     SERVER_ERROR(ErrorCode.SERVER_ERROR,"Server error try again",HttpStatus.INTERNAL_SERVER_ERROR);
 
 

@@ -40,12 +40,5 @@ public class ImageController {
         resourceFile.close();
     }
 
-    @PostMapping
-    public ResponseEntity<ApiResponse> upload(@RequestPart(value = "file") MultipartFile file) {
-        return ResponseEntity.ok(ApiResponse.builder()
-                .code(SuccessMessage.CREATE_DATA_SUCCESS.getCode())
-                .message(SuccessMessage.GET_DATA_SUCCESS.getMessage())
-                .data(fileService.uploadFile(path, file.getOriginalFilename(), file))
-                .build());
-    }
+
 }

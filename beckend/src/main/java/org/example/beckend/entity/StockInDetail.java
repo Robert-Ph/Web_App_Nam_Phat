@@ -1,5 +1,6 @@
 package org.example.beckend.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
 import org.example.beckend.entity.embeddable.StockInDetailId;
@@ -18,15 +19,14 @@ public class StockInDetail {
 
     @ManyToOne
     @MapsId("stockInId")
-    @JoinColumn(name = "stockInId",nullable = false)
+    @JsonBackReference
     private StockIn stockIn;
 
     @OneToOne
     @MapsId("productId")
-    @JoinColumn(name = "productId", nullable = false)
     private Product product;
 
     private int quanlity;
 
-    private int newPrice;
+    private int priceImport;
 }
