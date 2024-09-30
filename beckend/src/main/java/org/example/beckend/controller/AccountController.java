@@ -8,6 +8,9 @@ import org.example.beckend.dto.response.ApiResponse;
 import org.example.beckend.message.SuccessMessage;
 import org.example.beckend.service.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -37,5 +40,18 @@ public class AccountController {
                 .message(SuccessMessage.UPDATE_DATE_SUCCESS.getMessage())
                 .data(accountService.update(request, id))
                 .build());
+    }
+
+    @GetMapping
+    public ResponseEntity<ApiResponse> getAll(@RequestParam(defaultValue = "0")int page,@RequestParam(defaultValue = "10") int size ){
+        Pageable pageable = PageRequest.of(page,size);
+
+        return ResponseEntity.ok(
+                ApiResponse.builder()
+                        .code(SuccessMessage.GET_DATA_SUCCESS.getCode())
+                        .message(SuccessMessage.GET_DATA_SUCCESS.getMessage())
+                        .data(accountService.findAllExceptIsLogin(pageable))
+                        .build()
+        );
     }
 }

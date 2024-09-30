@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PagedModel;
 import org.springframework.stereotype.Service;
 
 
@@ -88,8 +89,9 @@ public class EmployeeService {
 
 
     //Method for getAllEmployee with pageable
-    public Page<Employee> getAll(Pageable pageable) {
-        return employeeRepository.findAll(pageable);
+    public PagedModel<Employee> getAll(Pageable pageable) {
+
+        return new PagedModel<>(employeeRepository.findAll(pageable));
     }
 
     public List<Employee> getAll() {

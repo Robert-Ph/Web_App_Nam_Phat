@@ -12,6 +12,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PagedModel;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -98,11 +99,12 @@ public class InventoryService {
     }
 
     //Get all inventory with Pageable
-    public Page<InventoryReponse> getAll(Pageable pageable) {
+    public PagedModel<InventoryReponse> getAll(Pageable pageable) {
         Page<Inventory> allInventory = inventoryRepository.findAll(pageable);
-        return allInventory.map(entity -> {
+        Page<InventoryReponse> page =  allInventory.map(entity -> {
             return modelMapper.map(entity, InventoryReponse.class);
         });
+        return new PagedModel<>(page);
     }
 
     //Method for get Inventory by product Id
