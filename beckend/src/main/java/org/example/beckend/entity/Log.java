@@ -2,7 +2,6 @@ package org.example.beckend.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.example.beckend.contains.StatusProcessing;
 
 import java.time.LocalDateTime;
 
@@ -12,22 +11,20 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Builder
 @Entity
-@Table(name = "backup")
-public class Backup {
+@Table(name = "log")
+public class Log {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    private LocalDateTime dateCreate;
+    LocalDateTime dateCreate;
 
-    private double capacity;
-
-    @Enumerated(EnumType.STRING)
-    private StatusProcessing status;
+    @Lob
+    String messsage;
 
     @ManyToOne
     @JoinColumn(name="account_id", nullable=false, updatable=false)
-    private Account account;
+    Account account;
 
     @PrePersist
     protected void onCreate() {

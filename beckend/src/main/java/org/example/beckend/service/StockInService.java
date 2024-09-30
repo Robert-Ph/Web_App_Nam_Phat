@@ -22,6 +22,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PagedModel;
 import org.springframework.orm.hibernate5.HibernateTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -159,14 +160,15 @@ public class StockInService {
 
 
     //Get list all with pagealbe
-    public Page<StockInForListResponse> getAll(Pageable pageable){
+    public PagedModel<StockInForListResponse> getAll(Pageable pageable){
         Page<StockIn> stockIns = stockInRepository
                 .findAll(pageable);
-        return stockIns.map(entity -> {
+        Page<StockInForListResponse> page =  stockIns.map(entity -> {
             //convert image to url image controller
             entity.setImageInvoice(baseUrl +"/images/" + entity.getImageInvoice());
             return  modelMapper.map(entity,StockInForListResponse.class);
         });
+        return new PagedModel<>(page);
     }
 
     //Method for get stock in by id

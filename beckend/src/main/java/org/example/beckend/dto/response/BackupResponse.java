@@ -1,9 +1,9 @@
 package org.example.beckend.dto.response;
 
-import jakarta.persistence.Column;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-import org.example.beckend.entity.Employee;
+
+import java.time.LocalDateTime;
 
 @Data
 @AllArgsConstructor
@@ -11,11 +11,15 @@ import org.example.beckend.entity.Employee;
 @Builder
 @ToString
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class AccountResponse {
+public class BackupResponse {
 
     Long id;
+
+    LocalDateTime dateCreate;
+
+    double capacity;
+
+    String status;
+
     String username;
-    String permission;
-    boolean status;
-    Long employeeId;
 }

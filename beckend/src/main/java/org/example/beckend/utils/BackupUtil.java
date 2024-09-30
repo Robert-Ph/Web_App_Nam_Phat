@@ -40,6 +40,8 @@ public class BackupUtil {
 
             FileOutputStream outputStream = new FileOutputStream("D://happy//backupdata.sql");
             outputStream.write(mysqlExportService.getGeneratedSql().getBytes());
+
+            System.out.println(Math.round((double)mysqlExportService.getGeneratedSql().getBytes().length/ 1024));
             outputStream.close();
 
            mysqlExportService.clearTempFiles();
