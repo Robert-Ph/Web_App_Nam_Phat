@@ -2,6 +2,7 @@ package org.example.beckend.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.example.beckend.contains.LogLevel;
 
 import java.time.LocalDateTime;
 
@@ -19,15 +20,34 @@ public class Log {
 
     LocalDateTime dateCreate;
 
+
+    @Enumerated(EnumType.STRING)
+    LogLevel level;
+
     @Lob
     String messsage;
 
+
+
     @ManyToOne
-    @JoinColumn(name="account_id", nullable=false, updatable=false)
+    @JoinColumn(name="account_id", nullable=true, updatable=false)
     Account account;
 
     @PrePersist
     protected void onCreate() {
         dateCreate = LocalDateTime.now();
     }
+
+    @Override
+    public String toString() {
+        return "Log{" +
+                id +
+                "----" + dateCreate +
+                "----" + level +
+                "----'" + messsage + '\'' +
+                "----" + account.getUsername() +
+                '}';
+    }
+
+
 }

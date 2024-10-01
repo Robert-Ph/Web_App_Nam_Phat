@@ -1,7 +1,9 @@
 package org.example.beckend.service;
 
+import org.example.beckend.contains.LogLevel;
 import org.example.beckend.exception.AppException;
 import org.example.beckend.message.ErrorMessage;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -13,6 +15,9 @@ import java.nio.file.StandardCopyOption;
 
 @Service
 public class FileService {
+
+    @Autowired
+    private LogService logService;
 
     //Get resource file in system
     public InputStream getResourceFile(String path, String name)  {
@@ -35,6 +40,7 @@ public class FileService {
 
         try {
             Files.copy(multipartFile.getInputStream(), Paths.get(filePath), StandardCopyOption.REPLACE_EXISTING);
+            logService.log(LogLevel.WARNING,"Tải file lên server với tên file là:" + name);
             multipartFile.getInputStream().close();
 
         } catch (IOException e) {

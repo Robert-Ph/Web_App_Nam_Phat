@@ -1,6 +1,7 @@
 package org.example.beckend.service;
 
 import lombok.extern.slf4j.Slf4j;
+import org.example.beckend.contains.LogLevel;
 import org.example.beckend.dto.request.CompanyRequest;
 import org.example.beckend.entity.Company;
 import org.example.beckend.repository.CompanyRepository;
@@ -16,6 +17,8 @@ public class CompanyService {
     @Autowired
     private CompanyRepository companyRepository;
 
+    @Autowired
+    private LogService logService;
 
     public Company update(CompanyRequest request) {
 
@@ -30,6 +33,8 @@ public class CompanyService {
         if (!Objects.isNull(request.getIdBank())) {
             company.setIdBank(request.getIdBank());
         }
+
+        logService.log(LogLevel.WARNING,"Cập nhật thông tin công ty");
 
         return companyRepository.save(company);
     }
