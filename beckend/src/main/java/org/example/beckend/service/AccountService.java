@@ -1,5 +1,6 @@
 package org.example.beckend.service;
 
+import org.example.beckend.contains.LogLevel;
 import org.example.beckend.dto.request.AccountRequest;
 import org.example.beckend.dto.request.UpdateAccountRequest;
 import org.example.beckend.dto.response.AccountResponse;
@@ -39,6 +40,8 @@ public class AccountService {
     @Autowired
     private SercurityService sercurityService;
 
+    @Autowired LogService logService;
+
 
     //Method for create user
 
@@ -73,6 +76,7 @@ public class AccountService {
         //Catch exception if many request create user
         try {
             account = accountRepository.save(account);
+            logService.log(LogLevel.INFOR,"Tạo tài khoản  với username:" + account.getUsername());
 
         } catch (DataIntegrityViolationException exception) {
             throw new AppException(ErrorMessage.USERNAME_EXIST);
@@ -94,6 +98,8 @@ public class AccountService {
         //Catch exception if many request create user
         try {
             account = accountRepository.save(account);
+
+            logService.log(LogLevel.DANGER,"Cập nhật tài khoản với username:" + account.getUsername());
 
         } catch (DataIntegrityViolationException exception) {
             throw new AppException(ErrorMessage.USERNAME_EXIST);

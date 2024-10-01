@@ -2,6 +2,7 @@ package org.example.beckend.service;
 
 
 import lombok.extern.slf4j.Slf4j;
+import org.example.beckend.contains.LogLevel;
 import org.example.beckend.dto.request.EmployeeRequest;
 import org.example.beckend.entity.Employee;
 import org.example.beckend.entity.Position;
@@ -36,6 +37,9 @@ public class EmployeeService {
     @Autowired
     private ModelMapper modelMapper;
 
+    @Autowired
+    private LogService logService;
+
 
     //Method create new Employee
     public Employee create(EmployeeRequest request) {
@@ -57,6 +61,7 @@ public class EmployeeService {
 
         try {
             employee = employeeRepository.save(employee);
+            logService.log(LogLevel.INFOR,"Tạo nhân viên với mã nhân viên là:" + employee.getId());
         } catch (Exception e) {
             throw new RuntimeException(e.getMessage());
         }
@@ -83,6 +88,8 @@ public class EmployeeService {
         save.setId(employee.get().getId());
         save.setPosition(position.get());
 
+        logService.log(LogLevel.DANGER,"Cập nhật nhân viên với mã nhân viên là:" +id);
+
         return employeeRepository.save(save);
     }
 
@@ -90,6 +97,7 @@ public class EmployeeService {
 
     //Method for getAllEmployee with pageable
     public PagedModel<Employee> getAll(Pageable pageable) {
+        logService.log(LogLevel.INFOR,"Lấy danh sách nhân viên");
 
         return new PagedModel<>(employeeRepository.findAll(pageable));
     }

@@ -1,5 +1,6 @@
 package org.example.beckend.service;
 
+import org.example.beckend.contains.LogLevel;
 import org.example.beckend.dto.request.StockOutRequest;
 import org.example.beckend.entity.Product;
 import org.example.beckend.entity.StockOut;
@@ -29,6 +30,9 @@ public class StockOutService {
     @Autowired
     private ModelMapper modelMapper;
 
+    @Autowired
+    private LogService logService;
+
 
     //Create Stock Out
     @Transactional
@@ -41,8 +45,11 @@ public class StockOutService {
         stockOut.setProduct(product);
         stockOut.setQuantity(request.getQuantity());
         stockOut.setReson(request.getReson());
+        stockOut = stockOutRepository.save(stockOut);
 
-        return stockOutRepository.save(stockOut);
+        logService.log(LogLevel.WARNING,"Tạo đơn hàng xuất kho với mã là " + stockOut.getId());
+
+        return stockOut;
     }
 
     //Get list stock out

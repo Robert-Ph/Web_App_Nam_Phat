@@ -2,6 +2,7 @@ package org.example.beckend.service;
 
 import lombok.extern.java.Log;
 import lombok.extern.slf4j.Slf4j;
+import org.example.beckend.contains.LogLevel;
 import org.example.beckend.dto.request.InventoryRequest;
 import org.example.beckend.dto.request.StockInDetailRequest;
 import org.example.beckend.dto.request.StockInRequest;
@@ -59,7 +60,8 @@ public class StockInService {
     @Autowired
     private ModelMapper modelMapper;
 
-
+    @Autowired
+    private LogService logService;
 
 
     //Create StockIn with no image
@@ -127,6 +129,7 @@ public class StockInService {
 
 
         stockIn.setListStockInDetails(stockInDetailList);
+        logService.log(LogLevel.WARNING,"Nhập kho với mã đơn là:" + stockIn.getId());
 
         return stockIn;
 
@@ -150,6 +153,8 @@ public class StockInService {
 
     //Get list with no pageable
     public List<StockInForListResponse> getAll(){
+
+        logService.log(LogLevel.INFOR,"Lấy danh sách nhập kho");
         List<StockIn> stockIns = stockInRepository.findAll(Sort.by(Sort.Direction.DESC,"dateCreate"));
         return stockIns.stream().map(entity -> {
             //convert image to url image controller
@@ -161,6 +166,7 @@ public class StockInService {
 
     //Get list all with pagealbe
     public PagedModel<StockInForListResponse> getAll(Pageable pageable){
+        logService.log(LogLevel.INFOR,"Lấy danh sách nhập kho trang " + pageable.getPageNumber() + 1);
         Page<StockIn> stockIns = stockInRepository
                 .findAll(pageable);
         Page<StockInForListResponse> page =  stockIns.map(entity -> {
@@ -173,6 +179,8 @@ public class StockInService {
 
     //Method for get stock in by id
     public StockInResponse getById(Long id){
+
+        logService.log(LogLevel.INFOR,"Lấy thông tin nhập kho với mã là " + id);
         Optional<StockIn> stockIn = stockInRepository.findById(id);
 
         if(stockIn.isEmpty()){

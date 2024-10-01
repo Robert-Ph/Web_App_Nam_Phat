@@ -2,6 +2,7 @@ package org.example.beckend.service;
 
 import com.smattme.MysqlExportService;
 import jakarta.persistence.RollbackException;
+import org.example.beckend.contains.LogLevel;
 import org.example.beckend.contains.StatusProcessing;
 import org.example.beckend.dto.response.AccountResponse;
 import org.example.beckend.dto.response.BackupResponse;
@@ -60,6 +61,10 @@ public class BackupService {
     private ModelMapper modelMapper;
 
 
+    @Autowired
+    private LogService logService;
+
+
     private BackupResponse converToAccountResponse(Backup backup) {
         modelMapper.typeMap(Backup.class, BackupResponse.class).addMappings(mapper ->
                 mapper.map(src -> src.getAccount().getUsername(), BackupResponse::setUsername));
@@ -107,9 +112,14 @@ public class BackupService {
                         .status(StatusProcessing.SUCCESS)
                         .build();
                 backupRepository.save(backup);
+
+                logService.log(LogLevel.INFOR,"Tạo file backup");
             } catch (Exception e) {
 
+                logService.log(LogLevel.DANGER,"Tạo file backup thất bại");
+
                 throw new AppException(ErrorMessage.SERVER_ERROR);
+
             }
 
 
@@ -145,6 +155,8 @@ public class BackupService {
     }
 
     public PagedModel<BackupResponse> getAll(Pageable pageable) {
+
+        logService.log(LogLevel.INFOR,"Lấy danh sách lịch sử thực hiện backup");
         Page<Backup> backupPage = backupRepository.findAll(pageable);
         Page<BackupResponse> page = backupPage.map(entity -> {
             return converToAccountResponse(entity);
