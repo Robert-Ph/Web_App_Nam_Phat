@@ -22,6 +22,7 @@ public class SercurityConfig {
 
     //Public url not use token
     private static final String[] PUBLIC_POST = {"/authen/login"};
+    private static final String[] PUBLIC_GET = {"/images/{fileName}"};
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -30,6 +31,7 @@ public class SercurityConfig {
                         authz
                                 .requestMatchers(PUBLIC_POST)
                                 .permitAll()
+                                .requestMatchers(PUBLIC_GET).permitAll()
                                 .anyRequest().authenticated()); //method
 
         http.oauth2ResourceServer(oauth -> oauth
