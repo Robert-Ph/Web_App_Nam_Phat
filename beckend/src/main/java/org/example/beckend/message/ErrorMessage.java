@@ -21,6 +21,9 @@ public enum ErrorMessage {
     PRODUCT_NOT_FOUND(ErrorCode.BAD_REQUEST,"Product not found",HttpStatus.BAD_REQUEST),
     INVENTORY_NOT_FOUND(ErrorCode.BAD_REQUEST,"Inventory not found",HttpStatus.BAD_REQUEST),
 
+    CUSTOMER_EXIST(ErrorCode.BAD_REQUEST,"Matching information",HttpStatus.BAD_REQUEST),
+
+
 
     SERVER_ERROR(ErrorCode.SERVER_ERROR,"Server error try again",HttpStatus.INTERNAL_SERVER_ERROR);
 

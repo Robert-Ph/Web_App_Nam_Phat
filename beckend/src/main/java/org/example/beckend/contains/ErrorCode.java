@@ -10,6 +10,8 @@ public class ErrorCode {
     public final static int USER_EXIST = 421;
     public final static int WRONG_PASSWORD = 422;
 
+    public final static int CUSTOMER_EXIST = 801;
+
     public final static int SERVER_ERROR =500;
 
 }
