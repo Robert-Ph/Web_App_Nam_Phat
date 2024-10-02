@@ -1,5 +1,6 @@
 package org.example.beckend.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -30,6 +31,7 @@ public class StockIn {
     private String imageInvoice;
 
     @OneToMany(mappedBy = "stockIn",cascade = CascadeType.ALL)
+    @JsonManagedReference
     List<StockInDetail> listStockInDetails;
 
     @PrePersist

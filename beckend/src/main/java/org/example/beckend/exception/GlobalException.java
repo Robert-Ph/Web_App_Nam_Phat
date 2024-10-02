@@ -8,11 +8,13 @@ import org.example.beckend.message.ErrorMessage;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingPathVariableException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.multipart.support.MissingServletRequestPartException;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -127,6 +129,46 @@ public class GlobalException {
                         .build(),
                 HttpStatus.BAD_REQUEST
                 );
+    }
+
+
+
+    //Exception for Missing Servlet Request Part
+    @ExceptionHandler(MissingServletRequestPartException.class)
+    public ResponseEntity<Object> handleMissingPart(MissingServletRequestPartException ex) {
+
+        String param = ex.getRequestPartName();
+        String message = String.format("Missing : %s",param);
+
+        return new  ResponseEntity<>(
+                ApiResponse.builder()
+                        .code(ErrorCode.BAD_REQUEST)
+                        .message(message)
+                        .build(),
+                HttpStatus.BAD_REQUEST
+        );
+    }
+
+
+
+    //Exception for request method not support
+    @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
+    public ResponseEntity<Object> handleMethodNotSupport(HttpRequestMethodNotSupportedException ex) {
+        StringBuilder message = new StringBuilder();
+        message.append("Error: Method ");
+        message.append("[" +ex.getMethod() +"]");
+        message.append(" is not supported for this request. Supported methods are: ");
+        message.append(ex.getSupportedHttpMethods());
+
+
+        return new  ResponseEntity<>(
+
+                ApiResponse.builder()
+                        .code(ErrorCode.METHOD_NOT_ALLOW)
+                        .message(message.toString())
+                        .build(),
+                HttpStatus.METHOD_NOT_ALLOWED
+        );
     }
 
 }

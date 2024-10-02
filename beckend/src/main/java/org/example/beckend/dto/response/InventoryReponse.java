@@ -5,6 +5,8 @@ import lombok.experimental.FieldDefaults;
 import org.example.beckend.dto.request.ProductRequest;
 import org.example.beckend.entity.Product;
 
+import java.time.LocalDateTime;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -14,4 +16,5 @@ public class InventoryReponse {
 
     Product product;
     int quanlity;
+    private LocalDateTime lastDateIn;
 }

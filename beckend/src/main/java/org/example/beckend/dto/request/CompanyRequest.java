@@ -1,8 +1,10 @@
 package org.example.beckend.dto.request;
 
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+import org.example.beckend.validation.ValidEmail;
 
 @Data
 @AllArgsConstructor
@@ -12,19 +14,24 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class CompanyRequest {
 
-    @NotEmpty(message = "Name is not emtry")
-    @NotEmpty(message = "Name is require")
+    @NotNull(message = "name is require")
+    @NotEmpty(message = "name is not emtry")
     String name;
 
     String idTax;
 
-    @NotEmpty(message = "Phone is not emtry")
-    @NotEmpty(message = "Phone is require")
+    @NotNull(message = "phone is require")
+    @NotEmpty(message = "phone is not emtry")
     String phone;
 
     String idBank;
 
-    @NotEmpty(message = "Address is not emtry")
-    @NotEmpty(message = "Address is require")
+    @ValidEmail(message = "Email not format")
+    @NotNull(message = "email is require")
+    @NotEmpty(message = "email is not emtry")
+    String email;
+
+    @NotNull(message = "address is require")
+    @NotEmpty(message = "address is not emtry")
     private String address;
 }

@@ -17,5 +17,5 @@ public class AccountResponse {
     String username;
     String permission;
     boolean status;
-    Employee employee;
+    Long employeeId;
 }

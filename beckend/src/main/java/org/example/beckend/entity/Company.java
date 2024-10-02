@@ -21,6 +21,8 @@ public class Company {
 
     private String phone;
 
+    private String email;
+
     private String idBank;
 
     private String address;

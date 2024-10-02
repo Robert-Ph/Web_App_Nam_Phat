@@ -57,6 +57,9 @@ public class AuthencationService {
         if(!check){
             throw  new AppException(ErrorMessage.WROND_PASSWORD);
         }
+        if(!account.isStatus()){
+
+        }
         return LoginResponse
                 .builder()
                 .token(generateToken(account))
