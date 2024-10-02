@@ -9,6 +9,8 @@ import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.util.Objects;
+
 @Service
 public class SercurityService {
 
@@ -17,7 +19,10 @@ public class SercurityService {
 
     public Account getAccountIsLogin(){
         SecurityContext context = SecurityContextHolder.getContext();
-        Long id = Long.parseLong(context.getAuthentication().getName());
-        return  accountRepository.findById(id).orElseThrow(() -> new AppException(ErrorMessage.SERVER_ERROR));
+        if(!Objects.isNull(context.getAuthentication())){
+            Long id = Long.parseLong(context.getAuthentication().getName());
+            return  accountRepository.findById(id).orElseThrow(() -> new AppException(ErrorMessage.SERVER_ERROR));
+        }
+        return null;
     }
 }
