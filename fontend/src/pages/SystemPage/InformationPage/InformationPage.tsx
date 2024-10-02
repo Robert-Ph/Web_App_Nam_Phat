@@ -8,6 +8,7 @@ type CompanyData = {
   phoneNumber: string;
   accountNumber: string;
   address: string;
+  email: string;
 };
 const InformartionPage = () => {
   const [isEditing, setIsEditing] = useState<boolean>(false);
@@ -16,6 +17,7 @@ const InformartionPage = () => {
     taxCode: "0317924032",
     phoneNumber: "0904 170 472",
     accountNumber: "",
+    email: "nguyen@gmail.com",
     address:
       "168/17 đường Bình Trị Đông, P.Bình Trị Đông, Q.Bình Tân, TP.Hồ Chí Minh",
   });
@@ -95,6 +97,16 @@ const InformartionPage = () => {
                   onChange={handleChange}
                 />
               </div>
+
+              <div className="form-group mt-10">
+                <span>Email:</span>
+                <input
+                  type="text"
+                  name="phoneNumber"
+                  value={companyInfo.email}
+                  onChange={handleChange}
+                />
+              </div>
               <div className="form-group mt-10">
                 <span>Số tài khoản:</span>
                 <input
@@ -122,6 +134,7 @@ const InformartionPage = () => {
               <p>Mã số thuế: {companyInfo.taxCode}</p>
               <p>Số điện thoại: {companyInfo.phoneNumber}</p>
               <p>Số tài khoản: {companyInfo.accountNumber}</p>
+              <p>Email: {companyInfo.email}</p>
               <p>Địa chỉ: {companyInfo.address}</p>
             </>
           )}
