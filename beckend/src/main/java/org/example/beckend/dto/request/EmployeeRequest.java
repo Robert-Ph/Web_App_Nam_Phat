@@ -4,7 +4,7 @@ import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-import org.example.beckend.contains.PositionName;
+import org.example.beckend.entity.enums.PositionName;
 import org.example.beckend.validation.EnumValid;
 import org.example.beckend.validation.ValidEmail;
 

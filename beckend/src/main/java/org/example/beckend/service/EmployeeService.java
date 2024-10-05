@@ -2,7 +2,7 @@ package org.example.beckend.service;
 
 
 import lombok.extern.slf4j.Slf4j;
-import org.example.beckend.contains.LogLevel;
+import org.example.beckend.entity.enums.LogLevel;
 import org.example.beckend.dto.request.EmployeeRequest;
 import org.example.beckend.entity.Employee;
 import org.example.beckend.entity.Position;
@@ -13,7 +13,6 @@ import org.example.beckend.repository.PositionRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PagedModel;
 import org.springframework.stereotype.Service;
@@ -21,7 +20,6 @@ import org.springframework.stereotype.Service;
 
 
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
 @Slf4j

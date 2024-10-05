@@ -24,7 +24,7 @@ public enum ErrorMessage {
     INVENTORY_QUANLITY_NOT_ALLOW(ErrorCode.BAD_REQUEST,"Insufficient quantity of products in stock",HttpStatus.BAD_REQUEST),
 
     CUSTOMER_EXIST(ErrorCode.BAD_REQUEST,"Matching information",HttpStatus.BAD_REQUEST),
-
+    CUSTOMER_NOT_FOUND(ErrorCode.CUSTOMER_NOT_FOUND,"Customer not found",HttpStatus.BAD_REQUEST),
 
 
     IMAGE_IS_REQUIRE(ErrorCode.IMAGE_IS_REQUIRE,"File image not emtry",HttpStatus.BAD_REQUEST),

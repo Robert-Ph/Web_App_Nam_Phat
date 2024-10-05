@@ -1,14 +1,9 @@
 package org.example.beckend.entity;
 
-import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 
-import jakarta.validation.Valid;
 import lombok.*;
-import org.example.beckend.contains.Permission;
-import org.example.beckend.validation.EnumValid;
-
-import java.util.UUID;
+import org.example.beckend.entity.enums.Permission;
 
 @Getter
 @Setter

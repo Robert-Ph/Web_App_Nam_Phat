@@ -51,4 +51,5 @@ public class SercurityConfig {
         authenticationConverter.setJwtGrantedAuthoritiesConverter(jwtAuthenticationConverter);
         return authenticationConverter;
     }
+
 }

@@ -25,18 +25,28 @@ public class CustomerService {
     @Autowired
     private ModelMapper modelMapper;
 
+
+    public Customer findCustomerById(Long id) {
+        return customerRepository.findById(id).orElseThrow(() -> new AppException(ErrorMessage.CUSTOMER_NOT_FOUND));
+    }
+
+
+    public Customer findCustomerByPhone(String phone) {
+        return customerRepository.findByPhone(phone).orElseThrow(() -> new AppException(ErrorMessage.CUSTOMER_NOT_FOUND));
+    }
+
     //create customer
     public Customer create(CustomerRequest request) {
 
         Customer customer = modelMapper.map(request, Customer.class);
         Optional<Customer> optional = customerRepository.findByTypeCustomerContains(customer.getPhone());
-        if(!optional.isEmpty()){
+        if (!optional.isEmpty()) {
             throw new AppException(ErrorMessage.CUSTOMER_EXIST);
 
         }
         try {
             customerRepository.save(customer);
-        }catch (Exception e){
+        } catch (Exception e) {
             throw new RuntimeException(e.getMessage());
         }
         return customer;

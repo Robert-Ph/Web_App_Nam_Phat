@@ -1,10 +1,9 @@
 package org.example.beckend.service;
 
-import org.example.beckend.contains.LogLevel;
+import org.example.beckend.entity.enums.LogLevel;
 import org.example.beckend.exception.AppException;
 import org.example.beckend.message.ErrorMessage;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
