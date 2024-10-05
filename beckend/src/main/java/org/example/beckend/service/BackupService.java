@@ -1,10 +1,8 @@
 package org.example.beckend.service;
 
 import com.smattme.MysqlExportService;
-import jakarta.persistence.RollbackException;
-import org.example.beckend.contains.LogLevel;
-import org.example.beckend.contains.StatusProcessing;
-import org.example.beckend.dto.response.AccountResponse;
+import org.example.beckend.entity.enums.LogLevel;
+import org.example.beckend.entity.enums.StatusProcessing;
 import org.example.beckend.dto.response.BackupResponse;
 import org.example.beckend.entity.Account;
 import org.example.beckend.entity.Backup;
@@ -20,19 +18,10 @@ import org.springframework.data.web.PagedModel;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.sql.SQLException;
-import java.text.DecimalFormat;
-import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.List;
-import java.util.Objects;
 import java.util.Properties;
 
 @Service

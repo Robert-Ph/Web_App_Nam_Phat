@@ -17,6 +17,7 @@ public class ErrorCode {
 
 
     public final static int CUSTOMER_EXIST = 801;
+    public final static int CUSTOMER_NOT_FOUND = 802;
 
 
     public final static int IMAGE_IS_REQUIRE = 452;

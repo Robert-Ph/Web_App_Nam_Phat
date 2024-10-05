@@ -2,7 +2,7 @@ package org.example.beckend.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.example.beckend.contains.LogLevel;
+import org.example.beckend.entity.enums.LogLevel;
 
 import java.time.LocalDateTime;
 

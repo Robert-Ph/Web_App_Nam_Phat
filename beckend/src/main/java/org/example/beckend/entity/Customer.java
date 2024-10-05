@@ -1,8 +1,11 @@
 package org.example.beckend.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
+
+import java.util.List;
 
 @Getter
 @Setter
@@ -23,4 +26,8 @@ public class Customer {
     private String email;
     private String address;
     private String typeCustomer;
+
+    @OneToMany(mappedBy = "customer",cascade = CascadeType.ALL)
+    @JsonManagedReference
+    private List<Order> listOrder;
 }

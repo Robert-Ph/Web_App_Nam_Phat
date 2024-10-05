@@ -53,7 +53,7 @@ public class AuthencationService {
         PasswordEncoder encoder = new BCryptPasswordEncoder(10);
         boolean check = encoder.matches(request.getPassword(),account.getPassword());
 
-        //If passowrd not matche throw Exception
+        //If passowrd not matched throw Exception
         if(!check){
             throw  new AppException(ErrorMessage.WROND_PASSWORD);
         }
