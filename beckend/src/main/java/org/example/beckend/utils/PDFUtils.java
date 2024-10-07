@@ -101,15 +101,15 @@ public class PDFUtils {
     }
 
 
-    public String createPDF(Company company, String fileName, Order order) {
+    public void createPDF(Company company, String fileName, Order order) {
 
         String fontPath = "src/main/resources/static/font" + File.separatorChar + "vuArial.ttf"; // Chỉnh url về nơi lưu font
 
-        String pathStorage = "src/main/resources/static/invoice" + File.separator + fileName;
+//        String pathStorage = "src/main/resources/static/invoice" + File.separator + fileName;
 
         try {
             // Tạo file PDF
-            PdfWriter writer = new PdfWriter(pathStorage);
+            PdfWriter writer = new PdfWriter(fileName);
 
             PdfDocument pdfDoc = new PdfDocument(writer);
             Document document = new Document(pdfDoc, PageSize.A4, false);
@@ -357,12 +357,21 @@ public class PDFUtils {
                 document.add(table1);
 
                 // Signature section
-                document.add(new Paragraph()
-                        .addTabStops(new TabStop(width, TabAlignment.RIGHT, new DottedLine(1.5f)))
-                        .add(new Text("Số tiền viết bằng chữ:"))
-                        .add(new Tab())
-                        .setMarginTop(15)
-                );
+               if(Objects.isNull(order)){
+                   document.add(new Paragraph()
+                           .addTabStops(new TabStop(width, TabAlignment.RIGHT, new DottedLine(1.5f)))
+                           .add(new Text("Số tiền viết bằng chữ:"))
+                           .add(new Tab())
+                           .setMarginTop(15)
+                   );
+               }else {
+                   Double total = (order.getTotal_price() + order.getTotal_price() *order.getVat());
+                   document.add(new Paragraph()
+                           .add(new Text("Số tiền viết bằng chữ:"))
+                           .add(new Text(ConvertNumberToText.convert(Math.round(total))).setItalic())
+                           .setMarginTop(15)
+                   );
+               }
                 document.add(new Paragraph()
                         .addTabStops(new TabStop(document.getLeftMargin() + 20, TabAlignment.CENTER))
                         .add(new Tab())
@@ -377,7 +386,6 @@ public class PDFUtils {
 
 
             document.close();
-            return pathStorage;
         } catch (Exception e) {
             e.printStackTrace();
             throw new AppException(ErrorMessage.SERVER_ERROR);
