@@ -1,9 +1,7 @@
 package org.example.beckend.service;
 
 import lombok.extern.slf4j.Slf4j;
-import org.example.beckend.dto.response.AccountResponse;
 import org.example.beckend.dto.response.InvoicesReponse;
-import org.example.beckend.entity.Account;
 import org.example.beckend.entity.Invoice;
 import org.example.beckend.exception.AppException;
 import org.example.beckend.message.ErrorMessage;

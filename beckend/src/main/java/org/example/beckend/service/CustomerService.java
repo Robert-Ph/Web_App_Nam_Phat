@@ -65,6 +65,10 @@ public class CustomerService {
     }
 
 
+    public List<Customer> findByPhoneContains(String phone){
+        return customerRepository.findByPhoneContains(phone);
+    }
+
     //Get all customers
     public List<Customer> findAll() {
         return customerRepository.findAll();
