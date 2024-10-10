@@ -7,6 +7,13 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
+import TextFieldAuto from "../../../component/TextFieldAuto/TextFieldAuto";
+
+interface User {
+  id: number;
+  name: string;
+}
+
 const OrderPage = () => {
   const [products, setProducts] = useState<product[]>([
     {
@@ -18,6 +25,11 @@ const OrderPage = () => {
       totalPrice: "",
     },
   ]);
+
+  const users: User[] = [
+    { id: 1, name: "John Doe" },
+    { id: 2, name: "Jane Smith" },
+  ];
 
   const [invoice, setInvoice] = useState<string>("personally");
 
@@ -40,6 +52,11 @@ const OrderPage = () => {
     setProducts([...products, product]);
   };
 
+  const handleUserSelect = (selectedId: User | null) => {
+    console.log("Selected User ID:", selectedId);
+    // Bạn có thể thực hiện các hành động khác tại đây
+  };
+
   return (
     <div>
       <div className="container">
@@ -56,12 +73,34 @@ const OrderPage = () => {
           <div className="wrap-form">
             <div className="form-group flex-8">
               <span>Tên khách hàng</span>
-              <input placeholder="Tên khách hàng"></input>
+              <input placeholder="Tên khách hàng" disabled></input>
             </div>
 
-            <div className="form-group flex-2" style={{ margin: "0px 20px" }}>
+            {/* <div className="form-group flex-2" style={{ margin: "0px 20px" }}>
               <span>Số điện thoại</span>
               <input placeholder="Số điện thoại"></input>
+            </div> */}
+
+            <div className="flex-2 " style={{ margin: "0px 20px" }}>
+              <span
+                style={{
+                  fontSize: "14px",
+                  fontWeight: "500",
+                  marginBottom: "5px",
+                }}
+              >
+                Số điện thoại
+              </span>
+              <TextFieldAuto
+                options={users}
+                getOptionLabel={(user) => `${user.id}`}
+                onSelect={handleUserSelect}
+                renderOption={(props, option) => (
+                  <li {...props}>
+                    {option.id} ({option.name})
+                  </li>
+                )}
+              ></TextFieldAuto>
             </div>
 
             <div className="form-group flex-2">
@@ -85,12 +124,12 @@ const OrderPage = () => {
           <div className="wrap-form" style={{ marginTop: "10px" }}>
             <div className="form-group flex-2">
               <span>Email</span>
-              <input placeholder="Tên khách hàng"></input>
+              <input placeholder="Email khách hàng" disabled></input>
             </div>
 
             <div className="form-group flex-8" style={{ marginLeft: "20px" }}>
               <span>Địa chỉ giao hàng</span>
-              <input placeholder="Số điện thoại"></input>
+              <input placeholder="Địa chỉ giao hàng"></input>
             </div>
           </div>
         </div>

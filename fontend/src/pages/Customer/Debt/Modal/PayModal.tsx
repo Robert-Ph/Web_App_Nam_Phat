@@ -25,6 +25,12 @@ const style = {
   paddingBottom: "40px",
 };
 
+// Interface cho User
+interface User {
+  id: number;
+  name: string;
+}
+
 type props = {
   open: boolean;
   onClose: () => void;
@@ -34,11 +40,21 @@ type props = {
 };
 const PayModal = ({ open, tittle, onClose }: props) => {
   const [role, setRole] = useState<string>("direct");
+  const [phone, setPhone] = useState<string>("");
 
   const handleRole = (event: SelectChangeEvent) => {
     setRole(event.target.value);
   };
 
+  const users: User[] = [
+    { id: 1, name: "John Doe" },
+    { id: 2, name: "Jane Smith" },
+  ];
+
+  const handleUserSelect = (selectedId: User | null) => {
+    console.log("Selected User ID:", selectedId);
+    // Bạn có thể thực hiện các hành động khác tại đây
+  };
   return (
     <Modal
       open={open}
@@ -75,7 +91,16 @@ const PayModal = ({ open, tittle, onClose }: props) => {
                 :
               </span>
               {/* <input className={`shadow `}></input> */}
-              <TextFieldAuto></TextFieldAuto>
+              <TextFieldAuto
+                options={users}
+                getOptionLabel={(user) => `${user.id}`}
+                onSelect={handleUserSelect}
+                renderOption={(props, option) => (
+                  <li {...props}>
+                    {option.id} ({option.name})
+                  </li>
+                )}
+              ></TextFieldAuto>
             </div>
 
             <div className="form-group mt-20">
@@ -102,13 +127,13 @@ const PayModal = ({ open, tittle, onClose }: props) => {
                   onChange={handleRole}
                   className="font-size-small shadow"
                   style={{
-                    borderRadius: "7px;",
+                    borderRadius: "7px",
                   }}
                 >
-                  <MenuItem value={"direct"} style={{ padding: "10px 12px;" }}>
+                  <MenuItem value={"direct"} style={{ padding: "10px 12px" }}>
                     Tiền mặt
                   </MenuItem>
-                  <MenuItem value={"bank"} style={{ padding: "10px 12px;" }}>
+                  <MenuItem value={"bank"} style={{ padding: "10px 12px" }}>
                     Chuyển khoản
                   </MenuItem>
                 </Select>

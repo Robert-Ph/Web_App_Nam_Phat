@@ -4,9 +4,14 @@ import Autocomplete from "@mui/material/Autocomplete";
 import CircularProgress from "@mui/material/CircularProgress";
 import "./text.css";
 
-interface Film {
-  title: string;
-  year: number;
+interface AutocompleteProps<T> {
+  options: T[];
+  getOptionLabel: (option: T) => string;
+  onSelect: (object: T | null) => void;
+  renderOption?: (
+    props: React.HTMLAttributes<HTMLLIElement>,
+    option: T
+  ) => React.ReactNode;
 }
 
 function sleep(duration: number): Promise<void> {
@@ -17,37 +22,44 @@ function sleep(duration: number): Promise<void> {
   });
 }
 
-export default function TextFieldAuto() {
+export default function TextFieldAuto<T>({
+  options,
+  getOptionLabel,
+  onSelect,
+  renderOption,
+}: AutocompleteProps<T>) {
   const [open, setOpen] = React.useState(false);
-  const [options, setOptions] = React.useState<readonly Film[]>([]);
   const [loading, setLoading] = React.useState(false);
 
   const handleOpen = () => {
     setOpen(true);
-    (async () => {
-      setLoading(true);
-      await sleep(1e3); // For demo purposes.
-      setLoading(false);
-
-      setOptions([...topFilms]);
-    })();
+    // (async () => {
+    //   setLoading(true);
+    //   await sleep(1e3); // For demo purposes.
+    //   setLoading(false);
+    // })();
   };
 
   const handleClose = () => {
     setOpen(false);
-    setOptions([]);
   };
 
   return (
     <Autocomplete
-      className="wrap-input_container"
+      className={"wrap-input_container"}
       open={open}
       onOpen={handleOpen}
       onClose={handleClose}
-      isOptionEqualToValue={(option, value) => option.title === value.title}
-      getOptionLabel={(option) => option.title}
+      isOptionEqualToValue={(option, value) =>
+        getOptionLabel(option) === getOptionLabel(value)
+      }
+      getOptionLabel={getOptionLabel}
       options={options}
       loading={loading}
+      onChange={(event, newValue) => {
+        onSelect(newValue);
+      }}
+      renderOption={renderOption}
       renderInput={(params) => (
         <TextField
           {...params}
@@ -69,16 +81,3 @@ export default function TextFieldAuto() {
     />
   );
 }
-const topFilms = [
-  { title: "Tất cả", year: 1994 },
-  { title: "#1132", year: 1972 },
-  { title: "#1132", year: 1974 },
-  { title: "#1132 ", year: 2008 },
-  { title: "#1223", year: 1957 },
-  { title: "#0123", year: 1993 },
-  { title: "#6738", year: 1994 },
-  { title: "#1132 ", year: 2008 },
-  { title: "#1223", year: 1957 },
-  { title: "#0123", year: 1993 },
-  { title: "#6738", year: 1994 },
-];

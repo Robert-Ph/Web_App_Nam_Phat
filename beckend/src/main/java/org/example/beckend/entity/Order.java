@@ -52,7 +52,7 @@ public class Order {
 
     @ManyToOne
     @JoinColumn(name = "cusomer_id")
-    @JsonBackReference
+//    @JsonBackReference
     Customer customer;
 
     @PrePersist

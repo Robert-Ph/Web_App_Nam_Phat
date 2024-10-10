@@ -1,6 +1,6 @@
 import Modal from "@mui/material/Modal";
 import Box from "@mui/material/Box";
-import product from "../../model/product.model";
+import product from "../../../model/product.model";
 
 const style = {
   position: "absolute" as "absolute",
@@ -18,11 +18,18 @@ const style = {
 
 type props = {
   open: boolean;
+  product?: product;
   listProduct: product[];
   onClose: () => void;
   handleAdd: (product: product) => void;
 };
-const ProductModal = ({ open, onClose, listProduct, handleAdd }: props) => {
+const ProductModal = ({
+  open,
+  onClose,
+  product,
+  listProduct,
+  handleAdd,
+}: props) => {
   return (
     <div>
       <Modal
