@@ -1,35 +1,57 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import FilterListIcon from "@mui/icons-material/FilterList";
 import TuneIcon from "@mui/icons-material/Tune";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import "./listOrder.css";
-import { order } from "../../../model/person.model";
 
 import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
 import SettingsIcon from "@mui/icons-material/Settings";
 import { useNavigate } from "react-router-dom";
+import Order from "../../../model/order.model";
+import OrderService from "../../../service/OrderService";
+import { formatDateTime } from "../../../utils/Utils";
 const ListOrderPage = () => {
-  const [products, setProducts] = useState<order[]>([
-    {
-      id: "521345",
-      name: "Công ty TNHN XD Nguyễn Hoàng Tiến Phát Hoàng Thanh Hải Đăng Kiểm",
-      date: "31/12/2024",
-      price: "1 200 000 000 000 VNĐ",
-      isPay: "Chưa Thanh Toán",
-      status: "Chưa giao",
-    },
-  ]);
+  const [orders, setOrders] = useState<Order[]>([]);
 
   const [page, setPage] = useState<number>(1);
+  const [totalPages, setTotalPages] = useState(0);
+  const [loading, setLoading] = useState<boolean>(false);
+  const pageSize = 10;
+
+  const [filterOption, setFilterOption] = useState<string>("all");
 
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchData = async () => {
+      setLoading(true);
+      try {
+        const response = await OrderService.getAll(page - 1, pageSize);
+        setOrders(response.data.data.content);
+        setTotalPages(response.data.data.page.totalPages);
+        console.log(response);
+      } catch (error) {
+        console.error("Error fetching data", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, [page, pageSize]);
 
   const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
     setPage(value);
   };
+
+  const handleFilterChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setFilterOption(event.target.value);
+  };
+
+  console.log(page);
   return (
     <div>
       <div className="main-body">
@@ -60,7 +82,11 @@ const ListOrderPage = () => {
             </div>
 
             <div style={{ position: "relative" }}>
-              <select className="filter-select btn btn-primary pd-r-40">
+              <select
+                className="filter-select btn btn-primary pd-r-40"
+                onChange={handleFilterChange}
+                value={filterOption}
+              >
                 <option value="all">Tất cả</option>
                 <option value="newest">Mới nhất</option>
                 <option value="confirmed">Xác nhận</option>
@@ -174,34 +200,38 @@ const ListOrderPage = () => {
                   </tr>
                 </thead>
                 <tbody className="border-header-table">
-                  {products.map((product) => (
-                    <tr key={product.id} className="border-header-table">
+                  {orders.map((order) => (
+                    <tr key={order.id} className="border-header-table">
                       <td className="pb-7 pt-7 font-size-small td-table font-w-500 ">
-                        {product.id}
+                        {order.id}
                       </td>
                       <td
                         className="pb-7 pt-7 font-size-small font-w-500 "
                         style={{ paddingRight: "20px" }}
                       >
-                        {product.name || "-"}
+                        {order.nameCustomer || "-"}
                       </td>
                       <td className="pb-7 pt-7 font-size-small td-table font-w-500">
-                        {product.date || "-"}
+                        {order.dateCreate
+                          ? formatDateTime(order.dateCreate)
+                          : " - "}
                       </td>
                       <td className="pb-7 pt-7 font-size-small td-table font-w-500">
-                        {product.price || "-"}
+                        {order.totalPrice
+                          ? order.totalPrice + order.totalPrice * order.vat
+                          : "-"}
                       </td>
                       <td className="pb-7 pt-7 font-size-small td-table font-w-500">
-                        {product.isPay || "-"}
+                        {order.isPay ? "Đã thanh toán" : "Chưa thanh toán"}
                       </td>
                       <td className="pb-7 pt-7 font-size-small td-table font-w-500">
-                        {product.status || "-"}
+                        {order.status || "-"}
                       </td>
                       <td className="pb-7 pt-7 font-size-small td-table font-w-500">
                         <button
                           className="btn-more"
                           onClick={() => {
-                            navigate(`/order/list/detail/${product.id}`);
+                            navigate(`/order/list/detail/${order.id}`);
                           }}
                         >
                           <MoreHorizIcon></MoreHorizIcon>
@@ -215,7 +245,7 @@ const ListOrderPage = () => {
             <div className="pagination">
               <Stack spacing={2}>
                 <Pagination
-                  count={10}
+                  count={totalPages}
                   color="primary"
                   page={page}
                   onChange={handleChange}

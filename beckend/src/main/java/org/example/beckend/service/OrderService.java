@@ -1,8 +1,9 @@
 package org.example.beckend.service;
 
 import lombok.extern.slf4j.Slf4j;
+import org.example.beckend.dto.request.OrderItemRequest;
 import org.example.beckend.dto.request.OrderRequest;
-import org.example.beckend.dto.response.InvoicesReponse;
+
 import org.example.beckend.dto.response.OrderResponseForList;
 import org.example.beckend.entity.Customer;
 import org.example.beckend.entity.Invoice;
@@ -23,7 +24,9 @@ import org.springframework.data.web.PagedModel;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.io.File;
+
+import java.util.List;
+import java.util.Objects;
 
 @Service
 public class OrderService {
@@ -57,12 +60,17 @@ public class OrderService {
     public Order create(OrderRequest request) {
         Customer customer = customerService.findCustomerByPhone(request.getPhone());
 
+
         Order order = modelMapper.map(request, Order.class);
         order.setCustomer(customer);
         order.setPhone(customer.getPhone());
-        order.setAddress(customer.getAddress());
+        if (Objects.isNull(request.getAddress())) {
+            order.setAddress(customer.getAddress());
+        } else {
+            order.setAddress(request.getAddress());
+        }
         order.setStatus(OrderStatus.CONFIM);
-        order.setTotal_price(order.getOrderItems().stream().mapToLong(item -> item.getQuanlityProduct() * item.getPricePerOne()).sum());
+        order.setTotalPrice(order.getOrderItems().stream().mapToLong(item -> item.getQuanlityProduct() * item.getPricePerOne()).sum());
 
         Order save = orderRepository.save(order);
 
@@ -74,7 +82,7 @@ public class OrderService {
 
         }
         invoiceRepository.save(Invoice.builder()
-                .priceNeedPay(Math.round(order.getTotal_price() + order.getTotal_price() * order.getVat()))
+                .priceNeedPay(Math.round(order.getTotalPrice() + order.getTotalPrice() * order.getVat()))
                 .order(order)
                 .build());
 
@@ -83,11 +91,11 @@ public class OrderService {
 
 
     //get order by id
-    public Order getById(Long id){
-        return orderRepository.findById(id).orElseThrow(()-> new AppException(ErrorMessage.ORDER_NOT_FOUND));
+    public Order getById(Long id) {
+        return orderRepository.findById(id).orElseThrow(() -> new AppException(ErrorMessage.ORDER_NOT_FOUND));
     }
 
-    private OrderResponseForList converToOrderForList(Order order){
+    private OrderResponseForList converToOrderForList(Order order) {
         modelMapper.typeMap(Order.class, OrderResponseForList.class).addMappings(mapper ->
                 mapper.map(src -> src.getCustomer().getFullName(), OrderResponseForList::setNameCustomer));
 
@@ -95,11 +103,19 @@ public class OrderService {
         return modelMapper.map(order, OrderResponseForList.class);
     }
 
-    public PagedModel<OrderResponseForList> getAllForList(Pageable pageable){
+    public PagedModel<OrderResponseForList> getAllForList(Pageable pageable) {
         return new PagedModel<>(orderRepository.findAll(pageable).map(order -> {
             return converToOrderForList(order);
         }));
     }
+
+    public PagedModel<OrderResponseForList> getByIdOrName(Pageable pageable) {
+        return new PagedModel<>(orderRepository.findAll(pageable).map(order -> {
+            return converToOrderForList(order);
+        }));
+    }
+
+
 
 //    public void createPDF(Long idOrder) {
 //        Order order = orderRepository.findById(idOrder).orElseThrow(() -> new AppException(ErrorMessage.SERVER_ERROR));
