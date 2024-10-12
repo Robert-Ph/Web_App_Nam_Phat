@@ -24,8 +24,10 @@ public enum ErrorMessage {
     INVENTORY_QUANLITY_NOT_ALLOW(ErrorCode.BAD_REQUEST,"Insufficient quantity of products in stock",HttpStatus.BAD_REQUEST),
 
     CUSTOMER_EXIST(ErrorCode.BAD_REQUEST,"Matching information",HttpStatus.BAD_REQUEST),
+    CUSTOMER_NOT_FOUND(ErrorCode.CUSTOMER_NOT_FOUND,"Customer not found",HttpStatus.BAD_REQUEST),
 
-
+    INVOICE_NOT_FOUND(ErrorCode.INVOICE_NOT_FOUND,"Invoice not found",HttpStatus.BAD_REQUEST),
+    ORDER_NOT_FOUND(ErrorCode.ORDER_NOT_FOUND,"Order not found",HttpStatus.BAD_REQUEST),
 
     IMAGE_IS_REQUIRE(ErrorCode.IMAGE_IS_REQUIRE,"File image not emtry",HttpStatus.BAD_REQUEST),
     IMAGE_NOT_VALID(ErrorCode.IMAGE_NOT_VALID,"Image must end with .jpg or .png",HttpStatus.BAD_REQUEST),

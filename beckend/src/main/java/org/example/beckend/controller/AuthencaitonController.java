@@ -29,6 +29,8 @@ public class AuthencaitonController {
         return ResponseEntity.status(HttpStatus.OK).body(
                 ApiResponse
                         .builder()
+                        .code(SuccessCode.SUCCESS)
+                        .message("Login successful")
                         .data(authencationService.login(request))
                         .build()
         );

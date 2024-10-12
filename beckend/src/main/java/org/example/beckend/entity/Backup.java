@@ -2,7 +2,7 @@ package org.example.beckend.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.example.beckend.contains.StatusProcessing;
+import org.example.beckend.entity.enums.StatusProcessing;
 
 import java.time.LocalDateTime;
 

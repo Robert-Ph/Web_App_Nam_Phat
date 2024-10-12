@@ -1,6 +1,6 @@
 package org.example.beckend.service;
 
-import org.example.beckend.contains.LogLevel;
+import org.example.beckend.entity.enums.LogLevel;
 import org.example.beckend.dto.request.AccountRequest;
 import org.example.beckend.dto.request.UpdateAccountRequest;
 import org.example.beckend.dto.response.AccountResponse;

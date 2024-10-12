@@ -17,12 +17,19 @@ public class ErrorCode {
 
 
     public final static int CUSTOMER_EXIST = 801;
+    public final static int CUSTOMER_NOT_FOUND = 802;
+
+
 
 
     public final static int IMAGE_IS_REQUIRE = 452;
 
     public final static int IMAGE_NOT_VALID = 453;
     public final static int IMAGE_NOT_FOUND = 454;
+
+    public final static int INVOICE_NOT_FOUND = 464;
+
+    public final  static int ORDER_NOT_FOUND = 474;
 
     public final  static int MISSING_ARGUMENT = 490;
 

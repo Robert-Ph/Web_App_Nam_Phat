@@ -1,13 +1,12 @@
 package org.example.beckend.service;
 
-import org.example.beckend.contains.LogLevel;
+import org.example.beckend.entity.enums.LogLevel;
 import org.example.beckend.dto.request.StockOutRequest;
 import org.example.beckend.entity.Product;
 import org.example.beckend.entity.StockOut;
 import org.example.beckend.repository.StockOutRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PagedModel;
 import org.springframework.stereotype.Service;

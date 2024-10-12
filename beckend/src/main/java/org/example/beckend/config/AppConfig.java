@@ -1,16 +1,14 @@
 package org.example.beckend.config;
 
 import lombok.extern.slf4j.Slf4j;
-import org.example.beckend.contains.Permission;
-import org.example.beckend.contains.PositionName;
+import org.example.beckend.entity.enums.Permission;
+import org.example.beckend.entity.enums.PositionName;
 import org.example.beckend.entity.Account;
 import org.example.beckend.entity.Company;
-import org.example.beckend.entity.Employee;
 import org.example.beckend.entity.Position;
 import org.example.beckend.repository.AccountRepository;
 import org.example.beckend.repository.CompanyRepository;
 import org.example.beckend.repository.PositionRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

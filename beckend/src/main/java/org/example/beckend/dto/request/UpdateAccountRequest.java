@@ -6,8 +6,7 @@ import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-import org.example.beckend.contains.Permission;
-import org.example.beckend.validation.EnumValid;
+import org.example.beckend.entity.enums.Permission;
 
 @Data
 @AllArgsConstructor
