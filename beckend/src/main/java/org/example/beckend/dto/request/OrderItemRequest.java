@@ -12,6 +12,7 @@ import lombok.experimental.FieldDefaults;
 public class OrderItemRequest {
 
     String nameProduct;
+    String typeProduct;
     String unitProduct;
     int heightProudct;
     int widthProduct;

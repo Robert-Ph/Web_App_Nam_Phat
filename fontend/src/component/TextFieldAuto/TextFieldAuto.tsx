@@ -6,8 +6,10 @@ import "./text.css";
 
 interface AutocompleteProps<T> {
   options: T[];
+  type?: "Number" | "String" | "";
   getOptionLabel: (option: T) => string;
   onSelect: (object: T | null) => void;
+  onInputChange?: (value: string) => void;
   renderOption?: (
     props: React.HTMLAttributes<HTMLLIElement>,
     option: T
@@ -27,17 +29,20 @@ export default function TextFieldAuto<T>({
   getOptionLabel,
   onSelect,
   renderOption,
+  onInputChange,
 }: AutocompleteProps<T>) {
   const [open, setOpen] = React.useState(false);
   const [loading, setLoading] = React.useState(false);
 
+  console.log(options);
+
   const handleOpen = () => {
     setOpen(true);
-    // (async () => {
-    //   setLoading(true);
-    //   await sleep(1e3); // For demo purposes.
-    //   setLoading(false);
-    // })();
+    (async () => {
+      setLoading(true);
+      await sleep(1e3); // For demo purposes.
+      setLoading(false);
+    })();
   };
 
   const handleClose = () => {
@@ -50,6 +55,7 @@ export default function TextFieldAuto<T>({
       open={open}
       onOpen={handleOpen}
       onClose={handleClose}
+      autoComplete
       isOptionEqualToValue={(option, value) =>
         getOptionLabel(option) === getOptionLabel(value)
       }
@@ -60,12 +66,18 @@ export default function TextFieldAuto<T>({
         onSelect(newValue);
       }}
       renderOption={renderOption}
+      onInputChange={(event, newInputValue) => {
+        if (onInputChange) {
+          onInputChange(newInputValue);
+        }
+      }}
       renderInput={(params) => (
         <TextField
           {...params}
           slotProps={{
             input: {
               ...params.InputProps,
+
               endAdornment: (
                 <React.Fragment>
                   {loading ? (

@@ -25,6 +25,7 @@ public class OrderItem {
     Order order;
 
     String nameProduct;
+    String typeProduct;
     String unitProduct;
     int heightProudct;
     int widthProduct;

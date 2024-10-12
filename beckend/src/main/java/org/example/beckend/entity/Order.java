@@ -25,7 +25,7 @@ public class Order {
     @GeneratedValue(strategy = GenerationType.AUTO)
     Long id;
 
-    Long total_price;
+    Long totalPrice;
 
     @Enumerated(EnumType.STRING)
     OrderStatus status;

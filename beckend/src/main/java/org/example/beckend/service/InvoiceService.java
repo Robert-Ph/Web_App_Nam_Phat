@@ -67,7 +67,11 @@ public class InvoiceService {
 
     private InvoicesReponse converToInvoicesReponse(Invoice invoice){
         modelMapper.typeMap(Invoice.class, InvoicesReponse.class).addMappings(mapper ->
-                mapper.map(src -> src.getOrder().getCustomer().getFullName(), InvoicesReponse::setNameCustomer));
+                {
+                    mapper.map(src -> src.getOrder().getCustomer().getFullName(), InvoicesReponse::setNameCustomer);
+                    mapper.map(src -> src.getOrder().getId(), InvoicesReponse::setOrderId);
+                }
+        );
 
 
         return modelMapper.map(invoice, InvoicesReponse.class);

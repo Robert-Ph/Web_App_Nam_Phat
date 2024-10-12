@@ -14,6 +14,8 @@ import java.time.LocalDateTime;
 public class InvoicesReponse {
     Long id;
 
+    Long orderId;
+
     LocalDateTime dateCreate;
 
     Long priceNeedPay;

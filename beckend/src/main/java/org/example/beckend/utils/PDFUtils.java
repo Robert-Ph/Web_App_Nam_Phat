@@ -345,13 +345,13 @@ public class PDFUtils {
                 table1.addCell(mergeCol("Tổng:", 5, TextAlignment.CENTER));
 
 
-                table1.addCell(mergeCol(String.valueOf(formatCurrency(order.getTotal_price())), 1, TextAlignment.CENTER));
+                table1.addCell(mergeCol(String.valueOf(formatCurrency(order.getTotalPrice())), 1, TextAlignment.CENTER));
 
                 table1.addCell(mergeCol("Thuế giá trị gia tăng - VAT(...%):", 5, TextAlignment.CENTER));
                 table1.addCell(mergeCol(String.valueOf(order.getVat()), 1, TextAlignment.CENTER));
 
                 table1.addCell(mergeCol("Tổng Cộng:", 5, TextAlignment.CENTER));
-                table1.addCell(mergeCol(String.valueOf(String.valueOf(formatCurrency(order.getTotal_price() + order.getTotal_price() * order.getVat()))), 1, TextAlignment.CENTER));
+                table1.addCell(mergeCol(String.valueOf(String.valueOf(formatCurrency(order.getTotalPrice() + order.getTotalPrice() * order.getVat()))), 1, TextAlignment.CENTER));
 
 
                 document.add(table1);
@@ -365,7 +365,7 @@ public class PDFUtils {
                            .setMarginTop(15)
                    );
                }else {
-                   Double total = (order.getTotal_price() + order.getTotal_price() *order.getVat());
+                   Double total = (order.getTotalPrice() + order.getTotalPrice() *order.getVat());
                    document.add(new Paragraph()
                            .add(new Text("Số tiền viết bằng chữ:"))
                            .add(new Text(ConvertNumberToText.convert(Math.round(total))).setItalic())

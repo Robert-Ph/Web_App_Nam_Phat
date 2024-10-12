@@ -12,6 +12,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -66,6 +67,10 @@ public class CustomerService {
 
 
     public List<Customer> findByPhoneContains(String phone){
+
+        if(phone.isEmpty() || phone.isBlank()){
+            return new ArrayList<>();
+        }
         return customerRepository.findByPhoneContains(phone);
     }
 

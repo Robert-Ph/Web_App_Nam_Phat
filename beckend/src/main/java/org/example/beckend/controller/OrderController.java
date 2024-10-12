@@ -1,20 +1,22 @@
 package org.example.beckend.controller;
 
+import org.example.beckend.dto.request.OrderItemRequest;
 import org.example.beckend.dto.request.OrderRequest;
 import org.example.beckend.dto.response.ApiResponse;
 import org.example.beckend.message.SuccessMessage;
 import org.example.beckend.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.io.FileSystemResource;
+
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
+
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.File;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/orders")
@@ -28,6 +30,10 @@ public class OrderController {
 
     @PostMapping
     public ResponseEntity<ApiResponse> create(@RequestBody OrderRequest request) {
+
+        System.out.println(request.getOrderItems() instanceof List<OrderItemRequest>);
+       request.getOrderItems().forEach(item-> {System.out.println(item);});
+
         return ResponseEntity.ok(ApiResponse.builder()
                 .code(SuccessMessage.CREATE_DATA_SUCCESS.getCode())
                 .message(SuccessMessage.CREATE_DATA_SUCCESS.getMessage())
@@ -37,7 +43,8 @@ public class OrderController {
 
     @GetMapping
     public ResponseEntity<ApiResponse> getAll(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size) {
-        Pageable pageable = PageRequest.of(page, size);
+        Sort sort = Sort.by("dateCreate").descending();
+        Pageable pageable = PageRequest.of(page, size,sort);
         return ResponseEntity.ok(ApiResponse.builder()
                 .code(SuccessMessage.GET_DATA_SUCCESS.getCode())
                 .message(SuccessMessage.GET_DATA_SUCCESS.getMessage())
