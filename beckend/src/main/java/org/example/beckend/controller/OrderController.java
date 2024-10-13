@@ -3,6 +3,10 @@ package org.example.beckend.controller;
 import org.example.beckend.dto.request.OrderItemRequest;
 import org.example.beckend.dto.request.OrderRequest;
 import org.example.beckend.dto.response.ApiResponse;
+import org.example.beckend.dto.response.OrderResponseForList;
+import org.example.beckend.entity.Order;
+import org.example.beckend.entity.enums.OrderStatus;
+import org.example.beckend.entity.enums.TypeOrder;
 import org.example.beckend.message.SuccessMessage;
 import org.example.beckend.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +16,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
 import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PagedModel;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -49,6 +54,44 @@ public class OrderController {
                 .code(SuccessMessage.GET_DATA_SUCCESS.getCode())
                 .message(SuccessMessage.GET_DATA_SUCCESS.getMessage())
                 .data(orderService.getAllForList(pageable))
+                .build());
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<ApiResponse> getByCondition(@RequestParam(defaultValue = "0") int page,
+                                                      @RequestParam(defaultValue = "10") int size,
+                                                      @RequestParam(required = false)boolean ispay,
+                                                      @RequestParam(required = false)String filter,
+                                                      @RequestParam(required = true)String type
+                                                      ) {
+        Sort sort = Sort.by("dateCreate").descending();
+        Pageable pageable = PageRequest.of(page, size,sort);
+
+        PagedModel<OrderResponseForList> result = null;
+
+        if(type.equals("all") || type.equals("newest")){
+            result = orderService.getAllForList(pageable);
+        }else {
+            if(type.equals("paid")){
+                result =  orderService.getByIdOrNameAndIspay(pageable,true,filter);
+            }else if(type.equals("unpaid")){
+                result =  orderService.getByIdOrNameAndIspay(pageable,false,filter);
+            }else if(type.equals("confirmed")){
+                result =  orderService.getByIdOrNameAndStatus(pageable, OrderStatus.CONFIM,filter);
+            }else if(type.equals("completed")){
+                result = orderService.getByIdOrNameAndStatus(pageable, OrderStatus.FISNISHED,filter);
+            }
+            else if(type.equals("delivered")){
+                result = orderService.getByIdOrNameAndStatus(pageable, OrderStatus.DELIVERED,filter);
+            }else {
+                result = orderService.getAllForList(pageable);
+            }
+        }
+
+        return ResponseEntity.ok(ApiResponse.builder()
+                .code(SuccessMessage.GET_DATA_SUCCESS.getCode())
+                .message(SuccessMessage.GET_DATA_SUCCESS.getMessage())
+                .data(result)
                 .build());
     }
 
