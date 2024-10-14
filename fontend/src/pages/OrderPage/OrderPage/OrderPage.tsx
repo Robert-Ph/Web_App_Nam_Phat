@@ -82,7 +82,8 @@ const OrderPage = () => {
   };
 
   const handleReset = () => {
-    // setQuery("");
+    console.log("Reset Run");
+    setQuery("");
     setOrderItems([]);
     setSelectedCustomer(null);
 
@@ -91,7 +92,6 @@ const OrderPage = () => {
     }
     setVat(0);
     setInvoice("INDIVIDUAL");
-    handleInputChange("");
   };
 
   const handleCreate = () => {
@@ -111,12 +111,13 @@ const OrderPage = () => {
         status: null,
         dateCreate: null,
         dateShip: null,
-        isPay: null,
+        pay: null,
         orderItems: [...orderItems],
       } as Order;
 
       try {
         handleReset();
+        console.log(query);
         // OrderService.create(order)
         //   .then((response: any) => {
         //     console.log(response.data);
@@ -148,7 +149,9 @@ const OrderPage = () => {
   };
 
   const handleInputChange = (value: string) => {
-    setQuery(value);
+    if (value != "") {
+      setQuery(value);
+    }
   };
   console.log(selectedCustomer);
   useEffect(() => {
@@ -185,6 +188,8 @@ const OrderPage = () => {
       style: "decimal",
     }).format(amount);
   };
+
+  console.log("Query:" + query);
 
   return (
     <div>
@@ -236,7 +241,7 @@ const OrderPage = () => {
                 options={customers}
                 getOptionLabel={(customer) => `${customer.phone}`}
                 onSelect={handleUserSelect}
-                onInputChange={handleInputChange}
+                onInputChange={setQuery}
                 renderOption={(props, option) => (
                   <li {...props} key={option.id}>
                     {option.phone} ({option.fullName})
