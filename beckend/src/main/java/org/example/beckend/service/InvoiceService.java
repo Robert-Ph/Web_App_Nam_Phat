@@ -81,4 +81,10 @@ public class InvoiceService {
             return converToInvoicesReponse(invoice);
         }));
     }
+
+    public PagedModel<InvoicesReponse> getByFilter(String filter,Pageable pageable) {
+        return new PagedModel<>(invoiceRepository.findByIdOrNameCustomerOrOrderIdContains(filter,pageable).map(invoice -> {
+            return converToInvoicesReponse(invoice);
+        }));
+    }
 }

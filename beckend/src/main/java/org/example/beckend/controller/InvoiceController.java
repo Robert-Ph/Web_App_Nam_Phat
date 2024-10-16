@@ -63,6 +63,18 @@ public class InvoiceController {
                 .build());
     }
 
+    @GetMapping("/search")
+    public ResponseEntity<ApiResponse> getByFilter(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size,@RequestParam String filter) {
+        Pageable pageable = PageRequest.of(page, size);
+
+        return ResponseEntity.ok(ApiResponse.builder()
+                .code(SuccessMessage.GET_DATA_SUCCESS.getCode())
+                .message(SuccessMessage.GET_DATA_SUCCESS.getMessage())
+                .data(invoiceService.getByFilter(filter,pageable))
+                .build());
+    }
+
+
 //    @GetMapping("/{id}")
 //    public ResponseEntity<ApiResponse> getById(@PathVariable Long id) {
 //        return ResponseEntity.ok(
