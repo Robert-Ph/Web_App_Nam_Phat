@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import FilterListIcon from "@mui/icons-material/FilterList";
@@ -16,39 +16,29 @@ import account from "../../../model/account.model";
 import Span from "../../../component/Span/Span";
 import AccountModal from "./AccountModal/AccountModal";
 import NotifyDeleteModal from "../../UtilsPage/NotifyDeleteModal";
+import AccountService from "../../../service/AccountService";
+import { toast } from "react-toastify";
+import { formatDateTime } from "../../../utils/Utils";
 
 const AccountPage = () => {
-  const [accounts, setAccounts] = useState<account[]>([
-    {
-      id: "1203",
-      idEmployee: "NV0111",
-      username: "nguyenngocphuong11072002@gmail.com",
-      level: "Nhân viên",
-      dateCreate: "12/12/2024 15:15:30",
-      status: "Đang sử dụng",
-    },
-  ]);
+  const [accounts, setAccounts] = useState<account[]>([]);
 
   const [page, setPage] = useState<number>(1);
   const [open, setOpen] = useState<boolean>(false);
-  const [isUpdate, setIsUpdate] = useState<boolean>(false);
+  const [totalPages, setTotalPages] = useState(0);
+  const [loading, setLoading] = useState<boolean>(false);
 
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const [search, setSearch] = useState<string>("");
+  const pageSize = 10;
+
+  const [update, setUpdate] = useState<account | null>(null);
+
   const [notify, setNotify] = useState<boolean>(false);
 
   const handleCloseNotify = () => setNotify(false);
-  const handleOpenNotify = () => setNotify(true);
-
-  const openSetting = Boolean(anchorEl);
-
-  const handleClickOnSetting = (event: React.MouseEvent<HTMLButtonElement>) => {
-    setAnchorEl(event.currentTarget);
-  };
-  const handleCloseSetting = () => {
-    setAnchorEl(null);
-  };
 
   const handleOnclose = () => {
+    setUpdate(null);
     setOpen(false);
   };
 
@@ -56,18 +46,35 @@ const AccountPage = () => {
     setOpen(true);
   };
 
+  useEffect(() => {
+    setLoading(true);
+    AccountService.getByFilter(page - 1, pageSize, search)
+      .then((response) => {
+        console.log(response.status);
+        if (response.status == 200) {
+          setTotalPages(response.data.data.page.totalPages);
+          setLoading(false);
+          setAccounts(response.data.data.content);
+        }
+      })
+      .catch((error) => {
+        toast.error("Xảy ra lỗi.");
+        console.log(error);
+      });
+  }, [page, pageSize, search]);
+
   const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
     setPage(value);
   };
 
-  const handleOnClickSettingUpdate = () => {
-    setIsUpdate(true);
+  const handleOnClickSettingUpdate = (account: account) => {
+    setUpdate(account);
     setOpen(true);
-    handleCloseSetting();
   };
 
-  console.log(page);
   const navigate = useNavigate();
+
+  console.log();
 
   return (
     <div>
@@ -94,6 +101,8 @@ const AccountPage = () => {
                   id="standard-basic"
                   label="Tìm kiếm"
                   variant="standard"
+                  value={search}
+                  onChange={(e) => setSearch(e.target.value)}
                 />
               </Box>
             </div>
@@ -101,7 +110,7 @@ const AccountPage = () => {
               <button
                 className="btn btn-primary"
                 onClick={() => {
-                  setIsUpdate(false);
+                  setUpdate(null);
                   handleOpen();
                 }}
               >
@@ -130,10 +139,10 @@ const AccountPage = () => {
                   >
                     Tên đăng nhập
                   </th>
-                  <th className="pb-7 font-w-500" style={{ width: "9%" }}>
+                  <th className="pb-7 font-w-500" style={{ width: "7%" }}>
                     Quyền
                   </th>
-                  <th className="pb-7 font-w-500" style={{ width: "10%" }}>
+                  <th className="pb-7 font-w-500" style={{ width: "12%" }}>
                     Ngày tạo
                   </th>
                   <th className="pb-7 font-w-500" style={{ width: "12%" }}>
@@ -154,7 +163,7 @@ const AccountPage = () => {
                       {item.id}
                     </td>
                     <td className="pb-7 pt-7 font-size-small font-w-500 ">
-                      {item.idEmployee || "-"}
+                      {item.employeeId || "-"}
                     </td>
                     <td
                       className="pb-7 pt-7 font-size-small td-table font-w-500"
@@ -163,51 +172,30 @@ const AccountPage = () => {
                       {item.username || "-"}
                     </td>
                     <td className="pb-7 pt-7 font-size-small td-table font-w-500">
-                      {item.level || "-"}
+                      {item.permission || "-"}
                     </td>
                     <td
                       className="pb-7 pt-7 font-size-small td-table font-w-500"
                       style={{ paddingRight: "5%" }}
                     >
-                      {item.dateCreate || "-"}
+                      {item.dateCreate ? formatDateTime(item.dateCreate) : "-"}
                     </td>
 
                     <td className="pb-7 pt-7 font-size-small td-table font-w-500">
-                      <Span type="success" message="Đang sử dụng"></Span>
+                      <Span
+                        type={item.status ? "SUCCESS" : "DANGER"}
+                        message={item.status ? "Đang sử dụng" : "Block"}
+                      ></Span>
                     </td>
                     <td className="pb-7 pt-7 font-size-small td-table font-w-500">
                       <button
                         className="btn-more"
-                        onClick={handleClickOnSetting}
+                        onClick={() => {
+                          handleOnClickSettingUpdate(item);
+                        }}
                       >
                         <MoreHorizIcon></MoreHorizIcon>
                       </button>
-
-                      <Menu
-                        id="basic-menu"
-                        anchorEl={anchorEl}
-                        open={openSetting}
-                        onClose={handleCloseSetting}
-                        // MenuListProps={{
-                        //   "aria-labelledby": "basic-button",
-                        // }}
-                      >
-                        <MenuItem
-                          onClick={() => {
-                            handleOnClickSettingUpdate();
-                          }}
-                        >
-                          Chỉnh sửa
-                        </MenuItem>
-                        <MenuItem
-                          onClick={() => {
-                            handleCloseSetting();
-                            handleOpenNotify();
-                          }}
-                        >
-                          Xóa
-                        </MenuItem>
-                      </Menu>
                     </td>
                   </tr>
                 ))}
@@ -217,7 +205,7 @@ const AccountPage = () => {
           <div className="pagination">
             <Stack spacing={2}>
               <Pagination
-                count={10}
+                count={totalPages}
                 color="primary"
                 page={page}
                 onChange={handleChange}
@@ -227,10 +215,10 @@ const AccountPage = () => {
         </div>
       </div>
       <AccountModal
-        tittle={isUpdate ? "Chỉnh sửa tài khoản" : "Thêm mới tài khoản"}
+        tittle={update ? "Chỉnh sửa tài khoản" : "Thêm mới tài khoản"}
         open={open}
         onClose={handleOnclose}
-        isUpdate={isUpdate}
+        update={update}
       ></AccountModal>
 
       <NotifyDeleteModal

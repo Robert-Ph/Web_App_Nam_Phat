@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 import Modal from "@mui/material/Modal";
 import Box from "@mui/material/Box";
@@ -26,21 +26,71 @@ const style = {
 type props = {
   open: boolean;
   onClose: () => void;
-  isUpdate?: boolean;
+  update: account | null;
   tittle: string;
   //   handleAdd: (employee: Employee) => void;
 };
-const AccountModal = ({ open, tittle, onClose, isUpdate }: props) => {
-  const [role, setRole] = useState<string>("employee");
-  const [status, setStatus] = useState<string>("use");
+const AccountModal = ({ open, tittle, onClose, update }: props) => {
+  const [formData, setFormData] = useState<account>({
+    id: "",
+    employeeId: 0,
+    username: "",
+    permission: "employee",
+    dateCreate: null, // Hoặc để trống nếu không cần
+    status: true,
+  });
 
-  const handleRole = (event: SelectChangeEvent) => {
-    setRole(event.target.value);
+  useEffect(() => {
+    if (update) {
+      setFormData({
+        id: update.id,
+        employeeId: update.employeeId,
+        username: update.username,
+        permission: update.permission,
+        dateCreate: update.dateCreate,
+        status: update.status,
+      });
+    } else {
+      // Reset form nếu không có update
+      setFormData({
+        id: "",
+        employeeId: 0,
+        username: "",
+        permission: "USER",
+        dateCreate: new Date().toISOString(),
+        status: true,
+      });
+    }
+  }, [update]);
+
+  // const handleRole = (event: SelectChangeEvent) => {
+  //   setRole(event.target.value);
+  // };
+
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: name === "employeeId" ? Number(value) : value,
+    }));
+  };
+
+  const handlePermission = (event: SelectChangeEvent<string>) => {
+    setFormData((prev) => ({
+      ...prev,
+      permission: event.target.value,
+    }));
   };
 
   const handleStatus = (event: SelectChangeEvent) => {
-    setStatus(event.target.value);
+    setFormData((prev) => ({
+      ...prev,
+      status: event.target.value === "true",
+    }));
   };
+  console.log(formData);
   return (
     <Modal
       open={open}
@@ -62,7 +112,12 @@ const AccountModal = ({ open, tittle, onClose, isUpdate }: props) => {
               <span>
                 User name <span style={{ color: "red" }}>*</span> :
               </span>
-              <input className={`shadow `} disabled={isUpdate}></input>
+              <input
+                className={`shadow `}
+                value={formData.username}
+                onChange={handleChange}
+                disabled={update != null}
+              ></input>
             </div>
 
             <div className="form-group mt-10">
@@ -76,55 +131,48 @@ const AccountModal = ({ open, tittle, onClose, isUpdate }: props) => {
               <span>
                 Mã nhân viên <span style={{ color: "red" }}>*</span> :
               </span>
-              <input className="shadow" disabled={isUpdate}></input>
+              <input
+                className="shadow"
+                value={formData.employeeId || ""}
+                onChange={handleChange}
+                disabled={update != null}
+              ></input>
             </div>
 
             <div className="form-group mt-10">
-              <span>Quyền :</span>
-              <FormControl size="small">
+              <label>Permission:</label>
+              <FormControl size="small" fullWidth>
                 <Select
-                  labelId="demo-select-small-label"
-                  id="demo-select-small"
-                  value={role}
-                  onChange={handleRole}
+                  name="permission"
+                  value={formData.permission}
+                  onChange={handlePermission}
                   className="font-size-small shadow"
-                  style={{
-                    borderRadius: "7px;",
-                  }}
+                  style={{ borderRadius: "7px" }}
                 >
-                  <MenuItem
-                    value={"employee"}
-                    style={{ padding: "10px 12px;" }}
-                  >
+                  <MenuItem value="USER" style={{ padding: "10px 12px" }}>
                     Nhân viên
                   </MenuItem>
-                  <MenuItem
-                    value={"enterprise"}
-                    style={{ padding: "10px 12px;" }}
-                  >
-                    Quản lí
+                  <MenuItem value="ADMIN" style={{ padding: "10px 12px" }}>
+                    Quản lý
                   </MenuItem>
                 </Select>
               </FormControl>
             </div>
 
             <div className="form-group mt-10">
-              <span>Trạng thái :</span>
-              <FormControl size="small">
+              <label>Status:</label>
+              <FormControl size="small" fullWidth>
                 <Select
-                  labelId="demo-select-small-label"
-                  id="demo-select-small"
-                  value={status}
+                  name="status"
+                  value={formData.status ? "true" : "false"}
                   onChange={handleStatus}
                   className="font-size-small shadow"
-                  style={{
-                    borderRadius: "7px;",
-                  }}
+                  style={{ borderRadius: "7px" }}
                 >
-                  <MenuItem value={"use"} style={{ padding: "10px 12px;" }}>
+                  <MenuItem value="true" style={{ padding: "10px 12px" }}>
                     Đang sử dụng
                   </MenuItem>
-                  <MenuItem value={"block"} style={{ padding: "10px 12px;" }}>
+                  <MenuItem value="false" style={{ padding: "10px 12px" }}>
                     Khóa
                   </MenuItem>
                 </Select>
@@ -136,7 +184,7 @@ const AccountModal = ({ open, tittle, onClose, isUpdate }: props) => {
                 Hủy
               </button>
               <button className="btn btn-primary">
-                {isUpdate ? "Chỉnh sửa" : "Thêm"}
+                {update == null ? "Chỉnh sửa" : "Thêm"}
               </button>
             </div>
           </div>
