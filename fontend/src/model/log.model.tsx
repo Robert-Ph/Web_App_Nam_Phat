@@ -1,9 +1,9 @@
 type log = {
-  id: string;
-  date: string;
+  id: number;
+  dateCreate: string;
   level: string;
-  action: string;
-  actionBy: string;
+  messsage: string;
+  userName: string;
 };
 
 export default log;

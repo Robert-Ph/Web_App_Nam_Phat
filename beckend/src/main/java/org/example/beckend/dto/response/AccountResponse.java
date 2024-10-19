@@ -5,6 +5,8 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 import org.example.beckend.entity.Employee;
 
+import java.time.LocalDateTime;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -18,4 +20,5 @@ public class AccountResponse {
     String permission;
     boolean status;
     Long employeeId;
+    LocalDateTime dateCreate;
 }

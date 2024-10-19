@@ -1,33 +1,76 @@
+import { toast } from "react-toastify";
 import logo from "../../../assets/logoNamPhat.svg";
+import Spiner from "../../../component/Spiner/Spiner";
+import CompanyService from "../../../service/CompanyService";
 import "./information.css";
-import React, { useState, ChangeEvent } from "react";
+import React, { useState, ChangeEvent, useEffect, useRef } from "react";
+import Company from "../../../model/company.model";
 
-type CompanyData = {
-  name: string;
-  taxCode: string;
-  phoneNumber: string;
-  accountNumber: string;
-  address: string;
-  email: string;
-};
 const InformartionPage = () => {
   const [isEditing, setIsEditing] = useState<boolean>(false);
-  const [companyInfo, setCompanyInfo] = useState<CompanyData>({
-    name: "CÔNG TY TNHH THƯƠNG MẠI IN KỸ THUẬT NAM PHÁT",
-    taxCode: "0317924032",
-    phoneNumber: "0904 170 472",
-    accountNumber: "",
-    email: "nguyen@gmail.com",
-    address:
-      "168/17 đường Bình Trị Đông, P.Bình Trị Đông, Q.Bình Tân, TP.Hồ Chí Minh",
-  });
+  const [companyInfo, setCompanyInfo] = useState<Company | null>(null);
+  const currentInfor = useRef<Company | null>(null);
+  useEffect(() => {
+    CompanyService.getCompany()
+      .then((response) => {
+        console.log(response);
+        setCompanyInfo(response.data.data);
+        currentInfor.current = response.data.data;
+      })
+      .catch((error) => {
+        toast.error("Lỗi");
+      });
+  }, []);
 
+  console.log(companyInfo);
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setCompanyInfo((prevInfo) => ({
-      ...prevInfo,
-      [name]: value,
-    }));
+    setCompanyInfo((prevInfo) => {
+      if (!prevInfo) {
+        // Handle the case where prevInfo is null, initialize with default empty values
+        return {
+          name: "",
+          id: null,
+          phone: "",
+          idBank: "",
+          address: "",
+          email: "",
+          idTax: "",
+          [name]: value,
+        };
+      }
+
+      return {
+        ...prevInfo,
+        [name]: value ?? "",
+      };
+    });
+  };
+
+  const handleSave = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (companyInfo) {
+      CompanyService.update(companyInfo)
+        .then((response) => {
+          if (response.data.code == 200) {
+            toast.success("Thông tin công ty đã được cập nhật");
+            currentInfor.current = companyInfo;
+            setIsEditing(false); // Exit editing mode
+          } else {
+            toast.error("Lỗi");
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+          toast.error("Lỗi");
+        });
+    }
+
+    // Kiểm tra nếu các trường cần thiết bị trống
+  };
+  const handleCancel = () => {
+    setCompanyInfo(currentInfor.current); // Revert to original data
+    setIsEditing(false); // Exit editing mode
   };
   return (
     <div className="main-body">
@@ -37,10 +80,7 @@ const InformartionPage = () => {
         </div>
         <div style={{ marginRight: "5%" }}>
           {isEditing && (
-            <button
-              className="btn btn-danger"
-              onClick={() => setIsEditing(false)}
-            >
+            <button className="btn btn-danger" onClick={handleCancel}>
               Hủy
             </button>
           )}
@@ -52,10 +92,7 @@ const InformartionPage = () => {
               Chỉnh sửa
             </button>
           ) : (
-            <button
-              className="btn btn-warning"
-              onClick={() => setIsEditing(false)}
-            >
+            <button className="btn btn-warning" type="submit" form="infoForm">
               Lưu
             </button>
           )}
@@ -68,23 +105,28 @@ const InformartionPage = () => {
         </div>
 
         <div className="wrap-content">
-          {isEditing ? (
-            <>
+          {companyInfo == null ? (
+            <div className="wrap-spiner" style={{ position: "relative" }}>
+              <Spiner></Spiner>
+            </div>
+          ) : isEditing ? (
+            <form id="infoForm" onSubmit={handleSave}>
               <div className="form-group">
                 <span>Tên công ty:</span>
                 <input
                   type="text"
                   name="name"
-                  value={companyInfo.name}
+                  value={companyInfo.name || ""}
                   onChange={handleChange}
+                  required
                 />
               </div>
               <div className="form-group mt-10">
                 <span>Mã số thuế:</span>
                 <input
                   type="text"
-                  name="taxCode"
-                  value={companyInfo.taxCode}
+                  name="idTax"
+                  value={companyInfo.idTax || ""}
                   onChange={handleChange}
                 />
               </div>
@@ -92,27 +134,29 @@ const InformartionPage = () => {
                 <span>Số điện thoại:</span>
                 <input
                   type="text"
-                  name="phoneNumber"
-                  value={companyInfo.phoneNumber}
+                  name="phone"
+                  value={companyInfo.phone || ""}
                   onChange={handleChange}
+                  required
                 />
               </div>
 
               <div className="form-group mt-10">
                 <span>Email:</span>
                 <input
-                  type="text"
-                  name="phoneNumber"
-                  value={companyInfo.email}
+                  type="email"
+                  name="email"
+                  value={companyInfo.email || ""}
                   onChange={handleChange}
+                  required
                 />
               </div>
               <div className="form-group mt-10">
                 <span>Số tài khoản:</span>
                 <input
                   type="text"
-                  name="accountNumber"
-                  value={companyInfo.accountNumber}
+                  name="idBank"
+                  value={companyInfo.idBank || ""}
                   onChange={handleChange}
                 />
               </div>
@@ -121,21 +165,22 @@ const InformartionPage = () => {
                 <input
                   type="text"
                   name="address"
-                  value={companyInfo.address}
+                  value={companyInfo.address || ""}
                   onChange={handleChange}
+                  required
                 />
               </div>
-            </>
+            </form>
           ) : (
             <>
               <p>
-                Tên công ty: <strong>{companyInfo.name}</strong>
+                Tên công ty: <strong>{companyInfo.name || ""}</strong>
               </p>
-              <p>Mã số thuế: {companyInfo.taxCode}</p>
-              <p>Số điện thoại: {companyInfo.phoneNumber}</p>
-              <p>Số tài khoản: {companyInfo.accountNumber}</p>
-              <p>Email: {companyInfo.email}</p>
-              <p>Địa chỉ: {companyInfo.address}</p>
+              <p>Mã số thuế: {companyInfo.idTax || ""}</p>
+              <p>Số điện thoại: {companyInfo.phone || ""}</p>
+              <p>Số tài khoản: {companyInfo.idBank || ""}</p>
+              <p>Email: {companyInfo.email || ""}</p>
+              <p>Địa chỉ: {companyInfo.address || ""}</p>
             </>
           )}
         </div>

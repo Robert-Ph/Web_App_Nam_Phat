@@ -18,4 +18,7 @@ public interface AccountRepository extends JpaRepository<Account,Long> {
     @Query("SELECT a FROM Account a WHERE a.id <> :id")
     Page<Account> findAllExceptId(@Param("id") Long id, Pageable pageable);
 
+    @Query("SELECT o FROM Account o WHERE (:filter IS NULL  OR :filter = '' OR (CAST(o.employee.id AS string) LIKE %:filter% OR o.username LIKE %:filter%))")
+    Page<Account> findFilter(@Param("filter") String filter, Pageable pageable);
+
 }

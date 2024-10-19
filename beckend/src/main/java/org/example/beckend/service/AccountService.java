@@ -129,6 +129,21 @@ public class AccountService {
         return new PagedModel<>(convert);
     }
 
+    public PagedModel<AccountResponse> findAll(Pageable pageable){
+        Page<Account> page = accountRepository.findAll( pageable);
+        Page<AccountResponse> convert = page.map(entity -> {
+            return converToAccountResponse(entity);
+        });
+        return new PagedModel<>(convert);
+    }
+    public PagedModel<AccountResponse> findFilter(String filter,Pageable pageable){
+        Page<Account> page = accountRepository.findFilter(filter, pageable);
+        Page<AccountResponse> convert = page.map(entity -> {
+            return converToAccountResponse(entity);
+        });
+        return new PagedModel<>(convert);
+    }
+
     public PagedModel<AccountResponse> findAllExceptIsLogin(Pageable pageable) {
         Long id = sercurityService.getAccountIsLogin().getId();
 
