@@ -5,6 +5,7 @@ import Box from "@mui/material/Box";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
+import { Employee } from "../../model/employee.model";
 
 const style = {
   position: "absolute" as "absolute",
@@ -25,14 +26,49 @@ const style = {
 type props = {
   open: boolean;
   onClose: () => void;
-  //   handleAdd: (employee: Employee) => void;
+  handleAdd: (employee: Employee) => void;
 };
-const EmployeeModal = ({ open, onClose }: props) => {
-  const [locaiton, setLocation] = useState<string>("employee");
+const EmployeeModal = ({ open, onClose, handleAdd }: props) => {
+  const [locaiton, setLocation] = useState<string>("INTERN");
 
+  const [formData, setFormData] = useState<Employee>({
+    id: null,
+    fullName: "",
+    phone: "",
+    email: "",
+    work_date: null,
+    wage: 0,
+    work: true, // Default value
+    position: locaiton, // Default position
+  });
+
+  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = event.target;
+    setFormData({ ...formData, [name]: value });
+  };
   const handleChange = (event: SelectChangeEvent) => {
     setLocation(event.target.value);
+    setFormData({ ...formData, ["position"]: event.target.value });
   };
+
+  const handleSubmitForm = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault(); // Ngăn chặn việc refresh trang
+    console.log(formData);
+
+    handleAdd(formData); // Gọi hàm handleSubmit truyền từ props với formData
+    setFormData({
+      id: null,
+      fullName: "",
+      phone: "",
+      email: "",
+      work_date: null,
+      wage: 0,
+      work: true, // Default value
+      position: locaiton, // Default position
+    });
+  };
+
+  console.log(formData);
   return (
     <div>
       <Modal
@@ -41,94 +77,125 @@ const EmployeeModal = ({ open, onClose }: props) => {
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
-        <Box sx={style}>
-          <div className="mt-10">
-            <h3 className="text-center">Thêm Nhân Viên</h3>
-          </div>
+        <form onSubmit={handleSubmitForm}>
+          <Box sx={style}>
+            <div className="mt-10">
+              <h3 className="text-center">Thêm Nhân Viên</h3>
+            </div>
 
-          <div
-            className="d-flex dicrect-col"
-            style={{ paddingLeft: "20px", paddingRight: "10px" }}
-          >
-            <div className="">
-              <div className="form-group mt-10">
-                <span>
-                  Tên nhân viên <span style={{ color: "red" }}>*</span> :
-                </span>
-                <input className="shadow"></input>
-              </div>
-
-              <div className="form-group mt-10">
-                <span>
-                  Số điện thoại <span style={{ color: "red" }}>*</span> :
-                </span>
-                <input className="shadow"></input>
-              </div>
-
-              <div className="form-group mt-10">
-                <span>
-                  Email <span style={{ color: "red" }}>*</span> :
-                </span>
-                <input className="shadow" type="email"></input>
-              </div>
-
-              <div className="form-group mt-10">
-                <span>
-                  Ngày vào làm <span style={{ color: "red" }}>*</span> :
-                </span>
-                <input className="shadow" type="date"></input>
-              </div>
-
-              <div className="d-flex dicrect-row mt-10">
-                <div
-                  className="form-group flex-1"
-                  style={{ marginRight: "10px" }}
-                >
-                  <span>Lương cơ bản:</span>
-                  <input className="shadow" type="number"></input>
+            <div
+              className="d-flex dicrect-col"
+              style={{ paddingLeft: "20px", paddingRight: "10px" }}
+            >
+              <div className="">
+                <div className="form-group mt-10">
+                  <span>
+                    Tên nhân viên <span style={{ color: "red" }}>*</span> :
+                  </span>
+                  <input
+                    className="shadow"
+                    name="fullName"
+                    onChange={handleInputChange}
+                    required
+                  ></input>
                 </div>
 
-                <div
-                  className="form-group flex-1"
-                  style={{ marginLeft: "10px" }}
-                >
-                  <span>Vị trí:</span>
-                  <FormControl size="small">
-                    <Select
-                      labelId="demo-select-small-label"
-                      id="demo-select-small"
-                      value={locaiton}
-                      onChange={handleChange}
-                      className="font-size-small shadow"
-                      style={{
-                        borderRadius: "7px;",
-                      }}
-                    >
-                      <MenuItem
-                        value={"employee"}
-                        style={{ padding: "10px 12px;" }}
-                      >
-                        Thử việc
-                      </MenuItem>
-                      <MenuItem
-                        value={"enterprise"}
-                        style={{ padding: "10px 12px;" }}
-                      >
-                        Chính thức
-                      </MenuItem>
-                    </Select>
-                  </FormControl>
+                <div className="form-group mt-10">
+                  <span>
+                    Số điện thoại <span style={{ color: "red" }}>*</span> :
+                  </span>
+                  <input
+                    className="shadow"
+                    name="phone"
+                    onChange={handleInputChange}
+                    required
+                  ></input>
                 </div>
-              </div>
-              <div className="d-flex mt-20 justify-space-arround ">
-                <button className="btn btn-danger" onClick={onClose}>
-                  Hủy
-                </button>
-                <button className="btn btn-primary">Thêm </button>
+
+                <div className="form-group mt-10">
+                  <span>
+                    Email <span style={{ color: "red" }}>*</span> :
+                  </span>
+                  <input
+                    className="shadow"
+                    type="email"
+                    name="email"
+                    onChange={handleInputChange}
+                  ></input>
+                </div>
+
+                <div className="form-group mt-10">
+                  <span>
+                    Ngày vào làm <span style={{ color: "red" }}>*</span> :
+                  </span>
+                  <input
+                    className="shadow"
+                    type="date"
+                    name="work_date"
+                    onChange={handleInputChange}
+                  ></input>
+                </div>
+
+                <div className="d-flex dicrect-row mt-10">
+                  <div
+                    className="form-group flex-1"
+                    style={{ marginRight: "10px" }}
+                  >
+                    <span>Lương cơ bản:</span>
+                    <input
+                      className="shadow"
+                      type="number"
+                      min={0}
+                      name="wage"
+                      onChange={handleInputChange}
+                      required
+                    ></input>
+                  </div>
+
+                  <div
+                    className="form-group flex-1"
+                    style={{ marginLeft: "10px" }}
+                  >
+                    <span>Vị trí:</span>
+                    <FormControl size="small">
+                      <Select
+                        labelId="demo-select-small-label"
+                        id="demo-select-small"
+                        value={locaiton}
+                        onChange={handleChange}
+                        className="font-size-small shadow"
+                        style={{
+                          borderRadius: "7px",
+                        }}
+                      >
+                        <MenuItem
+                          value={"INTERN"}
+                          style={{ padding: "10px 12px;" }}
+                        >
+                          Thử việc
+                        </MenuItem>
+                        <MenuItem
+                          value={"OFFICIAL"}
+                          style={{ padding: "10px 12px;" }}
+                        >
+                          Chính thức
+                        </MenuItem>
+                      </Select>
+                    </FormControl>
+                  </div>
+                </div>
+                <div className="d-flex mt-20 justify-space-arround ">
+                  <button className="btn btn-danger" onClick={onClose}>
+                    Hủy
+                  </button>
+                  <button className="btn btn-primary" type="submit">
+                    Thêm{" "}
+                  </button>
+                </div>
               </div>
             </div>
-          </div>
-        </Box>
+          </Box>
+        </form>
       </Modal>
     </div>
   );

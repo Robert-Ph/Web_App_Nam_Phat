@@ -55,7 +55,6 @@ export default function TextFieldAuto<T>({
       open={open}
       onOpen={handleOpen}
       onClose={handleClose}
-      autoComplete
       isOptionEqualToValue={(option, value) =>
         getOptionLabel(option) === getOptionLabel(value)
       }
@@ -68,6 +67,7 @@ export default function TextFieldAuto<T>({
       renderOption={renderOption}
       onInputChange={(event, newInputValue) => {
         if (onInputChange) {
+          // Chỉ gọi khi giá trị không phải chuỗi rỗng
           onInputChange(newInputValue);
         }
       }}

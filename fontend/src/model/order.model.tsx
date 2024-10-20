@@ -2,7 +2,7 @@ import OrderItem from "./orderItem.model";
 
 type Order = {
   id: number | null;
-  isPay: boolean | null;
+  pay: boolean | null;
   totalPrice: number | null;
   status: string | null;
   dateCreate: string | null;

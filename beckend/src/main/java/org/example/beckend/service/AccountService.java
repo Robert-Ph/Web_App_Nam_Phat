@@ -21,6 +21,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -65,6 +66,13 @@ public class AccountService {
         if (!accountRepository.findByUsername(request.getUsername()).isEmpty()) {
             throw new AppException(ErrorMessage.USERNAME_EXIST);
         }
+       if(!Objects.isNull(request.getEmployeeId())){
+           if(!accountRepository.findByEmployee(employeeRepository.findById(request.getEmployeeId()).get()).isEmpty()){
+               throw new AppException(ErrorMessage.EMPLOYEE_HAVE_ACCOUNT);
+           }
+       }
+
+
         Account account = modelMapper.map(request, Account.class);
         PasswordEncoder encoder = new BCryptPasswordEncoder(10);
 
@@ -88,11 +96,19 @@ public class AccountService {
     //Method for update Account
 
     public AccountResponse update(UpdateAccountRequest request, Long id) {
+        if(Objects.isNull(id)){
+            throw new AppException(ErrorMessage.USER_NOT_EXIST);
+        }
+
         Account account = accountRepository.findById(id).orElseThrow(() -> new AppException(ErrorMessage.USER_NOT_EXIST));
 
         account.setPermission(request.getPermission());
         account.setStatus(request.getStatus());
-        account.setPassword(new BCryptPasswordEncoder(10).encode(request.getPassword()));
+        if(!Objects.isNull(request.getPassword()) ){
+            if(!request.getPassword().isEmpty() && !request.getPassword().isBlank()){
+                account.setPassword(new BCryptPasswordEncoder(10).encode(request.getPassword()));
+            }
+        }
 
 
         //Catch exception if many request create user
@@ -123,6 +139,21 @@ public class AccountService {
 
     public PagedModel<AccountResponse> findAllExceptId(Long id, Pageable pageable) {
         Page<Account> page = accountRepository.findAllExceptId(id, pageable);
+        Page<AccountResponse> convert = page.map(entity -> {
+            return converToAccountResponse(entity);
+        });
+        return new PagedModel<>(convert);
+    }
+
+    public PagedModel<AccountResponse> findAll(Pageable pageable){
+        Page<Account> page = accountRepository.findAll( pageable);
+        Page<AccountResponse> convert = page.map(entity -> {
+            return converToAccountResponse(entity);
+        });
+        return new PagedModel<>(convert);
+    }
+    public PagedModel<AccountResponse> findFilter(String filter,Pageable pageable){
+        Page<Account> page = accountRepository.findFilter(filter, pageable);
         Page<AccountResponse> convert = page.map(entity -> {
             return converToAccountResponse(entity);
         });

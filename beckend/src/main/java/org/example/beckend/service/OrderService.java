@@ -109,14 +109,21 @@ public class OrderService {
         }));
     }
 
-    public PagedModel<OrderResponseForList> getByIdOrName(Pageable pageable) {
-        return new PagedModel<>(orderRepository.findAll(pageable).map(order -> {
+    public PagedModel<OrderResponseForList> getByIdOrNameAndIspay(Pageable pageable, boolean ispay, String filter) {
+        return new PagedModel<>(orderRepository.findByIdOrNameCustomerContainsAndIsPay(filter, ispay, pageable).map(order -> {
             return converToOrderForList(order);
         }));
     }
 
+
     public List<Order> getListDebt(){
         return orderRepository.findByIsPay(false);
+
+    public PagedModel<OrderResponseForList> getByIdOrNameAndStatus(Pageable pageable, OrderStatus  status, String filter) {
+        return new PagedModel<>(orderRepository.findByIdOrNameCustomerContainsAndStatus(filter, status, pageable).map(order -> {
+            return converToOrderForList(order);
+        }));
+
     }
 
 

@@ -5,6 +5,8 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.example.beckend.entity.enums.Permission;
 
+import java.time.LocalDateTime;
+
 @Getter
 @Setter
 @AllArgsConstructor
@@ -29,7 +31,14 @@ public class Account {
 
     private boolean status;
 
+    private LocalDateTime dateCreate;
+
     @OneToOne
     @JoinColumn(name = "employee_id", nullable = true)
     private Employee employee;
+
+    @PrePersist
+    protected void onCreate() {
+        dateCreate = LocalDateTime.now();
+    }
 }

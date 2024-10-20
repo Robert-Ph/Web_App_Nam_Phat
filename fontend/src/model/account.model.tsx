@@ -1,9 +1,10 @@
 type account = {
-  id: string;
-  idEmployee: string;
+  id: number | null;
+  employeeId: number;
   username: string;
-  level: string;
-  dateCreate: string;
-  status: string;
+  permission: string;
+  dateCreate: string | null;
+  status: boolean;
+  password: string | null;
 };
 export default account;

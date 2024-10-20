@@ -17,18 +17,24 @@
   border-radius: 4px;
   color: var(--color-main-text);
 }
-.span-danger {
+.span-DANGER {
   background-color: #dc3545 !important;
 }
 
-.span-warning {
+.span-WARNING {
   background-color: #ffc107 !important;
 }
 
-.span-infor {
+.span-INFOR {
   background-color: #0dcaf0 !important;
 }
 
-.span-success {
+.span-SUCCESS {
   background-color: #198754 !important;
+}
+.span-ADMIN {
+  background-color: #ffc107 !important;
+}
+.span-USER {
+  background-color: #0dcaf0 !important;
 }

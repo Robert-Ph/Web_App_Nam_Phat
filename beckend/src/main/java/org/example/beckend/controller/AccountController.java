@@ -4,6 +4,7 @@ import jakarta.validation.Valid;
 import org.example.beckend.contains.SuccessCode;
 import org.example.beckend.dto.request.AccountRequest;
 import org.example.beckend.dto.request.UpdateAccountRequest;
+import org.example.beckend.dto.response.AccountResponse;
 import org.example.beckend.dto.response.ApiResponse;
 import org.example.beckend.message.SuccessMessage;
 import org.example.beckend.service.AccountService;
@@ -11,9 +12,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PagedModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Objects;
 
 @RestController
 @RequestMapping("/accounts")
@@ -51,6 +55,30 @@ public class AccountController {
                         .code(SuccessMessage.GET_DATA_SUCCESS.getCode())
                         .message(SuccessMessage.GET_DATA_SUCCESS.getMessage())
                         .data(accountService.findAllExceptIsLogin(pageable))
+                        .build()
+        );
+    }
+    @GetMapping("/search")
+    public ResponseEntity<ApiResponse> getFilter(@RequestParam(defaultValue = "0")int page,@RequestParam(defaultValue = "10") int size,@RequestParam(required = false)String filter ){
+        Pageable pageable = PageRequest.of(page,size);
+
+        PagedModel<AccountResponse> result;
+
+        if(Objects.isNull(filter)){
+            result = accountService.findAll(pageable);
+        }else {
+            if(filter.isBlank() || filter.isEmpty()){
+                result = accountService.findAll(pageable);
+            }else {
+                result = accountService.findFilter(filter,pageable);
+            }
+        }
+
+        return ResponseEntity.ok(
+                ApiResponse.builder()
+                        .code(SuccessMessage.GET_DATA_SUCCESS.getCode())
+                        .message(SuccessMessage.GET_DATA_SUCCESS.getMessage())
+                        .data(result)
                         .build()
         );
     }
