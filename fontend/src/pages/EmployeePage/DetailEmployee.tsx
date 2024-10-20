@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
@@ -7,6 +7,9 @@ import Box from "@mui/material/Box";
 import { useNavigate, useParams } from "react-router-dom";
 
 import "./css/detailEmployee.css";
+import EmployeeService from "../../service/EmployeeService";
+import { toast } from "react-toastify";
+import { Employee } from "../../model/employee.model";
 export const styleModalNotify = {
   position: "absolute" as "absolute",
   top: "40%",
@@ -26,15 +29,41 @@ export const styleModalNotify = {
 const DetailEmployee = () => {
   const [isEdit, setIsEdit] = useState<boolean>(false);
 
-  const [locaiton, setLocation] = useState<string>("employee");
+  const [locaiton, setLocation] = useState<string>("INTERN");
   const [work, setWork] = useState<string>("true");
 
   const [open, setOpen] = useState<boolean>(false);
 
+  const [employee, setEmployee] = useState<Employee>({
+    id: null,
+    fullName: "",
+    phone: "",
+    email: "",
+    work_date: null,
+    wage: 0,
+    work: true, // Default value
+    position: "INTERN", // Default position
+  });
+  const currentEmployee = useRef<Employee | null>(null);
+
   const navigate = useNavigate();
   const param = useParams();
 
-  console.log(param.id);
+  useEffect(() => {
+    const id = param?.id;
+    console.log(id);
+    EmployeeService.getById(id)
+      .then((response) => {
+        console.log(response);
+        setEmployee(response.data.data);
+        currentEmployee.current = response.data.data;
+      })
+      .catch((error) => {
+        const errorReponse = error.response;
+
+        toast.error("Lỗi không xác định. Vui lòng thử lại!");
+      });
+  }, [param]);
 
   const handleOpen = () => {
     setOpen(true);
@@ -59,6 +88,7 @@ const DetailEmployee = () => {
   const handleChangeWork = (event: SelectChangeEvent) => {
     setWork(event.target.value);
   };
+
   return (
     <div>
       <div className="container">
@@ -87,7 +117,7 @@ const DetailEmployee = () => {
           {!isEdit ? (
             <button
               className="btn btn-primary"
-              style={{ marginRight: "0px;" }}
+              style={{ marginRight: "0px" }}
               onClick={handleEdit}
             >
               Chỉnh sửa
@@ -95,7 +125,7 @@ const DetailEmployee = () => {
           ) : (
             <button
               className="btn btn-primary"
-              style={{ marginRight: "0px;" }}
+              style={{ marginRight: "0px" }}
               onClick={handleSubmitEdit}
             >
               Cập nhật
@@ -109,8 +139,9 @@ const DetailEmployee = () => {
             <div className="form-group flex-1">
               <span>Mã nhân viên</span>
               <input
-                disabled={!isEdit}
+                disabled={true}
                 className="font-font-size-small"
+                value={employee.id || ""}
               ></input>
             </div>
 
@@ -119,6 +150,8 @@ const DetailEmployee = () => {
               <input
                 disabled={!isEdit}
                 className="font-font-size-small"
+                name="work_date"
+                value={employee?.work_date || ""}
               ></input>
             </div>
           </div>
@@ -128,6 +161,8 @@ const DetailEmployee = () => {
               <input
                 disabled={!isEdit}
                 className="font-font-size-small"
+                name="fullName"
+                value={employee.fullName}
               ></input>
             </div>
 
@@ -136,6 +171,8 @@ const DetailEmployee = () => {
               <input
                 disabled={!isEdit}
                 className="font-font-size-small"
+                name="phone"
+                value={employee.phone}
               ></input>
             </div>
           </div>
@@ -146,6 +183,8 @@ const DetailEmployee = () => {
               <input
                 disabled={!isEdit}
                 className="font-font-size-small"
+                name="email"
+                value={employee.email}
               ></input>
             </div>
 
@@ -154,6 +193,9 @@ const DetailEmployee = () => {
               <input
                 disabled={!isEdit}
                 className="font-font-size-small"
+                name="wage"
+                value={employee.wage}
+                min={0}
               ></input>
             </div>
           </div>
@@ -165,15 +207,20 @@ const DetailEmployee = () => {
                 <Select
                   labelId="demo-select-small-label"
                   id="demo-select-small"
-                  value={locaiton}
+                  value={
+                    typeof employee?.position === "string"
+                      ? employee.position // Nếu là string
+                      : employee.position.name
+                  }
                   onChange={handleChange}
                   className="font-size-small"
                   disabled={!isEdit}
+                  name="position"
                 >
-                  <MenuItem value={"employee"} className="">
+                  <MenuItem value={"INTERN"} className="">
                     Thử việc
                   </MenuItem>
-                  <MenuItem value={"enterprise"}>Chính thức</MenuItem>
+                  <MenuItem value={"OFFICIAL"}>Chính thức</MenuItem>
                 </Select>
               </FormControl>
             </div>
@@ -184,7 +231,7 @@ const DetailEmployee = () => {
                 <Select
                   labelId="demo-select-small-label"
                   id="demo-select-small"
-                  value={work}
+                  value={employee.work ? "true" : "false"}
                   onChange={handleChangeWork}
                   className="font-size-small"
                   disabled={!isEdit}

@@ -67,7 +67,7 @@ public class CustomerService {
 
 
     public List<Customer> findByPhoneContains(String phone){
-
+        System.out.print("Phone:" + phone);
         if(phone.isEmpty() || phone.isBlank()){
             return new ArrayList<>();
         }

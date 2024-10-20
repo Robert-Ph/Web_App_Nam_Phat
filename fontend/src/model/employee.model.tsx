@@ -1,8 +1,14 @@
+import Position from "./position.model";
 export type Employee = {
-  id: string;
-  name: string;
+  id: number | null;
+
+  fullName: string;
+  work_date: string | null;
   phone: string;
   email: string;
-  dateEnjoy: string;
-  wage: string;
+  wage: number;
+
+  work: boolean;
+
+  position: Position | string;
 };
