@@ -30,11 +30,12 @@ const Login = () => {
         toast.error("Tài khoản không tồn tại trong hệ thống!", {
           autoClose: 2000,
         });
-      } else if (err.response.data.code == 421) {
+      } else if (err.response.data.code == 423) {
         toast.error("Tài khoản bị khóa! Vui lòng liên hệ admin!", {
           autoClose: 2000,
         });
       } else {
+        console.log(err);
         toast.error("Lỗi không xác định !", {
           autoClose: 2000,
         });

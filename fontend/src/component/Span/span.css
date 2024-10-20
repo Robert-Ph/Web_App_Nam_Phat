@@ -32,3 +32,9 @@
 .span-SUCCESS {
   background-color: #198754 !important;
 }
+.span-ADMIN {
+  background-color: #ffc107 !important;
+}
+.span-USER {
+  background-color: #0dcaf0 !important;
+}

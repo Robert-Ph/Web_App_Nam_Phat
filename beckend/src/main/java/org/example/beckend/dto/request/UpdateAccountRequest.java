@@ -16,8 +16,8 @@ import org.example.beckend.entity.enums.Permission;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class UpdateAccountRequest {
 
-    @NotNull(message = "Password is require")
-    @NotEmpty(message = "Password is not emtry")
+//    @NotNull(message = "Password is require")
+//    @NotEmpty(message = "Password is not emtry")
     String password;
 
     @NotNull(message = "Permission require")

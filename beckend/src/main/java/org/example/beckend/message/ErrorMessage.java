@@ -18,6 +18,7 @@ public enum ErrorMessage {
     USER_NOT_EXIST(ErrorCode.USER_NOT_FOUND, "Account is not found",HttpStatus.BAD_REQUEST),
     WROND_PASSWORD(ErrorCode.WRONG_PASSWORD,"Wrong password",HttpStatus.BAD_REQUEST),
     USER_IS_BLOCK(ErrorCode.ACCOUNT_IS_BLOCK,"Account is block",HttpStatus.BAD_REQUEST),
+    EMPLOYEE_HAVE_ACCOUNT(ErrorCode.EMPLOYEE_HAVE_ACCOUNT,"Employee have had account",HttpStatus.BAD_REQUEST),
 
     PRODUCT_NOT_FOUND(ErrorCode.BAD_REQUEST,"Product not found",HttpStatus.BAD_REQUEST),
     INVENTORY_NOT_FOUND(ErrorCode.BAD_REQUEST,"Inventory not found",HttpStatus.BAD_REQUEST),

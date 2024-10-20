@@ -19,7 +19,7 @@ public class CompanyController {
     @Autowired
     private CompanyService companyService;
 
-    @PostMapping
+    @PutMapping
     public ResponseEntity<ApiResponse> update(@Valid  @RequestBody CompanyRequest request) {
         return ResponseEntity.ok(ApiResponse.builder()
                 .code(SuccessMessage.UPDATE_DATE_SUCCESS.getCode())

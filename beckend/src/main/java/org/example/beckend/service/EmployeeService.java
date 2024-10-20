@@ -18,8 +18,9 @@ import org.springframework.data.web.PagedModel;
 import org.springframework.stereotype.Service;
 
 
-
+import java.time.LocalDate;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Slf4j
@@ -50,6 +51,12 @@ public class EmployeeService {
         if (position.isEmpty()) {
             throw new AppException(ErrorMessage.UNUNCATEGORIZED);
         }
+
+        System.out.println("Work Date:" + request.getWork_date());
+        if(Objects.isNull(request.getWork_date())){
+            employee.setWork_date(LocalDate.now());
+        }
+
 
 
         employee.setPosition(position.get());
@@ -98,6 +105,17 @@ public class EmployeeService {
         logService.log(LogLevel.INFOR,"Lấy danh sách nhân viên");
 
         return new PagedModel<>(employeeRepository.findAll(pageable));
+    }
+
+    public PagedModel<Employee> getByFilter(String filter,Pageable pageable) {
+        logService.log(LogLevel.INFOR,"Lấy danh sách nhân viên với filter: " + filter);
+
+        return new PagedModel<>(employeeRepository.findFilter(filter,pageable));
+    }
+
+
+    public Employee getById(Long id){
+        return employeeRepository.findById(id).orElseThrow(() ->new AppException(ErrorMessage.EMPLOYEE_NOT_FOUND));
     }
 
     public List<Employee> getAll() {

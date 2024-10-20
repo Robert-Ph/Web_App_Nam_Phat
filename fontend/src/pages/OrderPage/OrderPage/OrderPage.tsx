@@ -16,9 +16,8 @@ import Order from "../../../model/order.model";
 import { toast } from "react-toastify";
 import OrderService from "../../../service/OrderService";
 
-import Backdrop from "@mui/material/Backdrop";
-import CircularProgress from "@mui/material/CircularProgress";
-import Button from "@mui/material/Button";
+import { formatCurrency } from "../../../utils/Utils";
+import { useNavigate } from "react-router-dom";
 
 const OrderPage = () => {
   const [orderItems, setOrderItems] = useState<OrderItem[]>([]);
@@ -38,7 +37,8 @@ const OrderPage = () => {
 
   const [vat, setVat] = useState<number>(0);
   const [total, setTotal] = useState<number>(0);
-  const [clear, setClear] = useState<boolean>(false);
+
+  const navigate = useNavigate();
 
   // {
   //   id: null,
@@ -100,6 +100,10 @@ const OrderPage = () => {
       toast.error("Thông tin khách hàng không hợp lệ hoặc trống", {
         autoClose: 1000,
       });
+    } else if (orderItems.length == 0) {
+      toast.error("Bạn chưa thêm sản phẩm vào đơn hàng", {
+        autoClose: 1000,
+      });
     } else {
       const order = {
         id: null,
@@ -118,29 +122,29 @@ const OrderPage = () => {
       try {
         handleReset();
         console.log(query);
-        // OrderService.create(order)
-        //   .then((response: any) => {
-        //     console.log(response.data);
-        //     if (response.data.code == 201) {
-        //       toast.success("Tạo đơn hàng thành công!", {
-        //         autoClose: 2000,
-        //       });
-        //       handleReset();
-        //     }
-        //   })
-        //   .catch((e: any) => {
-        //     const error = e.response.data;
+        OrderService.create(order)
+          .then((response: any) => {
+            console.log(response.data);
+            if (response.data.code == 201) {
+              toast.success("Tạo đơn hàng thành công!", {
+                autoClose: 2000,
+              });
+              navigate("/order/list");
+            }
+          })
+          .catch((e: any) => {
+            const error = e.response.data;
 
-        //     if (error.code == 802) {
-        //       toast.error("Không tìm thấy khách hàng trong hệ thống!", {
-        //         autoClose: 1000,
-        //       });
-        //     } else {
-        //       toast.error("Lỗi không xác định!", {
-        //         autoClose: 1000,
-        //       });
-        //     }
-        //   });
+            if (error.code == 802) {
+              toast.error("Không tìm thấy khách hàng trong hệ thống!", {
+                autoClose: 1000,
+              });
+            } else {
+              toast.error("Lỗi không xác định!", {
+                autoClose: 1000,
+              });
+            }
+          });
       } catch (error) {
         console.log(error);
       } finally {
@@ -166,6 +170,7 @@ const OrderPage = () => {
     const fetchData = async () => {
       if (debouncedQuery.length > 0) {
         try {
+          console.log("Debounce:" + debouncedQuery);
           const customerList = await CustomerService.getCustomerByPhone(
             debouncedQuery
           ); // Fetch data from API
@@ -183,11 +188,6 @@ const OrderPage = () => {
   }, [debouncedQuery]);
 
   //Method format number to argent
-  const formatCurrency = (amount: number) => {
-    return new Intl.NumberFormat("vi-VN", {
-      style: "decimal",
-    }).format(amount);
-  };
 
   console.log("Query:" + query);
 
@@ -196,7 +196,9 @@ const OrderPage = () => {
       <div className="container">
         <div className="d-flex justify-end">
           <button className="btn btn-danger">Hủy</button>
-          <button className="btn btn-warning">Reset</button>
+          <button className="btn btn-warning" onClick={handleReset}>
+            Reset
+          </button>
           <button
             className="btn btn-primary"
             // style={{ marginRight: "0px" }}

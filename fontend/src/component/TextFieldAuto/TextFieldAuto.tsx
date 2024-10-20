@@ -66,7 +66,7 @@ export default function TextFieldAuto<T>({
       }}
       renderOption={renderOption}
       onInputChange={(event, newInputValue) => {
-        if (onInputChange && newInputValue !== "") {
+        if (onInputChange) {
           // Chỉ gọi khi giá trị không phải chuỗi rỗng
           onInputChange(newInputValue);
         }

@@ -20,3 +20,8 @@ export const formatDateTime = (dateString: string): string => {
 
   return `${day}/${month}/${year} ${hours}:${minutes}:${seconds}`;
 };
+export const formatCurrency = (amount: number) => {
+  return new Intl.NumberFormat("vi-VN", {
+    style: "decimal",
+  }).format(amount);
+};
