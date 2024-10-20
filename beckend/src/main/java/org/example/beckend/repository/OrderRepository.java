@@ -10,7 +10,13 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
+import java.util.List;
+import java.util.Optional;
+
 public interface OrderRepository extends JpaRepository<Order,Long> {
+
+    List<Order> findByIsPay(Boolean isPay);
+
 
 //    @Query("SELECT o FROM Order o WHERE CAST(o.id AS string)  LIKE %:filter% OR o.customer.fullName LIKE %:filter% AND o.isPay = :ispay")
 //    Page<Order> findByIdOrNameCustomerContainsAndIsPay(@Param("filter") String filter,@Param("ispay")boolean ispay, Pageable pageable);
