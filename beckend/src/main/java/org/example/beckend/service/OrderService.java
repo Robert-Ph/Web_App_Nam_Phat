@@ -115,6 +115,9 @@ public class OrderService {
         }));
     }
 
+    public List<Order> getListDebt(){
+        return orderRepository.findByIsPay(false);
+    }
 
 
 //    public void createPDF(Long idOrder) {
@@ -122,4 +125,5 @@ public class OrderService {
 //        pdfUtils.createPDF(companyService.getMyCompany(), pathOrdeFile + File.separator +order.getId() + ".pdf", order);
 //
 //    }
+
 }
