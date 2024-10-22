@@ -49,9 +49,6 @@ public class EmployeeController {
 
     @GetMapping("/{id}")
     public ResponseEntity<ApiResponse> findById(@PathVariable Long id){
-
-
-
         return ResponseEntity.ok(ApiResponse
                 .builder()
                 .code(SuccessMessage.GET_DATA_SUCCESS.getCode())

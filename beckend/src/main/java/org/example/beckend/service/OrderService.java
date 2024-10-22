@@ -96,6 +96,7 @@ public class OrderService {
         return orderRepository.findById(id).orElseThrow(() -> new AppException(ErrorMessage.ORDER_NOT_FOUND));
     }
 
+
     private OrderResponseForList converToOrderForList(Order order) {
         modelMapper.typeMap(Order.class, OrderResponseForList.class).addMappings(mapper ->
                 mapper.map(src -> src.getCustomer().getFullName(), OrderResponseForList::setNameCustomer));
@@ -122,6 +123,11 @@ public class OrderService {
 
         }
 
+
+
+    public List<Order> getListOrderCustomerById(Long id) {
+        return orderRepository.findByCustomerId(id);
+    }
     public PagedModel<OrderResponseForList> getByIdOrNameAndStatus(Pageable pageable, OrderStatus  status, String filter) {
         return new PagedModel<>(orderRepository.findByIdOrNameCustomerContainsAndStatus(filter, status, pageable).map(order -> {
             return converToOrderForList(order);

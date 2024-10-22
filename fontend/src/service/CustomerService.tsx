@@ -22,10 +22,19 @@ const getByFilter = (page: number, size: number, filter: string) => {
 const create = (customer: Customer) => {
   return api.post(`${BASE_URL}`, customer);
 };
+const getById = (id: number | undefined | string) => {
+  return api.get(`${BASE_URL}/${id}`);
+};
+const getByIdListOrder = (id: number | undefined | string) => {
+  return api.get(
+      `${BASE_URL}/history?${id}`);
+};
 const CustomerService = {
   // getCustomerByPhone,
   getByFilter,
   create,
+  getById,
+  getByIdListOrder,
 };
 
 export default CustomerService;

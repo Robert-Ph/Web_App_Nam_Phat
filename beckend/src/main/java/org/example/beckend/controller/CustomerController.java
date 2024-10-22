@@ -9,6 +9,7 @@ import org.example.beckend.entity.Employee;
 import org.example.beckend.message.SuccessMessage;
 import org.example.beckend.repository.CustomerRepository;
 import org.example.beckend.service.CustomerService;
+import org.example.beckend.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -25,6 +26,9 @@ public class CustomerController {
 
     @Autowired
     private CustomerService customerService;
+
+    @Autowired
+    private OrderService orderService;
 
     @PostMapping
     public ResponseEntity<ApiResponse> create(@Valid @RequestBody CustomerRequest request) {
@@ -46,6 +50,16 @@ public class CustomerController {
                 .build());
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<ApiResponse> findById(@PathVariable Long id) {
+        return  ResponseEntity.ok(ApiResponse
+                .builder()
+                .code(SuccessMessage.CREATE_DATA_SUCCESS.getCode())
+                .message(SuccessMessage.CREATE_DATA_SUCCESS.getMessage())
+                .data(customerService.findCustomerById(id))
+                .build());
+    }
+
 //    @GetMapping("/search")
 //    public ResponseEntity<ApiResponse> findByPhone(@RequestParam String phone){
 //        return ResponseEntity.ok(
@@ -57,7 +71,15 @@ public class CustomerController {
 //        );
 //    }
 
-
+    @GetMapping("/history/{id}")
+    public ResponseEntity<ApiResponse> findHistory(@PathVariable Long id) {
+        return  ResponseEntity.ok(ApiResponse
+                .builder()
+                .code(SuccessMessage.CREATE_DATA_SUCCESS.getCode())
+                .message(SuccessMessage.CREATE_DATA_SUCCESS.getMessage())
+                .data(orderService.getListOrderCustomerById(id))
+                .build());
+    }
     @GetMapping
     public ResponseEntity<ApiResponse> getAllCustomers() {
         List<Customer> data = customerService.findAll();
