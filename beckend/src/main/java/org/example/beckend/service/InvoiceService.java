@@ -49,7 +49,7 @@ public class InvoiceService {
         invoice.setFile(fileName);
         Invoice response = invoiceRepository.save(invoice);
 
-        pdfUtils.createPDF(companyService.getMyCompany(), pathOrdeFile + File.separator + "HD_"+invoice.getId() + ".pdf", invoice.getOrder());
+        pdfUtils.createPDF(companyService.getMyCompany(), pathOrdeFile + File.separator + "HD_"+invoice.getId() + ".pdf", invoice.getOrder(), invoice.getId());
         return response;
     }
 

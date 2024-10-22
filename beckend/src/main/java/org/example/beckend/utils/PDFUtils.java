@@ -101,7 +101,7 @@ public class PDFUtils {
     }
 
 
-    public void createPDF(Company company, String fileName, Order order) {
+    public void createPDF(Company company, String fileName, Order order, Long id) {
 
         String fontPath = "src/main/resources/static/font" + File.separatorChar + "vuArial.ttf"; // Chỉnh url về nơi lưu font
 
@@ -201,7 +201,7 @@ public class PDFUtils {
                     .add(new Tab())
                     .add(new Text("Ngày ......tháng......năm 2024"))
                     .add(new Tab())
-                    .add(new Text("Số:.............."))
+                    .add(new Text("Số: "+id))
                     .setMarginBottom(10)
             );
 
@@ -348,10 +348,10 @@ public class PDFUtils {
                 table1.addCell(mergeCol(String.valueOf(formatCurrency(order.getTotalPrice())), 1, TextAlignment.CENTER));
 
                 table1.addCell(mergeCol("Thuế giá trị gia tăng - VAT(...%):", 5, TextAlignment.CENTER));
-                table1.addCell(mergeCol(String.valueOf(order.getVat()), 1, TextAlignment.CENTER));
+                table1.addCell(mergeCol(String.valueOf(formatCurrency(order.getTotalPrice() * order.getVat()/100)), 1, TextAlignment.CENTER));
 
                 table1.addCell(mergeCol("Tổng Cộng:", 5, TextAlignment.CENTER));
-                table1.addCell(mergeCol(String.valueOf(String.valueOf(formatCurrency(order.getTotalPrice() + order.getTotalPrice() * order.getVat()))), 1, TextAlignment.CENTER));
+                table1.addCell(mergeCol(String.valueOf(String.valueOf(formatCurrency(order.getTotalPrice() + order.getTotalPrice() * order.getVat()/100))), 1, TextAlignment.CENTER));
 
 
                 document.add(table1);

@@ -19,7 +19,7 @@ import java.time.LocalDateTime;
 @Table(name = "invoices")
 public class Invoice {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
     LocalDateTime dateCreate;

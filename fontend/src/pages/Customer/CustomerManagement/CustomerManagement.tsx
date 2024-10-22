@@ -1,91 +1,78 @@
 import "./customnerManagement.css";
-import { useState } from "react";
+import {useEffect, useState} from "react";
 
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import FilterListIcon from "@mui/icons-material/FilterList";
 import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
-import { Employee } from "../../../model/employee.model";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import SettingsIcon from "@mui/icons-material/Settings";
 import { useNavigate } from "react-router-dom";
+import {toast} from "react-toastify";
+import useDebounce from "../../../hooks/useDebounce.tsx";
+import Customer from "../../../model/customer.model.tsx";
+import CustomerService from "../../../service/CustomerService.tsx";
+import Spiner from "../../../component/Spiner/Spiner.tsx";
 
 const CustomerManagement = () => {
-  const [emplyees, setEmployees] = useState<Employee[]>([
-    {
-      id: "1",
-      name: "Nguyễn Ngọc Phương Trâm Hoàng Thượng Đế",
-      phone: "031231312312",
-      email: "nguyenphuong12312321@gmail.com",
-      dateEnjoy: "Cá Nhân",
-      wage: "12000000",
-    },
-    {
-      id: "2",
-      name: "Nguyễn Ngọc Phương",
-      phone: "031231312312",
-      email: "nguyenphuong12312321@gmail.com",
-      dateEnjoy: "Cá Nhân",
-      wage: "12000000",
-    },
-    {
-      id: "3",
-      name: "Nguyễn Ngọc Phương",
-      phone: "031231312312",
-      email: "nguyenphuong12312321@gmail.com",
-      dateEnjoy: "Cá Nhân",
-      wage: "12000000",
-    },
-    {
-      id: "4",
-      name: "Nguyễn Ngọc Phương",
-      phone: "031231312312",
-      email: "nguyenphuong12312321@gmail.com",
-      dateEnjoy: "Cá Nhân",
-      wage: "12000000",
-    },
-    {
-      id: "5",
-      name: "Nguyễn Ngọc Phương",
-      phone: "031231312312",
-      email: "nguyenphuong12312321@gmail.com",
-      dateEnjoy: "Cá Nhân",
-      wage: "12000000",
-    },
-    {
-      id: "6",
-      name: "Nguyễn Ngọc Phương",
-      phone: "031231312312",
-      email: "nguyenphuong12312321@gmail.com",
-      dateEnjoy: "Cá Nhân",
-      wage: "12000000",
-    },
-    {
-      id: "7",
-      name: "Nguyễn Ngọc Phương",
-      phone: "031231312312",
-      email: "nguyenphuong12312321@gmail.com",
-      dateEnjoy: "Cá Nhân",
-      wage: "12000000",
-    },
-    {
-      id: "8",
-      name: "Nguyễn Ngọc Phương",
-      phone: "031231312312",
-      email: "nguyenphuong12312321@gmail.com",
-      dateEnjoy: "Cá Nhân",
-      wage: "12000000",
-    },
-  ]);
 
+  const [customers, setCustomer] = useState<Customer[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
   const [page, setPage] = useState<number>(1);
+  const [totalPages, setTotalPages] = useState(0);
+  const [search, setSearch] = useState<string>("");
+  const debouncedQuery = useDebounce(search, 300);
+  const pageSize = 10;
+
 
   const navigate = useNavigate();
 
   const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
     setPage(value);
   };
+
+  // const handleAdd = (customer: Customer) => {
+  //   console.log("add");
+  //   CustomerService.create(customer)
+  //       .then((response) => {
+  //         console.log(response);
+  //         try {
+  //           const newCustomer = response.data.data;
+  //           setCustomer([newCustomer, ...customers]);
+  //           toast.success("Thêm nhân viên thành công!");
+  //         } catch (error) {
+  //           toast.error("Đã xảy ra lỗi. Vui lòng thử lại!");
+  //         }
+  //       })
+  //       .catch((error) => {
+  //         const errorReponse = error.response;
+  //
+  //         toast.error("Lỗi không xác định. Vui lòng thử lại!");
+  //       });
+  // };
+
+
+  //Call API if filter
+  useEffect(() => {
+    setLoading(true);
+    CustomerService.getByFilter(page - 1, pageSize, search)
+        .then((response) => {
+          console.log(response);
+          if (response.status == 200) {
+            setTotalPages(response.data.data.page.totalPages);
+            setLoading(false);
+            setCustomer(response.data.data.content);
+          }
+        })
+        .catch((error) => {
+          toast.error("Xảy ra lỗi");
+          console.log(error.response);
+        });
+  }, [page, pageSize, debouncedQuery]);
+  console.log(page);
+
+
 
   return (
     <div>
@@ -112,6 +99,11 @@ const CustomerManagement = () => {
                   id="standard-basic"
                   label="Tìm kiếm"
                   variant="standard"
+                  value={search}
+                  onChange={(e) => {
+                    setPage(1);
+                    setSearch(e.target.value);
+                  }}
                 />
               </Box>
             </div>
@@ -173,28 +165,58 @@ const CustomerManagement = () => {
                 </tr>
               </thead>
               <tbody className="border-header-table">
-                {emplyees.map((employee) => (
-                  <tr key={employee.id} className="border-header-table">
+              {loading && (
+                  <tr>
+                    <td>
+                      <Spiner></Spiner>
+                    </td>
+                  </tr>
+              )}
+              {!loading && customers.length === 0 && (
+                  <tr>
+                    <td
+                        colSpan={7}
+                        rowSpan={10}
+                        className="pb-7 pt-7 font-size-small td-table font-w-500 text-center"
+                        style={{
+                          padding: "10% 0px",
+                          display: "table-cell", // Makes it behave like a table cell
+                          verticalAlign: "middle", // Vertically center the content
+                          borderBottom: "none",
+                          fontSize: "20px",
+                        }}
+                    >
+                      Không có dữ liệu
+                    </td>
+                  </tr>
+              )}
+                {!loading &&
+                  customers.length > 0 &&customers.map((cusomer) => (
+                  <tr key={cusomer.id} className="border-header-table">
                     <td className="pb-7 pt-7 font-size-small td-table font-w-500 ">
-                      {employee.id}
+                      {cusomer.id}
                     </td>
                     <td
                       className="pb-7 pt-7 font-size-small font-w-500 "
                       style={{ paddingRight: "25px" }}
                     >
-                      {employee.name || "-"}
+                      {cusomer.fullName || "-"}
                     </td>
                     <td className="pb-7 pt-7 font-size-small td-table font-w-500">
-                      {employee.phone || "-"}
+                      {cusomer.phone || "-"}
                     </td>
                     <td className="pb-7 pt-7 font-size-small td-table font-w-500">
-                      {employee.email || "-"}
+                      {cusomer.email || "-"}
                     </td>
                     <td
                       className="pb-7 pt-7 font-size-small td-table font-w-500"
                       style={{ textAlign: "center" }}
                     >
-                      {employee.dateEnjoy || "-"}
+                      {cusomer.typeCustomer === "personally"
+                          ? "Cá nhân"
+                          : cusomer.typeCustomer === "enterprise"
+                              ? "Doanh nghiệp"
+                              : "-"}
                     </td>
 
                     <td
@@ -204,7 +226,7 @@ const CustomerManagement = () => {
                       <button
                         className="btn-more"
                         onClick={() => {
-                          navigate(`/customer/list/historyoder/${employee.id}`);
+                          navigate(`/customer/list/historyoder/${cusomer.id}`);
                         }}
                       >
                         <MoreHorizIcon></MoreHorizIcon>
@@ -215,7 +237,7 @@ const CustomerManagement = () => {
                       <button
                         className="btn-more"
                         onClick={() => {
-                          navigate(`/customer/list/infomation/${employee.id}`);
+                          navigate(`/customer/list/infomation/${cusomer.id}`);
                         }}
                       >
                         <MoreHorizIcon></MoreHorizIcon>
@@ -229,7 +251,7 @@ const CustomerManagement = () => {
           <div className="pagination">
             <Stack spacing={2}>
               <Pagination
-                count={10}
+                count={totalPages}
                 color="primary"
                 page={page}
                 onChange={handleChange}
@@ -238,6 +260,11 @@ const CustomerManagement = () => {
           </div>
         </div>
       </div>
+      {/*<CustomerCreate*/}
+      {/*    open={open}*/}
+      {/*    onClose={handleOnclose}*/}
+      {/*    handleAdd={handleAdd}*/}
+      {/*></CustomerCreate>*/}
     </div>
   );
 };
