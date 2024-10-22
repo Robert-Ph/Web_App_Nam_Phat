@@ -81,6 +81,10 @@ const OrderPage = () => {
     setVat(newValue);
   };
 
+  const handleChangeVat = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setVat(Number(e.target.value)); // Cập nhật VAT trong state
+  };
+
   const handleReset = () => {
     console.log("Reset Run");
     setQuery("");
@@ -107,7 +111,7 @@ const OrderPage = () => {
     } else {
       const order = {
         id: null,
-        vat: 0,
+        vat: vat,
         typeOrder: invoice,
         phone: query,
         address: addressRef.current?.value,
@@ -366,8 +370,8 @@ const OrderPage = () => {
                 </div>
                 <div style={{ flex: "5" }}>
                   <p>Tổng: {formatCurrency(total)} VNĐ</p>
-                  <p>Thuế giá trị gia tăng(VAT): {vat}</p>
-                  <p>Thành tiền: {formatCurrency(total + total * vat)} VNĐ</p>
+                  <p>Thuế giá trị gia tăng(VAT): {formatCurrency(total * vat/100)}</p>
+                  <p>Thành tiền: {formatCurrency(total + total * (vat/100))} VNĐ</p>
                 </div>
               </div>
             </div>

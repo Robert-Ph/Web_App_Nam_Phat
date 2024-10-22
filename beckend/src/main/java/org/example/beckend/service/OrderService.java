@@ -69,9 +69,10 @@ public class OrderService {
         } else {
             order.setAddress(request.getAddress());
         }
+
         order.setStatus(OrderStatus.CONFIM);
         order.setTotalPrice(order.getOrderItems().stream().mapToLong(item -> item.getQuanlityProduct() * item.getPricePerOne()).sum());
-
+        order.setVat(request.getVat());
         Order save = orderRepository.save(order);
 
         for (OrderItem item :
@@ -82,7 +83,7 @@ public class OrderService {
 
         }
         invoiceRepository.save(Invoice.builder()
-                .priceNeedPay(Math.round(order.getTotalPrice() + order.getTotalPrice() * order.getVat()))
+                .priceNeedPay(Math.round(order.getTotalPrice() + order.getTotalPrice() * order.getVat()/100))
                 .order(order)
                 .build());
 
@@ -118,6 +119,8 @@ public class OrderService {
 
     public List<Order> getListDebt(){
         return orderRepository.findByIsPay(false);
+
+        }
 
     public PagedModel<OrderResponseForList> getByIdOrNameAndStatus(Pageable pageable, OrderStatus  status, String filter) {
         return new PagedModel<>(orderRepository.findByIdOrNameCustomerContainsAndStatus(filter, status, pageable).map(order -> {
