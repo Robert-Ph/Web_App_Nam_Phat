@@ -10,6 +10,7 @@ import "./css/detailEmployee.css";
 import EmployeeService from "../../service/EmployeeService";
 import { toast } from "react-toastify";
 import { Employee } from "../../model/employee.model";
+import Position from "../../model/position.model";
 export const styleModalNotify = {
   position: "absolute" as "absolute",
   top: "40%",
@@ -44,7 +45,7 @@ const DetailEmployee = () => {
     work: true, // Default value
     position: "INTERN", // Default position
   });
-  const currentEmployee = useRef<Employee | null>(null);
+  const currentEmployee = useRef<Employee>(employee);
 
   const navigate = useNavigate();
   const param = useParams();
@@ -55,13 +56,20 @@ const DetailEmployee = () => {
     EmployeeService.getById(id)
       .then((response) => {
         console.log(response);
-        setEmployee(response.data.data);
-        currentEmployee.current = response.data.data;
+        const data = response.data.data;
+
+        // if (data.position as Position) {
+        //   data.position = data.postion.name;
+        // }
+        setEmployee({ ...data, ["position"]: data.position.name });
+        currentEmployee.current = { ...data, ["position"]: data.position.name };
       })
       .catch((error) => {
         const errorReponse = error.response;
-
-        toast.error("Lỗi không xác định. Vui lòng thử lại!");
+        console.log(errorReponse);
+        toast.error("Lỗi không xác định. Vui lòng thử lại!", {
+          autoClose: 1000,
+        });
       });
   }, [param]);
 
@@ -78,17 +86,60 @@ const DetailEmployee = () => {
 
   //Sự kiện khi bấm cập nhật chỉnh sửa
   const handleSubmitEdit = () => {
-    setIsEdit(false);
+    if (employee.id) {
+      EmployeeService.update(employee, employee.id)
+        .then((response) => {
+          if (response.data.code == 200) {
+            toast.success("Thông tin công ty đã được cập nhật", {
+              autoClose: 1000,
+            });
+            setIsEdit(false);
+            console.log(response);
+            currentEmployee.current = employee;
+          } else {
+            toast.error("Lỗi");
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+          toast.error("Lỗi");
+        });
+    }
   };
 
   //Sự kiện khi bấm ô select vị trí
   const handleChange = (event: SelectChangeEvent) => {
     setLocation(event.target.value);
+    setEmployee({ ...employee, ["position"]: event.target.value });
   };
   const handleChangeWork = (event: SelectChangeEvent) => {
     setWork(event.target.value);
+    setEmployee({ ...employee, ["work"]: event.target.value == "true" });
+  };
+  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = event.target;
+    setEmployee({ ...employee, [name]: value });
   };
 
+  // const handleDelete = (id: number) => {
+  //   EmployeeService.deleteEmployee(id)
+  //     .then((response) => {
+  //       console.log(response);
+  //       if (response.data.code == 204) {
+  //         toast.success("Xóa thành công", {
+  //           autoClose: 1000,
+  //         });
+  //         navigate("/employees/list");
+  //       } else {
+  //         toast.error("Lỗi");
+  //       }
+  //     })
+  //     .catch((error) => {
+  //       console.log(error);
+  //       toast.error("Lỗi");
+  //     });
+  // };
+  console.log(employee);
   return (
     <div>
       <div className="container">
@@ -103,17 +154,48 @@ const DetailEmployee = () => {
               Quay về
             </button>
           )}
-          {!isEdit ? (
-            <button className="btn btn-danger" onClick={handleOpen}>
+          {/* {!isEdit ? (
+            <button
+              className="btn btn-danger"
+              onClick={() => {
+                handleOpen();
+              }}
+            >
               Xóa
             </button>
           ) : (
-            <button className="btn btn-danger" onClick={() => setIsEdit(false)}>
+            <button
+              className="btn btn-danger"
+              onClick={() => {
+                setIsEdit(false);
+                setEmployee(currentEmployee.current);
+              }}
+            >
+              Hủy
+            </button>
+          )} */}
+          {isEdit && (
+            <button
+              className="btn btn-danger"
+              onClick={() => {
+                setIsEdit(false);
+                setEmployee(currentEmployee.current);
+              }}
+            >
               Hủy
             </button>
           )}
 
-          {isEdit && <button className="btn btn-warning">Reset</button>}
+          {isEdit && (
+            <button
+              className="btn btn-warning"
+              onClick={() => {
+                setEmployee(currentEmployee.current);
+              }}
+            >
+              Reset
+            </button>
+          )}
           {!isEdit ? (
             <button
               className="btn btn-primary"
@@ -142,16 +224,19 @@ const DetailEmployee = () => {
                 disabled={true}
                 className="font-font-size-small"
                 value={employee.id || ""}
+                onChange={handleInputChange}
               ></input>
             </div>
 
             <div className="form-group flex-1" style={{ margin: "0px 20px" }}>
-              <span>Ngày vào làm</span>
+              <span>Ngày vào làm (mm/dd/yyyy)</span>
               <input
                 disabled={!isEdit}
                 className="font-font-size-small"
                 name="work_date"
+                type="date"
                 value={employee?.work_date || ""}
+                onChange={handleInputChange}
               ></input>
             </div>
           </div>
@@ -163,6 +248,7 @@ const DetailEmployee = () => {
                 className="font-font-size-small"
                 name="fullName"
                 value={employee.fullName}
+                onChange={handleInputChange}
               ></input>
             </div>
 
@@ -173,6 +259,7 @@ const DetailEmployee = () => {
                 className="font-font-size-small"
                 name="phone"
                 value={employee.phone}
+                onChange={handleInputChange}
               ></input>
             </div>
           </div>
@@ -185,6 +272,7 @@ const DetailEmployee = () => {
                 className="font-font-size-small"
                 name="email"
                 value={employee.email}
+                onChange={handleInputChange}
               ></input>
             </div>
 
@@ -196,6 +284,7 @@ const DetailEmployee = () => {
                 name="wage"
                 value={employee.wage}
                 min={0}
+                onChange={handleInputChange}
               ></input>
             </div>
           </div>
@@ -233,6 +322,7 @@ const DetailEmployee = () => {
                   id="demo-select-small"
                   value={employee.work ? "true" : "false"}
                   onChange={handleChangeWork}
+                  name="work"
                   className="font-size-small"
                   disabled={!isEdit}
                 >
@@ -246,7 +336,7 @@ const DetailEmployee = () => {
           </div>
         </div>
       </div>
-      <Modal
+      {/* <Modal
         open={open}
         onClose={handleClose}
         aria-labelledby="modal-modal-title"
@@ -261,10 +351,23 @@ const DetailEmployee = () => {
             <button className="btn btn-black" onClick={handleClose}>
               Trở về
             </button>
-            <button className="btn btn-danger">Xóa</button>
+            <button
+              className="btn btn-danger"
+              onClick={() => {
+                if (employee.id) {
+                  handleDelete(employee.id);
+                } else {
+                  toast.error("Lỗi xóa nhân viên", {
+                    autoClose: 1000,
+                  });
+                }
+              }}
+            >
+              Xóa
+            </button>
           </div>
         </Box>
-      </Modal>
+      </Modal> */}
     </div>
   );
 };

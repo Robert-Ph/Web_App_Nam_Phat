@@ -117,6 +117,9 @@ public class EmployeeService {
     public Employee getById(Long id){
         return employeeRepository.findById(id).orElseThrow(() ->new AppException(ErrorMessage.EMPLOYEE_NOT_FOUND));
     }
+    public void deleteById(Long id){
+         employeeRepository.deleteById(id);
+    }
 
     public List<Employee> getAll() {
         return employeeRepository.findAll();
