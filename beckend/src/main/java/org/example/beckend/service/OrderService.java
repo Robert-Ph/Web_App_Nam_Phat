@@ -116,6 +116,12 @@ public class OrderService {
         }));
     }
 
+    public PagedModel<OrderResponseForList> getByIdOrNameAnd(Pageable pageable, String filter) {
+        return new PagedModel<>(orderRepository.findByIdOrNameCustomerContains(filter, pageable).map(order -> {
+            return converToOrderForList(order);
+        }));
+    }
+
 
     public List<Order> getListDebt(){
         return orderRepository.findByIsPay(false);

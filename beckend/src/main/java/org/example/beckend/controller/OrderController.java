@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.*;
 
 
 import java.util.List;
+import java.util.Objects;
 
 @RestController
 @RequestMapping("/orders")
@@ -70,7 +71,12 @@ public class OrderController {
         PagedModel<OrderResponseForList> result = null;
 
         if(type.equals("all") || type.equals("newest")){
-            result = orderService.getAllForList(pageable);
+
+            if(Objects.isNull(filter)){
+                result = orderService.getAllForList(pageable);
+            }else {
+                result = orderService.getByIdOrNameAnd(pageable,filter);
+            }
         }else {
             if(type.equals("paid")){
                 result =  orderService.getByIdOrNameAndIspay(pageable,true,filter);

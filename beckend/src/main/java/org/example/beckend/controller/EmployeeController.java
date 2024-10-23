@@ -70,6 +70,12 @@ public class EmployeeController {
                         .data(employeeService.update(request, id))
                         .build());
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable Long id){
+        employeeService.deleteById(id);
+        return ResponseEntity.noContent().build();
+    }
     @GetMapping("/search")
     public ResponseEntity<ApiResponse> getFilter(@RequestParam(defaultValue = "0")int page,@RequestParam(defaultValue = "10") int size,@RequestParam(required = false)String filter ){
         Pageable pageable = PageRequest.of(page,size);
