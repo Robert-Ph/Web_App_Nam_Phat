@@ -4,12 +4,16 @@ package org.example.beckend.service;
 import lombok.extern.slf4j.Slf4j;
 import org.example.beckend.dto.request.CustomerRequest;
 import org.example.beckend.entity.Customer;
+import org.example.beckend.entity.Employee;
+import org.example.beckend.entity.enums.LogLevel;
 import org.example.beckend.exception.AppException;
 import org.example.beckend.message.ErrorMessage;
 import org.example.beckend.repository.CustomerRepository;
 import org.hibernate.sql.exec.ExecutionException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PagedModel;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -25,6 +29,9 @@ public class CustomerService {
 
     @Autowired
     private ModelMapper modelMapper;
+
+    @Autowired
+    private LogService logService;
 
 
     public Customer findCustomerById(Long id) {
@@ -73,6 +80,20 @@ public class CustomerService {
         }
         return customerRepository.findByPhoneContains(phone);
     }
+
+    //Method for getAllEmployee with pageable
+    public PagedModel<Customer> getAll(Pageable pageable) {
+        logService.log(LogLevel.INFOR,"Lấy danh sách nhân viên");
+
+        return new PagedModel<>(customerRepository.findAll(pageable));
+    }
+
+    public PagedModel<Customer> getByFilter(String filter,Pageable pageable) {
+        logService.log(LogLevel.INFOR,"Lấy danh sách nhân viên với filter: " + filter);
+
+        return new PagedModel<>(customerRepository.findFilter(filter,pageable));
+    }
+
 
     //Get all customers
     public List<Customer> findAll() {

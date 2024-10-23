@@ -1,4 +1,4 @@
-type Customer = {
+export type Customer = {
   id: number | null;
   fullName: string;
   phone: string;
