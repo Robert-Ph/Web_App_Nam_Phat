@@ -12,12 +12,11 @@ import SettingsIcon from "@mui/icons-material/Settings";
 import {useNavigate, useParams} from "react-router-dom";
 import Customer from "../../../model/customer.model.tsx";
 import CustomerService from "../../../service/CustomerService.tsx";
+import Order from "../../../model/order.model";
 import {toast} from "react-toastify";
-import Order from "../../../model/order.model.tsx";
 
-const [orders, setOrders] = useState<Order[]>([]);
+
 // const [page, setPage] = useState<number>(1);
-const [invoice, setInvoice] = useState<string>("personally");
 const ListOrderPage = () => {
   const [customer, setCustomer] = useState<Customer>({
     id: null,
@@ -25,22 +24,34 @@ const ListOrderPage = () => {
     phone: "",
     email: "",
     address: "",
-    typeCustomer: invoice,
+    typeCustomer: "",
   });
   const currentCustomer = useRef<Customer | null>(null);
   const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
     setPage(value);
   };
 
-
+  const [orders, setOrders] = useState<Order[]>([]);
   const navigate = useNavigate();
   const param = useParams();
+
   useEffect(() => {
     const id = param?.id;
+
+    if (!id) {
+      toast.error("ID không hợp lệ");
+      return; // Ngừng thực thi nếu id không tồn tại
+    }
+
     console.log(id);
 
+    // Gọi API lấy thông tin khách hàng
     CustomerService.getById(id)
         .then((response) => {
+          if (!response || !response.data || !response.data.data) {
+            throw new Error("Dữ liệu không hợp lệ");
+          }
+
           console.log(response);
           const customerData = response.data.data;
           setCustomer(customerData);
@@ -50,16 +61,19 @@ const ListOrderPage = () => {
           return CustomerService.getByIdListOrder(id);
         })
         .then((response) => {
+          if (!response || !response.data || !response.data.data) {
+            throw new Error("Dữ liệu đơn hàng không hợp lệ");
+          }
+
           console.log(response);
-          setOrders(response.data.data.content);
+          setOrders(response.data.data);
         })
         .catch((error) => {
-          const errorResponse = error.response;
+          const errorResponse = error?.response;
+          console.error("Error:", errorResponse);
           toast.error("Lỗi không xác định. Vui lòng thử lại!");
         });
   }, [param]);
-
-
 
 
 
@@ -120,8 +134,8 @@ const ListOrderPage = () => {
             <div style={{ position: "relative" }}>
               <select className="filter-select btn btn-primary pd-r-40">
                 <option value="all">Tất cả</option>
-                <option value="newest">Tiền mặt</option>
-                <option value="confirmed">Chuyển khoản</option>
+                <option value="newest">Đã thanh toán</option>
+                <option value="confirmed">Chưa thanh toán</option>
               </select>
               <i className="icon-filter">
                 <TuneIcon></TuneIcon>
@@ -165,7 +179,25 @@ const ListOrderPage = () => {
                   </tr>
                 </thead>
                 <tbody className="border-header-table">
-                  {orders.map((order) => (
+                { orders.length === 0 && (
+                    <tr>
+                      <td
+                          colSpan={7}
+                          rowSpan={10}
+                          className="pb-7 pt-7 font-size-small td-table font-w-500 text-center"
+                          style={{
+                            padding: "10% 0px",
+                            display: "table-cell", // Makes it behave like a table cell
+                            verticalAlign: "middle", // Vertically center the content
+                            borderBottom: "none",
+                            fontSize: "20px",
+                          }}
+                      >
+                        Không có dữ liệu
+                      </td>
+                    </tr>
+                )}
+                  {orders.length > 0 && orders.map((order) => (
                     <tr key={order.id} className="border-header-table">
                       <td className="pb-7 pt-7 font-size-small td-table font-w-500 ">
                         {order.id}
@@ -174,7 +206,7 @@ const ListOrderPage = () => {
                         className="pb-7 pt-7 font-size-small font-w-500 "
                         style={{ paddingRight: "20px" }}
                       >
-                        {customer.fullName || "-"}
+                        {"=" || "-"}
                       </td>
                       <td className="pb-7 pt-7 font-size-small td-table font-w-500">
                         {order.dateShip || "-"}
@@ -208,7 +240,7 @@ const ListOrderPage = () => {
             <div className="pagination">
               <Stack spacing={2}>
                 <Pagination
-                  count={10}
+                  // count={1}
                   color="primary"
                   page={page}
                   onChange={handleChange}

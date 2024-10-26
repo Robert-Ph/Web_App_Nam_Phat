@@ -7,6 +7,9 @@ public class Debt {
     private Long totalAmount;
     private Integer monthlyPayment;
 
+    public Debt() {
+    }
+
     public Debt(Long customerID, String nameCustomer, String phoneNumber, Long totalAmount) {
         this.customerID = customerID;
         this.nameCustomer = nameCustomer;

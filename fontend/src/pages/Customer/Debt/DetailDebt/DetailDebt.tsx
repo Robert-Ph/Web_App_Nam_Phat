@@ -1,4 +1,4 @@
-import { useState } from "react";
+import {useEffect, useRef, useState} from "react";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import FilterListIcon from "@mui/icons-material/FilterList";
@@ -10,8 +10,13 @@ import { order } from "../../../../model/person.model";
 import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
 import SettingsIcon from "@mui/icons-material/Settings";
-import { useNavigate } from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import PayModal from "../Modal/PayModal";
+import {toast} from "react-toastify";
+import CustomerService from "../../../../service/CustomerService.tsx";
+import Dept from "../../../../model/debt.model.tsx";
+import DeptService from "../../../../service/DeptService.tsx";
+import Order from "../../../../model/order.model.tsx";
 
 const DetailDebt = () => {
   const [products, setProducts] = useState<order[]>([
@@ -27,12 +32,57 @@ const DetailDebt = () => {
 
   const [page, setPage] = useState<number>(1);
   const [open, setOpen] = useState<boolean>(false);
-
+  const param = useParams();
+  const currentDepts = useRef<Dept | null>(null);
   const navigate = useNavigate();
+  const [depts, setDepts] = useState<Dept[]>([]);
+  const [orders, setOrders] = useState<Order[]>([]);
 
   const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
     setPage(value);
   };
+
+  useEffect(() => {
+    const id = param?.id;
+
+    if (!id) {
+      toast.error("ID không hợp lệ");
+      return; // Ngừng thực thi nếu id không tồn tại
+    }
+
+    console.log(id);
+
+    // Gọi API lấy thông tin khách hàng
+    DeptService.getById(id)
+        .then((response) => {
+          if (!response || !response.data || !response.data.data) {
+            throw new Error("Dữ liệu không hợp lệ");
+          }
+
+          console.log(response);
+          const customerData = response.data.data;
+          setDepts(customerData);
+          currentDepts.current = customerData;
+
+          // Gọi API lấy danh sách đơn hàng sau khi đã lấy thông tin khách hàng
+          return CustomerService.getByIdListOrder(id);
+        })
+        .then((response) => {
+          if (!response || !response.data || !response.data.data) {
+            throw new Error("Dữ liệu đơn hàng không hợp lệ");
+          }
+
+          console.log(response);
+          setOrders(response.data.data);
+        })
+        .catch((error) => {
+          const errorResponse = error?.response;
+          console.error("Error:", errorResponse);
+          toast.error("Lỗi không xác định. Vui lòng thử lại!");
+        });
+  }, [param]);
+
+
   return (
     <div style={{ paddingBottom: "5%" }}>
       <div className="main-body">

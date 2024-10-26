@@ -60,16 +60,16 @@ public class CustomerController {
                 .build());
     }
 
-//    @GetMapping("/search")
-//    public ResponseEntity<ApiResponse> findByPhone(@RequestParam String phone){
-//        return ResponseEntity.ok(
-//                ApiResponse.builder()
-//                        .code(SuccessMessage.GET_DATA_SUCCESS.getCode())
-//                        .message(SuccessMessage.GET_DATA_SUCCESS.getMessage())
-//                        .data(customerService.findByPhoneContains(phone))
-//                        .build()
-//        );
-//    }
+    @GetMapping("/search")
+    public ResponseEntity<ApiResponse> findByPhone(@RequestParam String phone){
+        return ResponseEntity.ok(
+                ApiResponse.builder()
+                        .code(SuccessMessage.GET_DATA_SUCCESS.getCode())
+                        .message(SuccessMessage.GET_DATA_SUCCESS.getMessage())
+                        .data(customerService.findByPhoneContains(phone))
+                        .build()
+        );
+    }
 
     @GetMapping("/history/{id}")
     public ResponseEntity<ApiResponse> findHistory(@PathVariable Long id) {
@@ -91,7 +91,7 @@ public class CustomerController {
                 .build());
     }
 
-    @GetMapping("/search")
+    @GetMapping("/list")
     public ResponseEntity<ApiResponse> getFilter(@RequestParam(defaultValue = "0")int page,@RequestParam(defaultValue = "10") int size,@RequestParam(required = false)String filter ){
         Pageable pageable = PageRequest.of(page,size);
 

@@ -44,6 +44,19 @@ public class DebtService {
         return debts;
     }
 
+    public Debt getDebt(Long id) {
+        Long totalPrice = 0L;
+        List<Order> orders = orderService.getListDebt();
+        for (Order order : orders) {
+            if (order.getCustomer().getId() == id) {
+                totalPrice += order.getTotalPrice();
+            }
+        }
+        Customer customer = customerService.findCustomerById(id);
+        return new Debt(id,customer.getFullName(), customer.getPhone(), totalPrice);
+    }
+
+
     public List<Order> getListDebtCustomer(Long customerId) {
         List<Order> result = new ArrayList<>();
         List<Order> orders = orderService.getListDebt();

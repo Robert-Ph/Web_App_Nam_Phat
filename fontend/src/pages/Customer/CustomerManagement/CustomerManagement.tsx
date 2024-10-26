@@ -191,7 +191,7 @@ const CustomerManagement = () => {
                   </tr>
               )}
                 {!loading &&
-                  customers.length > 0 &&customers.map((cusomer) => (
+                  customers.length > 0 && customers.map((cusomer) => (
                   <tr key={cusomer.id} className="border-header-table">
                     <td className="pb-7 pt-7 font-size-small td-table font-w-500 ">
                       {cusomer.id}
