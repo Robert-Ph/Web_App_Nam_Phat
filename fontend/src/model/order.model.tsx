@@ -1,4 +1,5 @@
 import OrderItem from "./orderItem.model";
+import Customer from "./customer.model";
 
 type Order = {
   id: number | null;
@@ -7,7 +8,7 @@ type Order = {
   status: string | null;
   dateCreate: string | null;
   dateShip: string | null;
-  nameCustomer: string | null;
+  nameCustomer: string | null | Customer;
   vat: number;
   typeOrder: string;
   address: string;

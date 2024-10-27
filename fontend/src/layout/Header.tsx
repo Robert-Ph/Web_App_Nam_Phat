@@ -1,8 +1,12 @@
 import "./css/header.css";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import vflt from "../assets/logo.svg";
+import { useAuth } from "../contexts/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 const Header = () => {
+  const { logoutUser } = useAuth();
+  const navigate = useNavigate();
   return (
     <div className="wrap-container">
       <div className="bg-primary header-page">
@@ -19,7 +23,15 @@ const Header = () => {
               <span>Nguyễn Văn A</span>
             </div>
             <div style={{ marginLeft: "25px" }}>
-              <button className="btn-danger btn">Log out</button>
+              <button
+                className="btn-danger btn"
+                onClick={() => {
+                  logoutUser();
+                  navigate("/login");
+                }}
+              >
+                Log out
+              </button>
             </div>
           </div>
         </div>

@@ -90,7 +90,7 @@ const DetailEmployee = () => {
       EmployeeService.update(employee, employee.id)
         .then((response) => {
           if (response.data.code == 200) {
-            toast.success("Thông tin công ty đã được cập nhật", {
+            toast.success("Thông tin nhân viên đã được cập nhật", {
               autoClose: 1000,
             });
             setIsEdit(false);
