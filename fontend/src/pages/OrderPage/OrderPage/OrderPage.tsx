@@ -370,8 +370,14 @@ const OrderPage = () => {
                 </div>
                 <div style={{ flex: "5" }}>
                   <p>Tổng: {formatCurrency(total)} VNĐ</p>
-                  <p>Thuế giá trị gia tăng(VAT): {formatCurrency(total * vat/100)}</p>
-                  <p>Thành tiền: {formatCurrency(total + total * (vat/100))} VNĐ</p>
+                  <p>
+                    Thuế giá trị gia tăng(VAT):{" "}
+                    {formatCurrency((total * vat) / 100)}
+                  </p>
+                  <p>
+                    Thành tiền: {formatCurrency(total + total * (vat / 100))}{" "}
+                    VNĐ
+                  </p>
                 </div>
               </div>
             </div>

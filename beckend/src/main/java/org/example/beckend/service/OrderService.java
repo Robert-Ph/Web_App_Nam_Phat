@@ -1,15 +1,16 @@
 package org.example.beckend.service;
 
-import lombok.extern.slf4j.Slf4j;
-import org.example.beckend.dto.request.OrderItemRequest;
+
 import org.example.beckend.dto.request.OrderRequest;
 
+import org.example.beckend.dto.request.OrderUpdateRequest;
 import org.example.beckend.dto.response.OrderResponseForList;
 import org.example.beckend.entity.Customer;
 import org.example.beckend.entity.Invoice;
 import org.example.beckend.entity.Order;
 import org.example.beckend.entity.OrderItem;
 import org.example.beckend.entity.enums.OrderStatus;
+import org.example.beckend.entity.enums.TypeOrder;
 import org.example.beckend.exception.AppException;
 import org.example.beckend.message.ErrorMessage;
 import org.example.beckend.repository.InvoiceRepository;
@@ -27,6 +28,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 @Service
 public class OrderService {
@@ -133,6 +135,38 @@ public class OrderService {
             return converToOrderForList(order);
         }));
 
+    }
+
+    public void delete(Long id){
+        orderRepository.delete(orderRepository.findById(id).get());
+    }
+    @Transactional
+    public Order update(Long id, OrderUpdateRequest update) {
+        Order order = orderRepository.findById(id).orElseThrow(()-> new AppException(ErrorMessage.NOT_FOUND));
+        if(!Objects.isNull(update.getAddress())){
+            order.setAddress(update.getAddress());
+        }
+        if(!Objects.isNull(update.getPhone())){
+            order.setPhone(update.getPhone());
+        }
+        order.setVat(update.getVat());
+        order.setStatus(OrderStatus.valueOf(update.getStatus()));
+        order.setTypeOrder(TypeOrder.valueOf(update.getTypeOrder()));
+        order.setDateShip(update.getDateShip());
+        order.setPay(update.isPay());
+
+        // Update order items if provided
+        if (update.getOrderItems() != null) {
+            order.getOrderItems().clear();
+            List<OrderItem> updatedItems = update.getOrderItems();
+            updatedItems.forEach(item -> item.setOrder(order)); // Set order reference
+            order.getOrderItems().addAll(updatedItems);
+        }
+
+
+
+        order.setTotalPrice(order.getOrderItems().stream().mapToLong(item -> item.getQuanlityProduct() * item.getPricePerOne()).sum());
+        return orderRepository.save(order);
     }
 
 

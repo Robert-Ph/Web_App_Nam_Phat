@@ -12,7 +12,7 @@ import SettingsIcon from "@mui/icons-material/Settings";
 import { useNavigate } from "react-router-dom";
 import Order from "../../../model/order.model";
 import OrderService from "../../../service/OrderService";
-import {formatCurrency, formatDateTime} from "../../../utils/Utils";
+import { formatCurrency, formatDateTime } from "../../../utils/Utils";
 import Spiner from "../../../component/Spiner/Spiner";
 const ListOrderPage = () => {
   const [orders, setOrders] = useState<Order[]>([]);
@@ -267,7 +267,7 @@ const ListOrderPage = () => {
                           className="pb-7 pt-7 font-size-small font-w-500 "
                           style={{ paddingRight: "20px" }}
                         >
-                          {order.nameCustomer || "-"}
+                          {(order.nameCustomer as string) || "-"}
                         </td>
                         <td className="pb-7 pt-7 font-size-small td-table font-w-500">
                           {order.dateCreate
@@ -276,7 +276,10 @@ const ListOrderPage = () => {
                         </td>
                         <td className="pb-7 pt-7 font-size-small td-table font-w-500">
                           {order.totalPrice
-                            ? formatCurrency(order.totalPrice + order.totalPrice * order.vat/100)
+                            ? formatCurrency(
+                                order.totalPrice +
+                                  (order.totalPrice * order.vat) / 100
+                              )
                             : "-"}
                         </td>
                         <td className="pb-7 pt-7 font-size-small td-table font-w-500">
