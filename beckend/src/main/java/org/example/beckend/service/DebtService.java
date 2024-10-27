@@ -34,9 +34,9 @@ public class DebtService {
         Map<Long, Long> debts = new TreeMap<Long, Long>();
         for (Order order : orders) {
             if (debts.containsKey(order.getCustomer().getId())) {
-                debts.put(order.getCustomer().getId(), debts.get(order.getCustomer().getId()) + order.getTotalPrice());
+                debts.put(order.getCustomer().getId(), debts.get(order.getCustomer().getId()) +  (long) (order.getTotalPrice() + order.getTotalPrice()* (order.getVat()/100)));
             }else{
-                debts.put(order.getCustomer().getId(), order.getTotalPrice());
+                debts.put(order.getCustomer().getId(), (long) (order.getTotalPrice() + order.getTotalPrice()* (order.getVat()/100)));
             }
         }
 
@@ -49,7 +49,7 @@ public class DebtService {
         List<Order> orders = orderService.getListDebt();
         for (Order order : orders) {
             if (order.getCustomer().getId() == id) {
-                totalPrice += order.getTotalPrice();
+                totalPrice +=  (long) (order.getTotalPrice() + order.getTotalPrice()* (order.getVat()/100));
             }
         }
         Customer customer = customerService.findCustomerById(id);
@@ -68,5 +68,15 @@ public class DebtService {
         return result;
     }
 
+    public Long totalPriceDebts(){
+        Long totalPrice = 0L;
+        List<Order> orders = orderService.getListDebt();
+        for (Order order : orders) {
+            if (order.getCustomer().getId() == 1) {
+                totalPrice += order.getTotalPrice();
+            }
+        }
+        return totalPrice;
+    }
 
 }

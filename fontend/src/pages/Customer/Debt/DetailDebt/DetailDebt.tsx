@@ -5,37 +5,31 @@ import FilterListIcon from "@mui/icons-material/FilterList";
 import TuneIcon from "@mui/icons-material/Tune";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import "./detailDebt.css";
-import { order } from "../../../../model/person.model";
-
 import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
 import SettingsIcon from "@mui/icons-material/Settings";
 import {useNavigate, useParams} from "react-router-dom";
 import PayModal from "../Modal/PayModal";
 import {toast} from "react-toastify";
-import CustomerService from "../../../../service/CustomerService.tsx";
 import Dept from "../../../../model/debt.model.tsx";
 import DeptService from "../../../../service/DeptService.tsx";
 import Order from "../../../../model/order.model.tsx";
+import {formatCurrency} from "../../../../utils/Utils.tsx";
 
 const DetailDebt = () => {
-  const [products, setProducts] = useState<order[]>([
-    {
-      id: "521345",
-      name: "12.000.000",
-      date: "7.000.000",
-      price: "20/12/2024",
-      isPay: "3.000.000",
-      status: "5.000.000",
-    },
-  ]);
 
   const [page, setPage] = useState<number>(1);
   const [open, setOpen] = useState<boolean>(false);
   const param = useParams();
   const currentDepts = useRef<Dept | null>(null);
   const navigate = useNavigate();
-  const [depts, setDepts] = useState<Dept[]>([]);
+  const [depts, setDepts] = useState<Dept>({
+    customerID: null,
+    nameCustomer: "",
+    phoneNumber: "",
+    totalAmount: 0,
+    monthlyPayment: 0,
+  });
   const [orders, setOrders] = useState<Order[]>([]);
 
   const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
@@ -65,7 +59,7 @@ const DetailDebt = () => {
           currentDepts.current = customerData;
 
           // Gọi API lấy danh sách đơn hàng sau khi đã lấy thông tin khách hàng
-          return CustomerService.getByIdListOrder(id);
+          return DeptService.getDebts(id);
         })
         .then((response) => {
           if (!response || !response.data || !response.data.data) {
@@ -83,14 +77,15 @@ const DetailDebt = () => {
   }, [param]);
 
 
+
   return (
     <div style={{ paddingBottom: "5%" }}>
       <div className="main-body">
         <div className="d-flex justify-space-bettwen ">
           <div>
-            <span className="infor-customer">Khách hàng: Nguyễn Văn A</span>
+            <span className="infor-customer">Khách hàng: {depts.nameCustomer}</span>
             <br />
-            <span className="infor-customer">ID: 124563</span>
+            <span className="infor-customer">ID: {depts.customerID}</span>
           </div>
           <div style={{ alignContent: "center" }}>
             <button
@@ -109,10 +104,10 @@ const DetailDebt = () => {
 
         <div className="mt-30">
           <span>
-            <strong>Tổng số nợ còn lại: 0 VNĐ</strong>
+            <strong>Tổng số nợ còn lại: {formatCurrency(depts.totalAmount)  } vnđ</strong>
           </span>
           <br />
-          <span>Ngày thanh toán gần nhất: 11/07/2024</span>
+          <span>Ngày thanh toán gần nhất: </span>
         </div>
         <div style={{ marginBottom: "10px" }}>
           <h3 style={{ marginTop: "30px" }}>
@@ -207,32 +202,52 @@ const DetailDebt = () => {
                   </tr>
                 </thead>
                 <tbody className="border-header-table">
-                  {products.map((product) => (
-                    <tr key={product.id} className="border-header-table">
+                { orders.length === 0 && (
+                    <tr>
+                      <td
+                          colSpan={7}
+                          rowSpan={10}
+                          className="pb-7 pt-7 font-size-small td-table font-w-500 text-center"
+                          style={{
+                            padding: "10% 0px",
+                            display: "table-cell", // Makes it behave like a table cell
+                            verticalAlign: "middle", // Vertically center the content
+                            borderBottom: "none",
+                            fontSize: "20px",
+                          }}
+                      >
+                        Không có dữ liệu
+                      </td>
+                    </tr>
+                )}
+                  {orders.length > 0 && orders.map((order) => (
+                    <tr key={order.id} className="border-header-table">
                       <td className="pb-7 pt-7 font-size-small td-table font-w-500 text-center ">
-                        {product.id}
+                        {order.id}
                       </td>
                       <td className="pb-7 pt-7 font-size-small font-w-500 text-center ">
-                        {product.name || "-"}
+                        {order.totalPrice
+                            ? formatCurrency(order.totalPrice + order.totalPrice * order.vat/100)
+                            : "-"}
                       </td>
                       <td className="pb-7 pt-7 font-size-small td-table font-w-500 text-center">
-                        {product.date || "-"}
+                        {"-"}
                       </td>
                       <td className="pb-7 pt-7 font-size-small td-table font-w-500 text-center">
-                        {product.price || "-"}
+                        { "-"}
                       </td>
                       <td className="pb-7 pt-7 font-size-small td-table font-w-500 text-center">
-                        {product.isPay || "-"}
+                        { "-"}
                       </td>
                       <td className="pb-7 pt-7 font-size-small td-table font-w-500 text-center">
-                        {product.status || "-"}
+                        { "-"}
                       </td>
                       <td className="pb-7 pt-7 font-size-small td-table font-w-500 text-center">
                         <button
                           className="btn-more"
                           onClick={() =>
                             navigate(
-                              `/customer/debt/list/order/detail/${product.id}`
+                              `/customer/debt/list/order/detail/${order.id}`
                             )
                           }
                         >
@@ -247,7 +262,7 @@ const DetailDebt = () => {
             <div className="pagination">
               <Stack spacing={2}>
                 <Pagination
-                  count={10}
+                  count={orders.length/10+1}
                   color="primary"
                   page={page}
                   onChange={handleChange}

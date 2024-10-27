@@ -23,6 +23,9 @@ const BASE_URL = "/debt";
 const getById = (id: number | undefined | string) => {
     return api.get(`${BASE_URL}/detail/${id}`);
 };
+const getDebts = (id: number | undefined | string) => {
+    return api.get(`${BASE_URL}/detail/list/${id}`);
+}
 const getByIdList = () => {
     return api.get(
         `${BASE_URL}`);
@@ -33,6 +36,7 @@ const DeptService = {
     // create,
     getById,
     getByIdList,
+    getDebts,
     // getCustomerByPhone,
 };
 
