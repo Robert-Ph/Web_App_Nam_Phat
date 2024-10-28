@@ -1,43 +1,98 @@
-import { useState } from "react";
+import {useEffect, useRef, useState} from "react";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import FilterListIcon from "@mui/icons-material/FilterList";
 import TuneIcon from "@mui/icons-material/Tune";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import "./cutomerHistoryOrder.css";
-import { order } from "../../../model/person.model";
 
 import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
 import SettingsIcon from "@mui/icons-material/Settings";
-import { useNavigate } from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
+import Customer from "../../../model/customer.model.tsx";
+import CustomerService from "../../../service/CustomerService.tsx";
+import Order from "../../../model/order.model";
+import {toast} from "react-toastify";
 
+
+// const [page, setPage] = useState<number>(1);
 const ListOrderPage = () => {
-  const [products, setProducts] = useState<order[]>([
-    {
-      id: "521345",
-      name: "Công ty TNHN XD Nguyễn Hoàng Tiến Phát Hoàng Thanh Hải Đăng Kiểm",
-      date: "31/12/2024",
-      price: "1 200 000 000 000 VNĐ",
-      isPay: "Chưa Thanh Toán",
-      status: "Chưa giao",
-    },
-  ]);
-
-  const [page, setPage] = useState<number>(1);
-
-  const navigate = useNavigate();
-
+  const [customer, setCustomer] = useState<Customer>({
+    id: null,
+    fullName: "",
+    phone: "",
+    email: "",
+    address: "",
+    typeCustomer: "",
+  });
+  const currentCustomer = useRef<Customer | null>(null);
   const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
     setPage(value);
   };
+
+  const [orders, setOrders] = useState<Order[]>([]);
+  const navigate = useNavigate();
+  const param = useParams();
+
+  useEffect(() => {
+    const id = param?.id;
+
+    if (!id) {
+      toast.error("ID không hợp lệ");
+      return; // Ngừng thực thi nếu id không tồn tại
+    }
+
+    console.log(id);
+
+    // Gọi API lấy thông tin khách hàng
+    CustomerService.getById(id)
+        .then((response) => {
+          if (!response || !response.data || !response.data.data) {
+            throw new Error("Dữ liệu không hợp lệ");
+          }
+
+          console.log(response);
+          const customerData = response.data.data;
+          setCustomer(customerData);
+          currentCustomer.current = customerData;
+
+          // Gọi API lấy danh sách đơn hàng sau khi đã lấy thông tin khách hàng
+          return CustomerService.getByIdListOrder(id);
+        })
+        .then((response) => {
+          if (!response || !response.data || !response.data.data) {
+            throw new Error("Dữ liệu đơn hàng không hợp lệ");
+          }
+
+          console.log(response);
+          setOrders(response.data.data);
+        })
+        .catch((error) => {
+          const errorResponse = error?.response;
+          console.error("Error:", errorResponse);
+          toast.error("Lỗi không xác định. Vui lòng thử lại!");
+        });
+  }, [param]);
+
+
+
+  const [page, setPage] = useState<number>(1);
+  // const [totalPages, setTotalPages] = useState(0);
+  // const [loading, setLoading] = useState<boolean>(false);
+  // const pageSize = 10;
+  //
+  // const [filterOption, setFilterOption] = useState<string>("all");
+  // const [search, setSearch] = useState<string>("");
+
+
   return (
     <div style={{ paddingBottom: "5%" }}>
       <div className="main-body">
         <div className="d-flex justify-space-bettwen ">
           <div>
-            <h3>Khách hàng: Nguyễn Văn A</h3>
-            <h3>ID: 124563</h3>
+            <h3>Khách hàng: {customer.fullName}</h3>
+            <h3>ID: {customer.id}</h3>
             <h3 style={{ marginTop: "20px" }}>Danh sách đơn hàng</h3>
           </div>
           <div style={{ alignContent: "center" }}>
@@ -79,8 +134,8 @@ const ListOrderPage = () => {
             <div style={{ position: "relative" }}>
               <select className="filter-select btn btn-primary pd-r-40">
                 <option value="all">Tất cả</option>
-                <option value="newest">Tiền mặt</option>
-                <option value="confirmed">Chuyển khoản</option>
+                <option value="newest">Đã thanh toán</option>
+                <option value="confirmed">Chưa thanh toán</option>
               </select>
               <i className="icon-filter">
                 <TuneIcon></TuneIcon>
@@ -124,35 +179,53 @@ const ListOrderPage = () => {
                   </tr>
                 </thead>
                 <tbody className="border-header-table">
-                  {products.map((product) => (
-                    <tr key={product.id} className="border-header-table">
+                { orders.length === 0 && (
+                    <tr>
+                      <td
+                          colSpan={7}
+                          rowSpan={10}
+                          className="pb-7 pt-7 font-size-small td-table font-w-500 text-center"
+                          style={{
+                            padding: "10% 0px",
+                            display: "table-cell", // Makes it behave like a table cell
+                            verticalAlign: "middle", // Vertically center the content
+                            borderBottom: "none",
+                            fontSize: "20px",
+                          }}
+                      >
+                        Không có dữ liệu
+                      </td>
+                    </tr>
+                )}
+                  {orders.length > 0 && orders.map((order) => (
+                    <tr key={order.id} className="border-header-table">
                       <td className="pb-7 pt-7 font-size-small td-table font-w-500 ">
-                        {product.id}
+                        {order.id}
                       </td>
                       <td
                         className="pb-7 pt-7 font-size-small font-w-500 "
                         style={{ paddingRight: "20px" }}
                       >
-                        {product.name || "-"}
+                        {"=" || "-"}
                       </td>
                       <td className="pb-7 pt-7 font-size-small td-table font-w-500">
-                        {product.date || "-"}
+                        {order.dateShip || "-"}
                       </td>
                       <td className="pb-7 pt-7 font-size-small td-table font-w-500">
-                        {product.price || "-"}
+                        {order.totalPrice || "-"}
                       </td>
                       <td className="pb-7 pt-7 font-size-small td-table font-w-500">
-                        {product.isPay || "-"}
+                        {order.pay || "-"}
                       </td>
                       <td className="pb-7 pt-7 font-size-small td-table font-w-500">
-                        {product.status || "-"}
+                        {order.status || "-"}
                       </td>
                       <td className="pb-7 pt-7 font-size-small td-table font-w-500">
                         <button
                           className="btn-more"
                           onClick={() =>
                             navigate(
-                              `/customer/list/historyoder/order/detail/${product.id}`
+                              `/customer/list/historyoder/order/detail/${order.id}`
                             )
                           }
                         >
@@ -167,7 +240,7 @@ const ListOrderPage = () => {
             <div className="pagination">
               <Stack spacing={2}>
                 <Pagination
-                  count={10}
+                  // count={1}
                   color="primary"
                   page={page}
                   onChange={handleChange}

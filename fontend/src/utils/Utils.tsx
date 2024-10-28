@@ -20,8 +20,17 @@ export const formatDateTime = (dateString: string): string => {
 
   return `${day}/${month}/${year} ${hours}:${minutes}:${seconds}`;
 };
+// export const formatCurrency = (amount: number) => {
+//   return new Intl.NumberFormat("vi-VN", {
+//     style: "decimal",
+//   }).format(amount);
+// };
 export const formatCurrency = (amount: number) => {
+  if (amount >= 1_000_000_000) {
+    return `${(amount / 1_000_000_000).toFixed(2)} tỷ`;
+  }
   return new Intl.NumberFormat("vi-VN", {
     style: "decimal",
   }).format(amount);
 };
+

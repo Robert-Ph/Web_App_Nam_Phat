@@ -47,4 +47,26 @@ public class DebtController {
                 .build());
     }
 
+    @GetMapping("/detail/{id}")
+    public ResponseEntity<ApiResponse> getDebtDetailByID(@PathVariable Long id) {
+        Debt data = debtService.getDebt(id);
+        return  ResponseEntity.ok(ApiResponse
+                .builder()
+                .code(SuccessMessage.GET_DATA_SUCCESS.getCode())
+                .message(SuccessMessage.GET_DATA_SUCCESS.getMessage())
+                .data(data)
+                .build());
+    }
+
+    @GetMapping("/detail/list/{id}")
+    public ResponseEntity<ApiResponse> getDebtDetailListByID(@PathVariable Long id) {
+        List<Order> data = debtService.getListDebtCustomer(id);
+        return  ResponseEntity.ok(ApiResponse
+                .builder()
+                .code(SuccessMessage.GET_DATA_SUCCESS.getCode())
+                .message(SuccessMessage.GET_DATA_SUCCESS.getMessage())
+                .data(data)
+                .build());
+    }
+
 }

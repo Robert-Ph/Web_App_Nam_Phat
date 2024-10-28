@@ -52,6 +52,33 @@ public class InvoiceController {
         }
     }
 
+    @GetMapping("/seen/{id}")
+    public ResponseEntity<FileSystemResource> seen(@PathVariable Long id) {
+        try {
+            Invoice invoice = invoiceService.getById(id);
+
+            File file = new File(pathOrdeFile + File.separator + invoice.getFile());
+            FileSystemResource resource = new FileSystemResource(file);
+
+            // Kiểm tra xem file có tồn tại hay không
+            if (!resource.exists()) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+            }
+
+            // Tạo header cho phản hồi
+            HttpHeaders headers = new HttpHeaders();
+            headers.add(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=" + file.getName()); // Sử dụng 'inline'
+            headers.add(HttpHeaders.CONTENT_TYPE, "application/pdf"); // Loại file PDF
+
+            // Trả về phản hồi
+            return ResponseEntity.ok()
+                    .headers(headers)
+                    .body(resource);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
     @GetMapping
     public ResponseEntity<ApiResponse> getAll(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size) {
         Pageable pageable = PageRequest.of(page, size);

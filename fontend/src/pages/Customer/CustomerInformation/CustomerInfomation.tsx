@@ -1,45 +1,67 @@
 import "./customerInfomation.css";
-import { useState } from "react";
-import product from "../../../model/product.model";
-
+import {useEffect, useRef, useState} from "react";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
-
 import FilterListIcon from "@mui/icons-material/FilterList";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import TuneIcon from "@mui/icons-material/Tune";
-
 import Stack from "@mui/material/Stack";
 import Pagination from "@mui/material/Pagination";
-import { useNavigate } from "react-router-dom";
-
+import { useNavigate, useParams } from "react-router-dom";
 import NotifyDeleteModal from "../../UtilsPage/NotifyDeleteModal";
+import Customer from "../../../model/customer.model.tsx";
+import {toast} from "react-toastify";
+import CustomerService from "../../../service/CustomerService.tsx";
 const OrderPage = () => {
-  const [products, setProducts] = useState<product[]>([
-    // {
-    //     id: 1,
-    //     name: "",
-    //     totalPrice: "",
-    //     type: "",
-    // },
-  ]);
+
 
   const [page, setPage] = useState<number>(1);
   const [invoice, setInvoice] = useState<string>("personally");
   const [isEdit, setIsEdit] = useState(false);
   const [openDelte, setOpenDelete] = useState<boolean>(false);
-
-  const navigate = useNavigate();
-
+  const [customer, setCustomer] = useState<Customer>({
+    id: null,
+    fullName: "",
+    phone: "",
+    email: "",
+    address: "",
+    typeCustomer: invoice,
+  });
+  const currentCustomer = useRef<Customer | null>(null);
   const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
     setPage(value);
   };
-
+  //Sự kiện khi bấm vào nút chỉnh sửa sẽ thay đổi các ô input cho phép chỉnh sửa
+  const handleEdit = () => {
+    console.log("debug");
+    setIsEdit(true);
+  };
+  //Sự kiện khi bấm cập nhật chỉnh sửa
+  const handleSubmitEdit = () => {
+    setIsEdit(false);
+  };
   const handleChangeSelect = (event: SelectChangeEvent) => {
     setInvoice(event.target.value);
   };
+  const navigate = useNavigate();
+  const param = useParams();
+  useEffect(() => {
+    const id = param?.id;
+    console.log(id);
+    CustomerService.getById(id)
+        .then((response) => {
+          console.log(response);
+          setCustomer(response.data.data);
+          currentCustomer.current = response.data.data;
+        })
+        .catch((error) => {
+          const errorReponse = error.response;
+
+          toast.error("Lỗi không xác định. Vui lòng thử lại!");
+        });
+  }, [param]);
 
   return (
     <div>
@@ -75,7 +97,7 @@ const OrderPage = () => {
             <button
               className="btn btn-primary"
               style={{ marginRight: "0px;" }}
-              onClick={() => setIsEdit(false)}
+              onClick={handleSubmitEdit}
             >
               Cập nhật
             </button>
@@ -83,9 +105,7 @@ const OrderPage = () => {
             <button
               className="btn btn-primary"
               style={{ marginRight: "0px;" }}
-              onClick={() => {
-                setIsEdit(true);
-              }}
+              onClick={handleEdit}
             >
               Chỉnh sửa
             </button>
@@ -97,41 +117,26 @@ const OrderPage = () => {
           <div className="wrap-form">
             <div className="form-group flex-1" style={{ marginRight: "5%" }}>
               <span>Mã khách hàng</span>
-              <input placeholder="Tên khách hàng" disabled={true}></input>
+              <input disabled={true}
+                     value={customer.id || ""}></input>
             </div>
 
             <div className="form-group flex-1" style={{ marginLeft: "5%" }}>
               <span>Ngày tạo</span>
-              <input placeholder="Ngày tạo" disabled={true} type="date"></input>
+              <input  disabled={true} type="date"></input>
             </div>
-
-            {/* <div className="form-group flex-2">
-              <span>Loại khách hàng</span>
-              <FormControl sx={{ minWidth: 120 }} size="small">
-                <Select
-                  labelId="demo-select-small-label"
-                  id="demo-select-small"
-                  value={invoice}
-                  // onChange={handleChange}
-                  disabled={!isEdit}
-                >
-                  <MenuItem value={"personally"} className="">
-                    Cá Nhân
-                  </MenuItem>
-                  <MenuItem value={"enterprise"}>Doanh Nghiệp</MenuItem>
-                </Select>
-              </FormControl>
-            </div> */}
           </div>
           <div className="wrap-form">
             <div className="form-group flex-1" style={{ marginRight: "5%" }}>
               <span>Tên khách hàng</span>
-              <input placeholder="Tên khách hàng" disabled={!isEdit}></input>
+              <input value={customer.fullName || ""}
+                     disabled={!isEdit}></input>
             </div>
 
             <div className="form-group flex-1" style={{ marginLeft: "5%" }}>
               <span>Số điện thoại</span>
-              <input placeholder="Số điện thoại" disabled={!isEdit}></input>
+              <input value={customer.phone || ""}
+                     disabled={!isEdit}></input>
             </div>
           </div>
           <div className="wrap-form">
@@ -141,6 +146,7 @@ const OrderPage = () => {
                 placeholder="Email"
                 disabled={!isEdit}
                 type="email"
+                value={customer.email || ""}
               ></input>
             </div>
 
@@ -150,7 +156,7 @@ const OrderPage = () => {
                 <Select
                   labelId="demo-select-small-label"
                   id="demo-select-small"
-                  value={invoice}
+                  value={customer.typeCustomer}
                   onChange={handleChangeSelect}
                   disabled={!isEdit}
                 >
@@ -166,7 +172,7 @@ const OrderPage = () => {
           <div className="wrap-form" style={{ marginTop: "15px" }}>
             <div className="form-group flex-8" style={{ marginLeft: "0px" }}>
               <span>Địa chỉ giao hàng</span>
-              <input placeholder="Địa chỉ giao hàng" disabled={!isEdit}></input>
+              <input value={customer.address || ""} disabled={!isEdit}></input>
             </div>
           </div>
         </div>
@@ -252,22 +258,22 @@ const OrderPage = () => {
                     </tr>
                   </thead>
                   <tbody className="border-header-table">
-                    {products.map((product) => (
-                      <tr key={product.id} className="border-header-table">
-                        <td className="pb-7 pt-7 font-size-small td-table font-w-500 ">
-                          {product.id}
-                        </td>
-                        <td className="pb-7 pt-7 font-size-small td-table font-w-500">
-                          {product.name || "-"}
-                        </td>
-                        <td className="pb-7 pt-7 font-size-small td-table font-w-500">
-                          {product.totalPrice || "-"}
-                        </td>
-                        <td className="pb-7 pt-7 font-size-small td-table font-w-500">
-                          {product.type || "-"}
-                        </td>
-                      </tr>
-                    ))}
+                    {/*{products.map((product) => (*/}
+                    {/*  <tr key={product.id} className="border-header-table">*/}
+                    {/*    <td className="pb-7 pt-7 font-size-small td-table font-w-500 ">*/}
+                    {/*      {product.id}*/}
+                    {/*    </td>*/}
+                    {/*    <td className="pb-7 pt-7 font-size-small td-table font-w-500">*/}
+                    {/*      {product.name || "-"}*/}
+                    {/*    </td>*/}
+                    {/*    <td className="pb-7 pt-7 font-size-small td-table font-w-500">*/}
+                    {/*      {product.totalPrice || "-"}*/}
+                    {/*    </td>*/}
+                    {/*    <td className="pb-7 pt-7 font-size-small td-table font-w-500">*/}
+                    {/*      {product.type || "-"}*/}
+                    {/*    </td>*/}
+                    {/*  </tr>*/}
+                    {/*))}*/}
                   </tbody>
                 </table>
               </div>
