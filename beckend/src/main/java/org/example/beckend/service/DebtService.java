@@ -20,7 +20,7 @@ public class DebtService {
 
     public List<Debt> getDebts() {
         List<Debt> debts = new ArrayList<Debt>();
-        List<Order> orders = orderService.getListDebt();
+        List<Order> orders = orderService.getListDebt(false);
         Map<Long, Long> list = getListDebtCustomer(orders);
         for (Map.Entry<Long, Long> entry : list.entrySet()) {
            Customer customer = customerService.findCustomerById(entry.getKey());
@@ -46,7 +46,7 @@ public class DebtService {
 
     public Debt getDebt(Long id) {
         Long totalPrice = 0L;
-        List<Order> orders = orderService.getListDebt();
+        List<Order> orders = orderService.getListDebt(false);
         for (Order order : orders) {
             if (order.getCustomer().getId() == id) {
                 totalPrice +=  (long) (order.getTotalPrice() + order.getTotalPrice()* (order.getVat()/100));
@@ -59,7 +59,7 @@ public class DebtService {
 
     public List<Order> getListDebtCustomer(Long customerId) {
         List<Order> result = new ArrayList<>();
-        List<Order> orders = orderService.getListDebt();
+        List<Order> orders = orderService.getListDebt(false);
         for (Order order : orders) {
             if (order.getCustomer().getId().equals(customerId)) {
                 result.add(order);
@@ -70,7 +70,7 @@ public class DebtService {
 
     public Long totalPriceDebts(){
         Long totalPrice = 0L;
-        List<Order> orders = orderService.getListDebt();
+        List<Order> orders = orderService.getListDebt(false);
         for (Order order : orders) {
             if (order.getCustomer().getId() == 1) {
                 totalPrice += order.getTotalPrice();

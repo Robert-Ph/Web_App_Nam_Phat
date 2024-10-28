@@ -6,5 +6,10 @@ export type DashboardModel = {
     customers: Customer[];
     orders: Order[];
     debts: Debt[];
+    aveRevenue: number;
+    realRevenue: number;
+    debtRevenue: number;
+    sumRevenue: number;
+    sumOrders: number;
 }
 export default DashboardModel;

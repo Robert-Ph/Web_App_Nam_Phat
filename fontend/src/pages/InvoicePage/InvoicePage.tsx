@@ -5,7 +5,6 @@ import FilterListIcon from "@mui/icons-material/FilterList";
 import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
 import "../OrderPage/ListOrderPage/listOrder.css";
-
 import Invoices from "../../model/invoice.model";
 import useDebounce from "../../hooks/useDebounce";
 import InvoiceService from "../../service/InvoiceSevice";
@@ -25,6 +24,10 @@ const InvoicePage = () => {
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setQuery(e.target.value); // Update query immediately, debouncing will handle the delay
   };
+  const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
+    setPage(value);
+  };
+
 
   const fetchInvoices = async () => {
     try {
@@ -72,6 +75,44 @@ const InvoicePage = () => {
       console.log(error);
     }
   };
+
+  const handleSeen = async (id: number) => {
+    try {
+      const response = await InvoiceService.seenFile(id);
+      // Kiểm tra xem response có dữ liệu
+      if (!response.data) {
+        console.error("Không có dữ liệu từ phản hồi.");
+        return;
+      }
+
+      const contentDisposition = response.headers["content-disposition"];
+      // let fileName = `HD_${id}.pdf`;
+
+      if (contentDisposition) {
+        const fileNameMatch = contentDisposition.match(
+            /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/
+        );
+        if (fileNameMatch && fileNameMatch.length === 2) {
+          // Lấy tên file từ content-disposition
+          // fileName = fileNameMatch[1].replace(/['"]/g, ''); // Loại bỏ dấu nháy
+        }
+      }
+
+      // Tạo một blob từ response.data
+      const blob = new Blob([response.data], { type: "application/pdf" });
+      const url = URL.createObjectURL(blob); // Tạo URL cho blob
+
+      // Mở file PDF trong tab mới
+      window.open(url, '_blank');
+
+      // Có thể không cần gọi fetchInvoices() ở đây, tùy thuộc vào logic ứng dụng
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+
   return (
     <div>
       <div className="main-body">
@@ -123,68 +164,82 @@ const InvoicePage = () => {
           <div className="table-more">
             <table style={{ width: "100%", borderCollapse: "collapse" }}>
               <thead>
-                <tr className="color-blue header-table text-left border-header-table">
-                  <th className="pb-7 font-w-500" style={{ width: "7%" }}>
-                    ID
-                  </th>
-                  <th
+              <tr className="color-blue header-table text-left border-header-table">
+                <th className="pb-7 font-w-500" style={{width: "7%"}}>
+                  ID
+                </th>
+                <th
                     className="pb-7 font-w-500"
-                    style={{ width: "8%", paddingRight: "10px" }}
-                  >
-                    Mã đơn hàng
-                  </th>
-                  <th
+                    style={{width: "8%", paddingRight: "10px"}}
+                >
+                  Mã đơn hàng
+                </th>
+                <th
                     className="pb-7 font-w-500"
-                    style={{ width: "20%", paddingRight: "10px" }}
-                  >
-                    Tên khách hàng
-                  </th>
-                  <th className="pb-7 font-w-500" style={{ width: "10%" }}>
-                    Ngày tạo
-                  </th>
+                    style={{width: "20%", paddingRight: "10px"}}
+                >
+                  Tên khách hàng
+                </th>
+                <th className="pb-7 font-w-500" style={{width: "10%"}}>
+                  Ngày tạo
+                </th>
 
-                  <th className="pb-7 font-w-500" style={{ width: "5%" }}></th>
-                </tr>
+                <th className="pb-7 font-w-500" style={{width: "5%"}}></th>
+                <th className="pb-7 font-w-500" style={{width: "5%"}}></th>
+              </tr>
               </thead>
               <tbody className="border-header-table">
                 {invoices.map((invoice) => (
-                  <tr key={invoice.id} className="border-header-table">
-                    <td className="pb-7 pt-7 font-size-small td-table font-w-500 ">
-                      {invoice.id}
-                    </td>
-                    <td className="pb-7 pt-7 font-size-small font-w-500 ">
-                      {invoice.orderId || "-"}
-                    </td>
-                    <td
-                      className="pb-7 pt-7 font-size-small td-table font-w-500"
-                      style={{ paddingRight: "20px" }}
-                    >
-                      {invoice.nameCustomer || "-"}
-                    </td>
-                    <td className="pb-7 pt-7 font-size-small td-table font-w-500">
-                      {invoice.dateCreate
-                        ? formatDateTime(invoice.dateCreate)
-                        : "Chưa xuất File"}
-                    </td>
-
-                    <td className="pb-7 pt-7 font-size-small td-table font-w-500">
-                      <button
-                        className="btn btn-primary"
-                        onClick={() => {
-                          handleDowload(invoice.id);
-                        }}
+                    <tr key={invoice.id} className="border-header-table">
+                      <td className="pb-7 pt-7 font-size-small td-table font-w-500 ">
+                        {invoice.id}
+                      </td>
+                      <td className="pb-7 pt-7 font-size-small font-w-500 ">
+                        {invoice.orderId || "-"}
+                      </td>
+                      <td
+                          className="pb-7 pt-7 font-size-small td-table font-w-500"
+                          style={{paddingRight: "20px"}}
                       >
-                        Xuất File
-                      </button>
-                    </td>
-                  </tr>
-                ))}
+                        {invoice.nameCustomer || "-"}
+                      </td>
+                      <td className="pb-7 pt-7 font-size-small td-table font-w-500">
+                        {invoice.dateCreate
+                            ? formatDateTime(invoice.dateCreate)
+                            : "Chưa xuất File"}
+                      </td>
+                      <td className="pb-7 pt-7 font-size-small td-table font-w-500">
+                        <button
+                            className="btn btn-primary"
+                            onClick={() => {
+                              handleSeen(invoice.id,"HD_"+invoice.id);
+                            }}
+                        >
+                          Xem
+                        </button>
+                      </td>
+                        <td className="pb-7 pt-7 font-size-small td-table font-w-500">
+                          <button
+                              className="btn btn-primary"
+                              onClick={() => {
+                                handleDowload(invoice.id);
+                              }}
+                          >
+                            Xuất File
+                          </button>
+                        </td>
+                    </tr>
+                  ))}
               </tbody>
             </table>
           </div>
           <div className="pagination">
             <Stack spacing={2}>
-              <Pagination count={totalPages} color="primary" />
+              <Pagination count={totalPages}
+                          color="primary"
+                          page={page}
+                          onChange={handleChange}
+              />
             </Stack>
           </div>
         </div>

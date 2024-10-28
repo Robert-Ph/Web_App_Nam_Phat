@@ -21,6 +21,11 @@ import Order from "../../model/order.model.tsx";
             customers: [],
             orders: [],
             debts: [],
+            aveRevenue: 0,
+            realRevenue: 0,
+            debtRevenue: 0,
+            sumRevenue:0,
+            sumOrders: 0,
         });
 // Lấy ngày hiện tại
         const today = new Date();
@@ -60,7 +65,7 @@ import Order from "../../model/order.model.tsx";
                             <TrendingUpIcon className="icon-size"></TrendingUpIcon>
                         </div>
                         <div className="icon textbox">
-                            <p>Doanh thu</p>
+                            <p>Doanh thu/năm</p>
                             <p>{formatCurrency(calculateTotalRevenueAmount(dashboard.orders))} vnđ</p>
                         </div>
                     </div>
@@ -69,7 +74,7 @@ import Order from "../../model/order.model.tsx";
                             <ShoppingCartOutlinedIcon className="icon-size"></ShoppingCartOutlinedIcon>
                         </div>
                         <div className="icon textbox">
-                            <p>Đơn hàng</p>
+                            <p>Đơn hàng/năm</p>
                             <p>{dashboard.orders.length}</p>
                         </div>
                     </div>
@@ -78,7 +83,7 @@ import Order from "../../model/order.model.tsx";
                             <GroupAddIcon className="icon-size"></GroupAddIcon>
                         </div>
                         <div className="icon textbox">
-                            <p>Khách hàng</p>
+                            <p>Khách hàng mới</p>
                             <p>{dashboard.customers.length}</p>
                         </div>
                     </div>
@@ -87,7 +92,7 @@ import Order from "../../model/order.model.tsx";
                             <CandlestickChartIcon className="icon-size"></CandlestickChartIcon>
                         </div>
                         <div className="icon textbox">
-                            <p>Chi tiêu</p>
+                            <p>Chi tiêu/năm</p>
                             <p>0 vnđ</p>
                         </div>
                     </div>
@@ -102,17 +107,17 @@ import Order from "../../model/order.model.tsx";
                             <tbody>
                             <tr>
                                 <td>Tổng doanh thu:</td>
-                                <td>0</td>
+                                <td>{formatCurrency(dashboard.sumRevenue)}</td>
                                 <td>vnđ</td>
                             </tr>
                             <tr>
                                 <td>Tổng đơn hàng:</td>
-                                <td>0</td>
+                                <td>{dashboard.sumOrders}</td>
 
                             </tr>
                             <tr>
                                 <td>Doanh thu/ Đơn hàng:</td>
-                                <td>0</td>
+                                <td>{formatCurrency(dashboard.aveRevenue)}</td>
                                 <td>vnđ</td>
                             </tr>
                             <tr>
@@ -122,12 +127,12 @@ import Order from "../../model/order.model.tsx";
                             </tr>
                             <tr>
                                 <td>Tổng thu thực:</td>
-                                <td>0</td>
+                                <td>{formatCurrency(dashboard.realRevenue)}</td>
                                 <td>vnđ</td>
                             </tr>
                             <tr>
                                 <td>Tổng công nợ:</td>
-                                <td>0</td>
+                                <td>{formatCurrency(dashboard.debtRevenue)}</td>
                                 <td>vnđ</td>
                             </tr>
                             </tbody>
@@ -182,6 +187,7 @@ import Order from "../../model/order.model.tsx";
                     <div className="main">
                         <div className="div div-1">
                             <p className="text">Công nợ khách hàng</p>
+                            <p className="text">Tháng {currentMonth}</p>
                         </div>
                         <div className="div-body-1">
                             <table className="table-home">
@@ -203,6 +209,7 @@ import Order from "../../model/order.model.tsx";
                     <div className="main">
                         <div className="div div-1">
                             <p className="text">Lợi nhuận</p>
+                            <p className="text">Tháng {currentMonth}</p>
                         </div>
                         <div className="div-body-1">
                             <table className="table-home">
@@ -225,6 +232,7 @@ import Order from "../../model/order.model.tsx";
                 <div className="body">
                     <div className="div">
                         <p className="text">Chi tiêu</p>
+                        <p className="text">Tháng {currentMonth}</p>
                     </div>
                     <div className="div-body">
                         <table className="table-home">

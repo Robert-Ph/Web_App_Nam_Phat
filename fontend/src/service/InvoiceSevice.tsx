@@ -1,5 +1,5 @@
 import api from "../api/APIConfig";
-import Customer from "../model/customer.model";
+
 
 const BASE_URL = "/invoices";
 
@@ -14,9 +14,15 @@ const dowloadFile = (id: Number) => {
     responseType: "blob", // Set response type to 'blob' to handle binary data
   });
 };
+const seenFile = (id: Number) => {
+  return api.get(`${BASE_URL}/seen/${id}`, {
+    responseType: "blob", // Set response type to 'blob' to handle binary data
+  });
+};
 const InvoiceService = {
   getBySearch,
   dowloadFile,
+  seenFile,
 };
 
 export default InvoiceService;
