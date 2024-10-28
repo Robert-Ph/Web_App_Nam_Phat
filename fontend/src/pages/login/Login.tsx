@@ -57,20 +57,27 @@ const Login = () => {
       <div className="logo">
         <img alt="Logo Nam Phát" src={logo}></img>
       </div>
-      <div className="body">
-        <div>
-          <h2>Username</h2>
-          <input type="text" onChange={(e) => setUsername(e.target.value)} />
-          <h2 className="pass">Password</h2>
-          <input
-            type="password"
-            onChange={(e) => setPassword(e.target.value)}
-          />
-          <br />
+      <form onSubmit={handleLogin}>
+        <div className="body">
+          <div>
+            <h2>Username</h2>
+            <input
+              type="text"
+              onChange={(e) => setUsername(e.target.value)}
+              required
+            />
+            <h2 className="pass">Password</h2>
+            <input
+              type="password"
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+            <br />
 
-          <button onClick={handleLogin}>Sign In</button>
+            <button type="submit">Sign In</button>
+          </div>
         </div>
-      </div>
+      </form>
     </div>
   );
 };

@@ -16,10 +16,20 @@ const getById = (id: number | undefined | string) => {
   return api.get(`${BASE_URL}/${id}`);
 };
 
+const update = (employee: Employee, id: number) => {
+  return api.put(`${BASE_URL}/${id}`, employee);
+};
+
+const deleteEmployee = (id: number) => {
+  return api.delete(`${BASE_URL}/${id}`);
+};
+
 const EmployeeService = {
   getByFilter,
   create,
   getById,
+  update,
+  deleteEmployee,
 };
 
 export default EmployeeService;

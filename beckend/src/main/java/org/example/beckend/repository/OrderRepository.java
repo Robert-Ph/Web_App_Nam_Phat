@@ -25,4 +25,10 @@ public interface OrderRepository extends JpaRepository<Order,Long> {
 
     @Query("SELECT o FROM Order o WHERE (:filter IS NULL  OR :filter = '' OR (CAST(o.id AS string) LIKE %:filter% OR o.customer.fullName LIKE %:filter%)) AND o.status = :status")
     Page<Order> findByIdOrNameCustomerContainsAndStatus(@Param("filter") String filter, @Param("status") OrderStatus status, Pageable pageable);
+
+
+    @Query("SELECT o FROM Order o WHERE (:filter IS NULL  OR :filter = '' OR (CAST(o.id AS string) LIKE %:filter% OR o.customer.fullName LIKE %:filter%)) ")
+    Page<Order> findByIdOrNameCustomerContains(@Param("filter") String filter, Pageable pageable);
+
+
 }

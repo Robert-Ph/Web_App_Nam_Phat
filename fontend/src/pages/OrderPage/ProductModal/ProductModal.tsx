@@ -22,7 +22,7 @@ const style = {
 
 type props = {
   open: boolean;
-  orderItem?: OrderItem;
+  orderItem?: OrderItem | null;
   onClose: () => void;
   handleAdd: (orderItem: OrderItem) => void;
 };
@@ -56,27 +56,31 @@ const ProductModal = ({ open, onClose, orderItem, handleAdd }: props) => {
     setValues({ ...values, [event.target.name]: event.target.value });
   };
 
+  console.log(orderItem);
+
   const handleAddOrderItem = (e: React.FormEvent) => {
     e.preventDefault();
     handleAdd(values);
-    setValues({
-      id: null,
-      nameProduct: "",
-      typeProduct: "",
-      unitProduct: "",
-      heightProudct: 0,
-      widthProduct: 0,
-      quanlityProduct: 0,
-      typePaper: "",
-      qualityPaper: 0,
-      unitPaper: "",
-      heightPaper: 0,
-      widthPaper: 0,
-      laminnation: "",
-      cradle: false,
-      pricePerOne: 0,
-      mode: "",
-    });
+    if (!orderItem) {
+      setValues({
+        id: null,
+        nameProduct: "",
+        typeProduct: "",
+        unitProduct: "",
+        heightProudct: 0,
+        widthProduct: 0,
+        quanlityProduct: 0,
+        typePaper: "",
+        qualityPaper: 0,
+        unitPaper: "",
+        heightPaper: 0,
+        widthPaper: 0,
+        laminnation: "",
+        cradle: false,
+        pricePerOne: 0,
+        mode: "",
+      });
+    }
   };
 
   console.log(values);
@@ -95,24 +99,28 @@ const ProductModal = ({ open, onClose, orderItem, handleAdd }: props) => {
                 className="btn btn-danger"
                 type="button"
                 onClick={() => {
-                  setValues({
-                    id: null,
-                    nameProduct: "",
-                    typeProduct: "",
-                    unitProduct: "",
-                    heightProudct: 0,
-                    widthProduct: 0,
-                    quanlityProduct: 0,
-                    typePaper: "",
-                    qualityPaper: 0,
-                    unitPaper: "",
-                    heightPaper: 0,
-                    widthPaper: 0,
-                    laminnation: "",
-                    cradle: false,
-                    pricePerOne: 0,
-                    mode: "",
-                  });
+                  if (orderItem) {
+                    setValues(orderItem);
+                  } else {
+                    setValues({
+                      id: null,
+                      nameProduct: "",
+                      typeProduct: "",
+                      unitProduct: "",
+                      heightProudct: 0,
+                      widthProduct: 0,
+                      quanlityProduct: 0,
+                      typePaper: "",
+                      qualityPaper: 0,
+                      unitPaper: "",
+                      heightPaper: 0,
+                      widthPaper: 0,
+                      laminnation: "",
+                      cradle: false,
+                      pricePerOne: 0,
+                      mode: "",
+                    });
+                  }
                   onClose();
                 }}
               >
@@ -140,6 +148,7 @@ const ProductModal = ({ open, onClose, orderItem, handleAdd }: props) => {
                   placeholder="Tên sản phẩm"
                   name="nameProduct"
                   onChange={onChange}
+                  value={values?.nameProduct}
                   required
                 ></input>
               </div>
@@ -151,6 +160,7 @@ const ProductModal = ({ open, onClose, orderItem, handleAdd }: props) => {
                     onChange={onChange}
                     name="typeProduct"
                     required
+                    value={values?.unitProduct}
                   ></input>
                 </div>
                 <div
@@ -164,6 +174,7 @@ const ProductModal = ({ open, onClose, orderItem, handleAdd }: props) => {
                     required
                     onChange={onChange}
                     min={1}
+                    value={values?.quanlityProduct}
                   ></input>
                 </div>
 
@@ -180,6 +191,7 @@ const ProductModal = ({ open, onClose, orderItem, handleAdd }: props) => {
                     name="unitProduct"
                     required
                     onChange={onChange}
+                    value={values?.unitProduct}
                   ></input>
                 </div>
                 <div
@@ -202,6 +214,7 @@ const ProductModal = ({ open, onClose, orderItem, handleAdd }: props) => {
                         onChange={onChange}
                         min={0}
                         required
+                        value={values?.heightProudct}
                       ></input>
 
                       <span
@@ -222,6 +235,7 @@ const ProductModal = ({ open, onClose, orderItem, handleAdd }: props) => {
                         onChange={onChange}
                         min={0}
                         required
+                        value={values?.widthProduct}
                       ></input>
                       <span style={{ marginLeft: "1%" }}>(mm)</span>
                     </div>
@@ -241,6 +255,7 @@ const ProductModal = ({ open, onClose, orderItem, handleAdd }: props) => {
                     name="typePaper"
                     required
                     onChange={onChange}
+                    value={values?.typePaper}
                   ></input>
                 </div>
                 <div
@@ -254,6 +269,7 @@ const ProductModal = ({ open, onClose, orderItem, handleAdd }: props) => {
                     required
                     onChange={onChange}
                     min={1}
+                    value={values?.qualityPaper}
                   ></input>
                 </div>
 
@@ -268,6 +284,7 @@ const ProductModal = ({ open, onClose, orderItem, handleAdd }: props) => {
                     name="unitPaper"
                     required
                     onChange={onChange}
+                    value={values?.unitPaper}
                   ></input>
                 </div>
                 <div
@@ -290,6 +307,7 @@ const ProductModal = ({ open, onClose, orderItem, handleAdd }: props) => {
                         onChange={onChange}
                         min={0}
                         required
+                        value={values?.heightPaper}
                       ></input>
 
                       <span
@@ -310,6 +328,7 @@ const ProductModal = ({ open, onClose, orderItem, handleAdd }: props) => {
                         onChange={onChange}
                         min={0}
                         required
+                        value={values?.widthPaper}
                       ></input>
                       <span style={{ marginLeft: "1%" }}>(mm)</span>
                     </div>
@@ -327,6 +346,7 @@ const ProductModal = ({ open, onClose, orderItem, handleAdd }: props) => {
                     name="laminnation"
                     required
                     onChange={onChange}
+                    value={values?.laminnation}
                   ></input>
                 </div>
                 <div
@@ -362,6 +382,7 @@ const ProductModal = ({ open, onClose, orderItem, handleAdd }: props) => {
                     required
                     onChange={onChange}
                     min={0}
+                    value={values?.pricePerOne}
                   ></input>
                 </div>
               </div>
@@ -374,6 +395,7 @@ const ProductModal = ({ open, onClose, orderItem, handleAdd }: props) => {
                   name="mode"
                   onChange={onChange}
                   required
+                  value={values?.mode}
                 ></input>
               </div>
             </div>

@@ -2,6 +2,7 @@ package org.example.beckend.controller;
 
 import org.example.beckend.dto.request.OrderItemRequest;
 import org.example.beckend.dto.request.OrderRequest;
+import org.example.beckend.dto.request.OrderUpdateRequest;
 import org.example.beckend.dto.response.ApiResponse;
 import org.example.beckend.dto.response.OrderResponseForList;
 import org.example.beckend.entity.Order;
@@ -22,6 +23,7 @@ import org.springframework.web.bind.annotation.*;
 
 
 import java.util.List;
+import java.util.Objects;
 
 @RestController
 @RequestMapping("/orders")
@@ -71,7 +73,12 @@ public class OrderController {
         PagedModel<OrderResponseForList> result = null;
 
         if(type.equals("all") || type.equals("newest")){
-            result = orderService.getAllForList(pageable);
+
+            if(Objects.isNull(filter)){
+                result = orderService.getAllForList(pageable);
+            }else {
+                result = orderService.getByIdOrNameAnd(pageable,filter);
+            }
         }else {
             if(type.equals("paid")){
                 result =  orderService.getByIdOrNameAndIspay(pageable,true,filter);
@@ -99,9 +106,18 @@ public class OrderController {
     @GetMapping("/{id}")
     public ResponseEntity<ApiResponse> getById(@PathVariable Long id) {
         return ResponseEntity.ok(ApiResponse.builder()
-                .code(SuccessMessage.CREATE_DATA_SUCCESS.getCode())
-                .message(SuccessMessage.CREATE_DATA_SUCCESS.getMessage())
+                .code(SuccessMessage.GET_DATA_SUCCESS.getCode())
+                .message(SuccessMessage.GET_DATA_SUCCESS.getMessage())
                 .data(orderService.getById(id))
+                .build());
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<ApiResponse> update(@PathVariable Long id,@RequestBody OrderUpdateRequest update){
+        return ResponseEntity.ok(ApiResponse.builder()
+                .code(SuccessMessage.UPDATE_DATE_SUCCESS.getCode())
+                .message(SuccessMessage.UPDATE_DATE_SUCCESS.getMessage())
+                .data(orderService.update(id,update))
                 .build());
     }
 

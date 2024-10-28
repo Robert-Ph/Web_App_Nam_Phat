@@ -21,10 +21,20 @@ const getBySearchAndFilter = (
     `${BASE_URL}/search?page=${page}&size=${size}&type=${type}&filter=${filter}`
   );
 };
+
+const getById = (id: string) => {
+  return api.get(`${BASE_URL}/${id}`);
+};
+
+const update = (id: number, update: Order) => {
+  return api.put(`$${BASE_URL}/${id}`, update);
+};
 const OrderService = {
   create,
   getAll,
   getBySearchAndFilter,
+  getById,
+  update,
 };
 
 export default OrderService;

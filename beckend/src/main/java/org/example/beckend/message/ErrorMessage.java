@@ -35,6 +35,7 @@ public enum ErrorMessage {
     IMAGE_NOT_FOUND(ErrorCode.IMAGE_NOT_FOUND,"Image not found in server",HttpStatus.BAD_REQUEST),
 
     FILE_NOT_FOUND(ErrorCode.SERVER_NOT_FOUND,"File not found",HttpStatus.BAD_REQUEST),
+    NOT_FOUND(ErrorCode.SERVER_NOT_FOUND,"NOT FOUND",HttpStatus.BAD_REQUEST),
 
 
     MISSING_ARGUMENT(ErrorCode.MISSING_ARGUMENT,"Missing argument for request",HttpStatus.BAD_REQUEST),

@@ -1,8 +1,6 @@
 import api from "../api/APIConfig";
 import { Customer } from "../model/customer.model";
 
-
-
 const BASE_URL = "/customer";
 
 const getCustomerByPhone = async (phone: string) => {
@@ -30,7 +28,7 @@ const getByIdListOrder = (id: number | undefined | string) => {
       `${BASE_URL}/history/${id}`);
 };
 const CustomerService = {
-  // getCustomerByPhone,
+  getCustomerByPhone,
   getByFilter,
   create,
   getById,

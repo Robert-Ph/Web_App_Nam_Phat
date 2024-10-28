@@ -1,6 +1,5 @@
 package org.example.beckend.controller;
 
-
 import jakarta.validation.Valid;
 import org.example.beckend.dto.request.CustomerRequest;
 import org.example.beckend.dto.response.ApiResponse;
@@ -32,7 +31,7 @@ public class CustomerController {
 
     @PostMapping
     public ResponseEntity<ApiResponse> create(@Valid @RequestBody CustomerRequest request) {
-        return  ResponseEntity.ok(ApiResponse
+        return ResponseEntity.ok(ApiResponse
                 .builder()
                 .code(SuccessMessage.CREATE_DATA_SUCCESS.getCode())
                 .message(SuccessMessage.CREATE_DATA_SUCCESS.getMessage())
@@ -42,7 +41,7 @@ public class CustomerController {
 
     @PutMapping("/{id}")
     public ResponseEntity<ApiResponse> update(@PathVariable Long id, @Valid @RequestBody CustomerRequest request) {
-        return  ResponseEntity.ok(ApiResponse
+        return ResponseEntity.ok(ApiResponse
                 .builder()
                 .code(SuccessMessage.CREATE_DATA_SUCCESS.getCode())
                 .message(SuccessMessage.CREATE_DATA_SUCCESS.getMessage())
@@ -52,7 +51,7 @@ public class CustomerController {
 
     @GetMapping("/{id}")
     public ResponseEntity<ApiResponse> findById(@PathVariable Long id) {
-        return  ResponseEntity.ok(ApiResponse
+        return ResponseEntity.ok(ApiResponse
                 .builder()
                 .code(SuccessMessage.CREATE_DATA_SUCCESS.getCode())
                 .message(SuccessMessage.CREATE_DATA_SUCCESS.getMessage())
@@ -61,29 +60,29 @@ public class CustomerController {
     }
 
     @GetMapping("/search")
-    public ResponseEntity<ApiResponse> findByPhone(@RequestParam String phone){
+    public ResponseEntity<ApiResponse> findByPhone(@RequestParam String phone) {
         return ResponseEntity.ok(
                 ApiResponse.builder()
                         .code(SuccessMessage.GET_DATA_SUCCESS.getCode())
                         .message(SuccessMessage.GET_DATA_SUCCESS.getMessage())
                         .data(customerService.findByPhoneContains(phone))
-                        .build()
-        );
+                        .build());
     }
 
     @GetMapping("/history/{id}")
     public ResponseEntity<ApiResponse> findHistory(@PathVariable Long id) {
-        return  ResponseEntity.ok(ApiResponse
+        return ResponseEntity.ok(ApiResponse
                 .builder()
                 .code(SuccessMessage.CREATE_DATA_SUCCESS.getCode())
                 .message(SuccessMessage.CREATE_DATA_SUCCESS.getMessage())
                 .data(orderService.getListOrderCustomerById(id))
                 .build());
     }
+
     @GetMapping
     public ResponseEntity<ApiResponse> getAllCustomers() {
         List<Customer> data = customerService.findAll();
-        return  ResponseEntity.ok(ApiResponse
+        return ResponseEntity.ok(ApiResponse
                 .builder()
                 .code(SuccessMessage.GET_DATA_SUCCESS.getCode())
                 .message(SuccessMessage.GET_DATA_SUCCESS.getMessage())
@@ -92,18 +91,19 @@ public class CustomerController {
     }
 
     @GetMapping("/list")
-    public ResponseEntity<ApiResponse> getFilter(@RequestParam(defaultValue = "0")int page,@RequestParam(defaultValue = "10") int size,@RequestParam(required = false)String filter ){
-        Pageable pageable = PageRequest.of(page,size);
+    public ResponseEntity<ApiResponse> getFilter(@RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size, @RequestParam(required = false) String filter) {
+        Pageable pageable = PageRequest.of(page, size);
 
         PagedModel<Customer> result;
 
-        if(Objects.isNull(filter)){
+        if (Objects.isNull(filter)) {
             result = customerService.getAll(pageable);
-        }else {
-            if(filter.isBlank() || filter.isEmpty()){
+        } else {
+            if (filter.isBlank() || filter.isEmpty()) {
                 result = customerService.getAll(pageable);
-            }else {
-                result = customerService.getByFilter(filter,pageable);
+            } else {
+                result = customerService.getByFilter(filter, pageable);
             }
         }
 
@@ -112,7 +112,32 @@ public class CustomerController {
                         .code(SuccessMessage.GET_DATA_SUCCESS.getCode())
                         .message(SuccessMessage.GET_DATA_SUCCESS.getMessage())
                         .data(result)
-                        .build()
-        );
+                        .build());
     }
+    // @GetMapping("/search")
+    // public ResponseEntity<ApiResponse> getFilter(@RequestParam(defaultValue =
+    // "0")int page,@RequestParam(defaultValue = "10") int
+    // size,@RequestParam(required = false)String filter ){
+    // Pageable pageable = PageRequest.of(page,size);
+    //
+    // PagedModel<Customer> result;
+    //
+    // if(Objects.isNull(filter)){
+    // result = customerService.getAll(pageable);
+    // }else {
+    // if(filter.isBlank() || filter.isEmpty()){
+    // result = customerService.getAll(pageable);
+    // }else {
+    // result = customerService.getByFilter(filter,pageable);
+    // }
+    // }
+    //
+    // return ResponseEntity.ok(
+    // ApiResponse.builder()
+    // .code(SuccessMessage.GET_DATA_SUCCESS.getCode())
+    // .message(SuccessMessage.GET_DATA_SUCCESS.getMessage())
+    // .data(result)
+    // .build()
+    // );
+    // }
 }
