@@ -16,6 +16,7 @@ import java.util.Optional;
 public interface OrderRepository extends JpaRepository<Order,Long> {
 
     List<Order> findByIsPay(Boolean isPay);
+    List<Order> findByStatus(OrderStatus status);
     List<Order> findByCustomerId(Long customerId);
 
 //    @Query("SELECT o FROM Order o WHERE CAST(o.id AS string)  LIKE %:filter% OR o.customer.fullName LIKE %:filter% AND o.isPay = :ispay")

@@ -131,6 +131,11 @@ public class OrderService {
 
         }
 
+//    public List<Order> getListStatus(String status){
+//        return orderRepository.findByStatus(OrderStatus.valueOf(status));
+//
+//    }
+
 
 
     public List<Order> getListOrderCustomerById(Long id) {

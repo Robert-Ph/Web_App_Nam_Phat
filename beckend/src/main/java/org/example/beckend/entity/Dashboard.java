@@ -13,9 +13,18 @@ public class Dashboard {
     private Long sumRevenue;
     private int sumOrders;
 
+    private int totalOrdersDay;// tong don hang/ngay
+    private Long totalPriceDay;
+    private int totalOrdersRevenueDay;
+    private int totalOrdersFalseDay;
+    private Long realOrderRevenueDay;
+    private Long debtOrderRevenueDay;
+
+
     public Dashboard() {}
 
-    public Dashboard(List<Customer> customers, List<Order> orders, List<Debt> debts, Double aveRevenue, Long realRevenue, Long debtRevenue, Long sumRevenue, int sumOrders) {
+
+    public Dashboard(List<Customer> customers, List<Order> orders, List<Debt> debts, Double aveRevenue, Long realRevenue, Long debtRevenue, Long sumRevenue, int sumOrders, int totalOrdersDay, Long totalPriceDay, int totalOrdersRevenueDay, int totalOrdersFalseDay, Long realOrderRevenueDay, Long debtOrderRevenueDay) {
         this.customers = customers;
         this.orders = orders;
         this.debts = debts;
@@ -24,15 +33,12 @@ public class Dashboard {
         this.debtRevenue = debtRevenue;
         this.sumRevenue = sumRevenue;
         this.sumOrders = sumOrders;
-    }
-
-    public Dashboard(List<Customer> customers, List<Order> orders, List<Debt> debts, Double aveRevenue, Long realRevenue, Long debtRevenue) {
-        this.customers = customers;
-        this.orders = orders;
-        this.debts = debts;
-        this.aveRevenue = aveRevenue;
-        this.realRevenue = realRevenue;
-        this.debtRevenue = debtRevenue;
+        this.totalOrdersDay = totalOrdersDay;
+        this.totalPriceDay = totalPriceDay;
+        this.totalOrdersRevenueDay = totalOrdersRevenueDay;
+        this.totalOrdersFalseDay = totalOrdersFalseDay;
+        this.realOrderRevenueDay = realOrderRevenueDay;
+        this.debtOrderRevenueDay = debtOrderRevenueDay;
     }
 
     public List<Customer> getCustomers() {
@@ -97,5 +103,53 @@ public class Dashboard {
 
     public void setSumOrders(int sumOrders) {
         this.sumOrders = sumOrders;
+    }
+
+    public int getTotalOrdersDay() {
+        return totalOrdersDay;
+    }
+
+    public void setTotalOrdersDay(int totalOrdersDay) {
+        this.totalOrdersDay = totalOrdersDay;
+    }
+
+    public int getTotalOrdersRevenueDay() {
+        return totalOrdersRevenueDay;
+    }
+
+    public void setTotalOrdersRevenueDay(int totalOrdersRevenueDay) {
+        this.totalOrdersRevenueDay = totalOrdersRevenueDay;
+    }
+
+    public int getTotalOrdersFalseDay() {
+        return totalOrdersFalseDay;
+    }
+
+    public void setTotalOrdersFalseDay(int totalOrdersFalseDay) {
+        this.totalOrdersFalseDay = totalOrdersFalseDay;
+    }
+
+    public Long getRealOrderRevenueDay() {
+        return realOrderRevenueDay;
+    }
+
+    public void setRealOrderRevenueDay(Long realOrderRevenueDay) {
+        this.realOrderRevenueDay = realOrderRevenueDay;
+    }
+
+    public Long getDebtOrderRevenueDay() {
+        return debtOrderRevenueDay;
+    }
+
+    public void setDebtOrderRevenueDay(Long debtOrderRevenueDay) {
+        this.debtOrderRevenueDay = debtOrderRevenueDay;
+    }
+
+    public Long getTotalPriceDay() {
+        return totalPriceDay;
+    }
+
+    public void setTotalPriceDay(Long totalPriceDay) {
+        this.totalPriceDay = totalPriceDay;
     }
 }

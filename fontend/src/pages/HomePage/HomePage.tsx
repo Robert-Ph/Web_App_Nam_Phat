@@ -26,6 +26,13 @@ import Order from "../../model/order.model.tsx";
             debtRevenue: 0,
             sumRevenue:0,
             sumOrders: 0,
+
+            totalOrdersDay: 0,
+            totalPriceDay: 0,
+            totalOrdersRevenueDay: 0,
+            totalOrdersFalseDay: 0,
+            realOrderRevenueDay: 0,
+            debtOrderRevenueDay: 0,
         });
 // Lấy ngày hiện tại
         const today = new Date();
@@ -42,6 +49,7 @@ import Order from "../../model/order.model.tsx";
                 return acc + totalWithVAT;
             }, 0);
         };
+
         useEffect(() => {
             DashboardService.getDashboard()
                 .then((response) => {
@@ -150,32 +158,32 @@ import Order from "../../model/order.model.tsx";
                             <tbody>
                             <tr>
                                 <td>Tổng đơn hàng:</td>
-                                <td>0</td>
+                                <td>{dashboard.totalOrdersDay}</td>
 
                             </tr>
                             <tr>
                                 <td>Tổng giá trị:</td>
-                                <td>0</td>
+                                <td>{formatCurrency(dashboard.totalPriceDay)}</td>
                                 <td>vnđ</td>
                             </tr>
                             <tr>
                                 <td>Đơn hàng đã giao:</td>
-                                <td>0</td>
+                                <td>{dashboard.totalOrdersRevenueDay}</td>
 
                             </tr>
                             <tr>
                                 <td>Đơn hàng chưa hoàn thành:</td>
-                                <td>0</td>
+                                <td>{dashboard.totalOrdersFalseDay}</td>
 
                             </tr>
                             <tr>
                                 <td>Đã thanh toán:</td>
-                                <td>0</td>
+                                <td>{formatCurrency(dashboard.realOrderRevenueDay)}</td>
                                 <td>vnđ</td>
                             </tr>
                             <tr>
                                 <td>Còn nợ:</td>
-                                <td>0</td>
+                                <td>{formatCurrency(dashboard.debtOrderRevenueDay)}</td>
                                 <td>vnđ</td>
                             </tr>
                             </tbody>

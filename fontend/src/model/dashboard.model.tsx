@@ -11,5 +11,13 @@ export type DashboardModel = {
     debtRevenue: number;
     sumRevenue: number;
     sumOrders: number;
+
+    totalOrdersDay: number;
+    totalPriceDay: number;
+    totalOrdersRevenueDay: number;
+    totalOrdersFalseDay: number;
+    realOrderRevenueDay: number;
+    debtOrderRevenueDay: number;
+
 }
 export default DashboardModel;
