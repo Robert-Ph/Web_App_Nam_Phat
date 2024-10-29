@@ -14,7 +14,7 @@ const getCustomerByPhone = async (phone: string) => {
 };
 const getByFilter = (page: number, size: number, filter: string) => {
   return api.get(
-      `${BASE_URL}/list?page=${page}&size=${size}&filter=${filter}`
+    `${BASE_URL}/list?page=${page}&size=${size}&filter=${filter}`
   );
 };
 const create = (customer: Customer) => {
