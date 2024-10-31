@@ -73,7 +73,7 @@ public class OrderService {
         }
 
         order.setStatus(OrderStatus.CONFIM);
-        order.setTotalPrice(order.getOrderItems().stream().mapToLong(item -> item.getQuanlityProduct() * item.getPricePerOne()).sum());
+        order.setTotalPrice(order.getOrderItems().stream().mapToLong(item -> (long)item.getQuanlityProduct() * item.getPricePerOne()).sum());
         order.setVat(request.getVat());
         Order save = orderRepository.save(order);
 
@@ -85,7 +85,7 @@ public class OrderService {
 
         }
         invoiceRepository.save(Invoice.builder()
-                .priceNeedPay(Math.round(order.getTotalPrice() + order.getTotalPrice() * order.getVat()/100))
+                .priceNeedPay( (long) Math.round(order.getTotalPrice()))
                 .order(order)
                 .build());
 
@@ -97,6 +97,7 @@ public class OrderService {
     public Order getById(Long id) {
         return orderRepository.findById(id).orElseThrow(() -> new AppException(ErrorMessage.ORDER_NOT_FOUND));
     }
+
 
     private OrderResponseForList converToOrderForList(Order order) {
         modelMapper.typeMap(Order.class, OrderResponseForList.class).addMappings(mapper ->
@@ -125,11 +126,16 @@ public class OrderService {
     }
 
 
-    public List<Order> getListDebt(){
-        return orderRepository.findByIsPay(false);
+    public List<Order> getListDebt(boolean ispay){
+        return orderRepository.findByIsPay(ispay);
 
         }
 
+
+
+    public List<Order> getListOrderCustomerById(Long id) {
+        return orderRepository.findByCustomerId(id);
+    }
     public PagedModel<OrderResponseForList> getByIdOrNameAndStatus(Pageable pageable, OrderStatus  status, String filter) {
         return new PagedModel<>(orderRepository.findByIdOrNameCustomerContainsAndStatus(filter, status, pageable).map(order -> {
             return converToOrderForList(order);

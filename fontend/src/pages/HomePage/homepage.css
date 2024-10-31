@@ -29,7 +29,7 @@
   }
 
   .body{
-    margin-top: 2%;
+    margin-top: 1%;
     margin-left: 5%;
     width: 45%;
     height: 38%;
@@ -60,12 +60,13 @@
       .table-home{
         color: black;
         font-size: 20px;
-        width: 60%;
+        width: 90%;
         td{
-          padding-left: 15%;
-          padding-bottom: 3%;
+          padding-left: 10%;
+          padding-bottom: 1%;
           border: none;
         }
+
       }
     }
     .main{

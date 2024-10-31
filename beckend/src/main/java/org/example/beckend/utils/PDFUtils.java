@@ -3,6 +3,7 @@ package org.example.beckend.utils;
 import java.io.File;
 import java.nio.file.Files;
 import java.text.NumberFormat;
+import java.time.LocalDate;
 import java.util.*;
 
 
@@ -42,6 +43,11 @@ import org.springframework.stereotype.Component;
 @Component
 public class PDFUtils {
 
+    LocalDate currentDate = LocalDate.now();
+
+    int ngay = currentDate.getDayOfMonth();
+    int thang = currentDate.getMonthValue();
+    int nam = currentDate.getYear();
 
     private Cell mergeCol(String title, int col, TextAlignment textAlignment) {
         return new Cell(1, col).add(new Paragraph(title)).setTextAlignment(textAlignment);
@@ -199,7 +205,7 @@ public class PDFUtils {
             document.add(new Paragraph()
                     .addTabStops(tabCenter, tabRigth)
                     .add(new Tab())
-                    .add(new Text("Ngày ......tháng......năm 2024"))
+                    .add(new Text("Ngày "+ ngay +" tháng "+thang+" năm "+nam))
                     .add(new Tab())
                     .add(new Text("Số: "+id))
                     .setMarginBottom(10)
@@ -272,39 +278,41 @@ public class PDFUtils {
             }
 
             // Table
-            float[] columnWidths = {1, 4, 3, 1, 3, 3};
+            float[] columnWidths = {1, 4, 3, 1, 1, 2, 4};
             Table table1 = new Table(UnitValue.createPercentArray(columnWidths));
             table1.setWidth(UnitValue.createPercentValue(100));
             table1.addHeaderCell(new Cell().add(new Paragraph("STT").setTextAlignment(TextAlignment.CENTER)));
             table1.addHeaderCell(new Cell().add(new Paragraph("Tên sản phẩm").setTextAlignment(TextAlignment.CENTER)));
             table1.addHeaderCell(new Cell().add(new Paragraph("Quy cách").setTextAlignment(TextAlignment.CENTER)));
             table1.addHeaderCell(new Cell().add(new Paragraph("Số lượng ").setTextAlignment(TextAlignment.CENTER)));
+            table1.addHeaderCell(new Cell().add(new Paragraph("ĐVT ").setTextAlignment(TextAlignment.CENTER)));
             table1.addHeaderCell(new Cell().add(new Paragraph("Đơn giá").setTextAlignment(TextAlignment.CENTER)));
             table1.addHeaderCell(new Cell().add(new Paragraph("Thành tiền").setTextAlignment(TextAlignment.CENTER)));
 
 
             if (Objects.isNull(order)) {
                 //Tao bảng trống
-                for (int i = 0; i < 7; i++) {
-                    table1.addCell(convertCellNoBorderBotTop("", TextAlignment.CENTER, 26));
-                    table1.addCell(convertCellNoBorderBotTop("", TextAlignment.CENTER, 26));
-                    table1.addCell(convertCellNoBorderBotTop("", TextAlignment.CENTER, 26));
-                    table1.addCell(convertCellNoBorderBotTop("", TextAlignment.CENTER, 26));
-                    table1.addCell(convertCellNoBorderBotTop("", TextAlignment.CENTER, 26));
-                    table1.addCell(convertCellNoBorderBotTop("", TextAlignment.CENTER, 26));
+                for (int i = 0; i < 8; i++) {
+                    table1.addCell(convertCellNoBorderBotTop("", TextAlignment.CENTER, 10));
+                    table1.addCell(convertCellNoBorderBotTop("", TextAlignment.CENTER, 16));
+                    table1.addCell(convertCellNoBorderBotTop("", TextAlignment.CENTER, 16));
+                    table1.addCell(convertCellNoBorderBotTop("", TextAlignment.CENTER, 16));
+                    table1.addCell(convertCellNoBorderBotTop("", TextAlignment.CENTER, 16));
+                    table1.addCell(convertCellNoBorderBotTop("", TextAlignment.CENTER, 16));
+                    table1.addCell(convertCellNoBorderBotTop("", TextAlignment.CENTER, 16));
 
                 }
 
 
-                table1.addCell(mergeCol("Tổng:", 5, TextAlignment.CENTER));
+                table1.addCell(mergeCol("Tổng:", 6, TextAlignment.CENTER));
 
 
                 table1.addCell(mergeCol("", 1, TextAlignment.LEFT));
 
-                table1.addCell(mergeCol("Thuế giá trị gia tăng - VAT(...%)", 5, TextAlignment.CENTER));
+                table1.addCell(mergeCol("Thuế giá trị gia tăng - VAT(...%)", 6, TextAlignment.CENTER));
                 table1.addCell(mergeCol("", 1, TextAlignment.LEFT));
 
-                table1.addCell(mergeCol("Tổng Cộng:", 5, TextAlignment.CENTER));
+                table1.addCell(mergeCol("Tổng Cộng:", 6, TextAlignment.CENTER));
                 table1.addCell(mergeCol("", 1, TextAlignment.LEFT));
 
 
@@ -329,28 +337,29 @@ public class PDFUtils {
 
             } else {
                 OrderItem item;
-                for (int i = 0; i < order.getOrderItems().size(); i++) {
-                    item = order.getOrderItems().get(i);
+                for (int i = 1; i < order.getOrderItems().size()+1; i++) {
+                    item = order.getOrderItems().get(i-1);
 
                     table1.addCell(convertCellNoBorderBotTop(String.valueOf(i), TextAlignment.CENTER, 15));
                     table1.addCell(convertCellNoBorderBotTop(item.getNameProduct(), TextAlignment.CENTER, 15));
                     table1.addCell(convertCellNoBorderBotTop(item.getMode(), TextAlignment.CENTER, 15));
                     table1.addCell(convertCellNoBorderBotTop(String.valueOf(item.getQuanlityProduct()), TextAlignment.CENTER, 15));
+                    table1.addCell(convertCellNoBorderBotTop("", TextAlignment.CENTER, 15));
                     table1.addCell(convertCellNoBorderBotTop(String.valueOf(formatCurrency(item.getPricePerOne())), TextAlignment.CENTER, 15));
-                    table1.addCell(convertCellNoBorderBotTop(String.valueOf(formatCurrency(item.getPricePerOne() * item.getQuanlityProduct())), TextAlignment.CENTER, 15));
+                    table1.addCell(convertCellNoBorderBotTop(String.valueOf(formatCurrency(item.getPricePerOne() * (long)item.getQuanlityProduct())), TextAlignment.CENTER, 15));
 
                 }
 
 
-                table1.addCell(mergeCol("Tổng:", 5, TextAlignment.CENTER));
+                table1.addCell(mergeCol("Tổng:", 6, TextAlignment.CENTER));
 
 
                 table1.addCell(mergeCol(String.valueOf(formatCurrency(order.getTotalPrice())), 1, TextAlignment.CENTER));
 
-                table1.addCell(mergeCol("Thuế giá trị gia tăng - VAT(...%):", 5, TextAlignment.CENTER));
+                table1.addCell(mergeCol("Thuế giá trị gia tăng - VAT( "+order.getVat()+"% ):", 6, TextAlignment.CENTER));
                 table1.addCell(mergeCol(String.valueOf(formatCurrency(order.getTotalPrice() * order.getVat()/100)), 1, TextAlignment.CENTER));
 
-                table1.addCell(mergeCol("Tổng Cộng:", 5, TextAlignment.CENTER));
+                table1.addCell(mergeCol("Tổng Cộng:", 6, TextAlignment.CENTER));
                 table1.addCell(mergeCol(String.valueOf(String.valueOf(formatCurrency(order.getTotalPrice() + order.getTotalPrice() * order.getVat()/100))), 1, TextAlignment.CENTER));
 
 
@@ -365,7 +374,7 @@ public class PDFUtils {
                            .setMarginTop(15)
                    );
                }else {
-                   Double total = (order.getTotalPrice() + order.getTotalPrice() *order.getVat());
+                   Double total = (order.getTotalPrice() + order.getTotalPrice() *order.getVat()/100);
                    document.add(new Paragraph()
                            .add(new Text("Số tiền viết bằng chữ:"))
                            .add(new Text(ConvertNumberToText.convert(Math.round(total))).setItalic())

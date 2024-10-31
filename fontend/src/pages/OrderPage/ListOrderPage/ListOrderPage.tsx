@@ -14,6 +14,7 @@ import Order from "../../../model/order.model";
 import OrderService from "../../../service/OrderService";
 import { formatCurrency, formatDateTime } from "../../../utils/Utils";
 import Spiner from "../../../component/Spiner/Spiner";
+
 const ListOrderPage = () => {
   const [orders, setOrders] = useState<Order[]>([]);
 
