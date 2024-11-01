@@ -4,6 +4,8 @@ import MainLayout from "./MainLayout";
 import Spiner from "../component/Spiner/Spiner.tsx";
 import Finance from "../pages/Statictis/Finance/Finance.tsx";
 import Analyse from "../pages/Statictis/Analyse/Analyse.tsx";
+import HistoryImportWageHouse from "../pages/WarehousePage/HistoryImportWageHouse.tsx";
+import DetailImportWageHouse from "../pages/WarehousePage/DetailImportWageHouse.tsx";
 
 // Sử dụng React.lazy để lazy load các component
 const Login = React.lazy(() => import("../pages/login/Login"));
@@ -240,7 +242,7 @@ const appRoutes: RouteObject[] = [
         ),
       },
       {
-        path: "/warehouse/list/product/detail/:1",
+        path: "/warehouse/list/product/detail/:id",
         element: (
           <Suspense fallback={<Spiner />}>
             <ProductDetail />
@@ -252,6 +254,23 @@ const appRoutes: RouteObject[] = [
         element: (
           <Suspense fallback={<Spiner />}>
             <ImportWarehouse />
+          </Suspense>
+        ),
+      },
+      {
+        path: "warehouse/list/history",
+        element: (
+          <Suspense fallback={<Spiner />}>
+            <HistoryImportWageHouse />
+          </Suspense>
+        ),
+      },
+
+      {
+        path: "warehouse/list/detail/:id",
+        element: (
+          <Suspense fallback={<Spiner />}>
+            <DetailImportWageHouse />
           </Suspense>
         ),
       },

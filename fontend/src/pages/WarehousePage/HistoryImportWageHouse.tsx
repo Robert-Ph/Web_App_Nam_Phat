@@ -12,31 +12,33 @@ import { useNavigate } from "react-router-dom";
 import useDebounce from "../../hooks/useDebounce";
 
 import InventoryService from "../../service/InventoriesService";
-import Inventory from "../../model/inventory.model";
-import { formatDateTime } from "../../utils/Utils";
+import { formatCurrency, formatDateTime } from "../../utils/Utils";
 import Spiner from "../../component/Spiner/Spiner";
+import StockIn from "../../model/stockin.model";
+import ImageGallery from "../UtilsPage/ImageGallery/ImageGallery";
+import StockInService from "../../service/StockInService";
+import { highlightText } from "../UtilsPage/Highlight/highligth";
 
-const WageHousePage = () => {
+const HistoryImportWageHouse = () => {
   const [query, setQuery] = useState<string>("");
   const [page, setPage] = useState<number>(1);
   const [totalPages, setTotalPages] = useState(0);
-  const [open, setOpen] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
   const pageSize = 10;
 
-  const [inventories, setInventories] = useState<Inventory[]>([]);
+  const [stockin, setStockin] = useState<StockIn[]>([]);
 
   const debouncedQuery = useDebounce(query, 500);
 
   const fetchInvoices = async () => {
     try {
       setLoading(true);
-      const response = await InventoryService.getBySearch(
+      const response = await StockInService.getBySearch(
         page - 1,
         pageSize,
         debouncedQuery
       );
-      setInventories(response.data.data.content);
+      setStockin(response.data.data.content);
       setTotalPages(response.data.data.page.totalPages);
       console.log(response);
       setLoading(false);
@@ -63,7 +65,7 @@ const WageHousePage = () => {
   return (
     <div>
       <div className="main-body">
-        <h3>Danh sách hàng tồn kho</h3>
+        <h3>Lịch sử nhập kho</h3>
         <div style={{ marginBottom: "10px" }}>
           <div
             className="d-flex justify-space-bettwen "
@@ -92,12 +94,12 @@ const WageHousePage = () => {
 
             <div>
               <button
-                className="btn btn-warning"
+                className="btn btn-black"
                 onClick={() => {
-                  navigate("/warehouse/list/history");
+                  navigate(-1);
                 }}
               >
-                Lịch sử nhập kho
+                Quay về
               </button>
             </div>
           </div>
@@ -116,35 +118,20 @@ const WageHousePage = () => {
                       className="pb-7 font-w-500"
                       style={{ width: "15%", paddingRight: "25px" }}
                     >
-                      Tên hàng hóa
+                      Nhà cung cấp
                     </th>
                     <th
                       className="pb-7 font-w-500"
                       style={{ width: "8%", paddingRight: "10px" }}
                     >
-                      Loại
-                    </th>
-                    <th
-                      className="pb-7 font-w-500 text-center"
-                      style={{ width: "8%" }}
-                    >
-                      Số lượng
-                    </th>
-                    <th
-                      className="pb-7 font-w-500 text-center"
-                      style={{ width: "10%" }}
-                    >
-                      Đơn vị tính
-                    </th>
-                    <th
-                      className="pb-7 font-w-500 text-center"
-                      style={{ width: "15%" }}
-                    >
-                      Giá/ đơn vị tính (VNĐ)
+                      Tổng tiền
                     </th>
 
                     <th className="pb-7 font-w-500" style={{ width: "15%" }}>
                       Ngày nhập gần nhất
+                    </th>
+                    <th className="pb-7 font-w-500" style={{ width: "15%" }}>
+                      Image
                     </th>
 
                     <th
@@ -156,46 +143,42 @@ const WageHousePage = () => {
                   </tr>
                 </thead>
                 <tbody className="border-header-table">
-                  {inventories.map((item) => (
-                    <tr key={item.product.id} className="border-header-table">
+                  {stockin.map((item) => (
+                    <tr key={item.id} className="border-header-table">
                       <td className="pb-7 pt-7 font-size-small td-table font-w-500 ">
-                        {item.product.id}
+                        {highlightText(item.id + "", query)}
                       </td>
                       <td
                         className="pb-7 pt-7 font-size-small font-w-500 "
                         style={{ paddingRight: "25px" }}
                       >
-                        {item.product.name || "-"}
+                        {highlightText(item.supplier, query) || "-"}
                       </td>
                       <td
                         className="pb-7 pt-7 font-size-small td-table font-w-500"
                         style={{ paddingRight: "20px" }}
                       >
-                        {item.product.type || "-"}
+                        {item.totalPrice
+                          ? formatCurrency(item.totalPrice)
+                          : " - "}
                       </td>
-                      <td className="pb-7 pt-7 font-size-small td-table font-w-500 text-center">
-                        {item.quanlity}
-                      </td>
-                      <td className="pb-7 pt-7 font-size-small td-table font-w-500 text-center">
-                        {item.product.unit || "-"}
-                      </td>
-
-                      <td className="pb-7 pt-7 font-size-small td-table font-w-500 text-center">
-                        {item.product.price || "-"}
-                      </td>
-
-                      <td className="pb-7 pt-7 font-size-small td-table font-w-500">
-                        {item.lastDateIn
-                          ? formatDateTime(item.lastDateIn)
+                      <td className="pb-7 pt-7 font-size-small td-table font-w-500 ">
+                        {item.dateCreate
+                          ? highlightText(
+                              formatDateTime(item.dateCreate),
+                              query
+                            )
                           : "-"}
                       </td>
+                      <td className="pb-7 pt-7 font-size-small td-table font-w-500">
+                        <ImageGallery image={item.imageInvoice}></ImageGallery>
+                      </td>
+
                       <td className="pb-7 pt-7 font-size-small td-table font-w-500">
                         <button
                           className="btn-more"
                           onClick={() => {
-                            navigate(
-                              `/warehouse/list/product/detail/${item.product.id}`
-                            );
+                            navigate(`/warehouse/import/detail/${item.id}`);
                           }}
                         >
                           <MoreHorizIcon></MoreHorizIcon>
@@ -223,4 +206,4 @@ const WageHousePage = () => {
   );
 };
 
-export default WageHousePage;
+export default HistoryImportWageHouse;

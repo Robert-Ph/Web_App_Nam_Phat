@@ -174,6 +174,18 @@ public class StockInService {
         return new PagedModel<>(page);
     }
 
+    public PagedModel<StockInForListResponse> getByFilter(String filer,Pageable pageable){
+        logService.log(LogLevel.INFOR,"Lấy danh sách nhập kho trang " + pageable.getPageNumber() + 1);
+        Page<StockIn> stockIns = stockInRepository
+                .findInventoriesByFilter(filer,pageable);
+        Page<StockInForListResponse> page =  stockIns.map(entity -> {
+            //convert image to url image controller
+            entity.setImageInvoice(baseUrl +"/images/" + entity.getImageInvoice());
+            return  modelMapper.map(entity,StockInForListResponse.class);
+        });
+        return new PagedModel<>(page);
+    }
+
     //Method for get stock in by id
     public StockInResponse getById(Long id){
 
