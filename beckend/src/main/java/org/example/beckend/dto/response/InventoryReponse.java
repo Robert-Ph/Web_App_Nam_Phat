@@ -16,5 +16,5 @@ public class InventoryReponse {
 
     Product product;
     int quanlity;
-    private LocalDateTime lastDateIn;
+    LocalDateTime lastDateIn;
 }

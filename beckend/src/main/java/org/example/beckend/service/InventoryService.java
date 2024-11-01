@@ -110,6 +110,13 @@ public class InventoryService {
         return new PagedModel<>(page);
     }
 
+    public PagedModel<InventoryReponse> getAllByFilter(String filter,Pageable pageable) {
+        Page<Inventory> allInventory = inventoryRepository.findInventoriesByProductNameOrProductIdOrProductType(filter,pageable);
+        Page<InventoryReponse> page =  allInventory.map(entity -> {
+            return modelMapper.map(entity, InventoryReponse.class);
+        });
+        return new PagedModel<>(page);
+    }
     //Method for get Inventory by product Id
     public InventoryReponse getInventoryByProductId(Long id) {
         Product product = productService.findById(id);
