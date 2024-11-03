@@ -83,7 +83,12 @@ const DetailImportWageHouse = () => {
               </div>
               <div className="mt-10">
                 <strong>Tổng tiền:</strong>
-                <span> {stockIn?.totalPrice}</span>
+                <span>
+                  {" "}
+                  {stockIn?.totalPrice
+                    ? formatCurrency(stockIn?.totalPrice) + " VNĐ"
+                    : ""}
+                </span>
               </div>
 
               <div className="mt-10">
@@ -127,7 +132,7 @@ const DetailImportWageHouse = () => {
                         <td className="pb-7 pt-7">
                           {item.priceImport
                             ? formatCurrency(item.priceImport) + " VNĐ"
-                            : " - "}
+                            : " 0 VNĐ"}
                         </td>
                       </tr>
                     ))}

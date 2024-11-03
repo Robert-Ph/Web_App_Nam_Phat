@@ -1,15 +1,15 @@
 import StockInDetail from "./stockInDetail.model";
 
 type StockIn = {
-  id: number;
+  id?: number | null;
 
-  dateCreate: string;
+  dateCreate?: string;
 
   supplier: string;
 
   totalPrice: number;
 
-  imageInvoice: string;
+  imageInvoice?: string;
   listStockInDetails: StockInDetail[] | null | [];
 };
 

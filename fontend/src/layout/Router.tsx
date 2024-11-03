@@ -267,7 +267,7 @@ const appRoutes: RouteObject[] = [
       },
 
       {
-        path: "warehouse/list/detail/:id",
+        path: "warehouse/list/history/detail/:id",
         element: (
           <Suspense fallback={<Spiner />}>
             <DetailImportWageHouse />

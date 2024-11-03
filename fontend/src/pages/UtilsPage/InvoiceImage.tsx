@@ -1,9 +1,9 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import "./InvoiceImage.css";
 import imageIcon from "../../assets/icon-image.png";
 
 type props = {
-  onChangeFile: (file: File) => void;
+  onChangeFile: (file: File | null) => void;
 };
 const InvoiceImage = ({ onChangeFile }: props) => {
   const [selectedImage, setSelectedImage] = useState<string | null>(null);

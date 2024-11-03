@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useMemo, useEffect } from "react";
 import product from "../../model/product.model";
 
 import RemoveCircleOutlineIcon from "@mui/icons-material/RemoveCircleOutline";
@@ -6,21 +6,23 @@ import RemoveCircleOutlineIcon from "@mui/icons-material/RemoveCircleOutline";
 import "../OrderPage/OrderPage/order.css";
 import InvoiceImage from "../UtilsPage/InvoiceImage";
 import ImportWarehouseModal from "./ImportWarehouseModal";
+import StockIn from "../../model/stockin.model";
+import StockInDetail from "../../model/stockInDetail.model";
+import { toast } from "react-toastify";
+import StockInService from "../../service/StockInService";
+import { useNavigate } from "react-router-dom";
 
 const ImportWarehouse = () => {
-  const [products, setProducts] = useState<product[]>([
-    {
-      id: 1,
-      name: "",
-      quantity: "",
-      paperCount: "",
-      price: "",
-      totalPrice: "",
-    },
-  ]);
+  const [stockIn, setStockIn] = useState<StockIn>({
+    supplier: "",
+    totalPrice: 0,
+    listStockInDetails: [],
+  });
 
   const [open, setOpen] = useState<boolean>(false);
   const [uploadedFile, setUploadedFile] = useState<File | null>(null);
+
+  const navigate = useNavigate();
 
   //Bắt sự kiện upload file
   const handleFileChange = (file: File | null) => {
@@ -32,17 +34,111 @@ const ImportWarehouse = () => {
     setOpen(false);
   };
 
+  const reset = () => {
+    setStockIn({
+      supplier: "",
+      totalPrice: 0,
+      listStockInDetails: [],
+    });
+  };
   const handleOpen = () => {
     setOpen(true);
   };
+  const handleAddStockInDetail = (detail: StockInDetail) => {
+    setStockIn((prevStockIn) => ({
+      ...prevStockIn,
+      listStockInDetails: [...(prevStockIn.listStockInDetails || []), detail],
+    }));
+  };
 
+  useEffect(() => {
+    if (stockIn.listStockInDetails) {
+      const newTotalPrice = stockIn.listStockInDetails.reduce(
+        (total, item) => total + item.quanlity * item.priceImport,
+        0
+      );
+      setStockIn((prevStockIn) => ({
+        ...prevStockIn,
+        totalPrice: newTotalPrice,
+      }));
+    }
+  }, [stockIn.listStockInDetails]);
+
+  const handleImport = () => {
+    if (!uploadedFile) {
+      toast.error("Vui lòng chọn file hóa đơn", {
+        autoClose: 1000,
+      });
+    } else if (
+      !stockIn.supplier ||
+      !stockIn.totalPrice ||
+      stockIn.listStockInDetails?.length == 0
+    ) {
+      toast.error("Có thông tin bị bỏ trống. Vui lòng kiểm tra lại", {
+        autoClose: 1000,
+      });
+    } else {
+      StockInService.sendStockInRequest(stockIn, uploadedFile)
+        .then((response) => {
+          if (response.data.code == 201) {
+            toast.success("Thêm nhập kho thành công", {
+              autoClose: 1000,
+            });
+            reset();
+          } else {
+            toast.error("Gặp lỗi", {
+              autoClose: 1000,
+            });
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+          toast.error("Lỗi", {
+            autoClose: 1000,
+          });
+        });
+    }
+  };
+
+  // Hàm xóa chi tiết sản phẩm nhập
+  const handleRemoveStockInDetail = (index: number) => {
+    setStockIn((prevStockIn) => ({
+      ...prevStockIn,
+      listStockInDetails: prevStockIn.listStockInDetails
+        ? prevStockIn.listStockInDetails.filter((_, i) => i !== index)
+        : [],
+    }));
+  };
+
+  // Handle input changes for supplier and totalPrice
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setStockIn((prevStockIn) => ({
+      ...prevStockIn,
+      [name]: name === "totalPrice" ? parseInt(value) : value,
+    }));
+  };
   return (
     <div>
       <div className="container">
         <div className="d-flex justify-end">
           <button className="btn btn-danger">Hủy</button>
-          <button className="btn btn-warning">Reset</button>
-          <button className="btn btn-primary" style={{ marginRight: "0px;" }}>
+          <button
+            className="btn btn-warning"
+            onClick={() => {
+              reset();
+            }}
+          >
+            Reset
+          </button>
+          <button
+            className="btn btn-primary"
+            style={{ marginRight: "0px;" }}
+            onClick={() => {
+              handleImport();
+              navigate(`/warehouse/list/history`);
+            }}
+          >
             Nhập kho
           </button>
         </div>
@@ -63,30 +159,49 @@ const ImportWarehouse = () => {
                   <tr className="color-blue header-table text-left border-header-table">
                     <th className="pb-7 font-w-500">STT</th>
                     <th className="pb-7 font-w-500">Tên sản phẩm</th>
+                    <th className="pb-7 font-w-500">Loại</th>
                     <th className="pb-7 font-w-500">Số lượng</th>
-                    <th className="pb-7 font-w-500">Số lượng giấy in</th>
-                    <th className="pb-7 font-w-500">Giá (vnd)</th>
+                    <th className="pb-7 font-w-500">Đơn vị tính</th>
+
+                    <th className="pb-7 font-w-500">
+                      Giá /đơn vị tính <br /> (vnd)
+                    </th>
                     <th className="pb-7 font-w-500">Tổng giá</th>
                     <th className="pb-7 font-w-500"></th>
                   </tr>
                 </thead>
                 <tbody className="border-header-table">
-                  {products.map((product) => (
-                    <tr key={product.id} className="border-header-table">
-                      <td className="pb-7 pt-7">{product.id}</td>
-                      <td className="pb-7 pt-7">{product.name || "-"}</td>
-                      <td className="pb-7 pt-7">{product.quantity || "-"}</td>
-                      <td className="pb-7 pt-7">{product.paperCount || "-"}</td>
-                      <td className="pb-7 pt-7">{product.price || "-"}</td>
-                      <td className="pb-7 pt-7">{product.totalPrice || "-"}</td>
-                      <td className="pb-7 pt-7">
-                        {" "}
-                        <button className="btn-more" style={{ color: "red" }}>
-                          <RemoveCircleOutlineIcon></RemoveCircleOutlineIcon>
-                        </button>
-                      </td>
-                    </tr>
-                  ))}
+                  {stockIn?.listStockInDetails &&
+                    stockIn?.listStockInDetails.map((item, index) => (
+                      <tr key={index} className="border-header-table">
+                        <td className="pb-7 pt-7">{index + 1}</td>
+                        <td className="pb-7 pt-7">
+                          {item.product.name || "-"}
+                        </td>
+                        <td className="pb-7 pt-7">
+                          {item.product.type || "-"}
+                        </td>
+                        <td className="pb-7 pt-7">{item.quanlity || "-"}</td>
+
+                        <td className="pb-7 pt-7">
+                          {item.product.unit || "-"}
+                        </td>
+                        <td className="pb-7 pt-7">{item.priceImport}</td>
+                        <td className="pb-7 pt-7">
+                          {item.priceImport * item.quanlity}
+                        </td>
+                        <td className="pb-7 pt-7">
+                          {" "}
+                          <button
+                            className="btn-more"
+                            style={{ color: "red" }}
+                            onClick={() => handleRemoveStockInDetail(index)}
+                          >
+                            <RemoveCircleOutlineIcon></RemoveCircleOutlineIcon>
+                          </button>
+                        </td>
+                      </tr>
+                    ))}
                 </tbody>
               </table>
             </div>
@@ -104,14 +219,24 @@ const ImportWarehouse = () => {
                   <span>
                     Nhà cung cấp <span className="color-danger">*</span>:
                   </span>
-                  <input></input>
+                  <input
+                    name="supplier"
+                    value={stockIn.supplier}
+                    onChange={handleInputChange}
+                  ></input>
                 </div>
 
                 <div className="form-group mt-20">
                   <span>
                     Tổng đơn hàng (vnđ) <span className="color-danger">*</span>:
                   </span>
-                  <input></input>
+                  <input
+                    type="number"
+                    min={0}
+                    name="totalPrice"
+                    value={stockIn.totalPrice}
+                    onChange={handleInputChange}
+                  ></input>
                 </div>
               </div>
               <div className="flex-1 ">
@@ -124,6 +249,7 @@ const ImportWarehouse = () => {
       <ImportWarehouseModal
         open={open}
         onClose={handleOnclose}
+        handleAdd={handleAddStockInDetail}
       ></ImportWarehouseModal>
     </div>
   );

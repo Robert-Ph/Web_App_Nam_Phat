@@ -94,6 +94,7 @@ public class StockInService {
             if (Objects.isNull(item.getProductId())) {
                 //Convert to inventory request
                 inventoryRequest = modelMapper.map(item, InventoryRequest.class);
+                inventoryRequest.getProduct().setPrice(item.getPriceImport());
                 inventoryReponse = inventoryService.create(inventoryRequest, now);
                 temp = modelMapper.map(item, StockInDetail.class);
 
@@ -108,7 +109,8 @@ public class StockInService {
             //Set product and stock for stockin detail
             temp.setProduct(inventoryReponse.getProduct());
             temp.setStockIn(stockIn);
-            temp.setPriceImport(inventoryReponse.getProduct().getPrice());
+//            temp.setPriceImport(inventoryReponse.getProduct().getPrice());
+            temp.setPriceImport(item.getPriceImport());
 
             //Set id for stock detail is foreign key  stockin id and id product id
             stockInDetailId = new StockInDetailId();
