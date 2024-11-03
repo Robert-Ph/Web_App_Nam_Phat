@@ -201,7 +201,7 @@ const ProductDetail = () => {
                 <input
                   disabled={true}
                   className="font-font-size-small"
-                  value={inventory.product.id}
+                  value={inventory.product.id || ""}
                 ></input>
               </div>
 

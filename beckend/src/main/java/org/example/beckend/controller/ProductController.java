@@ -36,4 +36,13 @@ public class ProductController {
                 .build());
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<ApiResponse> getProductById(@PathVariable Long id){
+        return ResponseEntity.ok(ApiResponse.builder()
+                .code(SuccessMessage.GET_DATA_SUCCESS.getCode())
+                .message(SuccessMessage.GET_DATA_SUCCESS.getMessage())
+                .data(productService.findById(id))
+                .build());
+    }
+
 }

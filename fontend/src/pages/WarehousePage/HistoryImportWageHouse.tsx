@@ -171,14 +171,18 @@ const HistoryImportWageHouse = () => {
                           : "-"}
                       </td>
                       <td className="pb-7 pt-7 font-size-small td-table font-w-500">
-                        <ImageGallery image={item.imageInvoice}></ImageGallery>
+                        <ImageGallery
+                          image={item.imageInvoice ? item.imageInvoice : ""}
+                        ></ImageGallery>
                       </td>
 
                       <td className="pb-7 pt-7 font-size-small td-table font-w-500">
                         <button
                           className="btn-more"
                           onClick={() => {
-                            navigate(`/warehouse/import/detail/${item.id}`);
+                            navigate(
+                              `/warehouse/list/history/detail/${item.id}`
+                            );
                           }}
                         >
                           <MoreHorizIcon></MoreHorizIcon>

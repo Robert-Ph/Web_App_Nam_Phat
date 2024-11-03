@@ -18,7 +18,7 @@ public class StockInDetailRequest {
     @NotNull(message = "Quanlity  is require")
     int quanlity;
 
-
-    int newPrice;
+    @NotNull(message = "Price Import  is require")
+    int priceImport;
 
 }
