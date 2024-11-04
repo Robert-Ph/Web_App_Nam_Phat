@@ -41,4 +41,14 @@ public class StockOutController {
                         .data(stockOutService.getAll(pageable))
                 .build());
     }
+    @GetMapping("/search")
+    public ResponseEntity<ApiResponse> getByFilterPageable(@RequestParam String filter,@RequestParam(defaultValue = "0")int page,@RequestParam(defaultValue = "10") int size){
+        Sort sort = Sort.by("dateCreate").descending();
+        Pageable pageable = PageRequest.of(page,size,sort);
+        return ResponseEntity.ok(ApiResponse.builder()
+                .code(SuccessMessage.GET_DATA_SUCCESS.getCode())
+                .message(SuccessMessage.GET_DATA_SUCCESS.getMessage())
+                .data(stockOutService.getByFilter(filter,pageable))
+                .build());
+    }
 }

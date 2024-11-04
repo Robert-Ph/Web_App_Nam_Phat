@@ -46,9 +46,9 @@
 }
 .css-1tlcqt-MuiAutocomplete-root .MuiOutlinedInput-root .MuiAutocomplete-input {
   padding: 7px 4px 7px 5px !important;
+  border: none;
 }
 .wrap-input_container {
   box-shadow: none !important;
-  margin-top: 5px;
   border-radius: 7px !important;
 }

@@ -85,6 +85,7 @@ const ImportWarehouse = () => {
               autoClose: 1000,
             });
             reset();
+            navigate(`/warehouse/list/history`);
           } else {
             toast.error("Gặp lỗi", {
               autoClose: 1000,
@@ -136,7 +137,6 @@ const ImportWarehouse = () => {
             style={{ marginRight: "0px;" }}
             onClick={() => {
               handleImport();
-              navigate(`/warehouse/list/history`);
             }}
           >
             Nhập kho

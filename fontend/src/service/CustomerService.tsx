@@ -13,9 +13,7 @@ const getCustomerByPhone = async (phone: string) => {
   }
 };
 const getByFilter = (page: number, size: number, filter: string) => {
-  return api.get(
-      `${BASE_URL}/list?page=${page}&size=${size}&filter=${filter}`
-  );
+  return api.get(`${BASE_URL}/list?page=${page}&size=${size}&filter=${filter}`);
 };
 const create = (customer: Customer) => {
   return api.post(`${BASE_URL}`, customer);
@@ -24,8 +22,7 @@ const getById = (id: number | undefined | string) => {
   return api.get(`${BASE_URL}/${id}`);
 };
 const getByIdListOrder = (id: number | undefined | string) => {
-  return api.get(
-      `${BASE_URL}/history/${id}`);
+  return api.get(`${BASE_URL}/history/${id}`);
 };
 const CustomerService = {
   getCustomerByPhone,
@@ -33,7 +30,6 @@ const CustomerService = {
   create,
   getById,
   getByIdListOrder,
-  getCustomerByPhone,
 };
 
 export default CustomerService;

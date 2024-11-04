@@ -36,6 +36,15 @@ public class ProductController {
                 .build());
     }
 
+    @GetMapping("/search")
+    public ResponseEntity<ApiResponse> getProductByIdConstain(@Param(value = "id")String id){
+        return ResponseEntity.ok(ApiResponse.builder()
+                .code(SuccessMessage.GET_DATA_SUCCESS.getCode())
+                .message(SuccessMessage.GET_DATA_SUCCESS.getMessage())
+                .data(productService.findByIdConstains(id))
+                .build());
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<ApiResponse> getProductById(@PathVariable Long id){
         return ResponseEntity.ok(ApiResponse.builder()

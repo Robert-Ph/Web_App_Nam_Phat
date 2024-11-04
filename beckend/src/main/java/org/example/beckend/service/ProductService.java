@@ -50,4 +50,8 @@ public class ProductService {
     public List<Product> findByName(String name){
         return productRepository.findByNameContains(name);
     }
+
+    public List<Product> findByIdConstains(String id){
+        return productRepository.findByIdPattern(id);
+    }
 }

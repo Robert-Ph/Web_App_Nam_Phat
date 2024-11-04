@@ -15,6 +15,7 @@ import InventoryService from "../../service/InventoriesService";
 import Inventory from "../../model/inventory.model";
 import { formatDateTime } from "../../utils/Utils";
 import Spiner from "../../component/Spiner/Spiner";
+import { highlightText } from "../UtilsPage/Highlight/highligth";
 
 const WageHousePage = () => {
   const [query, setQuery] = useState<string>("");
@@ -159,19 +160,22 @@ const WageHousePage = () => {
                   {inventories.map((item) => (
                     <tr key={item.product.id} className="border-header-table">
                       <td className="pb-7 pt-7 font-size-small td-table font-w-500 ">
-                        {item.product.id}
+                        {highlightText(item.product.id + "", debouncedQuery)}
                       </td>
                       <td
                         className="pb-7 pt-7 font-size-small font-w-500 "
                         style={{ paddingRight: "25px" }}
                       >
-                        {item.product.name || "-"}
+                        {highlightText(item.product.name, debouncedQuery) ||
+                          "-"}
                       </td>
                       <td
                         className="pb-7 pt-7 font-size-small td-table font-w-500"
                         style={{ paddingRight: "20px" }}
                       >
-                        {item.product.type || "-"}
+                        {item.product.type
+                          ? highlightText(item.product.type, debouncedQuery)
+                          : "-"}
                       </td>
                       <td className="pb-7 pt-7 font-size-small td-table font-w-500 text-center">
                         {item.quanlity}
@@ -181,7 +185,10 @@ const WageHousePage = () => {
                       </td>
 
                       <td className="pb-7 pt-7 font-size-small td-table font-w-500 text-center">
-                        {item.product.price || "-"}
+                        {highlightText(
+                          item.product.price + "",
+                          debouncedQuery
+                        ) || "-"}
                       </td>
 
                       <td className="pb-7 pt-7 font-size-small td-table font-w-500">
