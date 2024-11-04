@@ -8,6 +8,8 @@ import ProductService from "../../service/ProductService";
 import StockInDetail from "../../model/stockInDetail.model";
 import { toast } from "react-toastify";
 import product from "../../model/product.model";
+import TextFieldAuto from "../../component/TextFieldAuto/TextFieldAuto";
+import useDebounce from "../../hooks/useDebounce";
 
 const style = {
   position: "absolute" as "absolute",
@@ -39,6 +41,9 @@ const ImportWarehouseModal = ({ open, onClose, handleAdd }: props) => {
   );
   const [productId, setProductId] = useState<string>("");
   const [totalPrice, setTotalPrice] = useState<number>(0);
+
+  const [products, setProducts] = useState<product[]>([]);
+  const debouncedQuery = useDebounce(productId, 300);
 
   const handleChange = (event: SelectChangeEvent) => {
     setTypeProduct(event.target.value);
@@ -84,6 +89,7 @@ const ImportWarehouseModal = ({ open, onClose, handleAdd }: props) => {
     }
   };
 
+  //Call API for ON Blur
   const callApiOnBlur = async (id: string) => {
     if (id) {
       ProductService.getById(id)
@@ -113,6 +119,37 @@ const ImportWarehouseModal = ({ open, onClose, handleAdd }: props) => {
         });
     }
   };
+
+  const handleSelect = (product: product | null) => {
+    if (product) {
+      const { id, ...newProduct } = product;
+      const newStockInDetail: StockInDetail = {
+        productId: parseInt(productId, 10),
+        product: newProduct, // Giả sử dữ liệu trả về chứa thông tin sản phẩm
+        quanlity: 1, // Gán giá trị mặc định cho số lượng
+        priceImport: 0, // Giả sử dữ liệu trả về có trường price
+      };
+      setStockInDetail(newStockInDetail);
+    }
+  };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      if (debouncedQuery.length > 0) {
+        try {
+          const response = await ProductService.getByIdConstrains(
+            debouncedQuery
+          );
+          console.log(response);
+          setProducts(response.data.data);
+        } catch (error) {}
+      } else {
+        setProducts([]); // Clear options if input is empty
+      }
+    };
+
+    fetchData();
+  }, [debouncedQuery]);
   console.log(stockInDetail);
   const handleProductIdBlur = () => {
     callApiOnBlur(productId);
@@ -183,16 +220,32 @@ const ImportWarehouseModal = ({ open, onClose, handleAdd }: props) => {
                   className="form-group flex-1"
                   style={{ paddingLeft: "3%" }}
                 >
-                  <span>
+                  <span style={{ marginBottom: "0px" }}>
                     Mã loại hàng <span style={{ color: "red" }}>*</span> :
                   </span>
-                  <input
+                  {/* <input
                     className="shadow"
                     disabled={typeProduct == "new"}
                     onBlur={handleProductIdBlur} // Gọi hàm khi mất focus
                     value={productId}
                     onChange={(e) => setProductId(e.target.value)}
-                  ></input>
+                  ></input> */}
+
+                  <TextFieldAuto
+                    type="Number"
+                    options={products}
+                    getOptionLabel={(product) => `${product.id}`}
+                    disable={typeProduct == "new"}
+                    onSelect={(product) => {
+                      handleSelect(product);
+                    }}
+                    onInputChange={setProductId}
+                    renderOption={(props, option) => (
+                      <li {...props} key={option.id}>
+                        {option.id} - ({option.name})
+                      </li>
+                    )}
+                  ></TextFieldAuto>
                 </div>
               </div>
 

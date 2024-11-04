@@ -14,6 +14,7 @@ import useDebounce from "../../hooks/useDebounce";
 import EmployeeService from "../../service/EmployeeService";
 import { toast } from "react-toastify";
 import Spiner from "../../component/Spiner/Spiner";
+import { highlightText } from "../UtilsPage/Highlight/highligth";
 
 const ListEmployee = () => {
   const [emplyees, setEmployees] = useState<Employee[]>([]);
@@ -191,19 +192,20 @@ const ListEmployee = () => {
                     emplyees.map((employee) => (
                       <tr key={employee.id} className="border-header-table">
                         <td className="pb-7 pt-7 font-size-small td-table font-w-500 ">
-                          {employee.id}
+                          {highlightText(employee.id + "", debouncedQuery)}
                         </td>
                         <td
                           className="pb-7 pt-7 font-size-small font-w-500 "
                           style={{ paddingRight: "10px" }}
                         >
-                          {employee.fullName || "-"}
+                          {highlightText(employee.fullName, debouncedQuery) ||
+                            "-"}
                         </td>
                         <td className="pb-7 pt-7 font-size-small td-table font-w-500">
-                          {employee.phone || "-"}
+                          {highlightText(employee.phone, debouncedQuery) || "-"}
                         </td>
                         <td className="pb-7 pt-7 font-size-small td-table font-w-500">
-                          {employee.email || "-"}
+                          {highlightText(employee.email, debouncedQuery) || "-"}
                         </td>
                         <td className="pb-7 pt-7 font-size-small td-table font-w-500">
                           {employee.work_date || "-"}

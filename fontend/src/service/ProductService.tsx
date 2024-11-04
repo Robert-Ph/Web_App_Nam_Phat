@@ -10,8 +10,13 @@ const getById = (id: string) => {
   return api.get(`${BASE_URL}/${id}`);
 };
 
+const getByIdConstrains = (id: string) => {
+  return api.get(`${BASE_URL}/search?id=${id}`);
+};
+
 const ProductService = {
   update,
   getById,
+  getByIdConstrains,
 };
 export default ProductService;

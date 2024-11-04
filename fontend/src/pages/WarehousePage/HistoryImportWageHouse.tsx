@@ -30,7 +30,7 @@ const HistoryImportWageHouse = () => {
 
   const debouncedQuery = useDebounce(query, 500);
 
-  const fetchInvoices = async () => {
+  const fetchHistory = async () => {
     try {
       setLoading(true);
       const response = await StockInService.getBySearch(
@@ -49,7 +49,7 @@ const HistoryImportWageHouse = () => {
   };
 
   useEffect(() => {
-    fetchInvoices();
+    fetchHistory();
   }, [page, debouncedQuery, totalPages]);
 
   const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
@@ -159,7 +159,7 @@ const HistoryImportWageHouse = () => {
                         style={{ paddingRight: "20px" }}
                       >
                         {item.totalPrice
-                          ? formatCurrency(item.totalPrice)
+                          ? formatCurrency(item.totalPrice) + " VNĐ"
                           : " - "}
                       </td>
                       <td className="pb-7 pt-7 font-size-small td-table font-w-500 ">

@@ -11,3 +11,10 @@
   margin-top: 5px;
   border-radius: 7px !important;
 }
+.disabled {
+  background-color: var(--color-gray);
+  color: #999;
+  border: 1px solid #ddd;
+  cursor: not-allowed;
+  opacity: 0.6;
+}

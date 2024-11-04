@@ -1,8 +1,16 @@
 import Modal from "@mui/material/Modal";
 import Box from "@mui/material/Box";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 import { SelectChangeEvent } from "@mui/material/Select";
+import TextFieldAuto from "../../component/TextFieldAuto/TextFieldAuto";
+import useDebounce from "../../hooks/useDebounce";
+import product from "../../model/product.model";
+import ProductService from "../../service/ProductService";
+import "./css/order.css";
+import StockOut from "../../model/stockOut.model";
+import StockOutService from "../../service/StockOutService";
+import { toast } from "react-toastify";
 
 const style = {
   position: "absolute" as "absolute",
@@ -23,15 +31,100 @@ const style = {
 type props = {
   open: boolean;
   onClose: () => void;
+  handleAdd: (stockOut: StockOut) => void;
 };
 //Sự kiện khi bấm ô select vị trí
 
-const ExportWarehouseModal = ({ open, onClose }: props) => {
-  const [typeProduct, setTypeProduct] = useState<string>("use");
+const ExportWarehouseModal = ({ open, onClose, handleAdd }: props) => {
+  const [query, setQuery] = useState<string>("");
+  const [products, setProducts] = useState<product[]>([]);
+  const [selectProduct, setSelectProduct] = useState<product | null>(null);
+  const [stockOut, setStockOut] = useState<StockOut>({
+    quantity: 1,
+    reson: "",
+  });
 
-  const handleChange = (event: SelectChangeEvent) => {
-    setTypeProduct(event.target.value);
+  const debouncedQuery = useDebounce(query, 300);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      if (debouncedQuery.length > 0) {
+        try {
+          const response = await ProductService.getByIdConstrains(
+            debouncedQuery
+          );
+          console.log(response);
+          setProducts(response.data.data);
+        } catch (error) {}
+      } else {
+        setProducts([]); // Clear options if input is empty
+      }
+    };
+
+    fetchData();
+  }, [debouncedQuery]);
+
+  const handleInputChange = (field: keyof StockOut, value: any) => {
+    setStockOut((prev) => ({ ...prev, [field]: value }));
   };
+  const handleSelect = (product: product | null) => {
+    setSelectProduct(product);
+    setStockOut((prev) => ({
+      ...prev,
+      productId: product?.id ?? null,
+    }));
+  };
+  const handleClose = () => {
+    setSelectProduct(null);
+    setStockOut({
+      quantity: 1,
+      reson: "",
+    });
+    onClose();
+    setQuery("");
+  };
+
+  const handleAddStockOut = () => {
+    try {
+      if (stockOut.productId && stockOut.quantity > 0 && stockOut.reson) {
+        StockOutService.create(stockOut)
+          .then((response) => {
+            if (response.data.code == 201) {
+              toast.success("Thêm xuất kho thành công", {
+                autoClose: 1000,
+              });
+
+              console.log(response.data);
+              handleAdd(response.data.data);
+              handleClose();
+            } else {
+              toast.error("Vui lòng nhập đầy đủ thông tin", {
+                autoClose: 1000,
+              });
+            }
+          })
+          .catch((error) => {
+            console.log(error);
+            if (error.response.data.code == 400) {
+              toast.error("Số lượng trong kho không còn đủ số lượng", {
+                autoClose: 1500,
+              });
+            } else {
+              toast.error("Gặp Lỗi", {
+                autoClose: 1000,
+              });
+            }
+          });
+      } else {
+        toast.error("Vui lòng nhập đầy đủ thông tin.", {
+          autoClose: 1000,
+        });
+      }
+    } catch (error) {
+      console.error("Lỗi khi thêm xuất kho:", error);
+    }
+  };
+
   return (
     <div>
       <Modal
@@ -42,7 +135,7 @@ const ExportWarehouseModal = ({ open, onClose }: props) => {
       >
         <Box sx={style}>
           <div className="mt-10">
-            <h3 className="text-center">Thêm Loại hàng</h3>
+            <h3 className="text-center">Thêm Loại Hàng Xuất Kho</h3>
           </div>
 
           <div
@@ -56,17 +149,35 @@ const ExportWarehouseModal = ({ open, onClose }: props) => {
                   style={{ paddingRight: "3%" }}
                 >
                   <span>Tên loại hàng:</span>
-                  <input></input>
+                  <input
+                    className="shadow"
+                    disabled
+                    value={selectProduct?.name}
+                  ></input>
                 </div>
 
                 <div
                   className="form-group flex-1"
                   style={{ paddingLeft: "3%" }}
                 >
-                  <span>
+                  <span style={{ marginBottom: "0px" }}>
                     Mã loại hàng <span style={{ color: "red" }}>*</span> :
                   </span>
-                  <input className="shadow" disabled></input>
+                  {/* <input className="shadow"></input> */}
+                  <TextFieldAuto
+                    type="Number"
+                    options={products}
+                    getOptionLabel={(product) => `${product.id}`}
+                    onSelect={(product) => {
+                      handleSelect(product);
+                    }}
+                    onInputChange={setQuery}
+                    renderOption={(props, option) => (
+                      <li {...props} key={option.id}>
+                        {option.id} - ({option.name})
+                      </li>
+                    )}
+                  ></TextFieldAuto>
                 </div>
               </div>
 
@@ -76,7 +187,11 @@ const ExportWarehouseModal = ({ open, onClose }: props) => {
                   style={{ paddingRight: "3%" }}
                 >
                   <span>Đơn vị tính:</span>
-                  <input className="shadow" disabled></input>
+                  <input
+                    className="shadow"
+                    disabled
+                    value={selectProduct?.unit}
+                  ></input>
                 </div>
 
                 <div
@@ -84,7 +199,11 @@ const ExportWarehouseModal = ({ open, onClose }: props) => {
                   style={{ paddingLeft: "3%" }}
                 >
                   <span>Loại :</span>
-                  <input className="shadow" disabled></input>
+                  <input
+                    className="shadow"
+                    disabled
+                    value={selectProduct?.type}
+                  ></input>
                 </div>
               </div>
 
@@ -94,7 +213,15 @@ const ExportWarehouseModal = ({ open, onClose }: props) => {
                   style={{ paddingRight: "3%" }}
                 >
                   <span>Số lượng xuất kho:</span>
-                  <input className="shadow" type="number"></input>
+                  <input
+                    className="shadow"
+                    type="number"
+                    value={stockOut.quantity}
+                    min={1}
+                    onChange={(e) =>
+                      handleInputChange("quantity", Number(e.target.value))
+                    }
+                  ></input>
                 </div>
 
                 <div
@@ -113,6 +240,7 @@ const ExportWarehouseModal = ({ open, onClose }: props) => {
                           width: "20%",
                           marginLeft: "1%",
                         }}
+                        value={selectProduct?.heigth}
                         disabled
                       ></input>
 
@@ -129,6 +257,7 @@ const ExportWarehouseModal = ({ open, onClose }: props) => {
                           width: "20%",
                           marginLeft: "1%",
                         }}
+                        value={selectProduct?.weigth}
                         disabled
                       ></input>
                       <span style={{ marginLeft: "1%" }}>(mm)</span>
@@ -142,14 +271,21 @@ const ExportWarehouseModal = ({ open, onClose }: props) => {
               <div className="mt-10">
                 <div className="form-group">
                   <span>Lí do xuất kho:</span>
-                  <textarea className="shadow" rows={5}></textarea>
+                  <textarea
+                    className="shadow"
+                    rows={5}
+                    value={stockOut.reson}
+                    onChange={(e) => handleInputChange("reson", e.target.value)}
+                  ></textarea>
                 </div>
               </div>
               <div className="d-flex mt-30 justify-space-evenly ">
-                <button className="btn btn-danger" onClick={onClose}>
+                <button className="btn btn-danger" onClick={handleClose}>
                   Hủy
                 </button>
-                <button className="btn btn-primary">Thêm </button>
+                <button className="btn btn-primary" onClick={handleAddStockOut}>
+                  Thêm{" "}
+                </button>
               </div>
             </div>
           </div>

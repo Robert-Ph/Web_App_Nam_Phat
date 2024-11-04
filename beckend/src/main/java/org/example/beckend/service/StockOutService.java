@@ -61,4 +61,10 @@ public class StockOutService {
         return new PagedModel<>(stockOutRepository.findAll(pageable));
     }
 
+    public PagedModel<StockOut> getByFilter(String filter,Pageable pageable){
+        return new PagedModel<>(stockOutRepository.findStockOutByFilter(filter,pageable));
+    }
+
+
+
 }

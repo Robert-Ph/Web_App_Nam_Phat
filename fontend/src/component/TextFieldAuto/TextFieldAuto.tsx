@@ -6,6 +6,7 @@ import "./text.css";
 
 interface AutocompleteProps<T> {
   options: T[];
+  disable?: boolean;
   type?: "Number" | "String" | "";
   getOptionLabel: (option: T) => string;
   onSelect: (object: T | null) => void;
@@ -30,6 +31,7 @@ export default function TextFieldAuto<T>({
   onSelect,
   renderOption,
   onInputChange,
+  disable = false,
 }: AutocompleteProps<T>) {
   const [open, setOpen] = React.useState(false);
   const [loading, setLoading] = React.useState(false);
@@ -51,8 +53,9 @@ export default function TextFieldAuto<T>({
 
   return (
     <Autocomplete
-      className={"wrap-input_container"}
+      className={`wrap-input_container ${disable ? " disabled" : " "}`}
       open={open}
+      disabled={disable}
       onOpen={handleOpen}
       onClose={handleClose}
       isOptionEqualToValue={(option, value) =>
@@ -67,7 +70,6 @@ export default function TextFieldAuto<T>({
       renderOption={renderOption}
       onInputChange={(event, newInputValue) => {
         if (onInputChange) {
-          // Chỉ gọi khi giá trị không phải chuỗi rỗng
           onInputChange(newInputValue);
         }
       }}
