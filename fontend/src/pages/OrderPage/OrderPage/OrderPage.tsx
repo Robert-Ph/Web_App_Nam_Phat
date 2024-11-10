@@ -36,7 +36,9 @@ const OrderPage = () => {
   );
 
   const [vat, setVat] = useState<number>(0);
+  const [discount, setDiscount] = useState<number>(0);
   const [total, setTotal] = useState<number>(0);
+  const [comment, setComment] = useState("");
 
   const navigate = useNavigate();
 
@@ -63,6 +65,10 @@ const OrderPage = () => {
     setInvoice(event.target.value);
   };
 
+  const handleComment = (event) => {
+    setComment(event.target.value);
+  };
+
   const addProduct = (orderItem: OrderItem) => {
     setOpen(false);
     setOrderItems([...orderItems, orderItem]);
@@ -79,6 +85,12 @@ const OrderPage = () => {
     // Chuyển đổi giá trị từ string sang number
     const newValue = parseFloat(e.target.value);
     setVat(newValue);
+  };
+
+  const handleChangeDiscount = (e: React.ChangeEvent<HTMLInputElement>) => {
+    // Chuyển đổi giá trị từ string sang number
+    const newValue = parseFloat(e.target.value);
+    setDiscount(newValue);
   };
 
   const handleChangeVat = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -121,6 +133,8 @@ const OrderPage = () => {
         dateShip: null,
         pay: null,
         orderItems: [...orderItems],
+        comments: comment,
+        discount: discount,
       } as Order;
 
       try {
@@ -221,9 +235,9 @@ const OrderPage = () => {
             <div className="form-group flex-8">
               <span>Tên khách hàng</span>
               <input
-                placeholder="Tên khách hàng"
-                disabled
-                value={selectedCustomer?.fullName || ""}
+                  placeholder="Tên khách hàng"
+                  disabled
+                  value={selectedCustomer?.fullName || ""}
               ></input>
             </div>
 
@@ -232,38 +246,38 @@ const OrderPage = () => {
               <input placeholder="Số điện thoại"></input>
             </div> */}
 
-            <div className="flex-2 " style={{ margin: "0px 20px" }}>
+            <div className="flex-2 " style={{margin: "0px 20px"}}>
               <span
-                style={{
-                  fontSize: "14px",
-                  fontWeight: "500",
-                  marginBottom: "5px",
-                }}
+                  style={{
+                    fontSize: "14px",
+                    fontWeight: "500",
+                    marginBottom: "5px",
+                  }}
               >
                 Số điện thoại
               </span>
               <TextFieldAuto
-                type="Number"
-                options={customers}
-                getOptionLabel={(customer) => `${customer.phone}`}
-                onSelect={handleUserSelect}
-                onInputChange={setQuery}
-                renderOption={(props, option) => (
-                  <li {...props} key={option.id}>
-                    {option.phone} ({option.fullName})
-                  </li>
-                )}
+                  type="Number"
+                  options={customers}
+                  getOptionLabel={(customer) => `${customer.phone}`}
+                  onSelect={handleUserSelect}
+                  onInputChange={setQuery}
+                  renderOption={(props, option) => (
+                      <li {...props} key={option.id}>
+                        {option.phone} ({option.fullName})
+                      </li>
+                  )}
               ></TextFieldAuto>
             </div>
 
             <div className="form-group flex-2">
               <span>Hóa đơn</span>
-              <FormControl sx={{ minWidth: 120 }} size="small">
+              <FormControl sx={{minWidth: 120}} size="small">
                 <Select
-                  labelId="demo-select-small-label"
-                  id="demo-select-small"
-                  value={invoice}
-                  onChange={handleChange}
+                    labelId="demo-select-small-label"
+                    id="demo-select-small"
+                    value={invoice}
+                    onChange={handleChange}
                 >
                   <MenuItem value={"INDIVIDUAL"} className="">
                     Cá Nhân
@@ -274,29 +288,34 @@ const OrderPage = () => {
             </div>
           </div>
 
-          <div className="wrap-form" style={{ marginTop: "10px" }}>
+          <div className="wrap-form" style={{marginTop: "10px"}}>
             <div className="form-group flex-2">
               <span>Email</span>
               <input
-                placeholder="Email khách hàng"
-                value={selectedCustomer?.email || ""}
-                disabled
-                type="email"
+                  placeholder="Email khách hàng"
+                  value={selectedCustomer?.email || ""}
+                  disabled
+                  type="email"
               ></input>
             </div>
 
-            <div className="form-group flex-8" style={{ marginLeft: "20px" }}>
+            <div className="form-group flex-8" style={{marginLeft: "20px"}}>
               <span>Địa chỉ giao hàng</span>
               <input placeholder="Địa chỉ giao hàng" ref={addressRef}></input>
             </div>
+
+          </div>
+          <div className="form-group " style={{marginTop: "10px"}}>
+            <span>Ghi chú(ngắn ngọn)</span>
+            <input placeholder="Ghi chú" value={comment} onChange={handleComment}></input>
           </div>
         </div>
 
         <div className="mt-20">
           <h3>Danh sách sản phẩm</h3>
-          <div style={{ padding: "20px" }}>
+          <div style={{padding: "20px"}}>
             <div className="table-container">
-              <table style={{ width: "100%", borderCollapse: "collapse" }}>
+              <table style={{width: "100%", borderCollapse: "collapse" }}>
                 <thead>
                   <tr className="color-blue header-table text-left border-header-table">
                     <th className="pb-7 pl-8  font-w-500">STT</th>
@@ -356,26 +375,35 @@ const OrderPage = () => {
 
               <div className="wrap-vat d-flex">
                 <div
-                  className="form-group"
-                  style={{ flex: "5", marginRight: "10px" }}
+                    className="form-group"
+                    style={{flex: "5", marginRight: "10px"}}
                 >
                   <span>Thuế Giá Trị Gia Tăng - VAT (%)</span>
                   <input
-                    placeholder="Thuế giá trị gia tăng"
-                    type="number"
-                    style={{ width: "85%" }}
-                    value={vat}
-                    onChange={handleChangeVate}
+                      placeholder="Thuế giá trị gia tăng"
+                      type="number"
+                      style={{width: "85%"}}
+                      value={vat}
+                      onChange={handleChangeVate}
+                  ></input>
+                  <span>Giảm giá(VNĐ)</span>
+                  <input
+                      placeholder="Giảm giá"
+                      type="number"
+                      style={{width: "85%"}}
+                      value={discount}
+                      onChange={handleChangeDiscount}
                   ></input>
                 </div>
-                <div style={{ flex: "5" }}>
+                <div style={{flex: "5"}}>
                   <p>Tổng: {formatCurrency(total)} VNĐ</p>
+                  <p>Giảm: {formatCurrency(discount)} VNĐ</p>
                   <p>
                     Thuế giá trị gia tăng(VAT):{" "}
                     {formatCurrency((total * vat) / 100)}
                   </p>
                   <p>
-                    Thành tiền: {formatCurrency(total + total * (vat / 100))}{" "}
+                    Thành tiền: {formatCurrency(total + total * (vat / 100) - discount)}{" "}
                     VNĐ
                   </p>
                 </div>

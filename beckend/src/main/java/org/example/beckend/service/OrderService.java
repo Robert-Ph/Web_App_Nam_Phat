@@ -75,6 +75,9 @@ public class OrderService {
         order.setStatus(OrderStatus.CONFIM);
         order.setTotalPrice(order.getOrderItems().stream().mapToLong(item -> (long)item.getQuanlityProduct() * item.getPricePerOne()).sum());
         order.setVat(request.getVat());
+        order.setComments(request.getComments());
+        order.setDiscount(request.getDiscount());
+
         Order save = orderRepository.save(order);
 
         for (OrderItem item :

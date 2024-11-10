@@ -55,6 +55,9 @@ public class Order {
 //    @JsonBackReference
     Customer customer;
 
+    String comments;
+    long discount;
+
     @PrePersist
     protected void onCreate() {
         dateCreate = LocalDateTime.now();

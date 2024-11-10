@@ -14,6 +14,8 @@ type Order = {
   address: string;
   phone: string;
   orderItems: OrderItem[];
+  comments:string;
+  discount: number;
 };
 
 export default Order;

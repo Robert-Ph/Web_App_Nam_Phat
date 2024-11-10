@@ -42,7 +42,7 @@ const MainLayout = () => {
           },
         ],
       });
-    } else if (isActive("/", location.pathname)) {
+    } else if (isActive("/home", location.pathname)) {
       setNavMore({
         title: "Tổng quan",
         listNav: [],

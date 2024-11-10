@@ -44,7 +44,8 @@ import org.springframework.stereotype.Component;
 public class PDFUtils {
 
     LocalDate currentDate = LocalDate.now();
-
+    float lineSpacing = 1.0f;
+    int line = 10;
     int ngay = currentDate.getDayOfMonth();
     int thang = currentDate.getMonthValue();
     int nam = currentDate.getYear();
@@ -180,6 +181,8 @@ public class PDFUtils {
                     .add(new Tab())
                     .add(new Text("Số điện thoại: ").setBold())
                     .add(new Text(Objects.isNull(company.getPhone()) ? "" : company.getPhone()))
+                    .setFixedLeading(lineSpacing)
+                    .setMarginBottom(line)
             );
             //Header email va so tai khoan
             document.add(new Paragraph()
@@ -189,12 +192,16 @@ public class PDFUtils {
                     .add(new Tab())
                     .add(new Text("Số tài khoản: ").setBold())
                     .add(new Text(Objects.isNull(company.getIdBank()) ? "" : company.getIdBank()))
+                    .setFixedLeading(lineSpacing) // Same line spacing adjustment
+                    .setMarginBottom(line)
             );
 
             document.add(
                     new Paragraph()
                             .add(new Text("Địa chỉ: ").setBold())
                             .add(new Text(Objects.isNull(company.getAddress()) ? "" : company.getAddress()))
+                            .setFixedLeading(lineSpacing) // Same line spacing adjustment
+                            .setMarginBottom(20)
             );
 
 
@@ -207,7 +214,7 @@ public class PDFUtils {
                     .add(new Tab())
                     .add(new Text("Ngày "+ ngay +" tháng "+thang+" năm "+nam))
                     .add(new Tab())
-                    .add(new Text("Số: "+id))
+                    .add(new Text("Số:HD"+id))
                     .setMarginBottom(10)
             );
 
@@ -217,6 +224,8 @@ public class PDFUtils {
                         .addTabStops(new TabStop(width, TabAlignment.RIGHT, new DottedLine(1.5f)))
                         .add(new Text("Tên khách hàng:"))
                         .add(new Tab())
+                        .setFixedLeading(lineSpacing) // Same line spacing adjustment
+                        .setMarginBottom(line)
                 );
                 document.add(new Paragraph()
                         .addTabStops(new TabStop(width / 2 + 10, TabAlignment.CENTER, new DottedLine(1.5f)))
@@ -225,6 +234,8 @@ public class PDFUtils {
                         .add(new Text(", Email:"))
                         .addTabStops(new TabStop(width, TabAlignment.RIGHT, new DottedLine(1.5f)))
                         .add(new Tab())
+                        .setFixedLeading(lineSpacing) // Same line spacing adjustment
+                        .setMarginBottom(line)
                 );
                 document.add(new Paragraph()
                         .addTabStops(new TabStop(width / 2 + 10, TabAlignment.CENTER, new DottedLine(1.5f)))
@@ -233,13 +244,16 @@ public class PDFUtils {
                         .add(new Text(", Hình thức thanh toán:"))
                         .addTabStops(new TabStop(width, TabAlignment.RIGHT, new DottedLine(1.5f)))
                         .add(new Tab())
+                        .setFixedLeading(lineSpacing) // Same line spacing adjustment
+                        .setMarginBottom(line)
 
                 );
                 document.add(new Paragraph()
                         .addTabStops(new TabStop(width, TabAlignment.RIGHT, new DottedLine(1.5f)))
                         .add(new Text("Địa chỉ:"))
                         .add(new Tab())
-                        .setMarginBottom(20)
+                        .setFixedLeading(lineSpacing) // Same line spacing adjustment
+                        .setMarginBottom(line)
                 );
             } else {
 
@@ -249,6 +263,8 @@ public class PDFUtils {
                         .add(new Text("Tên khách hàng: "))
                         .add(new Text(customer.getFullName()).setBold())
                         .add(new Tab())
+                        .setFixedLeading(lineSpacing) // Same line spacing adjustment
+                        .setMarginBottom(line)
 
                 );
 
@@ -260,6 +276,8 @@ public class PDFUtils {
                         .add(new Tab())
                         .add(new Text(", Email: " ))
                         .add(new Text(customer.getEmail()).setBold())
+                        .setFixedLeading(lineSpacing) // Same line spacing adjustment
+                        .setMarginBottom(line)
 
                 );
                 document.add(new Paragraph()
@@ -269,11 +287,14 @@ public class PDFUtils {
                         .add(new Text(", Hình thức thanh toán:"))
                         .addTabStops(new TabStop(width, TabAlignment.RIGHT, new DottedLine(1.5f)))
                         .add(new Tab())
+                        .setFixedLeading(lineSpacing) // Same line spacing adjustment
+                        .setMarginBottom(line)
 
                 );
                 document.add(new Paragraph()
                         .add(new Text("Địa chỉ: " + order.getAddress()).setBold())
-                        .setMarginBottom(20)
+                        .setFixedLeading(lineSpacing) // Same line spacing adjustment
+                        .setMarginBottom(15)
                 );
             }
 
@@ -305,8 +326,9 @@ public class PDFUtils {
 
 
                 table1.addCell(mergeCol("Tổng:", 6, TextAlignment.CENTER));
+                table1.addCell(mergeCol("", 1, TextAlignment.LEFT));
 
-
+                table1.addCell(mergeCol("Giảm:", 6, TextAlignment.CENTER));
                 table1.addCell(mergeCol("", 1, TextAlignment.LEFT));
 
                 table1.addCell(mergeCol("Thuế giá trị gia tăng - VAT(...%)", 6, TextAlignment.CENTER));
@@ -314,6 +336,8 @@ public class PDFUtils {
 
                 table1.addCell(mergeCol("Tổng Cộng:", 6, TextAlignment.CENTER));
                 table1.addCell(mergeCol("", 1, TextAlignment.LEFT));
+
+                table1.addCell(mergeCol("Ghi chú:", 7, TextAlignment.CENTER));
 
 
                 document.add(table1);
@@ -356,12 +380,16 @@ public class PDFUtils {
 
                 table1.addCell(mergeCol(String.valueOf(formatCurrency(order.getTotalPrice())), 1, TextAlignment.CENTER));
 
+                table1.addCell(mergeCol("Giảm:", 6, TextAlignment.CENTER));
+                table1.addCell(mergeCol(formatCurrency(order.getDiscount()), 1, TextAlignment.LEFT));
+
                 table1.addCell(mergeCol("Thuế giá trị gia tăng - VAT( "+order.getVat()+"% ):", 6, TextAlignment.CENTER));
                 table1.addCell(mergeCol(String.valueOf(formatCurrency(order.getTotalPrice() * order.getVat()/100)), 1, TextAlignment.CENTER));
 
                 table1.addCell(mergeCol("Tổng Cộng:", 6, TextAlignment.CENTER));
                 table1.addCell(mergeCol(String.valueOf(String.valueOf(formatCurrency(order.getTotalPrice() + order.getTotalPrice() * order.getVat()/100))), 1, TextAlignment.CENTER));
 
+                table1.addCell(mergeCol("Ghi chú: "+order.getComments(), 7, TextAlignment.CENTER));
 
                 document.add(table1);
 

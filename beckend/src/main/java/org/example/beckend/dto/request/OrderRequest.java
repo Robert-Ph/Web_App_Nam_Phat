@@ -33,6 +33,9 @@ public class OrderRequest {
     @NotEmpty(message = "address is not emtry")
     String address;
 
+    String comments;
+    Long discount;
+
 
     List<OrderItemRequest> orderItems;
 }

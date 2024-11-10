@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
@@ -140,30 +140,30 @@ const DetailOrderPage = () => {
               <div className="form-group flex-8">
                 <span>Tên khách hàng</span>
                 <input
-                  placeholder="Tên khách hàng"
-                  disabled={true}
-                  value={customer?.fullName}
+                    placeholder="Tên khách hàng"
+                    disabled={true}
+                    value={customer?.fullName}
                 ></input>
               </div>
 
-              <div className="form-group flex-2" style={{ margin: "0px 20px" }}>
+              <div className="form-group flex-2" style={{margin: "0px 20px"}}>
                 <span>Số điện thoại</span>
                 <input
-                  placeholder="Số điện thoại"
-                  disabled={!isEdit}
-                  value={order?.phone}
+                    placeholder="Số điện thoại"
+                    disabled={!isEdit}
+                    value={order?.phone}
                 ></input>
               </div>
 
               <div className="form-group flex-2">
                 <span>Hóa đơn</span>
-                <FormControl sx={{ minWidth: 120 }} size="small">
+                <FormControl sx={{minWidth: 120}} size="small">
                   <Select
-                    labelId="demo-select-small-label"
-                    id="demo-select-small"
-                    value={order?.typeOrder}
-                    onChange={handleChange}
-                    disabled={!isEdit}
+                      labelId="demo-select-small-label"
+                      id="demo-select-small"
+                      value={order?.typeOrder}
+                      onChange={handleChange}
+                      disabled={!isEdit}
                   >
                     <MenuItem value={"INDIVIDUAL"} className="">
                       Cá Nhân
@@ -174,33 +174,37 @@ const DetailOrderPage = () => {
               </div>
             </div>
 
-            <div className="wrap-form" style={{ marginTop: "10px" }}>
+            <div className="wrap-form" style={{marginTop: "10px"}}>
               <div className="form-group flex-2">
                 <span>Email</span>
                 <input
-                  placeholder="Tên khách hàng"
-                  disabled={true}
-                  type="email"
-                  value={customer?.email ? customer.email : ""}
+                    placeholder="Tên khách hàng"
+                    disabled={true}
+                    type="email"
+                    value={customer?.email ? customer.email : ""}
                 ></input>
               </div>
 
-              <div className="form-group flex-8" style={{ marginLeft: "20px" }}>
+              <div className="form-group flex-8" style={{marginLeft: "20px"}}>
                 <span>Địa chỉ giao hàng</span>
                 <input
-                  placeholder="Số điện thoại"
-                  disabled={!isEdit}
-                  value={order?.address}
+                    placeholder="Số điện thoại"
+                    disabled={!isEdit}
+                    value={order?.address}
                 ></input>
               </div>
+            </div>
+            <div className="form-group " style={{marginTop: "10px"}}>
+              <span>Ghi chú(ngắn ngọn)</span>
+              <input placeholder="Ghi chú" value={order?.comments}></input>
             </div>
           </div>
 
           <div className="mt-20">
             <h3>Danh sách sản phẩm</h3>
-            <div style={{ padding: "20px" }}>
+            <div style={{padding: "20px"}}>
               <div className="table-container">
-                <table style={{ width: "100%", borderCollapse: "collapse" }}>
+                <table style={{width: "100%", borderCollapse: "collapse" }}>
                   <thead>
                     <tr className="color-blue header-table text-left border-header-table">
                       <th className="pb-7 font-w-500">STT</th>
@@ -265,39 +269,48 @@ const DetailOrderPage = () => {
 
                 <div className="wrap-vat d-flex">
                   <div
-                    className="form-group"
-                    style={{ flex: "5", marginRight: "10px" }}
+                      className="form-group"
+                      style={{flex: "5", marginRight: "10px"}}
                   >
                     <span>Thuế Giá Trị Gia Tăng - VAT (%)</span>
                     <input
-                      placeholder="Thuế giá trị gia tăng"
-                      style={{ width: "85%" }}
-                      disabled={!isEdit}
-                      value={order?.vat}
+                        placeholder="Thuế giá trị gia tăng"
+                        style={{width: "85%"}}
+                        disabled={!isEdit}
+                        value={order?.vat}
+                    ></input>
+                    <span>Giảm giá(VNĐ)</span>
+                    <input
+                        placeholder="Giảm giá"
+                        type="number"
+                        style={{width: "85%"}}
+                        value={order?.discount}
+                        disabled={!isEdit}
                     ></input>
                   </div>
-                  <div style={{ flex: "5" }}>
+                  <div style={{flex: "5"}}>
                     <p>
                       Tổng:{" "}
                       {formatCurrency(order?.totalPrice ? order.totalPrice : 0)}{" "}
                       VNĐ
                     </p>
+                    <p>Giảm: {formatCurrency(order?.discount ? order.discount : 0)} VNĐ</p>
                     <p>
                       Thuế giá trị gia tăng(VAT):{" "}
                       {formatCurrency(
-                        order?.totalPrice
-                          ? (order.totalPrice * order.vat) / 100
-                          : 0
+                          order?.totalPrice
+                              ? (order.totalPrice * order.vat) / 100
+                              : 0
                       )}{" "}
                       VNĐ
                     </p>
                     <p>
                       Thành tiền:{" "}
                       {formatCurrency(
-                        order?.totalPrice
-                          ? order.totalPrice +
+                          order?.totalPrice
+                              ? order.totalPrice +
                               (order.totalPrice * order.vat) / 100
-                          : 0
+                              : 0
                       )}{" "}
                       VNĐ
                     </p>
