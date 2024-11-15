@@ -1,10 +1,7 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
-import Box from "@mui/material/Box";
-import TextField from "@mui/material/TextField";
-import FilterListIcon from "@mui/icons-material/FilterList";
 
 import "../../OrderPage/ListOrderPage/listOrder.css";
 import "./historyBackup.css";
@@ -13,38 +10,39 @@ import Span from "../../../component/Span/Span";
 import backup from "../../../model/backup.model";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
+import BackupService from "../../../service/BackupService";
+import { formatDateTime } from "../../../utils/Utils";
 
 const HistoryBackupPage = () => {
-  const [logs, setLogs] = useState<backup[]>([
-    {
-      id: "1",
-      date: "31/12/2024 24:24:00",
-      status: "infor",
-      actionBy: "NV01",
-      capacity: 100,
-    },
-    {
-      id: "2",
-      date: "31/12/2024 24:24:00",
-      status: "warning",
-      actionBy: "NV01",
-      capacity: 120,
-    },
+  const [backups, setbackups] = useState<backup[]>([]);
 
-    {
-      id: "3",
-      date: "31/12/2024 24:24:00",
-      status: "danger",
-      actionBy: "NV01",
-      capacity: 120,
-    },
-  ]);
-
-  const navigate = useNavigate();
   const [page, setPage] = useState<number>(1);
+  const [totalPages, setTotalPages] = useState(0);
+  const [loading, setLoading] = useState<boolean>(false);
+  const pageSize = 10;
+  const navigate = useNavigate();
+
   const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
     setPage(value);
   };
+
+  const fetchHistory = async () => {
+    try {
+      setLoading(true);
+      const response = await BackupService.getHistory();
+      setbackups(response.data.data.content);
+      setTotalPages(response.data.data.page.totalPages);
+      console.log(response);
+      setLoading(false);
+    } catch (error) {
+      console.error("Failed to fetch invoices:", error);
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchHistory();
+  }, [page, totalPages, pageSize]);
   return (
     <div>
       <motion.div
@@ -52,9 +50,20 @@ const HistoryBackupPage = () => {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
       >
-        <div className="main-body">
-          <h3>Lịch sử sao lưu</h3>
-          <div style={{ marginBottom: "10px" }}>
+        <div className="main-body justify-space-arround">
+          <div className="d-flex justify-space-bettwen mb-20-px">
+            <h3>Lịch sử sao lưu</h3>
+            <button
+              className="btn btn-black"
+              onClick={() => {
+                navigate(-1);
+              }}
+            >
+              {" "}
+              Trở về
+            </button>
+          </div>
+          {/* <div style={{ marginBottom: "10px" }}>
             <div
               className="d-flex justify-space-bettwen "
               style={{ marginTop: "15px" }}
@@ -89,7 +98,7 @@ const HistoryBackupPage = () => {
                 </button>
               </div>
             </div>
-          </div>
+          </div> */}
           <div style={{ padding: "10px" }} className="mt-20">
             <div className="table-more">
               <table style={{ width: "100%", borderCollapse: "collapse" }}>
@@ -118,46 +127,52 @@ const HistoryBackupPage = () => {
                     </th>
                   </tr>
                 </thead>
-                <tbody className="border-header-table">
-                  {logs.map((log) => (
-                    <tr
-                      key={log.id}
-                      className="border-header-table"
-                      style={{ lineHeight: "1.5" }}
-                    >
-                      <td className="pbt-td font-size-small td-table font-w-500 ">
-                        {log.id}
-                      </td>
-                      <td className="pbt-td font-size-small font-w-500 ">
-                        {log.date || "-"}
-                      </td>
-                      <td
-                        className="pbt-td font-size-small td-table font-w-500"
-                        style={{ paddingRight: "20px", paddingLeft: "0px" }}
+                {!loading && (
+                  <tbody className="border-header-table">
+                    {backups.map((log) => (
+                      <tr
+                        key={log.id}
+                        className="border-header-table"
+                        style={{ lineHeight: "1.5" }}
                       >
-                        <Span
-                          type={log.status.toString()}
-                          message={log.status.toString()}
-                        ></Span>
-                      </td>
-                      <td className="pbt-td font-size-small td-table font-w-500">
-                        {`${log.capacity} MB ` || "-"}
-                      </td>
-                      <td
-                        className="pbt-td font-size-small td-table font-w-500"
-                        style={{ textAlign: "justify" }}
-                      >
-                        {log.actionBy || "-"}
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
+                        <td className="pbt-td font-size-small td-table font-w-500 ">
+                          {log.id}
+                        </td>
+                        <td className="pbt-td font-size-small font-w-500 ">
+                          {log.dateCreate
+                            ? formatDateTime(log.dateCreate)
+                            : "-"}
+                        </td>
+                        <td
+                          className="pbt-td font-size-small td-table font-w-500"
+                          style={{ paddingRight: "20px", paddingLeft: "0px" }}
+                        >
+                          <Span
+                            type={log.status ? log.status.toString() : "INFOR"}
+                            message={
+                              log.status ? log.status.toString() : "INFOR"
+                            }
+                          ></Span>
+                        </td>
+                        <td className="pbt-td font-size-small td-table font-w-500">
+                          {`${log.capacity} MB ` || "-"}
+                        </td>
+                        <td
+                          className="pbt-td font-size-small td-table font-w-500"
+                          style={{ textAlign: "justify" }}
+                        >
+                          {log.username || "-"}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                )}
               </table>
             </div>
             <div className="pagination">
               <Stack spacing={2}>
                 <Pagination
-                  count={10}
+                  count={totalPages}
                   color="primary"
                   page={page}
                   onChange={handleChange}

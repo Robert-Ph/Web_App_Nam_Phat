@@ -1,6 +1,14 @@
-import React, { createContext, useContext, useState, ReactNode } from "react";
-import { login } from "../service/AuthenService";
+import React, {
+  createContext,
+  useContext,
+  useState,
+  ReactNode,
+  useEffect,
+} from "react";
+import { login, logout } from "../service/AuthenService";
 import AxiosStatic from "axios";
+import api from "../api/APIConfig";
+import { Navigate, useNavigate } from "react-router-dom";
 interface AuthContextType {
   role: string | null;
   // Thêm trường role
@@ -14,6 +22,26 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
   children,
 }) => {
   const [role, setRole] = useState<string | null>(null); // Thêm trạng thái cho role
+  // const navigate = useNavigate();
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      // Ví dụ: Gửi yêu cầu kiểm tra token
+      api
+        .post("/authen/refesh", {
+          token,
+        })
+        .then((response) => {
+          // setRole(response.data.role); // Lưu role từ API
+        })
+        .catch(() => {
+          localStorage.removeItem("token");
+          setRole(null);
+          // navigate("/login");
+        });
+    }
+  }, []);
 
   const loginUser = async (username: string, password: string) => {
     try {
@@ -21,7 +49,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
 
       console.log(reponse);
       localStorage.setItem("token", reponse.data.token); // Lưu token
-
+      localStorage.setItem("username", reponse.data.account.username);
       setRole(reponse.data.account.permission); // Lưu role
     } catch (error: any) {
       throw error;
@@ -29,8 +57,11 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
   };
 
   const logoutUser = () => {
-    localStorage.removeItem("token");
+    const reponse = logout(localStorage.getItem("token")?.toString());
+    console.log(reponse);
 
+    localStorage.removeItem("token");
+    localStorage.removeItem("username");
     setRole(null); // Xóa role khi đăng xuất
   };
 

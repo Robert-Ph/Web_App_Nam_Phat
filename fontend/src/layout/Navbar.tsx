@@ -9,6 +9,7 @@ import SettingsSuggestOutlinedIcon from "@mui/icons-material/SettingsSuggestOutl
 
 import "./css/header.css";
 import "./css/navbar.css";
+import { useAuth } from "../contexts/AuthContext";
 
 export const isActive = (path: string, location: string) => {
   if (path == "/" && location != "/") {
@@ -20,6 +21,8 @@ export const isActive = (path: string, location: string) => {
 const Navbar = () => {
   const location = useLocation();
   console.log(location.pathname);
+
+  const { role } = useAuth();
 
   return (
     <div className="d-flex dicrect-col bg-navbar navbar pd-20-px">
@@ -77,15 +80,17 @@ const Navbar = () => {
       >
         <DvrOutlinedIcon className="icon-size"></DvrOutlinedIcon>
       </Link>
-      <Link
-        to={"/system/log"}
-        className={`navbar-item color-black ${
-          isActive("/system", location.pathname) ? " active" : ""
-        }`}
-        title="Hệ thống"
-      >
-        <SettingsSuggestOutlinedIcon className="icon-size"></SettingsSuggestOutlinedIcon>
-      </Link>
+      {role && role == "ADMIN" && (
+        <Link
+          to={"/system/log"}
+          className={`navbar-item color-black ${
+            isActive("/system", location.pathname) ? " active" : ""
+          }`}
+          title="Hệ thống"
+        >
+          <SettingsSuggestOutlinedIcon className="icon-size"></SettingsSuggestOutlinedIcon>
+        </Link>
+      )}
     </div>
   );
 };

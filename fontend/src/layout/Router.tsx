@@ -6,6 +6,8 @@ import Finance from "../pages/Statictis/Finance/Finance.tsx";
 import Analyse from "../pages/Statictis/Analyse/Analyse.tsx";
 import HistoryImportWageHouse from "../pages/WarehousePage/HistoryImportWageHouse.tsx";
 import DetailImportWageHouse from "../pages/WarehousePage/DetailImportWageHouse.tsx";
+import RequireAuth from "../contexts/RequireAuth.tsx";
+import NotFound from "../pages/404/NotFound.tsx";
 
 // Sử dụng React.lazy để lazy load các component
 const Login = React.lazy(() => import("../pages/login/Login"));
@@ -89,8 +91,20 @@ const appRoutes: RouteObject[] = [
     ),
   },
   {
+    path: "*",
+    element: (
+      <Suspense fallback={<Spiner />}>
+        <NotFound />
+      </Suspense>
+    ),
+  },
+  {
     path: "/",
-    element: <MainLayout />,
+    element: (
+      <RequireAuth allowedRoles={["ADMIN", "USER"]}>
+        <MainLayout />
+      </RequireAuth>
+    ),
     children: [
       {
         index: true,
@@ -103,114 +117,142 @@ const appRoutes: RouteObject[] = [
       {
         path: "/customer/list",
         element: (
-          <Suspense fallback={<Spiner />}>
-            <CustomerManagement />
-          </Suspense>
+          <RequireAuth allowedRoles={["ADMIN", "USER"]}>
+            <Suspense fallback={<Spiner />}>
+              <CustomerManagement />
+            </Suspense>
+          </RequireAuth>
         ),
       },
       {
         path: "/customer/list/infomation/:id",
         element: (
-          <Suspense fallback={<Spiner />}>
-            <CustomerInfomation />
-          </Suspense>
+          <RequireAuth allowedRoles={["ADMIN", "USER"]}>
+            <Suspense fallback={<Spiner />}>
+              <CustomerInfomation />
+            </Suspense>
+          </RequireAuth>
         ),
       },
       {
         path: "/customer/list/historyoder/:id",
         element: (
-          <Suspense fallback={<Spiner />}>
-            <CustomerHistoryOrder />
-          </Suspense>
+          <RequireAuth allowedRoles={["ADMIN", "USER"]}>
+            <Suspense fallback={<Spiner />}>
+              <CustomerHistoryOrder />
+            </Suspense>
+          </RequireAuth>
         ),
       },
       {
         path: "/customer/list/create",
         element: (
-          <Suspense fallback={<Spiner />}>
-            <CustomerCreate />
-          </Suspense>
+          <RequireAuth allowedRoles={["ADMIN", "USER"]}>
+            <Suspense fallback={<Spiner />}>
+              <CustomerCreate />
+            </Suspense>
+          </RequireAuth>
         ),
       },
       {
         path: "/customer/debt/list",
         element: (
-          <Suspense fallback={<Spiner />}>
-            <CustomerDebt />
-          </Suspense>
+          <RequireAuth allowedRoles={["ADMIN", "USER"]}>
+            <Suspense fallback={<Spiner />}>
+              <CustomerDebt />
+            </Suspense>
+          </RequireAuth>
         ),
       },
       {
         path: "/customer/debt/list/detail/:id",
         element: (
-          <Suspense fallback={<Spiner />}>
-            <DetailDebt />
-          </Suspense>
+          <RequireAuth allowedRoles={["ADMIN", "USER"]}>
+            <Suspense fallback={<Spiner />}>
+              <DetailDebt />
+            </Suspense>
+          </RequireAuth>
         ),
       },
 
       {
         path: "/customer/debt/list/order/detail/:id",
         element: (
-          <Suspense fallback={<Spiner />}>
-            <DetailOrderPage />
-          </Suspense>
+          <RequireAuth allowedRoles={["ADMIN", "USER"]}>
+            <Suspense fallback={<Spiner />}>
+              <DetailOrderPage />
+            </Suspense>
+          </RequireAuth>
         ),
       },
       {
         path: "/customer/list/historyoder/order/detail/:id",
         element: (
-          <Suspense fallback={<Spiner />}>
-            <DetailOrderPage />
-          </Suspense>
+          <RequireAuth allowedRoles={["ADMIN", "USER"]}>
+            <Suspense fallback={<Spiner />}>
+              <DetailOrderPage />
+            </Suspense>
+          </RequireAuth>
         ),
       },
       {
         path: "/order/create",
         element: (
-          <Suspense fallback={<Spiner />}>
-            <OrderPage />
-          </Suspense>
+          <RequireAuth allowedRoles={["ADMIN", "USER"]}>
+            <Suspense fallback={<Spiner />}>
+              <OrderPage />
+            </Suspense>
+          </RequireAuth>
         ),
       },
       {
         path: "/order/list",
         element: (
-          <Suspense fallback={<Spiner />}>
-            <ListOrderPage />
-          </Suspense>
+          <RequireAuth allowedRoles={["ADMIN", "USER"]}>
+            <Suspense fallback={<Spiner />}>
+              <ListOrderPage />
+            </Suspense>
+          </RequireAuth>
         ),
       },
       {
         path: "/order/list/detail/:id",
         element: (
-          <Suspense fallback={<Spiner />}>
-            <DetailOrderPage />
-          </Suspense>
+          <RequireAuth allowedRoles={["ADMIN", "USER"]}>
+            <Suspense fallback={<Spiner />}>
+              <DetailOrderPage />
+            </Suspense>
+          </RequireAuth>
         ),
       },
       {
         path: "/order/invoice",
         element: (
-          <Suspense fallback={<Spiner />}>
-            <InvoicePage />
-          </Suspense>
+          <RequireAuth allowedRoles={["ADMIN", "USER"]}>
+            <Suspense fallback={<Spiner />}>
+              <InvoicePage />
+            </Suspense>
+          </RequireAuth>
         ),
       },
       {
         path: "/employees/list",
         element: (
-          <Suspense fallback={<Spiner />}>
-            <ListEmployee />
-          </Suspense>
+          <RequireAuth allowedRoles={["ADMIN", "USER"]}>
+            <Suspense fallback={<Spiner />}>
+              <ListEmployee />
+            </Suspense>
+          </RequireAuth>
         ),
       },
       {
         path: "employees/list/detail/:id",
         element: (
-          <Suspense fallback={<Spiner />}>
-            <DetailEmployee />
-          </Suspense>
+          <RequireAuth allowedRoles={["ADMIN", "USER"]}>
+            <Suspense fallback={<Spiner />}>
+              <DetailEmployee />
+            </Suspense>
+          </RequireAuth>
         ),
       },
 
@@ -218,17 +260,21 @@ const appRoutes: RouteObject[] = [
       {
         path: "/statictis/finance",
         element: (
-          <Suspense fallback={<Spiner />}>
-            <Finance />
-          </Suspense>
+          <RequireAuth allowedRoles={["ADMIN", "USER"]}>
+            <Suspense fallback={<Spiner />}>
+              <Finance />
+            </Suspense>
+          </RequireAuth>
         ),
       },
       {
         path: "/statictis/analyse",
         element: (
-          <Suspense fallback={<Spiner />}>
-            <Analyse />
-          </Suspense>
+          <RequireAuth allowedRoles={["ADMIN", "USER"]}>
+            <Suspense fallback={<Spiner />}>
+              <Analyse />
+            </Suspense>
+          </RequireAuth>
         ),
       },
 
@@ -236,50 +282,62 @@ const appRoutes: RouteObject[] = [
       {
         path: "warehouse/list",
         element: (
-          <Suspense fallback={<Spiner />}>
-            <WageHousePage />
-          </Suspense>
+          <RequireAuth allowedRoles={["ADMIN", "USER"]}>
+            <Suspense fallback={<Spiner />}>
+              <WageHousePage />
+            </Suspense>
+          </RequireAuth>
         ),
       },
       {
         path: "/warehouse/list/product/detail/:id",
         element: (
-          <Suspense fallback={<Spiner />}>
-            <ProductDetail />
-          </Suspense>
+          <RequireAuth allowedRoles={["ADMIN", "USER"]}>
+            <Suspense fallback={<Spiner />}>
+              <ProductDetail />
+            </Suspense>
+          </RequireAuth>
         ),
       },
       {
         path: "warehouse/import",
         element: (
-          <Suspense fallback={<Spiner />}>
-            <ImportWarehouse />
-          </Suspense>
+          <RequireAuth allowedRoles={["ADMIN", "USER"]}>
+            <Suspense fallback={<Spiner />}>
+              <ImportWarehouse />
+            </Suspense>
+          </RequireAuth>
         ),
       },
       {
         path: "warehouse/list/history",
         element: (
-          <Suspense fallback={<Spiner />}>
-            <HistoryImportWageHouse />
-          </Suspense>
+          <RequireAuth allowedRoles={["ADMIN", "USER"]}>
+            <Suspense fallback={<Spiner />}>
+              <HistoryImportWageHouse />
+            </Suspense>
+          </RequireAuth>
         ),
       },
 
       {
         path: "warehouse/list/history/detail/:id",
         element: (
-          <Suspense fallback={<Spiner />}>
-            <DetailImportWageHouse />
-          </Suspense>
+          <RequireAuth allowedRoles={["ADMIN", "USER"]}>
+            <Suspense fallback={<Spiner />}>
+              <DetailImportWageHouse />
+            </Suspense>
+          </RequireAuth>
         ),
       },
       {
         path: "warehouse/export",
         element: (
-          <Suspense fallback={<Spiner />}>
-            <ExportWarehouse />
-          </Suspense>
+          <RequireAuth allowedRoles={["ADMIN", "USER"]}>
+            <Suspense fallback={<Spiner />}>
+              <ExportWarehouse />
+            </Suspense>
+          </RequireAuth>
         ),
       },
 
@@ -287,41 +345,51 @@ const appRoutes: RouteObject[] = [
       {
         path: "/system/log",
         element: (
-          <Suspense fallback={<Spiner />}>
-            <LogPage />
-          </Suspense>
+          <RequireAuth allowedRoles={["ADMIN"]}>
+            <Suspense fallback={<Spiner />}>
+              <LogPage />
+            </Suspense>
+          </RequireAuth>
         ),
       },
       {
         path: "/system/accounts",
         element: (
-          <Suspense fallback={<Spiner />}>
-            <AccountPage />
-          </Suspense>
+          <RequireAuth allowedRoles={["ADMIN"]}>
+            <Suspense fallback={<Spiner />}>
+              <AccountPage />
+            </Suspense>
+          </RequireAuth>
         ),
       },
       {
         path: "/system/information",
         element: (
-          <Suspense fallback={<Spiner />}>
-            <InformartionPage />
-          </Suspense>
+          <RequireAuth allowedRoles={["ADMIN"]}>
+            <Suspense fallback={<Spiner />}>
+              <InformartionPage />
+            </Suspense>
+          </RequireAuth>
         ),
       },
       {
         path: "/system/backup",
         element: (
-          <Suspense fallback={<Spiner />}>
-            <BackupPage />
-          </Suspense>
+          <RequireAuth allowedRoles={["ADMIN"]}>
+            <Suspense fallback={<Spiner />}>
+              <BackupPage />
+            </Suspense>
+          </RequireAuth>
         ),
       },
       {
         path: "/system/backup/history",
         element: (
-          <Suspense fallback={<Spiner />}>
-            <HistoryBackupPage />
-          </Suspense>
+          <RequireAuth allowedRoles={["ADMIN"]}>
+            <Suspense fallback={<Spiner />}>
+              <HistoryBackupPage />
+            </Suspense>
+          </RequireAuth>
         ),
       },
     ],

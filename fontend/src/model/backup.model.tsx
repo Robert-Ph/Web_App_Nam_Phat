@@ -1,9 +1,9 @@
 type backup = {
   id: string;
-  date: string;
+  dateCreate: string;
   status: string;
   capacity: number;
-  actionBy: string;
+  username: string;
 };
 
 export default backup;
