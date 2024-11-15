@@ -6,6 +6,8 @@ import org.example.beckend.dto.request.LoginRequest;
 import org.example.beckend.dto.request.LogoutRequest;
 import org.example.beckend.dto.response.ApiResponse;
 import org.example.beckend.dto.response.LoginResponse;
+import org.example.beckend.exception.AppException;
+import org.example.beckend.message.ErrorMessage;
 import org.example.beckend.service.AuthencationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -34,6 +36,24 @@ public class AuthencaitonController {
                         .data(authencationService.login(request))
                         .build()
         );
+    }
+
+    @PostMapping("/refesh")
+    public ResponseEntity<ApiResponse> refesh(@RequestBody LogoutRequest request) {
+        try {
+            return ResponseEntity.status(HttpStatus.OK).body(
+                    ApiResponse
+                            .builder()
+                            .code(SuccessCode.SUCCESS)
+                            .message("Login successful")
+                            .data(authencationService.verify(request.getToken(),true))
+                            .build()
+            );
+        } catch (JOSEException e) {
+            throw new AppException(ErrorMessage.UNAUTHENCATED);
+        } catch (ParseException e) {
+            throw new AppException(ErrorMessage.UNAUTHENCATED);
+        }
     }
 
 

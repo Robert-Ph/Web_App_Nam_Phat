@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 
 const Header = () => {
   const { logoutUser } = useAuth();
+  const username = localStorage.getItem("username");
   const navigate = useNavigate();
   return (
     <div className="wrap-container">
@@ -20,7 +21,7 @@ const Header = () => {
               style={{ marginTop: "2.7%" }}
             ></AccountCircleIcon>
             <div className="" style={{ alignContent: "center" }}>
-              <span>Nguyễn Văn A</span>
+              <span>{username ? username : "Unknow"}</span>
             </div>
             <div style={{ marginLeft: "25px" }}>
               <button

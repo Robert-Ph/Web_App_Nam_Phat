@@ -7,6 +7,7 @@ import "./App.css";
 import { AuthProvider } from "./contexts/AuthContext";
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from "react-toastify";
+import { BrowserRouter } from "react-router-dom";
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
     //           <Route path="/" element={<Login />} />
     //       </Routes>
     //   </Router>
+
     <AuthProvider>
       <RouterProvider router={router}></RouterProvider>
       <ToastContainer position="top-right" />

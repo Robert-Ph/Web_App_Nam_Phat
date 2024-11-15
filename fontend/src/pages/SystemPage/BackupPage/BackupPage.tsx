@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Container,
   Card,
@@ -20,7 +20,13 @@ import { green, red } from "@mui/material/colors";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 
+import backup from "../../../model/backup.model";
+import BackupService from "../../../service/BackupService";
+import { formatDateTime } from "../../../utils/Utils";
+import { saveAs } from "file-saver";
+
 const BackupPage = () => {
+  const [backup, setBackup] = useState<backup | null>(null);
   const [isBackingUp, setIsBackingUp] = useState(false);
   const [progress, setProgress] = useState(0);
   const [openDialog, setOpenDialog] = useState(false);
@@ -33,13 +39,27 @@ const BackupPage = () => {
     setOpenDialog(true);
   };
 
-  const confirmBackup = () => {
+  const fetchLastBackup = () => {
+    BackupService.getLast()
+      .then((response) => {
+        setBackup(response.data.data);
+      })
+      .catch((error) => {});
+  };
+
+  useEffect(() => {
+    fetchLastBackup();
+  }, []);
+
+  console.log(backup);
+  const confirmBackup = async () => {
     setOpenDialog(false);
     setIsBackingUp(true);
     setProgress(0);
     setBackupError(false);
 
     // Thanh progress hiển thị
+    const response = await BackupService.dowloadFile();
     const interval = setInterval(() => {
       setProgress((prevProgress) => {
         if (prevProgress >= 100) {
@@ -51,6 +71,24 @@ const BackupPage = () => {
         return prevProgress + 10;
       });
     }, 500);
+
+    const contentDisposition = response.headers["content-disposition"];
+    let fileName = "Backup_" + new Date().toDateString() + ".sql"; // default name
+
+    if (contentDisposition) {
+      console.log(contentDisposition);
+      const fileNameMatch = contentDisposition.match(
+        /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/
+      );
+      if (fileNameMatch.length === 2) {
+        fileName = fileNameMatch[1];
+      }
+    }
+
+    const blob = new Blob([response.data], { type: "application/json" });
+    saveAs(blob, fileName);
+    console.log(response);
+    fetchLastBackup();
   };
 
   const resetBackup = () => {
@@ -81,17 +119,20 @@ const BackupPage = () => {
             </div>
           </div>
 
-          <div className="mt-30">
-            <div className="d-flex dicrect-col">
-              <span>
-                <strong>Lần sao lưu gần nhất là : </strong>11/07/2024 15:30:30
-              </span>
-              <span>
-                <strong>Dung lượng: </strong>
-                30MB
-              </span>
+          {backup && (
+            <div className="mt-30">
+              <div className="d-flex dicrect-col">
+                <span>
+                  <strong>Lần sao lưu gần nhất là : </strong>{" "}
+                  {formatDateTime(backup.dateCreate)}
+                </span>
+                <span>
+                  <strong>Dung lượng: </strong>
+                  {backup.capacity}Kb
+                </span>
+              </div>
             </div>
-          </div>
+          )}
         </div>
         <Container maxWidth="sm" style={{ marginTop: "50px" }}>
           <Card>
