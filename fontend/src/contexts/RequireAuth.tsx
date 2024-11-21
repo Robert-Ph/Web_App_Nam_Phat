@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Navigate } from "react-router-dom";
 import { useAuth } from "./AuthContext";
 import { toast } from "react-toastify";
@@ -15,6 +15,19 @@ const RequireAuth: React.FC<RequireAuthProps> = ({
   const { role } = useAuth();
   const token = localStorage.getItem("token");
 
+  const [isLoading, setIsLoading] = useState(true);
+  console.log("Role:" + role);
+
+  useEffect(() => {
+    if (role || !token) {
+      setIsLoading(false);
+    }
+  }, [role, token]);
+
+  if (isLoading) {
+    return <div>Đang kiểm tra quyền truy cập...</div>;
+  }
+
   if (!role) {
     toast.error("Lỗi xác thực", {
       autoClose: 1000,
@@ -30,8 +43,13 @@ const RequireAuth: React.FC<RequireAuthProps> = ({
   }
 
   if (!allowedRoles.includes(role)) {
+    toast.error("Bạn không có quyền truy cập trang này", {
+      autoClose: 1000,
+    });
     return <Navigate to="/" replace />;
   }
+
+  return children;
 
   return children;
 };

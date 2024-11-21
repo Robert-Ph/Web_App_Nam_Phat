@@ -22,3 +22,6 @@
   font-size: 16px;
   line-height: 2;
 }
+.hide {
+  display: none;
+}

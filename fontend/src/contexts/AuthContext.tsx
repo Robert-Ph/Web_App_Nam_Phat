@@ -6,9 +6,9 @@ import React, {
   useEffect,
 } from "react";
 import { login, logout } from "../service/AuthenService";
-import AxiosStatic from "axios";
+
 import api from "../api/APIConfig";
-import { Navigate, useNavigate } from "react-router-dom";
+
 interface AuthContextType {
   role: string | null;
   // Thêm trường role
@@ -21,8 +21,9 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export const AuthProvider: React.FC<{ children: ReactNode }> = ({
   children,
 }) => {
-  const [role, setRole] = useState<string | null>(null); // Thêm trạng thái cho role
-  // const navigate = useNavigate();
+  const [role, setRole] = useState<string | null>(
+    localStorage.getItem("role") || null
+  ); // Thêm trạng thái cho role
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -33,15 +34,22 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
           token,
         })
         .then((response) => {
-          // setRole(response.data.role); // Lưu role từ API
+          // setRole(response.data.data.permission); // Lưu role từ API
+          console.log(response.data.data.valid == true);
+          if (response.data.data.valid == true) {
+            setRole(response.data.data.permission); // Cập nhật role
+            localStorage.setItem("role", response.data.data.permission); // Lưu lại role
+          } else {
+            logoutUser();
+          }
         })
         .catch(() => {
-          localStorage.removeItem("token");
-          setRole(null);
-          // navigate("/login");
+          logoutUser();
         });
     }
   }, []);
+
+  console.log(role);
 
   const loginUser = async (username: string, password: string) => {
     try {
@@ -50,19 +58,23 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
       console.log(reponse);
       localStorage.setItem("token", reponse.data.token); // Lưu token
       localStorage.setItem("username", reponse.data.account.username);
-      setRole(reponse.data.account.permission); // Lưu role
+      // setRole(reponse.data.account.permission); // Lưu role
+
+      localStorage.setItem("role", reponse.data.account.permission);
+      setRole(reponse.data.account.permission);
     } catch (error: any) {
       throw error;
     }
   };
 
   const logoutUser = () => {
-    const reponse = logout(localStorage.getItem("token")?.toString());
-    console.log(reponse);
+    // const reponse = logout(localStorage.getItem("token")?.toString());
+    // console.log(reponse);
 
     localStorage.removeItem("token");
     localStorage.removeItem("username");
-    setRole(null); // Xóa role khi đăng xuất
+    localStorage.removeItem("role");
+    //setRole(null); // Xóa role khi đăng xuất
   };
 
   return (

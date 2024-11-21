@@ -24,6 +24,7 @@ public class CompanyService {
         Company company = companyRepository.findAll().get(0);
         company.setName(request.getName());
         company.setPhone(request.getPhone());
+        company.setEmail(request.getEmail());
         company.setAddress(request.getAddress());
 
         if (!Objects.isNull(request.getIdTax())) {

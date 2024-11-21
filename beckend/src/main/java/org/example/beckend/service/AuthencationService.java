@@ -8,6 +8,7 @@ import com.nimbusds.jwt.SignedJWT;
 import org.example.beckend.dto.request.LoginRequest;
 import org.example.beckend.dto.response.AccountResponse;
 import org.example.beckend.dto.response.LoginResponse;
+import org.example.beckend.dto.response.RefeshReponse;
 import org.example.beckend.entity.Account;
 import org.example.beckend.entity.Token;
 import org.example.beckend.exception.AppException;
@@ -119,6 +120,28 @@ public class AuthencationService {
                 .build();
 
         tokenRepository.save(logoutToken);
+    }
+    public RefeshReponse refesh(String token){
+        boolean isValid = true;
+        SignedJWT signedJWT;
+        String role = null;
+
+        try {
+             signedJWT = verify(token, true);
+             role = signedJWT.getJWTClaimsSet().getStringClaim("scope");
+            System.out.println(role);
+
+        } catch (AppException e) {
+            isValid = false;
+        } catch (ParseException e) {
+            isValid = false;
+        } catch (JOSEException e) {
+            isValid = false;
+        }
+        return RefeshReponse.builder()
+                .valid(isValid)
+                .permission(role)
+                .build();
     }
 
 

@@ -24,7 +24,7 @@ public class SercurityConfig {
 
 
     //Public url not use token
-    private static final String[] PUBLIC_POST = {"/authen/login","/authen/logout"};
+    private static final String[] PUBLIC_POST = {"/authen/login","/authen/logout","/authen/refesh"};
     private static final String[] PUBLIC_GET = {"/images/{fileName}"};
 
     @Bean
