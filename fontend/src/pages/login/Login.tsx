@@ -11,9 +11,9 @@ const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   // const [error, setError] = useState<string | null>(null);
-  const { loginUser } = useAuth(); // Lấy loginUser từ context
+  const { loginUser, logoutUser } = useAuth(); // Lấy loginUser từ context
   const navigate = useNavigate();
-
+  logoutUser();
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     // setError(null);

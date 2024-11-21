@@ -40,20 +40,16 @@ public class AuthencaitonController {
 
     @PostMapping("/refesh")
     public ResponseEntity<ApiResponse> refesh(@RequestBody LogoutRequest request) {
-        try {
-            return ResponseEntity.status(HttpStatus.OK).body(
-                    ApiResponse
-                            .builder()
-                            .code(SuccessCode.SUCCESS)
-                            .message("Login successful")
-                            .data(authencationService.verify(request.getToken(),true))
-                            .build()
-            );
-        } catch (JOSEException e) {
-            throw new AppException(ErrorMessage.UNAUTHENCATED);
-        } catch (ParseException e) {
-            throw new AppException(ErrorMessage.UNAUTHENCATED);
-        }
+
+
+        return ResponseEntity.status(HttpStatus.OK).body(
+                ApiResponse
+                        .builder()
+                        .code(SuccessCode.SUCCESS)
+                        .message("Check token successful")
+                        .data(authencationService.refesh(request.getToken()))
+                        .build()
+        );
     }
 
 

@@ -9,6 +9,7 @@ import Company from "../../../model/company.model";
 const InformartionPage = () => {
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [companyInfo, setCompanyInfo] = useState<Company | null>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const currentInfor = useRef<Company | null>(null);
   useEffect(() => {
     CompanyService.getCompany()
@@ -49,11 +50,14 @@ const InformartionPage = () => {
 
   const handleSave = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setIsLoading(true);
     if (companyInfo) {
       CompanyService.update(companyInfo)
         .then((response) => {
           if (response.data.code == 200) {
-            toast.success("Thông tin công ty đã được cập nhật");
+            toast.success("Thông tin công ty đã được cập nhật", {
+              autoClose: 1000,
+            });
             currentInfor.current = companyInfo;
             setIsEditing(false); // Exit editing mode
           } else {
@@ -63,6 +67,9 @@ const InformartionPage = () => {
         .catch((error) => {
           console.log(error);
           toast.error("Lỗi");
+        })
+        .finally(() => {
+          setIsLoading(false);
         });
     }
 
@@ -84,18 +91,21 @@ const InformartionPage = () => {
               Hủy
             </button>
           )}
-          {!isEditing ? (
+          {!isEditing && (
             <button
               className="btn btn-primary"
               onClick={() => setIsEditing(true)}
             >
               Chỉnh sửa
             </button>
-          ) : (
-            <button className="btn btn-warning" type="submit" form="infoForm">
-              Lưu
-            </button>
           )}
+          <button
+            className={`btn btn-warning ${!isEditing ? "hide" : ""}`}
+            type="submit"
+            form="infoForm"
+          >
+            Lưu
+          </button>
         </div>
       </div>
 
