@@ -29,9 +29,9 @@ const RequireAuth: React.FC<RequireAuthProps> = ({
   }
 
   if (!role) {
-    toast.error("Lỗi xác thực", {
-      autoClose: 1000,
-    });
+    // toast.error("Lỗi xác thực", {
+    //   autoClose: 1000,
+    // });
     return <Navigate to="/login" replace />;
   }
 

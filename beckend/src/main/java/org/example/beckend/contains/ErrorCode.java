@@ -4,6 +4,7 @@ public class ErrorCode {
     public final static int UNUNCATEGORIZED = 9999;
     public final  static int BAD_REQUEST = 400;
     public final static int UNAUTHENTICATED = 401;
+    public final static int DENIED_PERMISSION = 403;
 
     public final static int SERVER_NOT_FOUND = 404;
 
