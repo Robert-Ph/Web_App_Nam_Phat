@@ -11,6 +11,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -31,6 +32,7 @@ public class BackupController {
     private BackupService backupService;
 
     @Transactional
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping
     public ResponseEntity<InputStreamResource> downloadStringFile() {
 
@@ -57,7 +59,7 @@ public class BackupController {
                 .body(new InputStreamResource(byteArrayInputStream));
     }
 
-
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/history")
     public ResponseEntity<ApiResponse> getAllHistoryBackup(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size) {
         Sort sort = Sort.by("dateCreate").descending();

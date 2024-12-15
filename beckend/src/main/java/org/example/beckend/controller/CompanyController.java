@@ -10,6 +10,7 @@ import org.example.beckend.repository.CompanyRepository;
 import org.example.beckend.service.CompanyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -18,7 +19,7 @@ public class CompanyController {
 
     @Autowired
     private CompanyService companyService;
-
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping
     public ResponseEntity<ApiResponse> update(@Valid  @RequestBody CompanyRequest request) {
         return ResponseEntity.ok(ApiResponse.builder()

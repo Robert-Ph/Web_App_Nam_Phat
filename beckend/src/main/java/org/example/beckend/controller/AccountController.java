@@ -15,6 +15,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PagedModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Objects;
@@ -24,7 +25,7 @@ import java.util.Objects;
 public class AccountController {
     @Autowired
     private AccountService accountService;
-
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
     public ResponseEntity<ApiResponse> create(@Valid @RequestBody AccountRequest request) {
         return ResponseEntity
@@ -37,6 +38,7 @@ public class AccountController {
                         .build());
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/{id}")
     public ResponseEntity<ApiResponse> update(@PathVariable Long id, @Valid @RequestBody UpdateAccountRequest request) {
         return ResponseEntity.ok(ApiResponse.builder()
@@ -45,7 +47,7 @@ public class AccountController {
                 .data(accountService.update(request, id))
                 .build());
     }
-
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping
     public ResponseEntity<ApiResponse> getAll(@RequestParam(defaultValue = "0")int page,@RequestParam(defaultValue = "10") int size ){
         Pageable pageable = PageRequest.of(page,size);
@@ -58,6 +60,7 @@ public class AccountController {
                         .build()
         );
     }
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/search")
     public ResponseEntity<ApiResponse> getFilter(@RequestParam(defaultValue = "0")int page,@RequestParam(defaultValue = "10") int size,@RequestParam(required = false)String filter ){
         Pageable pageable = PageRequest.of(page,size);

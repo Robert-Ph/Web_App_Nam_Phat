@@ -8,6 +8,7 @@ import org.example.beckend.message.ErrorMessage;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.security.authorization.AuthorizationDeniedException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingPathVariableException;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.multipart.support.MissingServletRequestPartException;
 
+import java.nio.file.AccessDeniedException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -149,6 +151,36 @@ public class GlobalException {
         );
     }
 
+    //Exception xử lí các phương thức bắt lỗi khi gặp phải các phương thức không có quyền truy cập
+    @ExceptionHandler(value = AuthorizationDeniedException.class)
+    public ResponseEntity<ApiResponse<Object>> handleRuntimeException(AuthorizationDeniedException ex){
+        ErrorMessage error = ErrorMessage.PERMISSION_DENIED;
+
+
+        return new  ResponseEntity<>(
+
+                ApiResponse.builder()
+                        .code(error.getCode())
+                        .message(error.getMessage())
+                        .build(),
+                HttpStatus.FORBIDDEN
+        );
+    }
+
+    @ExceptionHandler(value = AccessDeniedException.class)
+    public ResponseEntity<ApiResponse<Object>> handleNotAccess(AccessDeniedException ex){
+        ErrorMessage error = ErrorMessage.PERMISSION_DENIED;
+
+
+        return new  ResponseEntity<>(
+
+                ApiResponse.builder()
+                        .code(error.getCode())
+                        .message(error.getMessage())
+                        .build(),
+                HttpStatus.FORBIDDEN
+        );
+    }
 
 
     //Exception for request method not support

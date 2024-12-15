@@ -75,7 +75,8 @@ public class AuthencationService {
     public boolean valid(String token) throws ParseException, JOSEException {
         boolean isValid = true;
         try {
-            verify(token, false);
+            SignedJWT signedJWT = verify(token, false);
+
         } catch (AppException e) {
             isValid = false;
         }
@@ -97,7 +98,11 @@ public class AuthencationService {
         if (!valid) {
             throw new AppException(ErrorMessage.UNAUTHENCATED);
         }
-
+        String username = signedJWT.getJWTClaimsSet().getStringClaim("username");
+        Account account = accountRepository.findByUsername(username).orElseThrow(() -> new AppException(ErrorMessage.USER_NOT_EXIST));
+        if (!account.isStatus()) {
+            throw new AppException(ErrorMessage.USER_IS_BLOCK);
+        }
         String idToken = signedJWT.getJWTClaimsSet().getJWTID();
 
         if (tokenRepository.existsById(idToken)) {
@@ -154,6 +159,7 @@ public class AuthencationService {
                 .issueTime(new Date())
                 .expirationTime(new Date(Instant.now().plus(EXPIRATION_TIME, ChronoUnit.SECONDS).toEpochMilli()))
                 .jwtID(UUID.randomUUID().toString())
+                .claim("username",account.getUsername())
                 .claim("scope", account.getPermission())
                 .build();
 
