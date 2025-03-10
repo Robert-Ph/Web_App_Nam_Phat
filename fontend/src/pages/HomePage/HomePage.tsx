@@ -38,7 +38,7 @@ import Order from "../../model/order.model.tsx";
         // Hàm tính tổng số tiền doanh thu
         const calculateTotalRevenueAmount = (orders: Order[]) => {
             return orders.reduce((acc, order) => {
-                const totalWithVAT = order.totalPrice + (order.totalPrice * order.vat / 100);
+                const totalWithVAT = order.totalPrice! + (order.totalPrice! * order.vat / 100);
                 return acc + totalWithVAT;
             }, 0);
         };

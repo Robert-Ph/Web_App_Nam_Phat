@@ -8,7 +8,7 @@ import SettingsIcon from "@mui/icons-material/Settings";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 
 import "../../OrderPage/ListOrderPage/listOrder.css";
-import { useNavigate } from "react-router-dom";
+
 
 import account from "../../../model/account.model";
 import Span from "../../../component/Span/Span";
@@ -97,7 +97,7 @@ const AccountPage = () => {
           toast.error("Lỗi tạo cập nhật");
         }
       })
-      .catch((error) => {
+      .catch((_error) => {
         toast.error("Xảy ra lỗi cập nhật. Vui lòng thử lại");
       });
   };
@@ -119,7 +119,7 @@ const AccountPage = () => {
       });
   }, [page, pageSize, debouncedQuery]);
 
-  const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
+  const handleChange = (_event: React.ChangeEvent<unknown>, value: number) => {
     setPage(value);
   };
 
@@ -128,7 +128,7 @@ const AccountPage = () => {
     setOpen(true);
   };
 
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   console.log();
 

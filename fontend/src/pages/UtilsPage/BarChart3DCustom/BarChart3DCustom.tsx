@@ -1,4 +1,4 @@
-import React, { ReactElement } from "react";
+import  { ReactElement } from "react";
 import { Chart } from "react-google-charts";
 import "../BarChartCustom/bar.css";
 

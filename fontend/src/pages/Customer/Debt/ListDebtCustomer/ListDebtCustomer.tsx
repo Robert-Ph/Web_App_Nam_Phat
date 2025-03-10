@@ -20,7 +20,7 @@ const ListDebtCustomer = () => {
   const [depts, setDepts] = useState<Dept[]>([]);
   const navigate = useNavigate();
   const currentDepts = useRef<Dept | null>(null);
-  const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
+  const handleChange = (_event: React.ChangeEvent<unknown>, value: number) => {
     setPage(value);
   };
 
@@ -34,7 +34,7 @@ const ListDebtCustomer = () => {
           currentDepts.current = response.data.data;
         })
         .catch((error) => {
-          const errorReponse = error.response;
+          // const errorReponse = error.response;
 
           toast.error("Lỗi không xác định. Vui lòng thử lại!");
         });

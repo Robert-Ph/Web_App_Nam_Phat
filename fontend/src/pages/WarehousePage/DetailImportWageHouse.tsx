@@ -1,6 +1,6 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 
-import Select, { SelectChangeEvent } from "@mui/material/Select";
+// import { SelectChangeEvent } from "@mui/material/Select";
 
 import { useNavigate } from "react-router-dom";
 import "./css/order.css";
@@ -17,25 +17,25 @@ import ImageGallery from "../UtilsPage/ImageGallery/ImageGallery";
 const DetailImportWageHouse = () => {
   const [stockIn, setStockIn] = useState<StockIn>();
 
-  const [open, setOpen] = useState<boolean>(false);
-  const [isEdit, setIsEdit] = useState<boolean>(false);
+  // const [open, setOpen] = useState<boolean>(false);
+  // const [isEdit, setIsEdit] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
 
   const param = useParams();
 
   const navigate = useNavigate();
 
-  //   Sự kiện mở đóng modal chỉnh sửa sản phẩm
-  const handleOnclose = () => {
-    setOpen(false);
-  };
+  // //   Sự kiện mở đóng modal chỉnh sửa sản phẩm
+  // const handleOnclose = () => {
+  //   setOpen(false);
+  // };
 
   const goBack = () => {
     navigate(-1);
   };
 
   //Bắt sự kiện thay đổi select trong option của hóa đơn
-  const handleChange = (event: SelectChangeEvent) => {};
+  // const handleChange = (event: SelectChangeEvent) => {};
 
   useEffect(() => {
     const id = param?.id;

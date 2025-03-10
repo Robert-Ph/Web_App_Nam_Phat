@@ -1,7 +1,7 @@
-import * as React from "react";
+
 import { LineChart } from "@mui/x-charts/LineChart";
 import { Colors } from "../../../model/utils/color.utils";
-import { axisClasses } from "@mui/x-charts/ChartsAxis";
+// import { axisClasses } from "@mui/x-charts/ChartsAxis";
 import {
   lineElementClasses,
   markElementClasses,

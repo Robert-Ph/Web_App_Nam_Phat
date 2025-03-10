@@ -40,7 +40,7 @@ type props = {
 };
 const PayModal = ({ open, tittle, onClose }: props) => {
   const [role, setRole] = useState<string>("direct");
-  const [phone, setPhone] = useState<string>("");
+  // const [phone, setPhone] = useState<string>("");
 
   const handleRole = (event: SelectChangeEvent) => {
     setRole(event.target.value);

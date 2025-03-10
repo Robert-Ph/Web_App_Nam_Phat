@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Container,
   Card,
@@ -16,7 +16,9 @@ import {
 } from "@mui/material";
 import BackupIcon from "@mui/icons-material/Backup";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
-import { green, red } from "@mui/material/colors";
+import { green,
+  // red
+} from "@mui/material/colors";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 
@@ -44,7 +46,7 @@ const BackupPage = () => {
       .then((response) => {
         setBackup(response.data.data);
       })
-      .catch((error) => {});
+      .catch((error) => {console.error("API Error:", error);});
   };
 
   useEffect(() => {

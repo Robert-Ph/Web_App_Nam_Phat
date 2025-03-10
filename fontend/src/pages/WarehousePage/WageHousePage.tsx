@@ -21,7 +21,7 @@ const WageHousePage = () => {
   const [query, setQuery] = useState<string>("");
   const [page, setPage] = useState<number>(1);
   const [totalPages, setTotalPages] = useState(0);
-  const [open, setOpen] = useState<boolean>(false);
+  // const [open, setOpen] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
   const pageSize = 10;
 
@@ -51,7 +51,7 @@ const WageHousePage = () => {
     fetchInvoices();
   }, [page, debouncedQuery, totalPages]);
 
-  const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
+  const handleChange = (_event: React.ChangeEvent<unknown>, value: number) => {
     setPage(value);
   };
 

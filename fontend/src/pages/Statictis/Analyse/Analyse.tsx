@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useMemo } from "react";
+import  { useEffect, useState, useMemo } from "react";
 
 import "./analyse.css";
 import PieChartCustom from "../../UtilsPage/PieChart/PieChartCustom";

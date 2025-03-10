@@ -5,9 +5,9 @@ import FilterListIcon from "@mui/icons-material/FilterList";
 import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
 import "../OrderPage/ListOrderPage/listOrder.css";
-import { useNavigate } from "react-router-dom";
-
-import exportProduct from "../../model/stockOut.model";
+// import { useNavigate } from "react-router-dom";
+//
+// import exportProduct from "../../model/stockOut.model";
 import ExportWarehouseModal from "./ExportWarehouseModal";
 import StockOut from "../../model/stockOut.model";
 import useDebounce from "../../hooks/useDebounce";
@@ -34,12 +34,12 @@ const ExportWarehouse = () => {
     setOpen(true);
   };
 
-  const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
+  const handleChange = (_event: React.ChangeEvent<unknown>, value: number) => {
     setPage(value);
   };
 
   console.log(page);
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   const fetchStockOut = async () => {
     try {

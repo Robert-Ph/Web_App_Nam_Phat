@@ -30,7 +30,7 @@ const OrderPage = () => {
     typeCustomer: invoice,
   });
   const currentCustomer = useRef<Customer | null>(null);
-  const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
+  const handleChange = (_event: React.ChangeEvent<unknown>, value: number) => {
     setPage(value);
   };
   //Sự kiện khi bấm vào nút chỉnh sửa sẽ thay đổi các ô input cho phép chỉnh sửa
@@ -57,7 +57,7 @@ const OrderPage = () => {
           currentCustomer.current = response.data.data;
         })
         .catch((error) => {
-          const errorReponse = error.response;
+          // const errorReponse = error.response;
 
           toast.error("Lỗi không xác định. Vui lòng thử lại!");
         });

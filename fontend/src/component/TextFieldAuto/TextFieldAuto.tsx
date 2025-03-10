@@ -64,11 +64,11 @@ export default function TextFieldAuto<T>({
       getOptionLabel={getOptionLabel}
       options={options}
       loading={loading}
-      onChange={(event, newValue) => {
+      onChange={(_event, newValue) => {
         onSelect(newValue);
       }}
       renderOption={renderOption}
-      onInputChange={(event, newInputValue) => {
+      onInputChange={(_event, newInputValue) => {
         if (onInputChange) {
           onInputChange(newInputValue);
         }

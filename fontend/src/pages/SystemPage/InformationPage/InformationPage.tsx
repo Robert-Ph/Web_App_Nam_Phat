@@ -18,9 +18,7 @@ const InformartionPage = () => {
         setCompanyInfo(response.data.data);
         currentInfor.current = response.data.data;
       })
-      .catch((error) => {
-        toast.error("Lỗi");
-      });
+      .catch((_error) => {toast.error("Lỗi");});
   }, []);
 
   console.log(companyInfo);

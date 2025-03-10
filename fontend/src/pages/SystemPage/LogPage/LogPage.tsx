@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import Box from "@mui/material/Box";
-import TextField from "@mui/material/TextField";
-import FilterListIcon from "@mui/icons-material/FilterList";
+// import Box from "@mui/material/Box";
+// import TextField from "@mui/material/TextField";
+// import FilterListIcon from "@mui/icons-material/FilterList";
 import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
 import "../../OrderPage/ListOrderPage/listOrder.css";
@@ -19,7 +19,7 @@ const LogPage = () => {
   const [totalPages, setTotalPages] = useState(0);
   const [loading, setLoading] = useState<boolean>(false);
   const pageSize = 10;
-  const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
+  const handleChange = (_event: React.ChangeEvent<unknown>, value: number) => {
     setPage(value);
   };
 

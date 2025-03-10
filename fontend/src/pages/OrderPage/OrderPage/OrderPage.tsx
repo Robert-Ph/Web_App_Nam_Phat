@@ -81,9 +81,9 @@ const OrderPage = () => {
     setVat(newValue);
   };
 
-  const handleChangeVat = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setVat(Number(e.target.value)); // Cập nhật VAT trong state
-  };
+  // const handleChangeVat = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   setVat(Number(e.target.value)); // Cập nhật VAT trong state
+  // };
 
   const handleReset = () => {
     console.log("Reset Run");
@@ -156,11 +156,11 @@ const OrderPage = () => {
     }
   };
 
-  const handleInputChange = (value: string) => {
-    if (value != "") {
-      setQuery(value);
-    }
-  };
+  // const handleInputChange = (value: string) => {
+  //   if (value != "") {
+  //     setQuery(value);
+  //   }
+  // };
   console.log(selectedCustomer);
   useEffect(() => {
     const calculatedTotal = orderItems.reduce((sum, item) => {

@@ -2,7 +2,7 @@ import Modal from "@mui/material/Modal";
 import Box from "@mui/material/Box";
 import { useState, useEffect } from "react";
 
-import { SelectChangeEvent } from "@mui/material/Select";
+// import { SelectChangeEvent } from "@mui/material/Select";
 import TextFieldAuto from "../../component/TextFieldAuto/TextFieldAuto";
 import useDebounce from "../../hooks/useDebounce";
 import product from "../../model/product.model";

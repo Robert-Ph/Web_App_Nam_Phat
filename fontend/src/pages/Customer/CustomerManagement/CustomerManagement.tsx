@@ -28,7 +28,7 @@ const CustomerManagement = () => {
 
   const navigate = useNavigate();
 
-  const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
+  const handleChange = (_event: React.ChangeEvent<unknown>, value: number) => {
     setPage(value);
   };
 

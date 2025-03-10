@@ -36,7 +36,7 @@ const ListEmployee = () => {
     setOpen(true);
   };
 
-  const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
+  const handleChange = (_event: React.ChangeEvent<unknown>, value: number) => {
     setPage(value);
   };
 
@@ -55,7 +55,7 @@ const ListEmployee = () => {
         }
       })
       .catch((error) => {
-        const errorReponse = error.response;
+        // const errorReponse = error.response;
 
         toast.error("Lỗi không xác định. Vui lòng thử lại!");
       });

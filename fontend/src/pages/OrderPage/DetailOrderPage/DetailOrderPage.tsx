@@ -4,7 +4,7 @@ import FormControl from "@mui/material/FormControl";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import ProductModal from "../ProductModal/ProductModal";
-import product from "../../../model/product.model";
+// import product from "../../../model/product.model";
 import { useNavigate } from "react-router-dom";
 import "../OrderPage/order.css";
 import Order from "../../../model/order.model";
@@ -42,16 +42,16 @@ const DetailOrderPage = () => {
     setOpen(true);
   };
 
-  const addProduct = (product: product) => {
-    setOpen(false);
-  };
+  // const addProduct = (product: product) => {
+  //   setOpen(false);
+  // };
 
   const goBack = () => {
     navigate(-1);
   };
 
   //Bắt sự kiện thay đổi select trong option của hóa đơn
-  const handleChange = (event: SelectChangeEvent) => {};
+  const handleChange = (_event: SelectChangeEvent) => {};
 
   useEffect(() => {
     const id = param?.id;

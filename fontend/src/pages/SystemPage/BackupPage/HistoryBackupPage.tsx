@@ -22,7 +22,7 @@ const HistoryBackupPage = () => {
   const pageSize = 10;
   const navigate = useNavigate();
 
-  const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
+  const handleChange = (_event: React.ChangeEvent<unknown>, value: number) => {
     setPage(value);
   };
 

@@ -1,5 +1,5 @@
 import api from "../api/APIConfig";
-import Order from "../model/order.model";
+// import Order from "../model/order.model";
 
 const BASE_URL = "/logs";
 

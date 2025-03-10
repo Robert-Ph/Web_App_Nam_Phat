@@ -10,8 +10,6 @@ import SettingsIcon from "@mui/icons-material/Settings";
 import { useNavigate } from "react-router-dom";
 
 import useDebounce from "../../hooks/useDebounce";
-
-import InventoryService from "../../service/InventoriesService";
 import { formatCurrency, formatDateTime } from "../../utils/Utils";
 import Spiner from "../../component/Spiner/Spiner";
 import StockIn from "../../model/stockin.model";
@@ -52,7 +50,7 @@ const HistoryImportWageHouse = () => {
     fetchHistory();
   }, [page, debouncedQuery, totalPages]);
 
-  const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
+  const handleChange = (_event: React.ChangeEvent<unknown>, value: number) => {
     setPage(value);
   };
 

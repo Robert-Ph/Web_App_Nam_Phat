@@ -5,7 +5,7 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import { useNavigate } from "react-router-dom";
-import {Employee} from "../../../model/employee.model.tsx";
+// import {Employee} from "../../../model/employee.model.tsx";
 import Customer from "../../../model/customer.model.tsx";
 import CustomerService from "../../../service/CustomerService.tsx";
 import {toast} from "react-toastify";
@@ -52,7 +52,7 @@ const OrderPage = () => {
           }
         })
         .catch((error) => {
-          const errorReponse = error.response;
+          // const errorReponse = error.response;
 
           toast.error("Lỗi không xác định. Vui lòng thử lại!");
         });
@@ -80,17 +80,19 @@ const OrderPage = () => {
       <div className="container">
         <div className="d-flex justify-end">
           <button
-            className="btn btn-black"
-            onClick={() => {
-              navigate(-1);
-            }}
+              className="btn btn-black"
+              onClick={() => {
+                navigate(-1);
+              }}
           >
             Quay về
           </button>
           <button className="btn btn-warning">Reset</button>
-          <button className="btn btn-primary" style={{ marginRight: "0px;" }} onClick={handleSubmitForm}>
-            Thêm
-          </button>
+          <form onSubmit={handleSubmitForm}>
+            <button className="btn btn-primary" type="submit" style={{marginRight: "0px"}}>
+              Thêm
+            </button>
+          </form>
         </div>
         <form>
           <div className="mt-20">

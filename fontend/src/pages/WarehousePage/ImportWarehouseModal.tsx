@@ -90,35 +90,35 @@ const ImportWarehouseModal = ({ open, onClose, handleAdd }: props) => {
   };
 
   //Call API for ON Blur
-  const callApiOnBlur = async (id: string) => {
-    if (id) {
-      ProductService.getById(id)
-        .then((response) => {
-          if (response.data.code == 200) {
-            console.log(response.data);
-            const { id, ...newProduct } = response.data.data as product;
-            const newStockInDetail: StockInDetail = {
-              productId: response.data.data.id,
-              product: newProduct, // Giả sử dữ liệu trả về chứa thông tin sản phẩm
-              quanlity: 1, // Gán giá trị mặc định cho số lượng
-              priceImport: 0, // Giả sử dữ liệu trả về có trường price
-            };
-            setStockInDetail(newStockInDetail);
-          } else if (response.data.code == 400) {
-            setStockInDetail(null);
-            toast.error("Không tìm thấy sản phẩm", {
-              autoClose: 1000,
-            });
-          }
-        })
-        .catch((error) => {
-          setStockInDetail(null);
-          toast.error("Không tìm thấy sản phẩm", {
-            autoClose: 1000,
-          });
-        });
-    }
-  };
+  // const callApiOnBlur = async (id: string) => {
+  //   if (id) {
+  //     ProductService.getById(id)
+  //       .then((response) => {
+  //         if (response.data.code == 200) {
+  //           console.log(response.data);
+  //           const { id, ...newProduct } = response.data.data as product;
+  //           const newStockInDetail: StockInDetail = {
+  //             productId: response.data.data.id,
+  //             product: newProduct, // Giả sử dữ liệu trả về chứa thông tin sản phẩm
+  //             quanlity: 1, // Gán giá trị mặc định cho số lượng
+  //             priceImport: 0, // Giả sử dữ liệu trả về có trường price
+  //           };
+  //           setStockInDetail(newStockInDetail);
+  //         } else if (response.data.code == 400) {
+  //           setStockInDetail(null);
+  //           toast.error("Không tìm thấy sản phẩm", {
+  //             autoClose: 1000,
+  //           });
+  //         }
+  //       })
+  //       .catch((_error) => {
+  //         setStockInDetail(null);
+  //         toast.error("Không tìm thấy sản phẩm", {
+  //           autoClose: 1000,
+  //         });
+  //       });
+  //   }
+  // };
 
   const handleSelect = (product: product | null) => {
     if (product) {
@@ -142,7 +142,8 @@ const ImportWarehouseModal = ({ open, onClose, handleAdd }: props) => {
           );
           console.log(response);
           setProducts(response.data.data);
-        } catch (error) {}
+        }catch (error) {
+          console.error("Lỗi:", error);}
       } else {
         setProducts([]); // Clear options if input is empty
       }
@@ -151,9 +152,9 @@ const ImportWarehouseModal = ({ open, onClose, handleAdd }: props) => {
     fetchData();
   }, [debouncedQuery]);
   console.log(stockInDetail);
-  const handleProductIdBlur = () => {
-    callApiOnBlur(productId);
-  };
+  // const handleProductIdBlur = () => {
+  //   callApiOnBlur(productId);
+  // };
 
   const calculateTotalPrice = (quanlity: number, priceImport: number) => {
     setTotalPrice(quanlity * priceImport);

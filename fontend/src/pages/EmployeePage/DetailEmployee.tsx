@@ -2,15 +2,15 @@ import { useEffect, useState, useRef } from "react";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
-import Modal from "@mui/material/Modal";
-import Box from "@mui/material/Box";
+// import Modal from "@mui/material/Modal";
+// import Box from "@mui/material/Box";
 import { useNavigate, useParams } from "react-router-dom";
 
 import "./css/detailEmployee.css";
 import EmployeeService from "../../service/EmployeeService";
 import { toast } from "react-toastify";
 import { Employee } from "../../model/employee.model";
-import Position from "../../model/position.model";
+// import Position from "../../model/position.model";
 export const styleModalNotify = {
   position: "absolute" as "absolute",
   top: "40%",
@@ -33,7 +33,7 @@ const DetailEmployee = () => {
   const [locaiton, setLocation] = useState<string>("INTERN");
   const [work, setWork] = useState<string>("true");
 
-  const [open, setOpen] = useState<boolean>(false);
+  // const [open, setOpen] = useState<boolean>(false);
 
   const [employee, setEmployee] = useState<Employee>({
     id: null,
@@ -73,10 +73,10 @@ const DetailEmployee = () => {
       });
   }, [param]);
 
-  const handleOpen = () => {
-    setOpen(true);
-  };
-  const handleClose = () => setOpen(false);
+  // const handleOpen = () => {
+  //   setOpen(true);
+  // };
+  // const handleClose = () => setOpen(false);
 
   //Sự kiện khi bấm vào nút chỉnh sửa sẽ thay đổi các ô input cho phép chỉnh sửa
   const handleEdit = () => {

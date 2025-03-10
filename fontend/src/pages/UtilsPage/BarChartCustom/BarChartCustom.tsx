@@ -1,4 +1,4 @@
-import * as React from "react";
+
 import { BarChart } from "@mui/x-charts/BarChart";
 import { Colors } from "../../../model/utils/color.utils";
 import "./bar.css";

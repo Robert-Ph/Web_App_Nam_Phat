@@ -1,5 +1,5 @@
-import { useState, useMemo, useEffect } from "react";
-import product from "../../model/product.model";
+import { useState,  useEffect } from "react";
+// import product from "../../model/product.model";
 
 import RemoveCircleOutlineIcon from "@mui/icons-material/RemoveCircleOutline";
 

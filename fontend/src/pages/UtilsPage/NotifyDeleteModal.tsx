@@ -28,7 +28,7 @@ const NotifyDeleteModal = ({
   open,
   message,
   handleClose,
-  handleDelete,
+  // handleDelete,
 }: props) => {
   return (
     <Modal

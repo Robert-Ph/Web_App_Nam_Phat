@@ -5,7 +5,9 @@ import React, {
   ReactNode,
   useEffect,
 } from "react";
-import { login, logout } from "../service/AuthenService";
+import { login,
+  // logout
+} from "../service/AuthenService";
 
 import api from "../api/APIConfig";
 
