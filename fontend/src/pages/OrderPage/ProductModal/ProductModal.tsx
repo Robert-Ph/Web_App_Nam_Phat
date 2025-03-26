@@ -94,7 +94,7 @@ const ProductModal = ({ open, onClose, orderItem, handleAdd }: props) => {
       >
         <Box sx={style}>
           <form onSubmit={handleAddOrderItem}>
-            <div className="d-flex justify-end">
+            <div className="d-flex justify-end " >
               <button
                 className="btn btn-danger"
                 type="button"
@@ -155,12 +155,13 @@ const ProductModal = ({ open, onClose, orderItem, handleAdd }: props) => {
               {/* Loại */}
               <div className="d-flex" style={{ marginTop: "10px" }}>
                 <div className="form-group flex-3">
-                  <span>Loại sản phẩm</span>
+                  <span>Đơn vị tính</span>
                   <input
-                    onChange={onChange}
-                    name="typeProduct"
-                    required
-                    value={values?.unitProduct}
+                      type="text"
+                      name="unitProduct"
+                      required
+                      onChange={onChange}
+                      value={values?.unitProduct}
                   ></input>
                 </div>
                 <div
@@ -184,21 +185,21 @@ const ProductModal = ({ open, onClose, orderItem, handleAdd }: props) => {
               {/* Đơn vị tính sản phẩm */}
 
               <div className="d-flex" style={{ marginTop: "10px" }}>
-                <div className="form-group flex-3">
-                  <span>Đơn vị tính</span>
-                  <input
-                    type="text"
-                    name="unitProduct"
-                    required
-                    onChange={onChange}
-                    value={values?.unitProduct}
-                  ></input>
-                </div>
+                {/*<div className="form-group flex-3">*/}
+                {/*  <span>Đơn vị tính</span>*/}
+                {/*  <input*/}
+                {/*    type="text"*/}
+                {/*    name="unitProduct"*/}
+                {/*    required*/}
+                {/*    onChange={onChange}*/}
+                {/*    value={values?.unitProduct}*/}
+                {/*  ></input>*/}
+                {/*</div>*/}
                 <div
                   className="form-group flex-6"
-                  style={{ marginLeft: "20px" }}
+                  // style={{ marginLeft: "20px" }}
                 >
-                  <span>Kích thước sp (ví dụ: 30x30 mm)</span>
+                  <span>Kích thước sp (ví dụ: 30x30 mm hoặc 30x30x30mm)</span>
                   <div>
                     <div>
                       <span className="align-content-center">Cao:</span>
@@ -207,7 +208,7 @@ const ProductModal = ({ open, onClose, orderItem, handleAdd }: props) => {
                         className="size"
                         style={{
                           padding: "12px 4px 10px 4px",
-                          width: "20%",
+                          width: "10%",
                           marginLeft: "1%",
                         }}
                         name="heightProudct"
@@ -228,7 +229,7 @@ const ProductModal = ({ open, onClose, orderItem, handleAdd }: props) => {
                         className="size"
                         style={{
                           padding: "12px 4px 10px 4px",
-                          width: "20%",
+                          width: "10%",
                           marginLeft: "1%",
                         }}
                         name="widthProduct"
@@ -238,15 +239,114 @@ const ProductModal = ({ open, onClose, orderItem, handleAdd }: props) => {
                         value={values?.widthProduct}
                       ></input>
                       <span style={{ marginLeft: "1%" }}>(mm)</span>
+                      <span
+                          className="align-content-center"
+                          style={{ marginLeft: "3%" }}
+                      >
+                        ,Sâu:
+                      </span>
+                      <input
+                          type="number"
+                          className="size"
+                          style={{
+                            padding: "12px 4px 10px 4px",
+                            width: "10%",
+                            marginLeft: "1%",
+                          }}
+                          name="widthProduct"
+                          onChange={onChange}
+                          min={0}
+                          required
+                          value={values?.widthProduct}
+                      ></input>
+                      <span style={{ marginLeft: "1%" }}>(mm)</span>
                     </div>
-
-                    <div></div>
+                    {/* Cán màng */}
+                    <div className="d-flex" style={{ marginTop: "15px" }}>
+                      <div className="form-group flex-3">
+                        <span>Cán màng</span>
+                        <input
+                            name="laminnation"
+                            required
+                            onChange={onChange}
+                            value={values?.laminnation}
+                        ></input>
+                      </div>
+                      <div
+                          className="form-group flex-1"
+                          style={{ marginLeft: "30px", marginRight: "10px" }}
+                      >
+                        <span>Bế</span>
+                        <FormControlLabel
+                            control={
+                              <Checkbox
+                                  name="cradle"
+                                  checked={values.cradle}
+                                  onChange={(e) => {
+                                    setValues({
+                                      ...values,
+                                      ["cradle"]: e.target.checked,
+                                    });
+                                  }}
+                              />
+                            }
+                            label="Sử dụng bế"
+                        />
+                      </div>
+                      <div
+                          className="form-group flex-1"
+                          style={{ marginLeft: "20px", marginRight: "10px" }}
+                      >
+                        <span>Cắt</span>
+                        <FormControlLabel
+                            control={
+                              <Checkbox
+                                  name="cradle"
+                                  checked={values.cradle}
+                                  onChange={(e) => {
+                                    setValues({
+                                      ...values,
+                                      ["cradle"]: e.target.checked,
+                                    });
+                                  }}
+                              />
+                            }
+                            label="Cắt thành phẩm"
+                        />
+                      </div>
+                      <div
+                          className="form-group flex-3"
+                          style={{ marginLeft: "20px" }}
+                      >
+                        <span>Đơn giá/ 1 sản phẩm (vnđ)</span>
+                        <input
+                            type="number"
+                            name="pricePerOne"
+                            required
+                            onChange={onChange}
+                            min={0}
+                            value={values?.pricePerOne}
+                        ></input>
+                      </div>
+                    </div>
+                    {/* Quy cách */}
+                    <div className="form-group mt-20">
+                      <span>Quy cách (ngắn gọn)</span>
+                      <input
+                          placeholder="Quy cách"
+                          type="text"
+                          name="mode"
+                          onChange={onChange}
+                          required
+                          value={values?.mode}
+                      ></input>
+                    </div>
                   </div>
                 </div>
               </div>
+              <p>_____________________________________________________________________________________________________________________________________________________________________________________________</p>
 
               {/* Loại giấy */}
-
               <div className="d-flex" style={{ marginTop: "15px" }}>
                 <div className="form-group flex-3">
                   <span>Loại giấy</span>
@@ -275,7 +375,9 @@ const ProductModal = ({ open, onClose, orderItem, handleAdd }: props) => {
 
                 <div className="flex-3"></div>
               </div>
+
               {/* Đơn vị tính giấy */}
+
               <div className="d-flex" style={{ marginTop: "10px" }}>
                 <div className="form-group flex-3">
                   <span>Đơn vị tính</span>
@@ -338,66 +440,8 @@ const ProductModal = ({ open, onClose, orderItem, handleAdd }: props) => {
                 </div>
               </div>
 
-              {/* Cán màng */}
-              <div className="d-flex" style={{ marginTop: "15px" }}>
-                <div className="form-group flex-3">
-                  <span>Cán màng</span>
-                  <input
-                    name="laminnation"
-                    required
-                    onChange={onChange}
-                    value={values?.laminnation}
-                  ></input>
-                </div>
-                <div
-                  className="form-group flex-1"
-                  style={{ marginLeft: "30px", marginRight: "10px" }}
-                >
-                  <span>Bế</span>
-                  <FormControlLabel
-                    control={
-                      <Checkbox
-                        name="cradle"
-                        checked={values.cradle}
-                        onChange={(e) => {
-                          setValues({
-                            ...values,
-                            ["cradle"]: e.target.checked,
-                          });
-                        }}
-                      />
-                    }
-                    label="Sử dụng bế"
-                  />
-                </div>
 
-                <div
-                  className="form-group flex-3"
-                  style={{ marginLeft: "20px" }}
-                >
-                  <span>Đơn giá/ 1 sản phẩm (vnđ)</span>
-                  <input
-                    type="number"
-                    name="pricePerOne"
-                    required
-                    onChange={onChange}
-                    min={0}
-                    value={values?.pricePerOne}
-                  ></input>
-                </div>
-              </div>
-              {/* Quy cách */}
-              <div className="form-group mt-20">
-                <span>Quy cách (ngắn gọn)</span>
-                <input
-                  placeholder="Quy cách"
-                  type="text"
-                  name="mode"
-                  onChange={onChange}
-                  required
-                  value={values?.mode}
-                ></input>
-              </div>
+
             </div>
           </form>
         </Box>

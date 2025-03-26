@@ -81,9 +81,9 @@ const OrderPage = () => {
     setVat(newValue);
   };
 
-  // const handleChangeVat = (e: React.ChangeEvent<HTMLInputElement>) => {
-  //   setVat(Number(e.target.value)); // Cập nhật VAT trong state
-  // };
+  const handleChangeVat = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setVat(Number(e.target.value)); // Cập nhật VAT trong state
+  };
 
   const handleReset = () => {
     console.log("Reset Run");
