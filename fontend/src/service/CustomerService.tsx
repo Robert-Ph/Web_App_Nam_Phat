@@ -27,6 +27,10 @@ const getByIdListOrder = (id: number | undefined | string) => {
 const update=(id: number, customer: Customer) => {
   return api.put(`${BASE_URL}/${id}`, customer);
 }
+
+const block = (id: number) => {
+  return api.put(`${BASE_URL}/block/${id}`);
+}
 const CustomerService = {
   getCustomerByPhone,
   getByFilter,
@@ -34,6 +38,7 @@ const CustomerService = {
   getById,
   getByIdListOrder,
   update,
+  block,
 };
 
 export default CustomerService;

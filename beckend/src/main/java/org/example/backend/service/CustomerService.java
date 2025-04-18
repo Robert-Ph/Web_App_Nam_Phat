@@ -70,6 +70,17 @@ public class CustomerService {
         return result;
     }
 
+    public Customer block(Long id) {
+        Customer result = customerRepository.findById(id).orElse(null);
+        if (result == null) {
+            throw new AppException(ErrorMessage.UNUNCATEGORIZED);
+
+        }
+        result.setActive(false);
+        customerRepository.save(result);
+        return result;
+    }
+
     public List<Customer> findByPhoneContains(String phone){
         System.out.print("Phone:" + phone);
         if(phone.isEmpty() || phone.isBlank()){

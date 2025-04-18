@@ -5,10 +5,12 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import { useNavigate } from "react-router-dom";
-// import {Employee} from "../../../model/employee.model.tsx";
 import Customer from "../../../model/customer.model.tsx";
 import CustomerService from "../../../service/CustomerService.tsx";
 import {toast} from "react-toastify";
+
+
+
 const OrderPage = () => {
   const [invoice, setInvoice] = useState<string>("personally");
   const navigate = useNavigate();
@@ -27,6 +29,7 @@ const OrderPage = () => {
     email: "",
     address: "",
     typeCustomer: invoice,
+    active: true,
   });
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -75,6 +78,7 @@ const OrderPage = () => {
       email: "",
       address: "",
       typeCustomer: invoice,
+      active: true,
     });
   };
 

@@ -5,5 +5,6 @@ export type Customer = {
   email: string | null;
   address: string;
   typeCustomer: string;
+  active: boolean;
 };
 export default Customer;

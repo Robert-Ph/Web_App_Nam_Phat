@@ -26,6 +26,7 @@ public class Customer {
     private String email;
     private String address;
     private String typeCustomer;
+    private boolean active;
 
     @OneToMany(mappedBy = "customer",cascade = CascadeType.ALL)
 //    @JsonManagedReference

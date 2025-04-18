@@ -47,6 +47,16 @@ public class CustomerController {
                 .build());
     }
 
+    @PutMapping("/block/{id}")
+    public ResponseEntity<ApiResponse> block(@PathVariable Long id) {
+        return ResponseEntity.ok(ApiResponse
+                .builder()
+                .code(SuccessMessage.CREATE_DATA_SUCCESS.getCode())
+                .message(SuccessMessage.CREATE_DATA_SUCCESS.getMessage())
+                .data(customerService.block(id))
+                .build());
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<ApiResponse> findById(@PathVariable Long id) {
         return ResponseEntity.ok(ApiResponse

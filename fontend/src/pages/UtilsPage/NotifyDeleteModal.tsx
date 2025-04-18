@@ -2,7 +2,7 @@ import Modal from "@mui/material/Modal";
 import Box from "@mui/material/Box";
 
 const styleModalNotify = {
-  position: "absolute" as "absolute",
+  position: "absolute",
   top: "40%",
   left: "53%",
   transform: "translate(-50%, -50%)",
@@ -28,7 +28,7 @@ const NotifyDeleteModal = ({
   open,
   message,
   handleClose,
-  // handleDelete,
+  handleDelete,
 }: props) => {
   return (
     <Modal
@@ -49,7 +49,7 @@ const NotifyDeleteModal = ({
           <button className="btn btn-black" onClick={handleClose}>
             Trở về
           </button>
-          <button className="btn btn-danger">Xóa</button>
+          <button className="btn btn-danger" onClick={handleDelete}>Xác nhận</button>
         </div>
       </Box>
     </Modal>

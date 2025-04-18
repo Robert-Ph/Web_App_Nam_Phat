@@ -246,7 +246,7 @@ const OrderPage = () => {
               </span>
               <TextFieldAuto
                 type="Number"
-                options={customers}
+                options={customers.filter((customer) => customer.active)}
                 getOptionLabel={(customer) => `${customer.phone}`}
                 onSelect={handleUserSelect}
                 onInputChange={setQuery}

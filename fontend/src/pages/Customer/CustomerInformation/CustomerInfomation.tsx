@@ -28,6 +28,7 @@ const OrderPage = () => {
     email: "",
     address: "",
     typeCustomer: invoice,
+    active: true,
   });
   const currentCustomer = useRef<Customer | null>(null);
   const handleChange = (_event: React.ChangeEvent<unknown>, value: number) => {
@@ -63,6 +64,28 @@ const OrderPage = () => {
       toast.error("Đã xảy ra lỗi khi cập nhật.");
     }
   };
+
+  const handleSubmitBlock = async () => {
+    if (customer.id == null) {
+      toast.error("ID khách hàng không hợp lệ.");
+      return;
+    }
+
+    try {
+      await CustomerService.block(customer.id);
+      toast.success("Khóa khách hàng thành công!");
+      // setIsEdit(false);
+      // ✅ Reload trang sau 1.5s để toast hiển thị
+      setTimeout(() => {
+        window.location.reload();
+      }, 0);
+    } catch (error) {
+      console.error("Lỗi cập nhật:", error);
+      toast.error("Đã xảy ra lỗi khi cập nhật.");
+    }
+  };
+
+
   const handleChangeSelect = (event: SelectChangeEvent) => {
     setInvoice(event.target.value);
   };
@@ -99,18 +122,34 @@ const OrderPage = () => {
             </button>
           )}
 
-          {!isEdit ? (
-            <button
-              className="btn btn-danger"
-              onClick={() => setOpenDelete(true)}
-            >
-              Xóa
-            </button>
+          {isEdit ? (
+              <button className="btn btn-danger" onClick={() => setIsEdit(false)}>
+                Hủy
+              </button>
           ) : (
-            <button className="btn btn-danger" onClick={() => setIsEdit(false)}>
-              Hủy
-            </button>
+              customer.active && (
+                  <button
+                      className="btn btn-danger"
+                      onClick={() => setOpenDelete(true)}
+                  >
+                    Khóa
+                  </button>
+              )
           )}
+
+
+          {/*{!isEdit ? (*/}
+          {/*  <button*/}
+          {/*    className="btn btn-danger"*/}
+          {/*    onClick={() => setOpenDelete(true)}*/}
+          {/*  >*/}
+          {/*    Khóa*/}
+          {/*  </button>*/}
+          {/*) : (*/}
+          {/*  <button className="btn btn-danger" onClick={() => setIsEdit(false)}>*/}
+          {/*    Hủy*/}
+          {/*  </button>*/}
+          {/*)}*/}
 
           {isEdit && <button className="btn btn-warning">Reset</button>}
 
@@ -134,7 +173,11 @@ const OrderPage = () => {
         </div>
 
         <div className="mt-20">
-          <h3>Thông tin khách hàng </h3>
+          <h3>Thông tin khách hàng  </h3>
+          <p style={{ fontWeight: "bold", color: customer.active ? "green" : "red" }}>
+            {customer.active ? "Đang hoạt động" : "Ngừng hoạt động"}
+          </p>
+
           <div className="wrap-form">
             <div className="form-group flex-1" style={{ marginRight: "5%" }}>
               <span>Mã khách hàng</span>
@@ -318,10 +361,11 @@ const OrderPage = () => {
       </div>
 
       <NotifyDeleteModal
-        message="Bạn có chắc chắn muốn xóa khách hàng này?"
+        message="Bạn có chắc chắn muốn khóa khách hàng này?
+        Khóa khách hàng thì sẻ không thể mở khóa lại được."
         open={openDelte}
         handleClose={() => setOpenDelete(false)}
-        handleDelete={() => {}}
+        handleDelete={() => handleSubmitBlock()}
       ></NotifyDeleteModal>
     </div>
   );
