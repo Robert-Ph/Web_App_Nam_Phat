@@ -25,6 +25,7 @@ const ListOrderPage = () => {
     email: "",
     address: "",
     typeCustomer: "",
+    active: true,
   });
   const currentCustomer = useRef<Customer | null>(null);
   const handleChange = (_event: React.ChangeEvent<unknown>, value: number) => {

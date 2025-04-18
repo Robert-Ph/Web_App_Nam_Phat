@@ -14,7 +14,7 @@ const Header = () => {
         <div className="container-header  d-flex justify-space-bettwen">
           <div>
             <img src={vflt} style={{ width: "100px" , marginTop:'10px'}}></img>
-            <p style={{fontSize:'14px', marginTop:'0px'}}>Version: 1.0.1</p>
+            <p style={{fontSize:'14px', marginTop:'0px'}}>Version: 1.0.1(Meta)</p>
           </div>
           <div className="d-flex ">
             <AccountCircleIcon
