@@ -50,6 +50,10 @@ const ListEmployee = () => {
           setEmployees([newEmployee, ...emplyees]);
           handleOnclose();
           toast.success("Thêm nhân viên thành công!");
+          // ✅ Reload trang sau 1.5s để toast hiển thị
+          setTimeout(() => {
+            window.location.reload();
+          }, 0);
         } catch (_error) {
           toast.error("Đã xảy ra lỗi. Vui lòng thử lại!");
         }

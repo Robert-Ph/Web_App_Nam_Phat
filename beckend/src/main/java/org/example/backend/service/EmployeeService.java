@@ -2,12 +2,14 @@ package org.example.backend.service;
 
 
 import lombok.extern.slf4j.Slf4j;
+import org.example.backend.entity.Account;
 import org.example.backend.entity.enums.LogLevel;
 import org.example.backend.dto.request.EmployeeRequest;
 import org.example.backend.entity.Employee;
 import org.example.backend.entity.Position;
 import org.example.backend.exception.AppException;
 import org.example.backend.message.ErrorMessage;
+import org.example.backend.repository.AccountRepository;
 import org.example.backend.repository.EmployeeRepository;
 import org.example.backend.repository.PositionRepository;
 import org.modelmapper.ModelMapper;
@@ -31,6 +33,9 @@ public class EmployeeService {
     private EmployeeRepository employeeRepository;
 
     @Autowired
+    private AccountRepository accountRepository;
+
+    @Autowired
     private PositionRepository positionRepository;
 
     @Autowired
@@ -38,6 +43,8 @@ public class EmployeeService {
 
     @Autowired
     private LogService logService;
+    @Autowired
+    private AccountService accountService;
 
 
     //Method create new Employee
@@ -117,9 +124,18 @@ public class EmployeeService {
     public Employee getById(Long id){
         return employeeRepository.findById(id).orElseThrow(() ->new AppException(ErrorMessage.EMPLOYEE_NOT_FOUND));
     }
-    public void deleteById(Long id){
-         employeeRepository.deleteById(id);
+    public void deleteById(Long id) {
+        Employee employee = employeeRepository.findById(id)
+                .orElseThrow(() -> new AppException(ErrorMessage.EMPLOYEE_NOT_FOUND));
+
+        Optional<Account> optionalAccount = accountRepository.findByEmployeeId(id);
+
+        optionalAccount.ifPresent(accountRepository::delete); // nếu có account thì xóa
+
+        employeeRepository.delete(employee); // luôn xóa employee
+
     }
+
 
     public List<Employee> getAll() {
         return employeeRepository.findAll();

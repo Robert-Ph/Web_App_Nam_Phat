@@ -2,8 +2,8 @@ import { useEffect, useState, useRef } from "react";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
-// import Modal from "@mui/material/Modal";
-// import Box from "@mui/material/Box";
+import Modal from "@mui/material/Modal";
+import Box from "@mui/material/Box";
 import { useNavigate, useParams } from "react-router-dom";
 
 import "./css/detailEmployee.css";
@@ -33,7 +33,7 @@ const DetailEmployee = () => {
   const [_locaiton, setLocation] = useState<string>("INTERN");
   const [_work, setWork] = useState<string>("true");
 
-  // const [open, setOpen] = useState<boolean>(false);
+  const [open, setOpen] = useState<boolean>(false);
 
   const [employee, setEmployee] = useState<Employee>({
     id: null,
@@ -73,10 +73,10 @@ const DetailEmployee = () => {
       });
   }, [param]);
 
-  // const handleOpen = () => {
-  //   setOpen(true);
-  // };
-  // const handleClose = () => setOpen(false);
+  const handleOpen = () => {
+    setOpen(true);
+  };
+  const handleClose = () => setOpen(false);
 
   //Sự kiện khi bấm vào nút chỉnh sửa sẽ thay đổi các ô input cho phép chỉnh sửa
   const handleEdit = () => {
@@ -121,24 +121,31 @@ const DetailEmployee = () => {
     setEmployee({ ...employee, [name]: value });
   };
 
-  // const handleDelete = (id: number) => {
-  //   EmployeeService.deleteEmployee(id)
-  //     .then((response) => {
-  //       console.log(response);
-  //       if (response.data.code == 204) {
-  //         toast.success("Xóa thành công", {
-  //           autoClose: 1000,
-  //         });
-  //         navigate("/employees/list");
-  //       } else {
-  //         toast.error("Lỗi");
-  //       }
-  //     })
-  //     .catch((error) => {
-  //       console.log(error);
-  //       toast.error("Lỗi");
-  //     });
-  // };
+  const handleDelete = () => {
+    EmployeeService.deleteEmployee(employee.id!)
+      .then((response) => {
+        console.log(response);
+        if (response.data.code == 204) {
+          toast.success("Xóa thành công", {
+            autoClose: 100,
+          });
+          // ✅ Reload trang sau 1.5s để toast hiển thị
+          setTimeout(() => {
+            window.location.reload();
+          }, 0);
+          navigate("/employees/list");
+        }
+      })
+      .catch((error) => {
+        // ✅ Reload trang sau 1.5s để toast hiển thị
+        setTimeout(() => {
+          window.location.reload();
+        }, 0);
+        navigate("/employees/list");
+        console.log(error);
+        toast.error("Lỗi");
+      });
+  };
   console.log(employee);
   return (
     <div>
@@ -154,7 +161,7 @@ const DetailEmployee = () => {
               Quay về
             </button>
           )}
-          {/* {!isEdit ? (
+          {!isEdit ? (
             <button
               className="btn btn-danger"
               onClick={() => {
@@ -173,7 +180,7 @@ const DetailEmployee = () => {
             >
               Hủy
             </button>
-          )} */}
+          )}
           {isEdit && (
             <button
               className="btn btn-danger"
@@ -336,7 +343,7 @@ const DetailEmployee = () => {
           </div>
         </div>
       </div>
-      {/* <Modal
+     <Modal
         open={open}
         onClose={handleClose}
         aria-labelledby="modal-modal-title"
@@ -354,20 +361,15 @@ const DetailEmployee = () => {
             <button
               className="btn btn-danger"
               onClick={() => {
-                if (employee.id) {
-                  handleDelete(employee.id);
-                } else {
-                  toast.error("Lỗi xóa nhân viên", {
-                    autoClose: 1000,
-                  });
+                  handleDelete();
                 }
-              }}
+              }
             >
               Xóa
             </button>
           </div>
         </Box>
-      </Modal> */}
+      </Modal>
     </div>
   );
 };
