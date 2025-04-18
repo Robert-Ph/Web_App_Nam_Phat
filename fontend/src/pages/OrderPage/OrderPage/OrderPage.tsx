@@ -29,7 +29,7 @@ const OrderPage = () => {
   const [query, setQuery] = useState<string>("");
   const addressRef = useRef<HTMLInputElement>(null);
 
-  const [loading, setLoading] = useState(false);
+  const [_loading, setLoading] = useState(false);
   const [customers, setCustomers] = useState<Customer[]>([]);
   const [selectedCustomer, setSelectedCustomer] = useState<Customer | null>(
     null
@@ -81,9 +81,9 @@ const OrderPage = () => {
     setVat(newValue);
   };
 
-  const handleChangeVat = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setVat(Number(e.target.value)); // Cập nhật VAT trong state
-  };
+  // const handleChangeVat = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   setVat(Number(e.target.value)); // Cập nhật VAT trong state
+  // };
 
   const handleReset = () => {
     console.log("Reset Run");
@@ -152,6 +152,7 @@ const OrderPage = () => {
       } catch (error) {
         console.log(error);
       } finally {
+        console.log('');
       }
     }
   };
@@ -182,6 +183,7 @@ const OrderPage = () => {
         } catch (error) {
           console.error("Error fetching customers:", error);
         } finally {
+          console.log('');
         }
       } else {
         setCustomers([]); // Clear options if input is empty
@@ -294,7 +296,7 @@ const OrderPage = () => {
 
         <div className="mt-20">
           <h3>Danh sách sản phẩm</h3>
-          <div style={{ padding: "20px" }}>
+          <div style={{ padding: "20px", height:'80%' }}>
             <div className="table-container">
               <table style={{ width: "100%", borderCollapse: "collapse" }}>
                 <thead>
@@ -341,7 +343,7 @@ const OrderPage = () => {
               </table>
             </div>
 
-            <div className="mt-30 d-flex">
+            <div className="mt-800 d-flex">
               <div
                 style={{
                   flex: "3",

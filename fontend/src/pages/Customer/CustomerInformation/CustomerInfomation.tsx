@@ -39,8 +39,29 @@ const OrderPage = () => {
     setIsEdit(true);
   };
   //Sự kiện khi bấm cập nhật chỉnh sửa
-  const handleSubmitEdit = () => {
-    setIsEdit(false);
+  // const handleSubmitEdit = (id: number, customer: Customer) => {
+  //    CustomerService.update(id, customer);
+  //   setIsEdit(false);
+  // };
+
+  const handleSubmitEdit = async () => {
+    if (customer.id == null) {
+      toast.error("ID khách hàng không hợp lệ.");
+      return;
+    }
+
+    try {
+      await CustomerService.update(customer.id, customer);
+      toast.success("Cập nhật khách hàng thành công!");
+      // setIsEdit(false);
+      // ✅ Reload trang sau 1.5s để toast hiển thị
+      setTimeout(() => {
+        window.location.reload();
+      }, 0);
+    } catch (error) {
+      console.error("Lỗi cập nhật:", error);
+      toast.error("Đã xảy ra lỗi khi cập nhật.");
+    }
   };
   const handleChangeSelect = (event: SelectChangeEvent) => {
     setInvoice(event.target.value);
@@ -57,7 +78,7 @@ const OrderPage = () => {
           currentCustomer.current = response.data.data;
         })
         .catch((error) => {
-          // const errorReponse = error.response;
+          console.log(error.response);
 
           toast.error("Lỗi không xác định. Vui lòng thử lại!");
         });
@@ -96,7 +117,7 @@ const OrderPage = () => {
           {isEdit ? (
             <button
               className="btn btn-primary"
-              style={{ marginRight: "0px;" }}
+              style={{ marginRight: "0px" }}
               onClick={handleSubmitEdit}
             >
               Cập nhật
@@ -104,7 +125,7 @@ const OrderPage = () => {
           ) : (
             <button
               className="btn btn-primary"
-              style={{ marginRight: "0px;" }}
+              style={{ marginRight: "0px" }}
               onClick={handleEdit}
             >
               Chỉnh sửa
@@ -172,7 +193,11 @@ const OrderPage = () => {
           <div className="wrap-form" style={{ marginTop: "15px" }}>
             <div className="form-group flex-8" style={{ marginLeft: "0px" }}>
               <span>Địa chỉ giao hàng</span>
-              <input value={customer.address || ""} disabled={!isEdit}></input>
+              <input value={customer.address || ""} disabled={!isEdit}
+                     onChange={(e) =>
+                         setCustomer({ ...customer, address: e.target.value })
+                     }
+              ></input>
             </div>
           </div>
         </div>

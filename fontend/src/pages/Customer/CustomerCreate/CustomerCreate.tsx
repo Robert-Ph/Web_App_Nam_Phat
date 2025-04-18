@@ -46,14 +46,19 @@ const OrderPage = () => {
           try {
             const newCustomer = response.data.data;
             setCustomer([newCustomer, ...customers]);
-            toast.success("Thêm nhân viên thành công!");
+            toast.success("Thêm khách hàng thành công!");
+            // ✅ Reload trang sau 1.5s để toast hiển thị
+            setTimeout(() => {
+              window.location.reload();
+            }, 0);
           } catch (error) {
+            console.log(error);
             toast.error("Đã xảy ra lỗi. Vui lòng thử lại!");
           }
         })
         .catch((error) => {
           // const errorReponse = error.response;
-
+          console.log(error);
           toast.error("Lỗi không xác định. Vui lòng thử lại!");
         });
   };

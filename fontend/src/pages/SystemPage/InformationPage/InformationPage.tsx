@@ -9,7 +9,9 @@ import Company from "../../../model/company.model";
 const InformartionPage = () => {
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [companyInfo, setCompanyInfo] = useState<Company | null>(null);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  // const [
+  //     // isLoading,
+  //   setIsLoading] = useState<boolean>(false);
   const currentInfor = useRef<Company | null>(null);
   useEffect(() => {
     CompanyService.getCompany()
@@ -48,7 +50,7 @@ const InformartionPage = () => {
 
   const handleSave = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setIsLoading(true);
+    // setIsLoading(true);
     if (companyInfo) {
       CompanyService.update(companyInfo)
         .then((response) => {
@@ -67,7 +69,7 @@ const InformartionPage = () => {
           toast.error("Lỗi");
         })
         .finally(() => {
-          setIsLoading(false);
+          // setIsLoading(false);
         });
     }
 

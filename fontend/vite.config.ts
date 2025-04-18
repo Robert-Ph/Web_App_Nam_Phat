@@ -8,15 +8,14 @@ export default defineConfig({
     host: '0.0.0.0', // Cho phép truy cập từ bên ngoài
     port: 5175, // Đổi port nếu cần
     cors: true,
-    // hmr: {
-    //   protocol: "wss",
-    //   host: "namphatmanager.candctp.com",
-    //   port: 443,
-    // }
 
   },
   preview: {
     port: 5175,
     host: '0.0.0.0',
   },
+  // build: {
+  //   outDir: 'dist', // Chỉ định thư mục output
+  //   emptyOutDir: true, // Xóa nội dung cũ trước khi build mới
+  // }
 })

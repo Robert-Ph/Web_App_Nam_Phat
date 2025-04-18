@@ -12,7 +12,7 @@ import { toast } from "react-toastify";
 import { Employee } from "../../model/employee.model";
 // import Position from "../../model/position.model";
 export const styleModalNotify = {
-  position: "absolute" as "absolute",
+  position: "absolute",
   top: "40%",
   left: "53%",
   transform: "translate(-50%, -50%)",
@@ -30,8 +30,8 @@ export const styleModalNotify = {
 const DetailEmployee = () => {
   const [isEdit, setIsEdit] = useState<boolean>(false);
 
-  const [locaiton, setLocation] = useState<string>("INTERN");
-  const [work, setWork] = useState<string>("true");
+  const [_locaiton, setLocation] = useState<string>("INTERN");
+  const [_work, setWork] = useState<string>("true");
 
   // const [open, setOpen] = useState<boolean>(false);
 

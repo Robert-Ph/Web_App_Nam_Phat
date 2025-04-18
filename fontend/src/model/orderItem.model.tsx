@@ -5,6 +5,7 @@ type OrderItem = {
   unitProduct: string;
   heightProudct: number;
   widthProduct: number;
+  depthProduct: number;
   quanlityProduct: number;
   typePaper: string;
   qualityPaper: number;
@@ -13,6 +14,7 @@ type OrderItem = {
   widthPaper: number;
   laminnation: string;
   cradle: boolean;
+  cut: boolean;
   pricePerOne: number;
   mode: string;
 };

@@ -15,6 +15,8 @@ import Dept from "../../../../model/debt.model.tsx";
 import DeptService from "../../../../service/DeptService.tsx";
 import Order from "../../../../model/order.model.tsx";
 import {formatCurrency} from "../../../../utils/Utils.tsx";
+import {updateIspay} from "../../../../service/OrderService.tsx";
+
 
 const DetailDebt = () => {
 
@@ -35,6 +37,21 @@ const DetailDebt = () => {
   const handleChange = (_event: React.ChangeEvent<unknown>, value: number) => {
     setPage(value);
   };
+  const handleAddOrder = async (id: number) => {
+    try {
+      // Gọi API cập nhật trạng thái 'isPay' cho đơn hàng với id
+      await updateIspay(id);
+      // ✅ Reload trang sau 1.5s để toast hiển thị
+      setTimeout(() => {
+        window.location.reload();
+      }, 0);
+      // alert("Đã cập nhật đơn hàng thành công!");
+    } catch (error) {
+      console.error("Lỗi cập nhật:", error);
+    }
+  };
+
+
 
   useEffect(() => {
     const id = param?.id;
@@ -194,6 +211,12 @@ const DetailDebt = () => {
                       Nợ còn lại (VNĐ)
                     </th>
                     <th
+                        className="pb-7 font-w-500 text-center"
+                        style={{ width: "15%" }}
+                    >
+                      Thanh toán
+                    </th>
+                    <th
                       className="pb-7 font-w-500 text-center text-black"
                       style={{ width: "6%" }}
                     >
@@ -244,6 +267,14 @@ const DetailDebt = () => {
                       </td>
                       <td className="pb-7 pt-7 font-size-small td-table font-w-500 text-center">
                         <button
+                            style={{ background: "blue", color: "white" }}
+                            onClick={() => order.id !== null && handleAddOrder(order.id)}  // Kiểm tra nếu order.id hợp lệ
+                        >
+                          Xác nhận đã thanh toán
+                        </button>
+                      </td>
+                      <td className="pb-7 pt-7 font-size-small td-table font-w-500 text-center">
+                        <button
                           className="btn-more"
                           onClick={() =>
                             navigate(
@@ -276,6 +307,7 @@ const DetailDebt = () => {
         open={open}
         onClose={() => setOpen(false)}
         tittle="Cập nhật công nợ"
+        orders={orders}
       ></PayModal>
     </div>
   );

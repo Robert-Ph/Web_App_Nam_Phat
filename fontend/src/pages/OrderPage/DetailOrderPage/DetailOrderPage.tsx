@@ -18,12 +18,13 @@ import { formatCurrency } from "../../../utils/Utils";
 import OrderItem from "../../../model/orderItem.model";
 
 const DetailOrderPage = () => {
-  const [order, setOrder] = useState<Order>();
+  const [order, setOrder] = useState<Order| null>(null);
   const [customer, setCustomer] = useState<Customer>();
 
   const [open, setOpen] = useState<boolean>(false);
   const [isEdit, setIsEdit] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
+
 
   const [selectItem, setSelectItem] = useState<OrderItem | null>(null);
 
@@ -31,6 +32,14 @@ const DetailOrderPage = () => {
   const currentOrder = useRef<Order | null>(null);
 
   const navigate = useNavigate();
+
+
+  const handleStatusChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    console.log("Selected status:", e.target.value);  // Log giá trị khi người dùng chọn
+    if (order) {
+      setOrder({ ...order, status: e.target.value });
+    }
+  };
 
   //   Sự kiện mở đóng modal chỉnh sửa sản phẩm
   const handleOnclose = () => {
@@ -255,12 +264,22 @@ const DetailOrderPage = () => {
                   className="form-group "
                 >
                   <span>Trạng thái</span>
-                  <input
-                    disabled
-                    style={{ width: "80%" }}
-                    type="text"
-                    value={order?.status ? order.status : ""}
-                  ></input>
+                  <select
+                      disabled={!isEdit}
+                      style={{ width: "80%" }}
+                      value={order?.status || ""}
+                      onChange={handleStatusChange}
+                  >
+                    <option value="">-- Chọn trạng thái --</option>
+                    <option value="DELIVERED">Chờ</option>
+                    <option value="FISNISHED">Hoàn thành</option>
+                    <option value="CONFIM">Xác nhận</option>
+                  </select>
+
+
+
+
+
                 </div>
 
                 <div className="wrap-vat d-flex">
@@ -313,7 +332,7 @@ const DetailOrderPage = () => {
         open={open}
         onClose={handleOnclose}
         orderItem={selectItem}
-        handleAdd={(orderItem: OrderItem) => {}}
+        handleAdd={(_orderItem: OrderItem) => {}}
       ></ProductModal>
     </div>
   );

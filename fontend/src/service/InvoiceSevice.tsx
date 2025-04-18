@@ -19,10 +19,16 @@ const seenFile = (id: Number) => {
     responseType: "blob", // Set response type to 'blob' to handle binary data
   });
 };
+const  update = (id: Number) => {
+  return api.get(`${BASE_URL}/update/${id}`, {
+    responseType: "blob", // Set response type to 'blob' to handle binary data
+  });
+}
 const InvoiceService = {
   getBySearch,
   dowloadFile,
   seenFile,
+  update,
 };
 
 export default InvoiceService;

@@ -7,7 +7,7 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
 
 const style = {
-  position: "absolute" as "absolute",
+  position: "absolute",
   top: "50%",
   left: "53%",
   transform: "translate(-50%, -50%)",
@@ -34,6 +34,7 @@ const ProductModal = ({ open, onClose, orderItem, handleAdd }: props) => {
     unitProduct: "",
     heightProudct: 0,
     widthProduct: 0,
+    depthProduct: 0,
     quanlityProduct: 0,
     typePaper: "",
     qualityPaper: 0,
@@ -42,6 +43,7 @@ const ProductModal = ({ open, onClose, orderItem, handleAdd }: props) => {
     widthPaper: 0,
     laminnation: "",
     cradle: false,
+    cut: false,
     pricePerOne: 0,
     mode: "",
   });
@@ -69,6 +71,7 @@ const ProductModal = ({ open, onClose, orderItem, handleAdd }: props) => {
         unitProduct: "",
         heightProudct: 0,
         widthProduct: 0,
+        depthProduct: 0,
         quanlityProduct: 0,
         typePaper: "",
         qualityPaper: 0,
@@ -77,6 +80,7 @@ const ProductModal = ({ open, onClose, orderItem, handleAdd }: props) => {
         widthPaper: 0,
         laminnation: "",
         cradle: false,
+        cut: false,
         pricePerOne: 0,
         mode: "",
       });
@@ -109,6 +113,7 @@ const ProductModal = ({ open, onClose, orderItem, handleAdd }: props) => {
                       unitProduct: "",
                       heightProudct: 0,
                       widthProduct: 0,
+                      depthProduct: 0,
                       quanlityProduct: 0,
                       typePaper: "",
                       qualityPaper: 0,
@@ -117,6 +122,7 @@ const ProductModal = ({ open, onClose, orderItem, handleAdd }: props) => {
                       widthPaper: 0,
                       laminnation: "",
                       cradle: false,
+                      cut: false,
                       pricePerOne: 0,
                       mode: "",
                     });
@@ -185,16 +191,6 @@ const ProductModal = ({ open, onClose, orderItem, handleAdd }: props) => {
               {/* Đơn vị tính sản phẩm */}
 
               <div className="d-flex" style={{ marginTop: "10px" }}>
-                {/*<div className="form-group flex-3">*/}
-                {/*  <span>Đơn vị tính</span>*/}
-                {/*  <input*/}
-                {/*    type="text"*/}
-                {/*    name="unitProduct"*/}
-                {/*    required*/}
-                {/*    onChange={onChange}*/}
-                {/*    value={values?.unitProduct}*/}
-                {/*  ></input>*/}
-                {/*</div>*/}
                 <div
                   className="form-group flex-6"
                   // style={{ marginLeft: "20px" }}
@@ -253,11 +249,11 @@ const ProductModal = ({ open, onClose, orderItem, handleAdd }: props) => {
                             width: "10%",
                             marginLeft: "1%",
                           }}
-                          name="widthProduct"
+                          name="depthProduct"
                           onChange={onChange}
                           min={0}
                           required
-                          value={values?.widthProduct}
+                          value={values?.depthProduct}
                       ></input>
                       <span style={{ marginLeft: "1%" }}>(mm)</span>
                     </div>
@@ -301,12 +297,12 @@ const ProductModal = ({ open, onClose, orderItem, handleAdd }: props) => {
                         <FormControlLabel
                             control={
                               <Checkbox
-                                  name="cradle"
-                                  checked={values.cradle}
+                                  name="cut"
+                                  checked={values.cut}
                                   onChange={(e) => {
                                     setValues({
                                       ...values,
-                                      ["cradle"]: e.target.checked,
+                                      ["cut"]: e.target.checked,
                                     });
                                   }}
                               />
@@ -344,7 +340,7 @@ const ProductModal = ({ open, onClose, orderItem, handleAdd }: props) => {
                   </div>
                 </div>
               </div>
-              <p>_____________________________________________________________________________________________________________________________________________________________________________________________</p>
+              <p>____________________________________________________________________________________________________________________________________________________________________________</p>
 
               {/* Loại giấy */}
               <div className="d-flex" style={{ marginTop: "15px" }}>

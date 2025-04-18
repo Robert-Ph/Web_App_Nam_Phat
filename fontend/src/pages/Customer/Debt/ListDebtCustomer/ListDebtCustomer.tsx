@@ -35,7 +35,7 @@ const ListDebtCustomer = () => {
         })
         .catch((error) => {
           // const errorReponse = error.response;
-
+          console.log(error);
           toast.error("Lỗi không xác định. Vui lòng thử lại!");
         });
   }, [param]);

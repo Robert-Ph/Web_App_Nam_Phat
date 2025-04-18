@@ -14,7 +14,7 @@ type props = {
   width?: number;
   heigth?: number;
 };
-const LineChartCustom = ({ title, width, heigth, labelY }: props) => {
+const LineChartCustom = ({ title,  heigth, labelY }: props) => {
   const data = [1, 2, 3, 5, 8, 10, 4];
   const xData = [
     "24/12/2024",

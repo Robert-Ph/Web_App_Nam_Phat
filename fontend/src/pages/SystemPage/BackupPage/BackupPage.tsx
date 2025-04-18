@@ -33,7 +33,9 @@ const BackupPage = () => {
   const [progress, setProgress] = useState(0);
   const [openDialog, setOpenDialog] = useState(false);
   const [backupComplete, setBackupComplete] = useState(false);
-  const [backupError, setBackupError] = useState(false);
+  // const [
+  //     // backupError,
+  //   setBackupError] = useState(false);
 
   const naviagte = useNavigate();
 
@@ -58,7 +60,7 @@ const BackupPage = () => {
     setOpenDialog(false);
     setIsBackingUp(true);
     setProgress(0);
-    setBackupError(false);
+    // setBackupError(false);
 
     // Thanh progress hiển thị
     const response = await BackupService.dowloadFile();
@@ -95,7 +97,7 @@ const BackupPage = () => {
 
   const resetBackup = () => {
     setBackupComplete(false);
-    setBackupError(false);
+    // setBackupError(false);
   };
 
   return (

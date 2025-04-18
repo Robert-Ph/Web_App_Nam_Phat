@@ -50,11 +50,11 @@ const ListEmployee = () => {
           setEmployees([newEmployee, ...emplyees]);
           handleOnclose();
           toast.success("Thêm nhân viên thành công!");
-        } catch (error) {
+        } catch (_error) {
           toast.error("Đã xảy ra lỗi. Vui lòng thử lại!");
         }
       })
-      .catch((error) => {
+      .catch((_error) => {
         // const errorReponse = error.response;
 
         toast.error("Lỗi không xác định. Vui lòng thử lại!");

@@ -64,8 +64,8 @@ import Order from "../../model/order.model.tsx";
                         <div className="icon">
                             <TrendingUpIcon className="icon-size"></TrendingUpIcon>
                         </div>
-                        <div className="icon textbox">
-                            <p>Doanh thu/năm</p>
+                        <div className="icon textbox font-size-16">
+                            <p style={{fontSize:'20px'}}>Doanh thu/năm</p>
                             <p>{formatCurrency(calculateTotalRevenueAmount(dashboard.orders))} vnđ</p>
                         </div>
                     </div>
@@ -74,7 +74,7 @@ import Order from "../../model/order.model.tsx";
                             <ShoppingCartOutlinedIcon className="icon-size"></ShoppingCartOutlinedIcon>
                         </div>
                         <div className="icon textbox">
-                            <p>Đơn hàng/năm</p>
+                            <p style={{fontSize:'20px'}}>Đơn hàng/năm</p>
                             <p>{dashboard.orders.length}</p>
                         </div>
                     </div>
@@ -83,7 +83,7 @@ import Order from "../../model/order.model.tsx";
                             <GroupAddIcon className="icon-size"></GroupAddIcon>
                         </div>
                         <div className="icon textbox">
-                            <p>Khách hàng mới</p>
+                            <p style={{fontSize:'20px'}}>Khách hàng mới</p>
                             <p>{dashboard.customers.length}</p>
                         </div>
                     </div>
@@ -92,7 +92,7 @@ import Order from "../../model/order.model.tsx";
                             <CandlestickChartIcon className="icon-size"></CandlestickChartIcon>
                         </div>
                         <div className="icon textbox">
-                            <p>Chi tiêu/năm</p>
+                            <p style={{fontSize:'20px'}}>Chi tiêu/năm</p>
                             <p>0 vnđ</p>
                         </div>
                     </div>

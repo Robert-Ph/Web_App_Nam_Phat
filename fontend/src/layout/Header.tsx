@@ -13,7 +13,8 @@ const Header = () => {
       <div className="bg-primary header-page">
         <div className="container-header  d-flex justify-space-bettwen">
           <div>
-            <img src={vflt} style={{ width: "100px" }}></img>
+            <img src={vflt} style={{ width: "100px" , marginTop:'10px'}}></img>
+            <p style={{fontSize:'14px', marginTop:'0px'}}>Version: 1.0.1</p>
           </div>
           <div className="d-flex ">
             <AccountCircleIcon

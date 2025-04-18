@@ -42,7 +42,7 @@ const Analyse = () => {
     ["Type", "Percent"],
   ]);
 
-  const [detailEmployee, setDetailEmployee] = useState<(string | number)[][]>([
+  const [detailEmployee, _setDetailEmployee] = useState<(string | number)[][]>([
     ["Type", "Percent"],
     ["Chính thức", 8],
     ["Thử việc", 2],

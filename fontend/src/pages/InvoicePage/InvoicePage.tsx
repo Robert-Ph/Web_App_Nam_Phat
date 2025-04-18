@@ -16,7 +16,7 @@ const InvoicePage = () => {
 
   const [page, setPage] = useState<number>(1);
   const [totalPages, setTotalPages] = useState(0);
-  const [loading, setLoading] = useState<boolean>(false);
+  const [_loading, setLoading] = useState<boolean>(false);
   const pageSize = 10;
 
   const debouncedQuery = useDebounce(query, 500);
@@ -98,6 +98,8 @@ const InvoicePage = () => {
         }
       }
 
+
+
       // Tạo một blob từ response.data
       const blob = new Blob([response.data], { type: "application/pdf" });
       const url = URL.createObjectURL(blob); // Tạo URL cho blob
@@ -112,6 +114,20 @@ const InvoicePage = () => {
     }
   };
 
+  const handleUpdate = async (id: number) => {
+    try {
+      const response = await InvoiceService.update(id);
+      // Kiểm tra xem response có dữ liệu
+      if (!response.data) {
+        console.error("Không có dữ liệu từ phản hồi.");
+        return;
+      }
+      // Có thể không cần gọi fetchInvoices() ở đây, tùy thuộc vào logic ứng dụng
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <div>
@@ -192,6 +208,10 @@ const InvoicePage = () => {
                       className="pb-7 font-w-500"
                       style={{width: "5%"}}
                   ></th>
+                  <th
+                      className="pb-7 font-w-500"
+                      style={{width: "5%"}}
+                  ></th>
                 </tr>
                 </thead>
                 <tbody className="border-header-table">
@@ -224,7 +244,7 @@ const InvoicePage = () => {
                           Xem
                         </button>
                       </td>
-                        <td className="pb-7 pt-7 font-size-small td-table font-w-500">
+                      <td className="pb-7 pt-7 font-size-small td-table font-w-500">
                           <button
                               className="btn btn-primary"
                               onClick={() => {
@@ -233,7 +253,17 @@ const InvoicePage = () => {
                           >
                             Xuất File
                           </button>
-                        </td>
+                      </td>
+                      <td className="pb-7 pt-7 font-size-small td-table font-w-500">
+                        <button
+                            className="btn btn-primary"
+                            onClick={() => {
+                              handleUpdate(invoice.id);
+                            }}
+                        >
+                          Update
+                        </button>
+                      </td>
                     </tr>
                   ))}
               </tbody>

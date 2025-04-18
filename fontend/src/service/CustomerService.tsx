@@ -24,12 +24,16 @@ const getById = (id: number | undefined | string) => {
 const getByIdListOrder = (id: number | undefined | string) => {
   return api.get(`${BASE_URL}/history/${id}`);
 };
+const update=(id: number, customer: Customer) => {
+  return api.put(`${BASE_URL}/${id}`, customer);
+}
 const CustomerService = {
   getCustomerByPhone,
   getByFilter,
   create,
   getById,
   getByIdListOrder,
+  update,
 };
 
 export default CustomerService;

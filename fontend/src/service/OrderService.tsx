@@ -27,7 +27,11 @@ const getById = (id: string) => {
 };
 
 const update = (id: number, update: Order) => {
-  return api.put(`$${BASE_URL}/${id}`, update);
+  return api.put(`${BASE_URL}/${id}`, update);
+};
+
+export const updateIspay = (id: number | null) => {
+  return api.put(`${BASE_URL}/ispay/${id}`);
 };
 const OrderService = {
   create,
@@ -35,6 +39,7 @@ const OrderService = {
   getBySearchAndFilter,
   getById,
   update,
+  updateIspay,
 };
 
 export default OrderService;
