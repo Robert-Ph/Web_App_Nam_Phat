@@ -8,6 +8,8 @@ import HistoryImportWageHouse from "../pages/WarehousePage/HistoryImportWageHous
 import DetailImportWageHouse from "../pages/WarehousePage/DetailImportWageHouse.tsx";
 import RequireAuth from "../contexts/RequireAuth.tsx";
 import NotFound from "../pages/404/NotFound.tsx";
+import ListWorkPage from "../pages/Work/ListWork/ListWorkPage.tsx";
+import DetailWorkPage from "../pages/Work/ListWork/DetailWorkPage.tsx";
 
 // Sử dụng React.lazy để lazy load các component
 const Login = React.lazy(() => import("../pages/login/Login"));
@@ -392,6 +394,28 @@ const appRoutes: RouteObject[] = [
           </RequireAuth>
         ),
       },
+
+        // Url work, tool
+        {
+            path: "/work/list-work",
+            element: (
+                <RequireAuth allowedRoles={["ADMIN", "USER"]}>
+                    <Suspense fallback={<Spiner/>}>
+                        <ListWorkPage/>
+                    </Suspense>
+                </RequireAuth>
+            )
+        },
+        {
+            path: "/work/list-work/detail/:id",
+            element: (
+                <RequireAuth allowedRoles={["ADMIN", "USER"]}>
+                    <Suspense fallback={<Spiner/>}>
+                        <DetailWorkPage/>
+                    </Suspense>
+                </RequireAuth>
+            )
+        },
     ],
   },
 ];

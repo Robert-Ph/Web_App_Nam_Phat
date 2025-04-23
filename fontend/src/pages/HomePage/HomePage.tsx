@@ -24,7 +24,7 @@ import Order from "../../model/order.model.tsx";
             aveRevenue: 0,
             realRevenue: 0,
             debtRevenue: 0,
-            sumRevenue:0,
+            sumRevenue: 0,
             sumOrders: 0,
         });
 // Lấy ngày hiện tại
@@ -33,12 +33,16 @@ import Order from "../../model/order.model.tsx";
         const formattedDate = today.toLocaleDateString(); // ngày hiẹn tại
         // Hàm tính tổng số tiền công nợ
         const calculateTotalDebtAmount = (debts: Debt[]) => {
+
             return debts.reduce((acc, debt) => acc + debt.totalAmount, 0);
         };
         // Hàm tính tổng số tiền doanh thu
         const calculateTotalRevenueAmount = (orders: Order[]) => {
             return orders.reduce((acc, order) => {
-                const totalWithVAT = order.totalPrice! + (order.totalPrice! * order.vat / 100);
+                let totalWithVAT = 0;
+                if (order.status != "CANCELLED"){
+                    totalWithVAT = order.totalPrice! + (order.totalPrice! * order.vat / 100);
+                }
                 return acc + totalWithVAT;
             }, 0);
         };

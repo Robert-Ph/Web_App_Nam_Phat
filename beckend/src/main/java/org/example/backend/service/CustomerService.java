@@ -45,6 +45,7 @@ public class CustomerService {
     public Customer create(CustomerRequest request) {
 
         Customer customer = modelMapper.map(request, Customer.class);
+        customer.setActive(true);
         Optional<Customer> optional = customerRepository.findByTypeCustomerContains(customer.getPhone());
         if (!optional.isEmpty()) {
             throw new AppException(ErrorMessage.CUSTOMER_EXIST);
@@ -81,6 +82,17 @@ public class CustomerService {
         return result;
     }
 
+    public Customer unBlock(Long id) {
+        Customer result = customerRepository.findById(id).orElse(null);
+        if (result == null) {
+            throw new AppException(ErrorMessage.UNUNCATEGORIZED);
+
+        }
+        result.setActive(true);
+        customerRepository.save(result);
+        return result;
+    }
+
     public List<Customer> findByPhoneContains(String phone){
         System.out.print("Phone:" + phone);
         if(phone.isEmpty() || phone.isBlank()){
@@ -91,13 +103,13 @@ public class CustomerService {
 
     //Method for getAllEmployee with pageable
     public PagedModel<Customer> getAll(Pageable pageable) {
-        logService.log(LogLevel.INFOR,"Lấy danh sách nhân viên");
+        logService.log(LogLevel.INFOR,"Lấy danh sách khach hang");
 
         return new PagedModel<>(customerRepository.findAll(pageable));
     }
 
     public PagedModel<Customer> getByFilter(String filter,Pageable pageable) {
-        logService.log(LogLevel.INFOR,"Lấy danh sách nhân viên với filter: " + filter);
+        logService.log(LogLevel.INFOR,"Lấy danh sách khach hang với filter: " + filter);
 
         return new PagedModel<>(customerRepository.findFilter(filter,pageable));
     }

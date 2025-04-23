@@ -89,7 +89,10 @@ public class OrderController {
             }
             else if(type.equals("delivered")){
                 result = orderService.getByIdOrNameAndStatus(pageable, OrderStatus.DELIVERED,filter);
-            }else {
+            } else if(type.equals("cancelled")){
+                result = orderService.getByIdOrNameAndStatus(pageable, OrderStatus.CANCELLED,filter);
+            }
+            else {
                 result = orderService.getAllForList(pageable);
             }
         }
@@ -122,6 +125,18 @@ public class OrderController {
     @PutMapping("/ispay/{id}")
     public void updateIspay(@PathVariable Long id){
         orderService.updtateIsPay(id);
+    }
+    @PutMapping("/status-fis/{id}")
+    public void updateStatusFis(@PathVariable Long id){
+        orderService.updtateStatusFis(id);
+    }
+    @PutMapping("/status-can/{id}")
+    public void updateStatusCan(@PathVariable Long id){
+        orderService.updtateStatusCan(id);
+    }
+    @PutMapping("/status-devi/{id}")
+    public void updateStatusDevi(@PathVariable Long id){
+        orderService.updtateStatusDevii(id);
     }
 
 //    @GetMapping("/{id}")

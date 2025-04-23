@@ -62,6 +62,19 @@ const DetailOrderPage = () => {
   //Bắt sự kiện thay đổi select trong option của hóa đơn
   const handleChange = (_event: SelectChangeEvent) => {};
 
+  // bat su kien huy don hang(cancel order)
+  const handleCancelOrder = () =>{
+    OrderService.updateStatusCan(order?.id ?? null);
+    // ✅ Reload trang sau 1.5s để toast hiển thị
+    setTimeout(() => {
+      window.location.reload();
+    }, 0);
+    toast.success("Đã hủy đơn hàng thành công!", {
+      autoClose: 1000,
+    });
+  }
+
+
   useEffect(() => {
     const id = param?.id;
 
@@ -99,6 +112,7 @@ const DetailOrderPage = () => {
               <div>
                 <strong>Mã đơn hàng:</strong>
                 <span> #{order?.id}</span>
+
               </div>
               <div>
                 <strong>Ngày:</strong>
@@ -107,6 +121,9 @@ const DetailOrderPage = () => {
                   {order?.dateCreate ? formatDateTime(order?.dateCreate) : ""}
                 </span>
               </div>
+              <p style={{ fontWeight: "bold", color: order?.status !=="CANCELLED" ? "green" : "red" }}>
+                {order?.status !=="CANCELLED" ? "" : "Đã bị hủy"}
+              </p>
             </div>
             <div>
               {isEdit ? (
@@ -121,22 +138,34 @@ const DetailOrderPage = () => {
                   Trở về
                 </button>
               )}
-              {isEdit ? (
-                <button
-                  className="btn btn-warning"
-                  style={{ marginRight: "0px;" }}
-                >
-                  Cập nhật
-                </button>
-              ) : (
-                <button
-                  className="btn btn-primary"
-                  style={{ marginRight: "0px;" }}
-                  onClick={() => setIsEdit(true)}
-                >
-                  Chỉnh sửa
-                </button>
+              {!isEdit && order?.status !=="CANCELLED"  ? (
+                  <button
+                      className="btn btn-primary"
+                      style={{ marginRight: "10px", background: "orange" }}
+                      onClick={handleCancelOrder}
+                  >
+                    Hủy đơn hàng
+                  </button>
+              ):(null)}
+              {order?.status !=="CANCELLED" && (
+                  isEdit ? (
+                      <button
+                          className="btn btn-warning"
+                          style={{ marginRight: "10px" }}
+                      >
+                        Cập nhật
+                      </button>
+                  ) : (
+                      <button
+                          className="btn btn-primary"
+                          style={{ marginRight: "0px" }}
+                          onClick={() => setIsEdit(true)}
+                      >
+                        Chỉnh sửa
+                      </button>
+                  )
               )}
+
               {isEdit && (
                 <button className="btn btn-primary">Thêm sản phẩm</button>
               )}

@@ -296,7 +296,7 @@ const OrderPage = () => {
 
         <div className="mt-20">
           <h3>Danh sách sản phẩm</h3>
-          <div style={{ padding: "20px", height:'80%' }}>
+          <div style={{ padding: "20px", height:'180%' }}>
             <div className="table-container">
               <table style={{ width: "100%", borderCollapse: "collapse" }}>
                 <thead>
@@ -343,7 +343,7 @@ const OrderPage = () => {
               </table>
             </div>
 
-            <div className="mt-800 d-flex">
+            <div className="mt-1800 d-flex">
               <div
                 style={{
                   flex: "3",

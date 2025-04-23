@@ -4,6 +4,7 @@ package org.example.backend.service;
 import org.example.backend.entity.Customer;
 import org.example.backend.entity.Dashboard;
 import org.example.backend.entity.Order;
+import org.example.backend.entity.enums.OrderStatus;
 import org.example.backend.repository.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -49,15 +50,15 @@ public class DashboardService {
     }
 
     public Long totalPriceofOrdersByMonth() {
-        Long totalPrice = 0L;
+        double totalPrice = 0L;
         List<Order> orders = orderRepository.findAll();
         for (Order order : orders) {
-            if (order.getDateCreate().toLocalDate().getMonth().equals(LocalDate.now().getMonth())){
-                totalPrice += order.getTotalPrice();
+            if (order.getDateCreate().toLocalDate().getMonth().equals(LocalDate.now().getMonth()) && !order.getStatus().equals(OrderStatus.CANCELLED)){
+                totalPrice += order.getTotalPrice() + order.getTotalPrice()*(order.getVat()/100);
             }
 
         }
-        return totalPrice;
+        return (long) totalPrice;
     }
     public Long totalPriceIsPayTrue(){
         Long totalPrice = 0L;
@@ -71,25 +72,25 @@ public class DashboardService {
     }
 
     public Double avePriceOrder(){
-        Long totalPrice = 0L;
+        double totalPrice = 0;
         List<Order> orders = orderRepository.findAll();
         for (Order order : orders) {
-            if (order.getDateCreate().toLocalDate().getMonth().equals(LocalDate.now().getMonth())){
-                totalPrice += order.getTotalPrice();
+            if (order.getDateCreate().toLocalDate().getMonth().equals(LocalDate.now().getMonth()) && !order.getStatus().equals(OrderStatus.CANCELLED)){
+                totalPrice += order.getTotalPrice() + order.getTotalPrice()*(order.getVat()/100);
             }
         }
-        return (double) (totalPrice/orders.size());
+        return (totalPrice/orders.size());
     }
 
     public Long totalPriceIsPayFalse(){
-        Long totalPrice = 0L;
+        double totalPrice = 0L;
         List<Order> orders = orderService.getListDebt(false);
         for (Order order : orders) {
             if (order.getDateCreate().toLocalDate().getMonth().equals(LocalDate.now().getMonth())){
-                totalPrice += order.getTotalPrice();
+                totalPrice += order.getTotalPrice() +order.getTotalPrice()*(order.getVat()/100);
             }
         }
-        return totalPrice;
+        return (long) totalPrice;
     }
     public Long numberOfDebts() {
         return debtService.totalPriceDebts();

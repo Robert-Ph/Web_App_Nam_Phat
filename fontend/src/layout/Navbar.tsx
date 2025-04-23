@@ -10,6 +10,7 @@ import SettingsSuggestOutlinedIcon from "@mui/icons-material/SettingsSuggestOutl
 import "./css/header.css";
 import "./css/navbar.css";
 import { useAuth } from "../contexts/AuthContext";
+import WorkIcon from "@mui/icons-material/Assignment";
 
 export const isActive = (path: string, location: string) => {
   if (path == "/" && location != "/") {
@@ -44,6 +45,13 @@ const Navbar = () => {
       >
         <ShoppingCartOutlinedIcon className="icon-size"></ShoppingCartOutlinedIcon>
       </Link>
+      <Link  to={"/work/list-work"}
+             className={`navbar-item color-black ${
+                 isActive("/work", location.pathname) ? " active" : ""
+             }`}
+             title="Công việc">
+          <WorkIcon className="icon-size"></WorkIcon>
+      </Link>
       <Link
         to={"/customer/list"}
         className={`navbar-item color-black ${
@@ -53,24 +61,38 @@ const Navbar = () => {
       >
         <Groups2OutlinedIcon className="icon-size"></Groups2OutlinedIcon>
       </Link>
-      <Link
-        to={"/employees/list"}
-        className={`navbar-item color-black ${
-          isActive("/employees", location.pathname) ? " active" : ""
-        }`}
-        title="Nhân viên (nhân sự)"
-      >
-        <Diversity3OutlinedIcon className="icon-size"></Diversity3OutlinedIcon>
-      </Link>
-      <Link
-        to={"/statictis/finance"}
-        className={`navbar-item color-black ${
-          isActive("/statictis", location.pathname) ? " active" : ""
-        }`}
-        title="Thống kê"
-      >
-        <QueryStatsOutlinedIcon className="icon-size"></QueryStatsOutlinedIcon>
-      </Link>
+        {role && role == "ADMIN" && (
+            <Link
+                to={"/employees/list"}
+                className={`navbar-item color-black ${
+                    isActive("/employees", location.pathname) ? " active" : ""
+                }`}
+                title="Nhân viên (nhân sự)"
+            >
+                <Diversity3OutlinedIcon className="icon-size"></Diversity3OutlinedIcon>
+            </Link>
+        )}
+
+        {role && role =="ADMIN" && (
+            <Link
+                to={"/statictis/finance"}
+                className={`navbar-item color-black ${
+                    isActive("/statictis", location.pathname) ? " active" : ""
+                }`}
+                title="Thống kê"
+            >
+                <QueryStatsOutlinedIcon className="icon-size"></QueryStatsOutlinedIcon>
+            </Link>
+        )}
+      {/*<Link*/}
+      {/*  to={"/statictis/finance"}*/}
+      {/*  className={`navbar-item color-black ${*/}
+      {/*    isActive("/statictis", location.pathname) ? " active" : ""*/}
+      {/*  }`}*/}
+      {/*  title="Thống kê"*/}
+      {/*>*/}
+      {/*  <QueryStatsOutlinedIcon className="icon-size"></QueryStatsOutlinedIcon>*/}
+      {/*</Link>*/}
       <Link
         to={"/warehouse/list"}
         className={`navbar-item color-black ${

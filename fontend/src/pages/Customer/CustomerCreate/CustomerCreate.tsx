@@ -53,15 +53,23 @@ const OrderPage = () => {
             // ✅ Reload trang sau 1.5s để toast hiển thị
             setTimeout(() => {
               window.location.reload();
-            }, 0);
+            }, 1000);
           } catch (error) {
             console.log(error);
             toast.error("Đã xảy ra lỗi. Vui lòng thử lại!");
+            // ✅ Reload trang sau 1.5s để toast hiển thị
+            setTimeout(() => {
+              window.location.reload();
+            }, 1000);
           }
         })
         .catch((error) => {
           // const errorReponse = error.response;
           console.log(error);
+          // ✅ Reload trang sau 1.5s để toast hiển thị
+          setTimeout(() => {
+            window.location.reload();
+          }, 1000);
           toast.error("Lỗi không xác định. Vui lòng thử lại!");
         });
   };
@@ -108,7 +116,7 @@ const OrderPage = () => {
             <h3>Thêm khách hàng </h3>
             <div className="wrap-form">
               <div className="form-group flex-8">
-                <span>Tên khách hàng</span>
+                <span>Tên khách hàng <span style={{color: "red"}}>*</span></span>
                 <input placeholder="Tên khách hàng"
                        name="fullName"
                        onChange={handleInputChange}
@@ -117,7 +125,7 @@ const OrderPage = () => {
               </div>
 
               <div className="form-group flex-2" style={{ margin: "0px 20px" }}>
-                <span>Số điện thoại</span>
+                <span>Số điện thoại <span style={{color: "red"}}>*</span></span>
                 <input placeholder="Số điện thoại"
                        name="phone"
                        onChange={handleInputChange}
@@ -146,11 +154,11 @@ const OrderPage = () => {
             <div className="wrap-form" style={{ marginTop: "10px" }}>
               <div className="form-group flex-4">
                 <span>Mã khách hàng</span>
-                <input placeholder="Mã khách hàng" readOnly></input>
+                <input placeholder="Mã khách hàng" disabled={true}></input>
               </div>
               <div className="form-group flex-4" style={{ marginLeft: "20px" }}>
                 <span>Ngày tạo</span>
-                <input placeholder={formattedDate} readOnly></input>
+                <input placeholder={formattedDate} readOnly disabled={true}></input>
               </div>
               <div className="form-group flex-6" style={{ marginLeft: "20px" }}>
                 <span>Email</span>
@@ -162,7 +170,7 @@ const OrderPage = () => {
             </div>
             <div className="wrap-form" style={{ marginTop: "10px" }}>
               <div className="form-group flex-8" style={{ marginLeft: "0px" }}>
-                <span>Địa chỉ giao hàng</span>
+                <span>Địa chỉ giao hàng <span style={{color: "red"}}>*</span></span>
                 <input placeholder="Địa chỉ giao hàng"
                        name="address"
                        onChange={handleInputChange}

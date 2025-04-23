@@ -3,7 +3,7 @@ export type Customer = {
   fullName: string;
   phone: string;
   email: string | null;
-  address: string;
+  address: string | null;
   typeCustomer: string;
   active: boolean;
 };

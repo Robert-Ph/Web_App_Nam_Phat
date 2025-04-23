@@ -59,6 +59,21 @@ const MainLayout = () => {
         ],
       });
     }
+    //work, tool
+    else if (isActive("/work", location.pathname)) {
+      setNavMore({
+        title: "Công việc, Công cụ",
+        listNav: [
+          {
+            id: "1",
+            name: "Công việc",
+            link: "/work/list-work",
+          }
+        ]
+      })
+    }
+
+
     //Nếu đường dẫn là customer
     else if (isActive("/customer", location.pathname)) {
       setNavMore({

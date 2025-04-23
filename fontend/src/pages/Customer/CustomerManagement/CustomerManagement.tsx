@@ -150,6 +150,12 @@ const CustomerManagement = () => {
                     Loại khách hàng
                   </th>
                   <th
+                      className="pb-7 font-w-500"
+                      style={{ width: "8%", textAlign: "center" }}
+                  >
+                    Trạng thái
+                  </th>
+                  <th
                     className="pb-7 font-w-500"
                     style={{ width: "10%", textAlign: "center" }}
                   >
@@ -218,7 +224,9 @@ const CustomerManagement = () => {
                               ? "Doanh nghiệp"
                               : "-"}
                     </td>
-
+                    <td className="pb-7 pt-7 font-size-small td-table font-w-500" style={{ color: cusomer.active ? "green" : "red"}}>
+                      {cusomer.active ? "Đang hoạt động" : "Ngừng hoạt động"}
+                    </td>
                     <td
                       className="pb-7 pt-7 font-size-small td-table font-w-500"
                       style={{ textAlign: "center" }}
