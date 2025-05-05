@@ -36,6 +36,7 @@ const OrderPage = () => {
   );
 
   const [vat, setVat] = useState<number>(0);
+  const [reduce, setReduce] = useState<number>(0);
   const [total, setTotal] = useState<number>(0);
 
   const navigate = useNavigate();
@@ -81,6 +82,24 @@ const OrderPage = () => {
     setVat(newValue);
   };
 
+  const handleChangeReduce = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+
+    // Nếu giá trị rỗng, đặt reduce về 0 hoặc null tùy logic của bạn
+    if (value.trim() === '') {
+      setReduce(0); // hoặc setReduce(null);
+      return;
+    }
+
+    const newValue = parseFloat(value);
+
+    // Kiểm tra nếu không phải là số thì không cập nhật
+    if (isNaN(newValue)) return;
+
+    setReduce(newValue);
+  };
+
+
   // const handleChangeVat = (e: React.ChangeEvent<HTMLInputElement>) => {
   //   setVat(Number(e.target.value)); // Cập nhật VAT trong state
   // };
@@ -112,6 +131,7 @@ const OrderPage = () => {
       const order = {
         id: null,
         vat: vat,
+        reduce: reduce,
         typeOrder: invoice,
         phone: query,
         address: addressRef.current?.value,
@@ -219,9 +239,11 @@ const OrderPage = () => {
 
         <div className="mt-20">
           <h3>Thông tin khách hàng </h3>
+          <p style={{color:"red"}}>Chú ý: Chỉ tạo được đơn hàng cho khách hàng đã có trong hệ thống, tìm khách hàng thông qua số điện thoại!</p>
           <div className="wrap-form">
             <div className="form-group flex-8">
               <span>Tên khách hàng</span>
+
               <input
                 placeholder="Tên khách hàng"
                 disabled
@@ -358,6 +380,19 @@ const OrderPage = () => {
 
               <div className="wrap-vat d-flex">
                 <div
+                    className="form-group"
+                    style={{ flex: "5", marginRight: "10px" }}
+                >
+                  <span>Giảm</span>
+                  <input
+                      type="number"
+                      placeholder="Giảm"
+                      style={{ width: "85%" }}
+                      value={reduce}
+                      onChange={handleChangeReduce}
+                  ></input>
+                </div>
+                <div
                   className="form-group"
                   style={{ flex: "5", marginRight: "10px" }}
                 >
@@ -372,12 +407,13 @@ const OrderPage = () => {
                 </div>
                 <div style={{ flex: "5" }}>
                   <p>Tổng: {formatCurrency(total)} VNĐ</p>
+                  <p>Giảm: {formatCurrency(reduce)}</p>
                   <p>
                     Thuế giá trị gia tăng(VAT):{" "}
                     {formatCurrency((total * vat) / 100)}
                   </p>
                   <p>
-                    Thành tiền: {formatCurrency(total + total * (vat / 100))}{" "}
+                    Thành tiền: {formatCurrency(total - reduce + total * (vat / 100))}{" "}
                     VNĐ
                   </p>
                 </div>

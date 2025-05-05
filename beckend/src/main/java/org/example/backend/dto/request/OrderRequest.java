@@ -18,6 +18,7 @@ import java.util.List;
 public class OrderRequest {
     @NotNull(message = "vat  is require")
     double vat;
+    Long reduce;
 
     @EnumValid(enumClass = TypeOrder.class, message = "type order must be one of:INDIVIDUAL | BUSINESS ")
     String typeOrder;

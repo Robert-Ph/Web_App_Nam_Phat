@@ -58,6 +58,7 @@ public class InvoiceService {
         return response;
     }
 
+    @Transactional
     public Invoice newUpdate(Long id) {
         Invoice invoice = invoiceRepository.findById(id).orElseThrow(() -> new AppException(ErrorMessage.INVOICE_NOT_FOUND));
         // Xóa file PDF cũ nếu tồn tại

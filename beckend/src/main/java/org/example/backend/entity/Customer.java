@@ -24,6 +24,7 @@ public class Customer {
     private String fullName;
     private String phone;
     private String email;
+    private String tax;
     private String address;
     private String typeCustomer;
     private boolean active;

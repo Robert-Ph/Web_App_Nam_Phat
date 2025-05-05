@@ -238,6 +238,24 @@ const ListOrderPage = () => {
                           {order.status || "-"}
                         </td>
                         <td className="pb-7 pt-7 font-size-small td-table font-w-500">
+
+                          {/*{order.status =="FISNISHED" ? (*/}
+                          {/*    <button*/}
+                          {/*        className="btn btn-primary"*/}
+                          {/*        onClick={() => {handleUpdateStatus(order.id!)*/}
+                          {/*        }}*/}
+                          {/*    >*/}
+                          {/*      Hủy*/}
+                          {/*    </button>*/}
+                          {/*):(*/}
+                          {/*    <button*/}
+                          {/*        className="btn btn-primary"*/}
+                          {/*        onClick={() => {handleUpdateStatus(order.id!)*/}
+                          {/*        }}*/}
+                          {/*    >*/}
+                          {/*      Hoàn thành*/}
+                          {/*    </button>  */}
+                          {/*)}*/}
                           <button
                               className="btn btn-primary"
                               onClick={() => {handleUpdateStatus(order.id!)

@@ -26,6 +26,7 @@ const OrderPage = () => {
     fullName: "",
     phone: "",
     email: "",
+    tax: "",
     address: "",
     typeCustomer: invoice,
     active: true,
@@ -241,7 +242,7 @@ const OrderPage = () => {
 
             <div className="form-group flex-1" style={{ marginLeft: "5%" }}>
               <span>Loại khách hàng</span>
-              <FormControl sx={{ minWidth: 120 }} size="small">
+              <FormControl sx={{ minWidth: 60 }} size="small">
                 <Select
                   labelId="demo-select-small-label"
                   id="demo-select-small"
@@ -255,6 +256,19 @@ const OrderPage = () => {
                   <MenuItem value={"enterprise"}>Doanh Nghiệp</MenuItem>
                 </Select>
               </FormControl>
+            </div>
+
+            <div className="form-group flex-1" style={{ marginLeft: "5%" }}>
+              <span>Mã số thuế(Tax)</span>
+              <input
+                  placeholder="Tax"
+                  disabled={!isEdit}
+                  type="tax"
+                  value={customer.tax || ""}
+                  onChange={(e) =>
+                      setCustomer({ ...customer, tax: e.target.value })
+                  }
+              ></input>
             </div>
           </div>
 

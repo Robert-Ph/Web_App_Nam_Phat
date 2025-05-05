@@ -9,17 +9,17 @@ const getBySearch = (page: number, size: number, filter: string) => {
   );
 };
 
-const dowloadFile = (id: Number) => {
+const dowloadFile = (id: number) => {
   return api.get(`${BASE_URL}/dowload/${id}`, {
     responseType: "blob", // Set response type to 'blob' to handle binary data
   });
 };
-const seenFile = (id: Number) => {
+const seenFile = (id: number) => {
   return api.get(`${BASE_URL}/seen/${id}`, {
     responseType: "blob", // Set response type to 'blob' to handle binary data
   });
 };
-const  update = (id: Number) => {
+const  update = (id: number) => {
   return api.get(`${BASE_URL}/update/${id}`, {
     responseType: "blob", // Set response type to 'blob' to handle binary data
   });

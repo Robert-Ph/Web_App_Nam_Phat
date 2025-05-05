@@ -27,6 +27,7 @@ const OrderPage = () => {
     fullName: "",
     phone: "",
     email: "",
+    tax: "",
     address: "",
     typeCustomer: invoice,
     active: true,
@@ -84,6 +85,7 @@ const OrderPage = () => {
       fullName: "",
       phone: "",
       email: "",
+      tax: "",
       address: "",
       typeCustomer: invoice,
       active: true,
@@ -153,8 +155,9 @@ const OrderPage = () => {
             </div>
             <div className="wrap-form" style={{ marginTop: "10px" }}>
               <div className="form-group flex-4">
-                <span>Mã khách hàng</span>
-                <input placeholder="Mã khách hàng" disabled={true}></input>
+                <span>Mã số thuế(Tax)</span>
+                <input  placeholder="Mã số thuế"
+                        name="tax"></input>
               </div>
               <div className="form-group flex-4" style={{ marginLeft: "20px" }}>
                 <span>Ngày tạo</span>
@@ -179,6 +182,10 @@ const OrderPage = () => {
             </div>
           </div>
         </form>
+        <p style={{marginTop: '20px'}}> 1. (<span style={{color:"red"}}>*</span>) là các trường bắt buộc phải điền. Nếu không điền sẽ gây lỗi.</p>
+        <p style={{color:"red"}}>2. Số điện thoại là duy nhất cho mỗi khách hàng, không được trùng số điện thoại.</p>
+        <p>3. Mã số thuế(Tax): không bắt buộc nhưng nên cung cấp nếu là Doanh nghiệp.</p>
+        <p>4. Không được bỏ trống ô địa chỉ, địa chỉ có thể sửa đổi khi tạo đơn hàng.</p>
       </div>
     </div>
   );

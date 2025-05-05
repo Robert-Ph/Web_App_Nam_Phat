@@ -10,6 +10,7 @@ type Order = {
   dateShip: string | null;
   nameCustomer: string | null | Customer;
   vat: number;
+  reduce: number | null;
   typeOrder: string;
   address: string;
   phone: string;

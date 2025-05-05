@@ -4,7 +4,6 @@ import FormControl from "@mui/material/FormControl";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import ProductModal from "../ProductModal/ProductModal";
-// import product from "../../../model/product.model";
 import { useNavigate } from "react-router-dom";
 import "../OrderPage/order.css";
 import Order from "../../../model/order.model";
@@ -158,8 +157,9 @@ const DetailOrderPage = () => {
                   ) : (
                       <button
                           className="btn btn-primary"
+                          disabled={true}
                           style={{ marginRight: "0px" }}
-                          onClick={() => setIsEdit(true)}
+                          // onClick={() => setIsEdit(true)}
                       >
                         Chỉnh sửa
                       </button>
@@ -313,6 +313,18 @@ const DetailOrderPage = () => {
 
                 <div className="wrap-vat d-flex">
                   <div
+                      className="form-group"
+                      style={{ flex: "5", marginRight: "10px" }}
+                  >
+                    <span>Giảm</span>
+                    <input
+                        placeholder="Giảm"
+                        style={{ width: "85%" }}
+                        disabled={!isEdit}
+                        value={order?.reduce ? order.reduce : 0}
+                    ></input>
+                  </div>
+                  <div
                     className="form-group"
                     style={{ flex: "5", marginRight: "10px" }}
                   >
@@ -330,6 +342,10 @@ const DetailOrderPage = () => {
                       {formatCurrency(order?.totalPrice ? order.totalPrice : 0)}{" "}
                       VNĐ
                     </p>
+                    <p>Giảm:{" "}
+                      {formatCurrency(order?.reduce ? order.reduce : 0)}{" "}
+                      VNĐ
+                    </p>
                     <p>
                       Thuế giá trị gia tăng(VAT):{" "}
                       {formatCurrency(
@@ -343,8 +359,8 @@ const DetailOrderPage = () => {
                       Thành tiền:{" "}
                       {formatCurrency(
                         order?.totalPrice
-                          ? order.totalPrice +
-                              (order.totalPrice * order.vat) / 100
+                          ? (order.totalPrice - (order.reduce ?? 0) +
+                            ((order.totalPrice * order.vat) / 100) )
                           : 0
                       )}{" "}
                       VNĐ

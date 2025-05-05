@@ -23,6 +23,7 @@ public class CustomerRequest {
     String phone;
 
     String email;
+    String tax;
 
     @NotNull(message = "Address  is require")
     @NotEmpty(message = "Address is not emtry")

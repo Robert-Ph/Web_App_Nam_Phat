@@ -30,6 +30,7 @@ public class Order {
     OrderStatus status;
 
     double vat;
+    Long reduce;
 
     LocalDateTime dateCreate;
 
