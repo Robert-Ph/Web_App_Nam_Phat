@@ -32,7 +32,7 @@ public class EmployeeController {
     }
 
     @GetMapping
-    public ResponseEntity<ApiResponse> getAll(@RequestParam(defaultValue = "0")int page,@RequestParam(defaultValue = "10") int size ){
+    public ResponseEntity<ApiResponse> getAll(@RequestParam(defaultValue = "0")int page,@RequestParam(defaultValue = "15") int size ){
         Pageable pageable = PageRequest.of(page, size);
         PagedModel<Employee> data = employeeService.getAll(pageable);
 
@@ -71,7 +71,7 @@ public class EmployeeController {
         return ResponseEntity.noContent().build();
     }
     @GetMapping("/search")
-    public ResponseEntity<ApiResponse> getFilter(@RequestParam(defaultValue = "0")int page,@RequestParam(defaultValue = "10") int size,@RequestParam(required = false)String filter ){
+    public ResponseEntity<ApiResponse> getFilter(@RequestParam(defaultValue = "0")int page,@RequestParam(defaultValue = "15") int size,@RequestParam(required = false)String filter ){
         Pageable pageable = PageRequest.of(page,size);
 
         PagedModel<Employee> result;

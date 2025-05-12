@@ -58,7 +58,7 @@ public class InvoiceService {
         return response;
     }
 
-    @Transactional
+
     public Invoice newUpdate(Long id) {
         Invoice invoice = invoiceRepository.findById(id).orElseThrow(() -> new AppException(ErrorMessage.INVOICE_NOT_FOUND));
         // Xóa file PDF cũ nếu tồn tại
@@ -79,21 +79,34 @@ public class InvoiceService {
 
     @Transactional
     public Invoice loadseen(Long id) {
-        Invoice invoice = invoiceRepository.findById(id).orElseThrow(() -> new AppException(ErrorMessage.INVOICE_NOT_FOUND));
+        Invoice invoice = invoiceRepository.findById(id)
+                .orElseThrow(() -> new AppException(ErrorMessage.INVOICE_NOT_FOUND));
+
         // Xóa file PDF cũ nếu tồn tại
         String oldFilePath = pathOrdeFile + File.separator + invoice.getFile();
         File oldFile = new File(oldFilePath);
-        if (oldFile.exists()) {
-            oldFile.delete();
+        if (oldFile.exists() && !oldFile.delete()) {
+            log.warn("Không thể xóa file cũ: {}", oldFilePath);
         }
-        String fileName = "HD_" + id + ".pdf";
 
+        String fileName = "HD_" + id + ".pdf";
         invoice.setFile(fileName);
         Invoice response = invoiceRepository.save(invoice);
 
-        pdfUtils.createPDF(companyService.getMyCompany(), pathOrdeFile + File.separator + "HD_"+invoice.getId() + ".pdf", invoice.getOrder(), invoice.getId());
+        try {
+            pdfUtils.createPDF(
+                    companyService.getMyCompany(),
+                    pathOrdeFile + File.separator + fileName,
+                    invoice.getOrder(),
+                    invoice.getId()
+            );
+        } catch (Exception e) {
+            log.error("Lỗi khi tạo PDF cho hóa đơn {}: {}", id, e.getMessage(), e);
+        }
+
         return response;
     }
+
 
     public Invoice getById(Long id) {
         Invoice invoice = invoiceRepository.findById(id).orElseThrow(() -> new AppException(ErrorMessage.INVOICE_NOT_FOUND));
@@ -119,7 +132,7 @@ public class InvoiceService {
     private InvoicesReponse converToInvoicesReponse(Invoice invoice){
         modelMapper.typeMap(Invoice.class, InvoicesReponse.class).addMappings(mapper ->
                 {
-                    mapper.map(src -> src.getOrder().getCustomer().getFullName(), InvoicesReponse::setNameCustomer);
+                        mapper.map(src -> src.getOrder().getCustomer().getFullName(), InvoicesReponse::setNameCustomer);
                     mapper.map(src -> src.getOrder().getId(), InvoicesReponse::setOrderId);
                 }
         );

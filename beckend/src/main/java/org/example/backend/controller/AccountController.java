@@ -47,7 +47,7 @@ public class AccountController {
     }
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping
-    public ResponseEntity<ApiResponse> getAll(@RequestParam(defaultValue = "0")int page,@RequestParam(defaultValue = "10") int size ){
+    public ResponseEntity<ApiResponse> getAll(@RequestParam(defaultValue = "0")int page,@RequestParam(defaultValue = "15") int size ){
         Pageable pageable = PageRequest.of(page,size);
 
         return ResponseEntity.ok(
@@ -60,7 +60,7 @@ public class AccountController {
     }
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/search")
-    public ResponseEntity<ApiResponse> getFilter(@RequestParam(defaultValue = "0")int page,@RequestParam(defaultValue = "10") int size,@RequestParam(required = false)String filter ){
+    public ResponseEntity<ApiResponse> getFilter(@RequestParam(defaultValue = "0")int page,@RequestParam(defaultValue = "15") int size,@RequestParam(required = false)String filter ){
         Pageable pageable = PageRequest.of(page,size);
 
         PagedModel<AccountResponse> result;

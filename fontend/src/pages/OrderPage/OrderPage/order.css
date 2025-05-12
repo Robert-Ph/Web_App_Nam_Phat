@@ -28,7 +28,7 @@
   margin-top: 30px;
 }
 .table-container {
-  max-height: 110px; /* Đặt chiều cao tối đa cho container */
+  max-height: 400px; /* Đặt chiều cao tối đa cho container */
   overflow-y: auto; /* Thêm thanh cuộn dọc */
   min-height: 110px;
 }

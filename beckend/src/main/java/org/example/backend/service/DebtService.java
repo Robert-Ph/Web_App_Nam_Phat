@@ -33,11 +33,11 @@ public class DebtService {
     public Map<Long, Long> getListDebtCustomer(List<Order> orders){
         Map<Long, Long> debts = new TreeMap<Long, Long>();
         for (Order order : orders) {
-            if (debts.containsKey(order.getCustomer().getId())) {
-                debts.put(order.getCustomer().getId(), debts.get(order.getCustomer().getId()) +  (long) (order.getTotalPrice() + order.getTotalPrice()* (order.getVat()/100)));
-            }else{
-                debts.put(order.getCustomer().getId(), (long) (order.getTotalPrice() + order.getTotalPrice()* (order.getVat()/100)));
-            }
+                if (debts.containsKey(order.getCustomer().getId())) {
+                    debts.put(order.getCustomer().getId(), debts.get(order.getCustomer().getId()) +  (long) (order.getTotalPrice() + order.getTotalPrice()* (order.getVat()/100)));
+                }else{
+                    debts.put(order.getCustomer().getId(), (long) (order.getTotalPrice() + order.getTotalPrice()* (order.getVat()/100)));
+                }
         }
 
 

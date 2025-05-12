@@ -20,7 +20,7 @@ const seenFile = (id: number) => {
   });
 };
 const  update = (id: number) => {
-  return api.get(`${BASE_URL}/update/${id}`, {
+  return api.put(`${BASE_URL}/update/${id}`, {
     responseType: "blob", // Set response type to 'blob' to handle binary data
   });
 }

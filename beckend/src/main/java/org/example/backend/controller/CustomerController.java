@@ -110,7 +110,7 @@ public class CustomerController {
 
     @GetMapping("/list")
     public ResponseEntity<ApiResponse> getFilter(@RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size, @RequestParam(required = false) String filter) {
+            @RequestParam(defaultValue = "15") int size, @RequestParam(required = false) String filter) {
         Pageable pageable = PageRequest.of(page, size);
 
         PagedModel<Customer> result;
@@ -132,30 +132,4 @@ public class CustomerController {
                         .data(result)
                         .build());
     }
-    // @GetMapping("/search")
-    // public ResponseEntity<ApiResponse> getFilter(@RequestParam(defaultValue =
-    // "0")int page,@RequestParam(defaultValue = "10") int
-    // size,@RequestParam(required = false)String filter ){
-    // Pageable pageable = PageRequest.of(page,size);
-    //
-    // PagedModel<Customer> result;
-    //
-    // if(Objects.isNull(filter)){
-    // result = customerService.getAll(pageable);
-    // }else {
-    // if(filter.isBlank() || filter.isEmpty()){
-    // result = customerService.getAll(pageable);
-    // }else {
-    // result = customerService.getByFilter(filter,pageable);
-    // }
-    // }
-    //
-    // return ResponseEntity.ok(
-    // ApiResponse.builder()
-    // .code(SuccessMessage.GET_DATA_SUCCESS.getCode())
-    // .message(SuccessMessage.GET_DATA_SUCCESS.getMessage())
-    // .data(result)
-    // .build()
-    // );
-    // }
 }

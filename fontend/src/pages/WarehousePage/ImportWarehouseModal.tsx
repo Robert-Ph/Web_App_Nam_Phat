@@ -12,7 +12,7 @@ import TextFieldAuto from "../../component/TextFieldAuto/TextFieldAuto";
 import useDebounce from "../../hooks/useDebounce";
 
 const style = {
-  position: "absolute" as "absolute",
+  position: "absolute" ,
   top: "50%",
   left: "53%",
   transform: "translate(-50%, -50%)",

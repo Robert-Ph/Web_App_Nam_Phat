@@ -1,11 +1,15 @@
 package org.example.backend.utils;
 
 import java.io.File;
+import java.io.InputStream;
 import java.text.NumberFormat;
 import java.time.LocalDate;
 import java.util.*;
 
 
+import com.itextpdf.io.font.FontProgram;
+import com.itextpdf.io.font.FontProgramFactory;
+import com.itextpdf.io.font.PdfEncodings;
 import com.itextpdf.io.image.ImageData;
 import com.itextpdf.io.image.ImageDataFactory;
 import com.itextpdf.kernel.font.PdfFont;
@@ -30,6 +34,7 @@ import com.itextpdf.layout.properties.TextAlignment;
 import com.itextpdf.layout.properties.UnitValue;
 import com.itextpdf.layout.properties.VerticalAlignment;
 
+import org.apache.commons.io.IOUtils;
 import org.example.backend.entity.Company;
 import org.example.backend.entity.Customer;
 import org.example.backend.entity.Order;
@@ -37,10 +42,13 @@ import org.example.backend.entity.OrderItem;
 import org.example.backend.exception.AppException;
 import org.example.backend.message.ErrorMessage;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 @Component
 public class PDFUtils {
+
+
 
     LocalDate currentDate = LocalDate.now();
 
@@ -105,11 +113,11 @@ public class PDFUtils {
         return currencyFormatter.format(amount);
     }
 
-    private void addInvoiceContent(Document document, PdfFont font, float width, Company company, Order order, String id) throws Exception {
+    public void addInvoiceContent(Document document, PdfFont font, float width, Company company, Order order, String id) throws Exception {
         document.setFont(font);
 
         //Setting tab
-        TabStop tabHeader = new TabStop(260, TabAlignment.LEFT);
+        TabStop tabHeader = new TabStop(200, TabAlignment.LEFT);
         TabStop tabCenter = new TabStop(250, TabAlignment.CENTER);
         TabStop tabRigth = new TabStop(width, TabAlignment.RIGHT);
 
@@ -117,7 +125,7 @@ public class PDFUtils {
 
 
         //Trỏ đến vị trí lưu logo
-        String logoPath = "src/main/resources/static/logo/logo.png";
+        String logoPath = "classpath:static/logo/logo.png";
         ImageData imageData = ImageDataFactory.create(logoPath);
 
         System.out.println(imageData);
@@ -125,6 +133,8 @@ public class PDFUtils {
 
         logo.setWidth(60); // Đặt kích thước logo
         logo.setHeight(60);
+
+
 
         // Tao table cho logo va ten cong ty
         Table headerTable = new Table(UnitValue.createPercentArray(new float[]{1, 8})).useAllAvailableWidth();
@@ -226,27 +236,16 @@ public class PDFUtils {
                             .setMultipliedLeading(1)
             );
 
-//                document.add(new Paragraph()
-//                        .addTabStops(new TabStop(width / 2 + 5, TabAlignment.CENTER))
-//                        .add(new Text("Mã số thuế:"))
-//                        .add(new Tab())
-////                        .add(new Text(", Hình thức thanh toán:"))
-//                        .addTabStops(new TabStop(width, TabAlignment.RIGHT))
-//                        .add(new Tab())
-//                        .setMarginBottom(0) // Loại bỏ khoảng cách dưới đoạn này
-//                        .setMultipliedLeading(1) // Giảm khoảng cách giữa các dòng
-//
-//                );
             document.add(new Paragraph()
                     .add(new Text("Địa chỉ: "))
-                    .add(new Text(customer.getEmail()).setBold())
+                    .add(new Text(customer.getAddress()))
                     .setMarginBottom(10) // Loại bỏ khoảng cách dưới đoạn này
                     .setMultipliedLeading(1) // Giảm khoảng cách giữa các dòng
             );
         }
 
         // Table
-        float[] columnWidths = {1, 4, 5, 1, 3, 3};
+        float[] columnWidths = {1, 4, 5, 2, 2, 3};
         Table table1 = new Table(UnitValue.createPercentArray(columnWidths));
         table1.setWidth(UnitValue.createPercentValue(100));
         table1.addHeaderCell(new Cell().add(new Paragraph("STT").setTextAlignment(TextAlignment.CENTER).setBold()));
@@ -381,11 +380,21 @@ public class PDFUtils {
 
     public void createPDF(Company company, String fileName, Order order, Long id) {
 
-        String fontPath = "src/main/resources/static/font" + File.separatorChar + "vuArial.ttf"; // Chỉnh url về nơi lưu font
+//        String fontPath = "src/main/resources/font" + File.separatorChar + "vuArial.ttf"; // Chỉnh url về nơi lưu font
+//        InputStream fontStream = getClass().getClassLoader().getResourceAsStream("font/vuArial.ttf");
 
 //        String pathStorage = "src/main/resources/static/invoice" + File.separator + fileName;
 
         try {
+            InputStream fontStream = getClass().getClassLoader().getResourceAsStream("font/vuArial.ttf");
+            if (fontStream == null) {
+                throw new RuntimeException("Font file not found");
+            }
+            byte[] fontBytes = IOUtils.toByteArray(fontStream);
+            FontProgram fontProgram = FontProgramFactory.createFont(fontBytes);
+            PdfFont font = PdfFontFactory.createFont(fontProgram);
+
+
             // Tạo file PDF
             PdfWriter writer = new PdfWriter(fileName);
 
@@ -393,9 +402,9 @@ public class PDFUtils {
             Document document = new Document(pdfDoc, PageSize.A4.rotate(), false);
 
             //Set font
-            PdfFont font = PdfFontFactory.createFont(fontPath);
+//            PdfFont font = PdfFontFactory.createFont(fontPath);
             document.setFont(font);
-            document.setMargins(20, 20, 20, 20);
+            document.setMargins(10, 20, 10, 20);
 
             float width = pdfDoc.getDefaultPageSize().getWidth() - document.getRightMargin() - 50;
 

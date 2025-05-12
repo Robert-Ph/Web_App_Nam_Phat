@@ -23,7 +23,7 @@ const WageHousePage = () => {
   const [totalPages, setTotalPages] = useState(0);
   // const [open, setOpen] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
-  const pageSize = 10;
+  const pageSize = 15;
 
   const [inventories, setInventories] = useState<Inventory[]>([]);
 

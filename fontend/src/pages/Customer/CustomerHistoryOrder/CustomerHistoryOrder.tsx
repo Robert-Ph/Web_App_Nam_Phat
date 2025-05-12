@@ -23,6 +23,7 @@ const ListOrderPage = () => {
     fullName: "",
     phone: "",
     email: "",
+    tax: "",
     address: "",
     typeCustomer: "",
     active: true,
@@ -153,12 +154,6 @@ const ListOrderPage = () => {
                     <th className="pb-7 font-w-500" style={{ width: "7%" }}>
                       ID
                     </th>
-                    <th
-                      className="pb-7 font-w-500"
-                      style={{ width: "25%", paddingRight: "10px" }}
-                    >
-                      Tên khách hàng
-                    </th>
                     <th className="pb-7 font-w-500" style={{ width: "12%" }}>
                       Ngày
                     </th>
@@ -203,20 +198,14 @@ const ListOrderPage = () => {
                       <td className="pb-7 pt-7 font-size-small td-table font-w-500 ">
                         {order.id}
                       </td>
-                      <td
-                        className="pb-7 pt-7 font-size-small font-w-500 "
-                        style={{ paddingRight: "20px" }}
-                      >
-                        {"=" || "-"}
-                      </td>
                       <td className="pb-7 pt-7 font-size-small td-table font-w-500">
-                        {order.dateShip || "-"}
+                        {order.dateCreate || "-"}
                       </td>
                       <td className="pb-7 pt-7 font-size-small td-table font-w-500">
                         {order.totalPrice || "-"}
                       </td>
                       <td className="pb-7 pt-7 font-size-small td-table font-w-500">
-                        {order.pay || "-"}
+                        {order.datePayment || "-"}
                       </td>
                       <td className="pb-7 pt-7 font-size-small td-table font-w-500">
                         {order.status || "-"}

@@ -26,7 +26,7 @@ const ListEmployee = () => {
 
   const [search, setSearch] = useState<string>("");
   const debouncedQuery = useDebounce(search, 300);
-  const pageSize = 10;
+  const pageSize = 15;
 
   const handleOnclose = () => {
     setOpen(false);

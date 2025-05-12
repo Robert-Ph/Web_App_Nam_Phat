@@ -22,7 +22,7 @@ const HistoryImportWageHouse = () => {
   const [page, setPage] = useState<number>(1);
   const [totalPages, setTotalPages] = useState(0);
   const [loading, setLoading] = useState<boolean>(false);
-  const pageSize = 10;
+  const pageSize = 15;
 
   const [stockin, setStockin] = useState<StockIn[]>([]);
 

@@ -47,7 +47,7 @@ public class OrderController {
     }
 
     @GetMapping
-    public ResponseEntity<ApiResponse> getAll(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size) {
+    public ResponseEntity<ApiResponse> getAll(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "15") int size) {
         Sort sort = Sort.by("dateCreate").descending();
         Pageable pageable = PageRequest.of(page, size,sort);
         return ResponseEntity.ok(ApiResponse.builder()
@@ -60,7 +60,7 @@ public class OrderController {
 
     @GetMapping("/search")
     public ResponseEntity<ApiResponse> getByCondition(@RequestParam(defaultValue = "0") int page,
-                                                      @RequestParam(defaultValue = "10") int size,
+                                                      @RequestParam(defaultValue = "15") int size,
                                                       @RequestParam(required = false)boolean ispay,
                                                       @RequestParam(required = false)String filter,
                                                       @RequestParam(required = true)String type
@@ -126,14 +126,22 @@ public class OrderController {
     public void updateIspay(@PathVariable Long id){
         orderService.updtateIsPay(id);
     }
+
+    @PutMapping("/status-con/{id}")
+    public void updateStatusCon(@PathVariable Long id){
+        orderService.updtateStatusCon(id);
+    }
+
     @PutMapping("/status-fis/{id}")
     public void updateStatusFis(@PathVariable Long id){
         orderService.updtateStatusFis(id);
     }
+
     @PutMapping("/status-can/{id}")
     public void updateStatusCan(@PathVariable Long id){
         orderService.updtateStatusCan(id);
     }
+
     @PutMapping("/status-devi/{id}")
     public void updateStatusDevi(@PathVariable Long id){
         orderService.updtateStatusDevii(id);

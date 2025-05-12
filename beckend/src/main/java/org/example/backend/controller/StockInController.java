@@ -65,7 +65,7 @@ public class StockInController {
     }
 
     @GetMapping
-    public ResponseEntity<ApiResponse> getAll(@RequestParam(defaultValue = "0")int page,@RequestParam(defaultValue = "10") int size ){
+    public ResponseEntity<ApiResponse> getAll(@RequestParam(defaultValue = "0")int page,@RequestParam(defaultValue = "15") int size ){
         Sort sort = Sort.by("dateCreate").descending();
         Pageable pageable = PageRequest.of(page,size,sort);
 
@@ -79,7 +79,7 @@ public class StockInController {
     }
 
     @GetMapping("/search")
-    public ResponseEntity<ApiResponse> getByFilter(@RequestParam String filter,@RequestParam(defaultValue = "0")int page,@RequestParam(defaultValue = "10") int size ){
+    public ResponseEntity<ApiResponse> getByFilter(@RequestParam String filter,@RequestParam(defaultValue = "0")int page,@RequestParam(defaultValue = "15") int size ){
         Sort sort = Sort.by("dateCreate").descending();
         Pageable pageable = PageRequest.of(page,size,sort);
 

@@ -21,7 +21,7 @@ public class LogController {
     private LogService logService;
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping
-    public ResponseEntity<ApiResponse> getAll(@RequestParam(defaultValue = "0")int page, @RequestParam(defaultValue = "10") int size ){
+    public ResponseEntity<ApiResponse> getAll(@RequestParam(defaultValue = "0")int page, @RequestParam(defaultValue = "15") int size ){
         Sort sort = Sort.by("dateCreate").descending();
         Pageable pageable = PageRequest.of(page,size,sort);
 

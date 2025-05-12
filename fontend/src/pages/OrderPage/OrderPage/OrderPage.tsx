@@ -30,25 +30,21 @@ const OrderPage = () => {
   const addressRef = useRef<HTMLInputElement>(null);
 
   const [_loading, setLoading] = useState(false);
+  const [isCutomer, setIsCustomer] = useState(true);
+  const [customerRetailPhone, setCustomerRetailPhone] = useState<string>("");
   const [customers, setCustomers] = useState<Customer[]>([]);
   const [selectedCustomer, setSelectedCustomer] = useState<Customer | null>(
     null
   );
+  const [customerRetail, setCustomerRetail] = useState<string>("");
 
-  const [vat, setVat] = useState<number>(0);
+
+  const [vat, setVat] = useState<number>(8);
   const [reduce, setReduce] = useState<number>(0);
   const [total, setTotal] = useState<number>(0);
 
   const navigate = useNavigate();
 
-  // {
-  //   id: null,
-  //   fullName: "",
-  //   phone: "",
-  //   email: "",
-  //   address: "",
-  //   typeCustomer: "",
-  // }
 
   const debouncedQuery = useDebounce(query, 200);
 
@@ -64,15 +60,29 @@ const OrderPage = () => {
     setInvoice(event.target.value);
   };
 
+  const handleChangeIsCustomer = (event: SelectChangeEvent) => {
+    const value = event.target.value;
+    setIsCustomer(value === "System");
+  }
+
   const addProduct = (orderItem: OrderItem) => {
     setOpen(false);
     setOrderItems([...orderItems, orderItem]);
   };
 
   const handleUserSelect = (customer: Customer | null) => {
-    setSelectedCustomer(customer);
-    if (addressRef.current) {
-      addressRef.current.value = customer?.address || "";
+    if (isCutomer) {
+      // Nếu là khách hàng (isCustomer = true), lấy thông tin từ đối tượng customer
+      setSelectedCustomer(customer);
+      if (addressRef.current) {
+        addressRef.current.value = customer?.address || "";
+      }
+    } else {
+      // Nếu là khách lẻ (isCustomer = false), lấy giá trị nhập vào
+      setCustomerRetail(customer?.phone || "");  // Lưu số điện thoại của khách lẻ
+      if (addressRef.current) {
+        addressRef.current.value = "";  // Xóa hoặc không lấy dữ liệu địa chỉ cho khách lẻ
+      }
     }
   };
 
@@ -106,7 +116,7 @@ const OrderPage = () => {
 
   const handleReset = () => {
     console.log("Reset Run");
-    setQuery("");
+    // setQuery("");
     setOrderItems([]);
     setSelectedCustomer(null);
 
@@ -119,69 +129,127 @@ const OrderPage = () => {
 
   const handleCreate = () => {
     setLoading(true);
-    if (selectedCustomer == null) {
-      toast.error("Thông tin khách hàng không hợp lệ hoặc trống", {
-        autoClose: 1000,
-      });
-    } else if (orderItems.length == 0) {
-      toast.error("Bạn chưa thêm sản phẩm vào đơn hàng", {
-        autoClose: 1000,
-      });
-    } else {
-      const order = {
-        id: null,
-        vat: vat,
-        reduce: reduce,
-        typeOrder: invoice,
-        phone: query,
-        address: addressRef.current?.value,
-        totalPrice: null,
-        status: null,
-        dateCreate: null,
-        dateShip: null,
-        pay: null,
-        orderItems: [...orderItems],
-      } as Order;
+    if(isCutomer){
+      if (selectedCustomer == null) {
+        toast.error("Thông tin khách hàng không hợp lệ hoặc trống", {
+          autoClose: 1000,
+        });
+      } else if (orderItems.length == 0) {
+        toast.error("Bạn chưa thêm sản phẩm vào đơn hàng", {
+          autoClose: 1000,
+        });
+      } else {
+        const order = {
+          id: null,
+          vat: vat,
+          reduce: reduce,
+          typeOrder: invoice,
+          phone: query,
+          address: addressRef.current?.value,
+          totalPrice: null,
+          status: null,
+          dateCreate: null,
+          dateShip: null,
+          pay: null,
+          cusomerNameNew: null,
+          isNew: isCutomer,
+          orderItems: [...orderItems],
+        } as Order;
 
-      try {
-        handleReset();
-        console.log(query);
-        OrderService.create(order)
-          .then((response: any) => {
-            console.log(response.data);
-            if (response.data.code == 201) {
-              toast.success("Tạo đơn hàng thành công!", {
-                autoClose: 2000,
-              });
-              navigate("/order/list");
-            }
-          })
-          .catch((e: any) => {
-            const error = e.response.data;
+        try {
+          handleReset();
+          console.log(query);
+          OrderService.create(order)
+              .then((response: any) => {
+                console.log(response.data);
+                if (response.data.code == 201) {
+                  toast.success("Tạo đơn hàng thành công!", {
+                    autoClose: 2000,
+                  });
+                  navigate("/order/list");
+                }
+              })
+              .catch((e: any) => {
+                const error = e.response.data;
 
-            if (error.code == 802) {
-              toast.error("Không tìm thấy khách hàng trong hệ thống!", {
-                autoClose: 1000,
+                if (error.code == 802) {
+                  toast.error("Không tìm thấy khách hàng trong hệ thống!", {
+                    autoClose: 1000,
+                  });
+                } else {
+                  toast.error("Lỗi không xác định!", {
+                    autoClose: 1000,
+                  });
+                }
               });
-            } else {
-              toast.error("Lỗi không xác định!", {
-                autoClose: 1000,
+        } catch (error) {
+          console.log(error);
+        } finally {
+          console.log('');
+        }
+      }
+    }else{
+      if (customerRetail == null) {
+        toast.error("Thông tin khách hàng không hợp lệ hoặc trống", {
+          autoClose: 1000,
+        });
+      } else if (orderItems.length == 0) {
+        toast.error("Bạn chưa thêm sản phẩm vào đơn hàng", {
+          autoClose: 1000,
+        });
+      } else {
+        const order = {
+          id: null,
+          vat: vat,
+          reduce: reduce,
+          typeOrder: invoice,
+          phone: customerRetailPhone,
+          address: addressRef.current?.value,
+          totalPrice: null,
+          status: null,
+          dateCreate: null,
+          dateShip: null,
+          pay: null,
+          cusomerNameNew: customerRetail,
+          isNew: isCutomer,
+          orderItems: [...orderItems],
+        } as Order;
+
+        try {
+          handleReset();
+          console.log(query);
+          OrderService.create(order)
+              .then((response: any) => {
+                console.log(response.data);
+                if (response.data.code == 201) {
+                  toast.success("Tạo đơn hàng thành công!", {
+                    autoClose: 2000,
+                  });
+                  navigate("/order/list");
+                }
+              })
+              .catch((e: any) => {
+                const error = e.response.data;
+
+                if (error.code == 802) {
+                  toast.error("Không tìm thấy khách hàng trong hệ thống!", {
+                    autoClose: 1000,
+                  });
+                } else {
+                  toast.error("Lỗi không xác định!", {
+                    autoClose: 1000,
+                  });
+                }
               });
-            }
-          });
-      } catch (error) {
-        console.log(error);
-      } finally {
-        console.log('');
+        } catch (error) {
+          console.log(error);
+        } finally {
+          console.log('');
+        }
       }
     }
   };
 
-  // const handleInputChange = (value: string) => {
-  //   if (value != "") {
-  //     setQuery(value);
-  //   }
-  // };
   console.log(selectedCustomer);
   useEffect(() => {
     const calculatedTotal = orderItems.reduce((sum, item) => {
@@ -243,19 +311,17 @@ const OrderPage = () => {
           <div className="wrap-form">
             <div className="form-group flex-8">
               <span>Tên khách hàng</span>
-
               <input
-                placeholder="Tên khách hàng"
-                disabled
-                value={selectedCustomer?.fullName || ""}
-              ></input>
+                  placeholder="Tên khách hàng"
+                  disabled={isCutomer}
+                  value={isCutomer ? (selectedCustomer?.fullName || "") : customerRetail}
+                  onChange={(e) => {
+                    if (!isCutomer) {
+                      setCustomerRetail(e.target.value);
+                    }
+                  }}
+              />
             </div>
-
-            {/* <div className="form-group flex-2" style={{ margin: "0px 20px" }}>
-              <span>Số điện thoại</span>
-              <input placeholder="Số điện thoại"></input>
-            </div> */}
-
             <div className="flex-2 " style={{ margin: "0px 20px" }}>
               <span
                 style={{
@@ -266,18 +332,32 @@ const OrderPage = () => {
               >
                 Số điện thoại
               </span>
-              <TextFieldAuto
-                type="Number"
-                options={customers.filter((customer) => customer.active)}
-                getOptionLabel={(customer) => `${customer.phone}`}
-                onSelect={handleUserSelect}
-                onInputChange={setQuery}
-                renderOption={(props, option) => (
-                  <li {...props} key={option.id}>
-                    {option.phone} ({option.fullName})
-                  </li>
-                )}
-              ></TextFieldAuto>
+              {isCutomer ? (
+                  <TextFieldAuto
+                      type="Number"
+                      options={customers.filter((c) => c.active)}
+                      getOptionLabel={(customer) => `${customer.phone}`}
+                      onSelect={handleUserSelect}
+                      onInputChange={(value) => {
+                        setQuery(value);
+                      }}
+                      renderOption={(props, option) => (
+                          <li {...props} key={option.id}>
+                            {option.phone} ({option.fullName})
+                          </li>
+                      )}
+                  />
+              ) : (
+                  <input
+                      type="text"
+                      style={{height: '38px', width: '300px', marginTop:'2px', borderRadius: 7, border: "1px solid #EEEEEE", boxShadow: "0 0 0 2px transparent"}}
+                      placeholder="Số điện thoại"
+                      value={customerRetailPhone}
+                      onChange={(e) => setCustomerRetailPhone(e.target.value)}
+                  />
+              )}
+
+
             </div>
 
             <div className="form-group flex-2">
@@ -296,20 +376,27 @@ const OrderPage = () => {
                 </Select>
               </FormControl>
             </div>
+
+            <div className="form-group flex-2" style={{marginLeft:'20px'}}>
+              <span>Loại khách hàng</span>
+              <FormControl sx={{ minWidth: 120 }} size="small">
+                <Select
+                    labelId="demo-select-small-label"
+                    id="demo-select-small"
+                    onChange={handleChangeIsCustomer}
+                    value={isCutomer ? "System" : "Retail"}
+                >
+                  <MenuItem value={"System"} className="">
+                    Hệ thống
+                  </MenuItem>
+                  <MenuItem value={"Retail"}>Khách mới</MenuItem>
+                </Select>
+              </FormControl>
+            </div>
           </div>
 
           <div className="wrap-form" style={{ marginTop: "10px" }}>
-            <div className="form-group flex-2">
-              <span>Email</span>
-              <input
-                placeholder="Email khách hàng"
-                value={selectedCustomer?.email || ""}
-                disabled
-                type="email"
-              ></input>
-            </div>
-
-            <div className="form-group flex-8" style={{ marginLeft: "20px" }}>
+            <div className="form-group flex-8">
               <span>Địa chỉ giao hàng</span>
               <input placeholder="Địa chỉ giao hàng" ref={addressRef}></input>
             </div>
@@ -319,7 +406,7 @@ const OrderPage = () => {
         <div className="mt-20">
           <h3>Danh sách sản phẩm</h3>
           <div style={{ padding: "20px", height:'180%' }}>
-            <div className="table-container">
+            <div className="table-container" >
               <table style={{ width: "100%", borderCollapse: "collapse" }}>
                 <thead>
                   <tr className="color-blue header-table text-left border-header-table">
@@ -365,7 +452,7 @@ const OrderPage = () => {
               </table>
             </div>
 
-            <div className="mt-1800 d-flex">
+            <div className="mt-1800 d-flex" style={{marginTop:"10%"}}>
               <div
                 style={{
                   flex: "3",

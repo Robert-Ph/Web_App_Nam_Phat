@@ -32,7 +32,7 @@ public class StockOutController {
     }
 
     @GetMapping
-    public ResponseEntity<ApiResponse> getAllPageable(@RequestParam(defaultValue = "0")int page,@RequestParam(defaultValue = "10") int size){
+    public ResponseEntity<ApiResponse> getAllPageable(@RequestParam(defaultValue = "0")int page,@RequestParam(defaultValue = "15") int size){
         Sort sort = Sort.by("dateCreate").descending();
         Pageable pageable = PageRequest.of(page,size,sort);
         return ResponseEntity.ok(ApiResponse.builder()
@@ -42,7 +42,7 @@ public class StockOutController {
                 .build());
     }
     @GetMapping("/search")
-    public ResponseEntity<ApiResponse> getByFilterPageable(@RequestParam String filter,@RequestParam(defaultValue = "0")int page,@RequestParam(defaultValue = "10") int size){
+    public ResponseEntity<ApiResponse> getByFilterPageable(@RequestParam String filter,@RequestParam(defaultValue = "0")int page,@RequestParam(defaultValue = "15") int size){
         Sort sort = Sort.by("dateCreate").descending();
         Pageable pageable = PageRequest.of(page,size,sort);
         return ResponseEntity.ok(ApiResponse.builder()

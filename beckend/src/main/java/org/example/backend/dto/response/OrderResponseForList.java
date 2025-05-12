@@ -18,6 +18,7 @@ public class OrderResponseForList {
 
     LocalDateTime dateCreate;
     LocalDateTime dateShip;
+    LocalDateTime datePayment;
 
     String typeOrder;
     String nameCustomer;

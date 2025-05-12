@@ -5,14 +5,16 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 public class ConverDate {
-    public LocalDate date(String date) {
 
-        // Định dạng thời gian
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSSSSS");
+    public LocalDateTime date(LocalDateTime dateTime) {
+        // Định dạng nếu cần (không ảnh hưởng đến giá trị trả về)
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        dateTime.format(formatter);
 
-        // Chuyển đổi chuỗi thành LocalDateTime
-        LocalDateTime dateTime = LocalDateTime.parse(date, formatter);
-        return dateTime.toLocalDate();
+
+        return dateTime; // Trả lại đúng kiểu LocalDateTime
     }
+
+
 
 }

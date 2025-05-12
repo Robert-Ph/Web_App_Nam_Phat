@@ -17,7 +17,7 @@ const InvoicePage = () => {
   const [page, setPage] = useState<number>(1);
   const [totalPages, setTotalPages] = useState(0);
   const [_loading, setLoading] = useState<boolean>(false);
-  const pageSize = 10;
+  const pageSize = 15;
 
   const debouncedQuery = useDebounce(query, 500);
 
@@ -117,6 +117,10 @@ const InvoicePage = () => {
   const handleUpdate = async (id: number) => {
     try {
       const response = await InvoiceService.update(id);
+      // ✅ Reload trang sau 1.5s để toast hiển thị
+      setTimeout(() => {
+        window.location.reload();
+      }, 1000);
       // Kiểm tra xem response có dữ liệu
       if (!response.data) {
         console.error("Không có dữ liệu từ phản hồi.");
@@ -124,6 +128,7 @@ const InvoicePage = () => {
       }
       // Có thể không cần gọi fetchInvoices() ở đây, tùy thuộc vào logic ứng dụng
       console.log(response);
+
     } catch (error) {
       console.log(error);
     }
@@ -159,21 +164,6 @@ const InvoicePage = () => {
                 />
               </Box>
             </div>
-
-            {/* <div style={{ position: "relative" }}>
-              <select className="filter-select">
-                <option value="all">Tất cả</option>
-                <option value="newest">Mới nhất</option>
-                <option value="confirmed">Xác nhận</option>
-                <option value="completed">Hoàn thành</option>
-                <option value="delivered">Đã giao</option>
-                <option value="paid">Đã thanh toán</option>
-                <option value="unpaid">Chưa thanh toán</option>
-              </select>
-              <i className="icon-filter">
-                <TuneIcon></TuneIcon>
-              </i>
-            </div> */}
           </div>
         </div>
           <div style={{ padding: "10px" }}>

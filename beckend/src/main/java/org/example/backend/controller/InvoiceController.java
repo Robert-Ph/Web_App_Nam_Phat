@@ -52,7 +52,7 @@ public class InvoiceController {
         }
     }
 
-    @GetMapping("/update/{id}")
+    @PutMapping("/update/{id}")
     public ResponseEntity<FileSystemResource> update(@PathVariable Long id) {
         try {
             invoiceService.newUpdate(id);
@@ -92,7 +92,7 @@ public class InvoiceController {
     }
 
     @GetMapping
-    public ResponseEntity<ApiResponse> getAll(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size) {
+    public ResponseEntity<ApiResponse> getAll(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "15") int size) {
         Pageable pageable = PageRequest.of(page, size);
 
         return ResponseEntity.ok(ApiResponse.builder()

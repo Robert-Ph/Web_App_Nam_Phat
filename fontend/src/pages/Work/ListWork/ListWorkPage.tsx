@@ -21,7 +21,7 @@ const ListOrderPage = () => {
   const [page, setPage] = useState<number>(1);
   const [totalPages, setTotalPages] = useState(0);
   const [loading, setLoading] = useState<boolean>(false);
-  const pageSize = 10;
+  const pageSize = 15;
 
   const [filterOption, setFilterOption] = useState<string>("all");
   const [search, setSearch] = useState<string>("");
@@ -55,19 +55,41 @@ const ListOrderPage = () => {
     fetchData();
   }, [page, pageSize, search, filterOption]);
 
-  const handleUpdateStatus = async (id: number) => {
+  const handleUpdateStatus = async (id: number, status: string) => {
     try {
-      const response = await OrderService.updateStatusFis(id);
+      if(status == "CONFIM"){
+        await OrderService.updateStatusFis(id);
+      }else{
+        await OrderService.updateStatusCon(id);
+      }
+
       // ✅ Reload trang sau 1.5s để toast hiển thị
       setTimeout(() => {
         window.location.reload();
       }, 0);
-      // Kiểm tra xem response có dữ liệu
-      if (!response.data) {
-        return;
+
+    } catch (error) {
+      // ✅ Reload trang sau 1.5s để toast hiển thị
+      setTimeout(() => {
+        window.location.reload();
+      }, 0);
+      console.log(error);
+    }
+  };
+
+  const handleUpdateStatusDevi = async (id: number, status: string) => {
+    try {
+      if(status == "FISNISHED"){
+        await OrderService.updateStatusDevi(id);
+      }else{
+        await OrderService.updateStatusFis(id);
       }
-      // Có thể không cần gọi fetchInvoices() ở đây, tùy thuộc vào logic ứng dụng
-      console.log(response);
+
+      // ✅ Reload trang sau 1.5s để toast hiển thị
+      setTimeout(() => {
+        window.location.reload();
+      }, 0);
+
     } catch (error) {
       // ✅ Reload trang sau 1.5s để toast hiển thị
       setTimeout(() => {
@@ -87,9 +109,22 @@ const ListOrderPage = () => {
     setFilterOption(event.target.value);
   };
 
-  console.log("Option:" + filterOption);
+  const hienThiTrangThai = (status: string) => {
+    switch (status) {
+      case "DELIVERED":
+        return "Đã giao";
+      case "CONFIM":
+        return "Xác nhận";
+      case "FISNISHED":
+        return "Hoàn thành";
+      case "CANCELLED":
+        return "Đã hủy";
+      default:
+        return status;
+    }
+  };
 
-  console.log(page);
+
   return (
     <div>
       <div className="main-body">
@@ -130,12 +165,9 @@ const ListOrderPage = () => {
                 value={filterOption}
               >
                 <option value="all">Tất cả</option>
-                <option value="newest">Mới nhất</option>
                 <option value="confirmed">Xác nhận</option>
                 <option value="completed">Hoàn thành</option>
                 <option value="delivered">Đã giao</option>
-                <option value="paid">Đã thanh toán</option>
-                <option value="unpaid">Chưa thanh toán</option>
               </select>
               <i className="icon-filter">
                 <TuneIcon></TuneIcon>
@@ -165,7 +197,10 @@ const ListOrderPage = () => {
                       Trạng thái
                     </th>
                     <th className="pb-7 font-w-500" style={{ width: "12%" }}>
-
+                      In
+                    </th>
+                    <th className="pb-7 font-w-500" style={{ width: "12%" }}>
+                      Giao hàng
                     </th>
                     <th
                       className="pb-7 font-w-500 text-black"
@@ -183,18 +218,6 @@ const ListOrderPage = () => {
                       </td>
                     </tr>
                   )}
-
-                  {/* {!loading && orders.length === 0 && (
-                    <tr>
-                      <td
-                        colSpan={7}
-                        className="pb-7 pt-7 font-size-small td-table font-w-500 text-center"
-                      >
-                        Không có dữ liệu
-                      </td>
-                    </tr>
-                  )} */}
-
                   {!loading && orders.length === 0 && (
                     <tr>
                       <td
@@ -217,7 +240,7 @@ const ListOrderPage = () => {
                   {!loading &&
                     orders.length > 0 &&
                     orders
-                        .filter((orders) => orders.status == "CONFIM")
+                        .filter((orders) => orders.status !== "CANCELLED" && orders.status !== "DELIVERED")
                         .map((order) => (
                       <tr key={order.id} className="border-header-table">
                         <td className="pb-7 pt-7 font-size-small td-table font-w-500 ">
@@ -235,33 +258,24 @@ const ListOrderPage = () => {
                             : " - "}
                         </td>
                         <td className="pb-7 pt-7 font-size-small td-table font-w-500">
-                          {order.status || "-"}
+                          {order.status ? hienThiTrangThai(order.status) : ""}
                         </td>
                         <td className="pb-7 pt-7 font-size-small td-table font-w-500">
-
-                          {/*{order.status =="FISNISHED" ? (*/}
-                          {/*    <button*/}
-                          {/*        className="btn btn-primary"*/}
-                          {/*        onClick={() => {handleUpdateStatus(order.id!)*/}
-                          {/*        }}*/}
-                          {/*    >*/}
-                          {/*      Hủy*/}
-                          {/*    </button>*/}
-                          {/*):(*/}
-                          {/*    <button*/}
-                          {/*        className="btn btn-primary"*/}
-                          {/*        onClick={() => {handleUpdateStatus(order.id!)*/}
-                          {/*        }}*/}
-                          {/*    >*/}
-                          {/*      Hoàn thành*/}
-                          {/*    </button>  */}
-                          {/*)}*/}
                           <button
                               className="btn btn-primary"
-                              onClick={() => {handleUpdateStatus(order.id!)
+                              onClick={() => {handleUpdateStatus(order.id!, order.status!)
                               }}
                           >
-                            Hoàn thành
+                            {order.status === "FISNISHED" ? "Hủy" : "Hoàn thành"}
+                          </button>
+                        </td>
+                        <td className="pb-7 pt-7 font-size-small td-table font-w-500">
+                          <button
+                              className="btn btn-primary"
+                              onClick={() => handleUpdateStatusDevi(order.id!, order.status!)}
+                              disabled={order.status !== "FISNISHED"}
+                          >
+                            Đã giao
                           </button>
                         </td>
                         <td className="pb-7 pt-7 font-size-small td-table font-w-500">

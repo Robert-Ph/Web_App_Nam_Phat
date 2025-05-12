@@ -33,6 +33,9 @@ const update = (id: number, update: Order) => {
 export const updateIspay = (id: number | null) => {
   return api.put(`${BASE_URL}/ispay/${id}`);
 };
+export const updateStatusCon = (id: number | null) => {
+  return api.put(`${BASE_URL}/status-con/${id}`);
+};
 export const updateStatusFis = (id: number | null) => {
   return api.put(`${BASE_URL}/status-fis/${id}`);
 };
@@ -49,6 +52,7 @@ const OrderService = {
   getById,
   update,
   updateIspay,
+  updateStatusCon,
   updateStatusFis,
   updateStatusCan,
   updateStatusDevi,

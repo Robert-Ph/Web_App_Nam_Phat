@@ -31,6 +31,10 @@ public class OrderRequest {
     @NotEmpty(message = "address is not emtry")
     String address;
 
+    String cusomerNameNew;
+
+    boolean isNew;
+
 
     List<OrderItemRequest> orderItems;
 }

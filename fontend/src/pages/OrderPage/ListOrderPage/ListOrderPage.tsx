@@ -21,7 +21,7 @@ const ListOrderPage = () => {
   const [page, setPage] = useState<number>(1);
   const [totalPages, setTotalPages] = useState(0);
   const [loading, setLoading] = useState<boolean>(false);
-  const pageSize = 10;
+  const pageSize = 15;
 
   const [filterOption, setFilterOption] = useState<string>("all");
   const [search, setSearch] = useState<string>("");
@@ -64,9 +64,21 @@ const ListOrderPage = () => {
     setFilterOption(event.target.value);
   };
 
-  console.log("Option:" + filterOption);
+  const hienThiTrangThai = (status: string) => {
+    switch (status) {
+      case "DELIVERED":
+        return "Đã giao";
+      case "CONFIM":
+        return "Xác nhận";
+      case "FISNISHED":
+        return "Hoàn thành";
+      case "CANCELLED":
+        return "Đã hủy";
+      default:
+        return status;
+    }
+  };
 
-  console.log(page);
   return (
     <div>
       <div className="main-body">
@@ -121,68 +133,6 @@ const ListOrderPage = () => {
           </div>
         </div>
         <div>
-          {/* <div className="table-container">
-            <table style={{ width: "100%", borderCollapse: "collapse" }}>
-              <thead>
-                <tr className="color-blue header-table text-left border-header-table">
-                  <th className="pb-7 font-w-500" style={{ width: "7%" }}>
-                    ID
-                  </th>
-                  <th
-                    className="pb-7 font-w-500"
-                    style={{ width: "25%", paddingRight: "10px" }}
-                  >
-                    Tên khách hàng
-                  </th>
-                  <th className="pb-7 font-w-500" style={{ width: "12%" }}>
-                    Ngày
-                  </th>
-                  <th className="pb-7 font-w-500" style={{ width: "20%" }}>
-                    Giá (vnđ)
-                  </th>
-                  <th className="pb-7 font-w-500" style={{ width: "15%" }}>
-                    Thanh toán
-                  </th>
-                  <th className="pb-7 font-w-500" style={{ width: "12%" }}>
-                    Trạng thái
-                  </th>
-                  <th className="pb-7 font-w-500" style={{ width: "3%" }}></th>
-                </tr>
-              </thead>
-              <tbody className="border-header-table">
-                {products.map((product) => (
-                  <tr key={product.id} className="border-header-table">
-                    <td className="pb-7 pt-7 font-size-small td-table font-w-500 ">
-                      {product.id}
-                    </td>
-                    <td
-                      className="pb-7 pt-7 font-size-small font-w-500 "
-                      style={{ paddingRight: "20px" }}
-                    >
-                      {product.name || "-"}
-                    </td>
-                    <td className="pb-7 pt-7 font-size-small td-table font-w-500">
-                      {product.date || "-"}
-                    </td>
-                    <td className="pb-7 pt-7 font-size-small td-table font-w-500">
-                      {product.price || "-"}
-                    </td>
-                    <td className="pb-7 pt-7 font-size-small td-table font-w-500">
-                      {product.isPay || "-"}
-                    </td>
-                    <td className="pb-7 pt-7 font-size-small td-table font-w-500">
-                      {product.status || "-"}
-                    </td>
-                    <td className="pb-7 pt-7 font-size-small td-table font-w-500">
-                      <button className="btn-more">
-                        <MoreHorizIcon></MoreHorizIcon>
-                      </button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div> */}
 
           <div style={{ padding: "10px" }}>
             <div className="table-more">
@@ -226,18 +176,6 @@ const ListOrderPage = () => {
                       </td>
                     </tr>
                   )}
-
-                  {/* {!loading && orders.length === 0 && (
-                    <tr>
-                      <td
-                        colSpan={7}
-                        className="pb-7 pt-7 font-size-small td-table font-w-500 text-center"
-                      >
-                        Không có dữ liệu
-                      </td>
-                    </tr>
-                  )} */}
-
                   {!loading && orders.length === 0 && (
                     <tr>
                       <td
@@ -260,7 +198,7 @@ const ListOrderPage = () => {
                   {!loading &&
                     orders.length > 0 &&
                     orders.map((order) => (
-                      <tr key={order.id} className="border-header-table">
+                      <tr key={order.id} className="border-header-table" style={{ color: order.status === "CANCELLED" ? "red" : "inherit" }}>
                         <td className="pb-7 pt-7 font-size-small td-table font-w-500 ">
                           {order.id}
                         </td>
@@ -268,7 +206,7 @@ const ListOrderPage = () => {
                           className="pb-7 pt-7 font-size-small font-w-500 "
                           style={{ paddingRight: "20px" }}
                         >
-                          {(order.nameCustomer as string) || "-"}
+                          {(order.nameCustomer as string)   || "-"}
                         </td>
                         <td className="pb-7 pt-7 font-size-small td-table font-w-500">
                           {order.dateCreate
@@ -287,7 +225,7 @@ const ListOrderPage = () => {
                           {order.pay ? "Đã thanh toán" : "Chưa thanh toán"}
                         </td>
                         <td className="pb-7 pt-7 font-size-small td-table font-w-500">
-                          {order.status || "-"}
+                          {order.status ? hienThiTrangThai(order.status) : ""}
                         </td>
                         <td className="pb-7 pt-7 font-size-small td-table font-w-500">
                           <button

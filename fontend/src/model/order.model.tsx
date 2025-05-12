@@ -8,12 +8,15 @@ type Order = {
   status: string | null;
   dateCreate: string | null;
   dateShip: string | null;
+  datePayment: string | null;
   nameCustomer: string | null | Customer;
   vat: number;
   reduce: number | null;
   typeOrder: string;
   address: string;
   phone: string;
+  cusomerNameNew: string | null;
+  isNew: boolean | null;
   orderItems: OrderItem[];
 };
 

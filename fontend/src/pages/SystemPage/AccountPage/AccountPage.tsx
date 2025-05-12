@@ -30,7 +30,7 @@ const AccountPage = () => {
 
   const [search, setSearch] = useState<string>("");
   const debouncedQuery = useDebounce(search, 200);
-  const pageSize = 10;
+  const pageSize = 15;
 
   const [update, setUpdate] = useState<account | null>(null);
 

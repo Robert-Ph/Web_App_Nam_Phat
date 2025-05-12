@@ -36,6 +36,8 @@ public class Order {
 
     LocalDateTime dateShip;
 
+    LocalDateTime datePayment;
+
     @Enumerated(EnumType.STRING)
     TypeOrder typeOrder;
 
@@ -51,9 +53,11 @@ public class Order {
     List<OrderItem> orderItems;
 
     @ManyToOne
-    @JoinColumn(name = "cusomer_id")
+    @JoinColumn(name = "cusomer_id", nullable = true)
 //    @JsonBackReference
     Customer customer;
+
+    boolean isNew;
 
     @PrePersist
     protected void onCreate() {

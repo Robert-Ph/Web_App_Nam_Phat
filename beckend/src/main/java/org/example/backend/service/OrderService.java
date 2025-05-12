@@ -1,6 +1,8 @@
 package org.example.backend.service;
 
 
+import jakarta.annotation.PostConstruct;
+import org.example.backend.dto.request.CustomerRequest;
 import org.example.backend.dto.request.OrderRequest;
 
 import org.example.backend.dto.request.OrderUpdateRequest;
@@ -16,18 +18,23 @@ import org.example.backend.message.ErrorMessage;
 import org.example.backend.repository.InvoiceRepository;
 import org.example.backend.repository.OrderItemRepository;
 import org.example.backend.repository.OrderRepository;
+import org.example.backend.utils.ConverDate;
 import org.example.backend.utils.PDFUtils;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PagedModel;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -44,9 +51,7 @@ public class OrderService {
     @Autowired
     private ModelMapper modelMapper;
 
-    @Autowired
-    private PDFUtils pdfUtils;
-
+    private ConverDate converDate;
 
     @Autowired
     private CompanyService companyService;
@@ -60,37 +65,43 @@ public class OrderService {
 
     @Transactional
     public Order create(OrderRequest request) {
-        Customer customer = customerService.findCustomerByPhone(request.getPhone());
-
-
         Order order = modelMapper.map(request, Order.class);
-        order.setCustomer(customer);
-        order.setPhone(customer.getPhone());
-        if (Objects.isNull(request.getAddress())) {
-            order.setAddress(customer.getAddress());
-        } else {
+        if (order.isNew()){
+            Customer customer = customerService.findCustomerByPhone(request.getPhone());
+            order.setCustomer(customer);
+            order.setPhone(customer.getPhone());
+            order.setAddress(Optional.ofNullable(request.getAddress()).orElse(customer.getAddress()));
+        }else{
+            CustomerRequest customerRequest = new CustomerRequest(request.getCusomerNameNew(), request.getPhone(), null,null, request.getAddress(),"personally");
+            Customer customer = customerService.create(customerRequest);
+            order.setCustomer(customer);
+            order.setPhone(request.getPhone());
             order.setAddress(request.getAddress());
-        }
 
+        }
         order.setStatus(OrderStatus.CONFIM);
-        order.setTotalPrice(order.getOrderItems().stream().mapToLong(item -> (long)item.getQuanlityProduct() * item.getPricePerOne()).sum());
+        order.setTotalPrice(order.getOrderItems().stream()
+                .mapToLong(item -> (long) item.getQuanlityProduct() * item.getPricePerOne())
+                .sum());
         order.setVat(request.getVat());
         order.setReduce(request.getReduce());
-        Order save = orderRepository.save(order);
 
-        for (OrderItem item :
-                order.getOrderItems()) {
+        // Lưu order trước để có ID cho OrderItem
+        Order savedOrder = orderRepository.save(order);
 
-            item.setOrder(save);
-            orderItemRepository.save(item);
+        // Thiết lập quan hệ và lưu từng item
+        order.getOrderItems().forEach(item -> {
+            item.setOrder(savedOrder);
+        });
+        orderItemRepository.saveAll(order.getOrderItems()); // dùng saveAll thay vì vòng lặp thủ công
 
-        }
+        // Lưu invoice
         invoiceRepository.save(Invoice.builder()
-                .priceNeedPay( (long) Math.round(order.getTotalPrice()))
-                .order(order)
+                .priceNeedPay((long) Math.round(order.getTotalPrice()))
+                .order(savedOrder)
                 .build());
 
-        return save;
+        return savedOrder;
     }
 
 
@@ -100,13 +111,16 @@ public class OrderService {
     }
 
 
+
     private OrderResponseForList converToOrderForList(Order order) {
-        modelMapper.typeMap(Order.class, OrderResponseForList.class).addMappings(mapper ->
-                mapper.map(src -> src.getCustomer().getFullName(), OrderResponseForList::setNameCustomer));
+        // Tạo DTO thủ công để kiểm soát logic
+        OrderResponseForList dto = modelMapper.map(order, OrderResponseForList.class);
 
+            dto.setNameCustomer(order.getCustomer().getFullName());
 
-        return modelMapper.map(order, OrderResponseForList.class);
+        return dto;
     }
+
 
     public PagedModel<OrderResponseForList> getAllForList(Pageable pageable) {
         return new PagedModel<>(orderRepository.findAll(pageable).map(order -> {
@@ -154,6 +168,13 @@ public class OrderService {
     public void updtateIsPay(Long id){
         Order order = orderRepository.findById(id).get();
         order.setPay(true);
+        order.setDatePayment(converDate.date(LocalDateTime.now()));
+        orderRepository.save(order);
+
+    }
+    public void updtateStatusCon(Long id){
+        Order order = orderRepository.findById(id).get();
+        order.setStatus(OrderStatus.CONFIM);
         orderRepository.save(order);
 
     }
@@ -165,6 +186,8 @@ public class OrderService {
     }
     public void updtateStatusCan(Long id){
         Order order = orderRepository.findById(id).get();
+        Invoice invoice = invoiceRepository.findByOrder(order).get();
+        invoiceRepository.delete(invoice);
         order.setStatus(OrderStatus.CANCELLED);
         orderRepository.save(order);
 

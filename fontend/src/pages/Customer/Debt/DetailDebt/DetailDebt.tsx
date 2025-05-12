@@ -119,15 +119,15 @@ const DetailDebt = () => {
           </div>
         </div>
 
-        <div className="mt-30">
+        <div className="mt-0">
           <span>
             <strong>Tổng số nợ còn lại: {formatCurrency(depts.totalAmount)  } vnđ</strong>
           </span>
           <br />
-          <span>Ngày thanh toán gần nhất: </span>
+          <span>Ngày thanh toán gần nhất: ../../..</span>
         </div>
         <div style={{ marginBottom: "10px" }}>
-          <h3 style={{ marginTop: "30px" }}>
+          <h3 style={{ marginTop: "20px" }}>
             Danh sách đơn hàng chưa thanh toán
           </h3>
           <div

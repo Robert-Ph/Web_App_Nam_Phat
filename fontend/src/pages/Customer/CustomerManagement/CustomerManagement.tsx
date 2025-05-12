@@ -23,7 +23,7 @@ const CustomerManagement = () => {
   const [totalPages, setTotalPages] = useState(0);
   const [search, setSearch] = useState<string>("");
   const debouncedQuery = useDebounce(search, 300);
-  const pageSize = 10;
+  const pageSize = 15;
 
 
   const navigate = useNavigate();
@@ -31,26 +31,6 @@ const CustomerManagement = () => {
   const handleChange = (_event: React.ChangeEvent<unknown>, value: number) => {
     setPage(value);
   };
-
-  // const handleAdd = (customer: Customer) => {
-  //   console.log("add");
-  //   CustomerService.create(customer)
-  //       .then((response) => {
-  //         console.log(response);
-  //         try {
-  //           const newCustomer = response.data.data;
-  //           setCustomer([newCustomer, ...customers]);
-  //           toast.success("Thêm nhân viên thành công!");
-  //         } catch (error) {
-  //           toast.error("Đã xảy ra lỗi. Vui lòng thử lại!");
-  //         }
-  //       })
-  //       .catch((error) => {
-  //         const errorReponse = error.response;
-  //
-  //         toast.error("Lỗi không xác định. Vui lòng thử lại!");
-  //       });
-  // };
 
 
   //Call API if filter

@@ -17,7 +17,7 @@ public class InventoryController {
 
 
     @GetMapping
-    public ResponseEntity<ApiResponse> getAll(@RequestParam(defaultValue = "0")int page,@RequestParam(defaultValue = "10") int size ){
+    public ResponseEntity<ApiResponse> getAll(@RequestParam(defaultValue = "0")int page,@RequestParam(defaultValue = "15") int size ){
         Pageable pageable = PageRequest.of(page, size);
         return ResponseEntity.ok(ApiResponse
                 .builder()
@@ -28,7 +28,7 @@ public class InventoryController {
     }
 
     @GetMapping("/search")
-    public ResponseEntity<ApiResponse> getByFilter(@RequestParam String filter,@RequestParam(defaultValue = "0")int page,@RequestParam(defaultValue = "10") int size ){
+    public ResponseEntity<ApiResponse> getByFilter(@RequestParam String filter,@RequestParam(defaultValue = "0")int page,@RequestParam(defaultValue = "15") int size ){
         Pageable pageable = PageRequest.of(page, size);
         return ResponseEntity.ok(ApiResponse
                 .builder()
