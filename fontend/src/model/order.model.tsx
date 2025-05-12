@@ -16,7 +16,7 @@ type Order = {
   address: string;
   phone: string;
   cusomerNameNew: string | null;
-  isNew: boolean | null;
+  newCustomer: boolean | null;
   orderItems: OrderItem[];
 };
 

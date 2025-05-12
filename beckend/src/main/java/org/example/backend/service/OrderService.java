@@ -66,7 +66,8 @@ public class OrderService {
     @Transactional
     public Order create(OrderRequest request) {
         Order order = modelMapper.map(request, Order.class);
-        if (order.isNew()){
+        System.out.println("hhhhhhhhhhhhhhhhhhhhhh: "+request.isNewCustomer());
+        if (request.isNewCustomer()){
             Customer customer = customerService.findCustomerByPhone(request.getPhone());
             order.setCustomer(customer);
             order.setPhone(customer.getPhone());
@@ -209,23 +210,33 @@ public class OrderService {
             order.setPhone(update.getPhone());
         }
         order.setVat(update.getVat());
-        order.setStatus(OrderStatus.valueOf(update.getStatus()));
+        order.setStatus(OrderStatus.CONFIM);
         order.setTypeOrder(TypeOrder.valueOf(update.getTypeOrder()));
-        order.setDateShip(update.getDateShip());
-        order.setPay(update.isPay());
+//        order.setDateShip(update.getDateShip());
+//        order.setPay(update.isPay());
+        order.setTotalPrice(order.getOrderItems().stream().mapToLong(item -> item.getQuanlityProduct() * item.getPricePerOne()).sum());
 
         // Update order items if provided
-        if (update.getOrderItems() != null) {
-            order.getOrderItems().clear();
-            List<OrderItem> updatedItems = update.getOrderItems();
-            updatedItems.forEach(item -> item.setOrder(order)); // Set order reference
-            order.getOrderItems().addAll(updatedItems);
-        }
+        // Lưu order trước để có ID cho OrderItem
+        Order savedOrder = orderRepository.save(order);
+
+        // Thiết lập quan hệ và lưu từng item
+        order.getOrderItems().forEach(item -> {
+            item.setOrder(savedOrder);
+        });
+        orderItemRepository.saveAll(update.getOrderItems()); // dùng saveAll thay vì vòng lặp thủ công
+
+        // Lưu invoice
+        invoiceRepository.save(Invoice.builder()
+                .priceNeedPay((long) Math.round(order.getTotalPrice()))
+                .order(savedOrder)
+                .build());
+
+        return savedOrder;// dùng saveAll thay vì vòng lặp thủ công
 
 
 
-        order.setTotalPrice(order.getOrderItems().stream().mapToLong(item -> item.getQuanlityProduct() * item.getPricePerOne()).sum());
-        return orderRepository.save(order);
+
     }
 
 

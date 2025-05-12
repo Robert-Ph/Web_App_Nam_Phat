@@ -17,8 +17,14 @@ import { formatCurrency } from "../../../utils/Utils";
 import OrderItem from "../../../model/orderItem.model";
 
 const DetailOrderPage = () => {
-  const [order, setOrder] = useState<Order| null>(null);
+  const [order, setOrder] = useState<Order | null>();
   const [customer, setCustomer] = useState<Customer>();
+  const [orderItems, setOrderItems] = useState<OrderItem[]>([]);
+  const addressRef = useRef<HTMLInputElement>(null);
+  const [query, setQuery] = useState<string>("");
+  const [vat, setVat] = useState<number>(8);
+  const [reduce, setReduce] = useState<number>(0);
+  const [invoice, setInvoice] = useState<string>("INDIVIDUAL");
 
   const [open, setOpen] = useState<boolean>(false);
   const [isEdit, setIsEdit] = useState<boolean>(false);
@@ -37,7 +43,9 @@ const DetailOrderPage = () => {
     console.log("Selected status:", e.target.value);  // Log giá trị khi người dùng chọn
     if (order) {
       setOrder({ ...order, status: e.target.value });
+      setQuery(order.phone);
     }
+
   };
 
   //   Sự kiện mở đóng modal chỉnh sửa sản phẩm
@@ -58,8 +66,63 @@ const DetailOrderPage = () => {
     navigate(-1);
   };
 
+  const addProduct = (orderItem: OrderItem) => {
+    setOpen(false);
+    setOrderItems([...orderItems, orderItem]);
+  };
+
   //Bắt sự kiện thay đổi select trong option của hóa đơn
-  const handleChange = (_event: SelectChangeEvent) => {};
+  const handleChange = (event: SelectChangeEvent) => {
+    setInvoice(event.target.value);
+  };
+
+  const handleUpdate = (id: number | null) => {
+        const orders = {
+          id: id,
+          vat: vat,
+          reduce: reduce,
+          typeOrder: invoice,
+          phone: query,
+          address: addressRef.current?.value,
+          orderItems: [...orderItems],
+        } as Order;
+
+        try {
+          OrderService.update(orders.id ?? 0, orders)
+              .then((response: any) => {
+                console.log(response.data);
+                if (response.data.code == 201) {
+                  toast.success("Tạo đơn hàng thành công!", {
+                    autoClose: 2000,
+                  });
+                  navigate("/order/list");
+                }
+              })
+              .catch((e: any) => {
+                const error = e.response.data;
+
+                if (error.code == 802) {
+                  toast.error("Không tìm thấy khách hàng trong hệ thống!", {
+                    autoClose: 1000,
+                  });
+                } else {
+                  toast.error("Lỗi không xác định!", {
+                    autoClose: 1000,
+                  });
+                }
+              });
+          // ✅ Reload trang sau 0s để toast hiển thị
+          setTimeout(() => {
+            window.location.reload();
+          }, 500);
+        } catch (error) {
+          console.log(error);
+        } finally {
+          console.log('');
+        }
+
+  };
+
 
   // bat su kien huy don hang(cancel order)
   const handleCancelOrder = () =>{
@@ -151,15 +214,16 @@ const DetailOrderPage = () => {
                       <button
                           className="btn btn-warning"
                           style={{ marginRight: "10px" }}
+                          onClick={() => handleUpdate(order?.id ?? 0)}
                       >
                         Cập nhật
                       </button>
                   ) : (
                       <button
                           className="btn btn-primary"
-                          disabled={true}
+                          // disabled={true}
                           style={{ marginRight: "0px" }}
-                          // onClick={() => setIsEdit(true)}
+                          onClick={() => setIsEdit(true)}
                       >
                         Chỉnh sửa
                       </button>
@@ -189,7 +253,8 @@ const DetailOrderPage = () => {
                 <input
                   placeholder="Số điện thoại"
                   disabled={!isEdit}
-                  value={order?.phone}
+                  value={order?.phone || query}
+                  onChange={(e)=> setQuery(e.target.value)}
                 ></input>
               </div>
 
@@ -322,6 +387,7 @@ const DetailOrderPage = () => {
                         style={{ width: "85%" }}
                         disabled={!isEdit}
                         value={order?.reduce ? order.reduce : 0}
+                        onChange={(e)=> setReduce(Number(e.target.value))}
                     ></input>
                   </div>
                   <div
@@ -334,6 +400,7 @@ const DetailOrderPage = () => {
                       style={{ width: "85%" }}
                       disabled={!isEdit}
                       value={order?.vat}
+                      onChange={(e)=> setVat(Number(e.target.value))}
                     ></input>
                   </div>
                   <div style={{ flex: "5" }}>
@@ -377,7 +444,7 @@ const DetailOrderPage = () => {
         open={open}
         onClose={handleOnclose}
         orderItem={selectItem}
-        handleAdd={(_orderItem: OrderItem) => {}}
+        handleAdd={(orderItem: OrderItem) => {addProduct(orderItem)}}
       ></ProductModal>
     </div>
   );

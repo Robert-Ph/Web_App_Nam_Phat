@@ -33,7 +33,7 @@ public class OrderRequest {
 
     String cusomerNameNew;
 
-    boolean isNew;
+    boolean newCustomer;
 
 
     List<OrderItemRequest> orderItems;

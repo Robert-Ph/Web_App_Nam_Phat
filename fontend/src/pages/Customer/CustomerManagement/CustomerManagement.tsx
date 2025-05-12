@@ -23,7 +23,7 @@ const CustomerManagement = () => {
   const [totalPages, setTotalPages] = useState(0);
   const [search, setSearch] = useState<string>("");
   const debouncedQuery = useDebounce(search, 300);
-  const pageSize = 15;
+  const pageSize = 13;
 
 
   const navigate = useNavigate();

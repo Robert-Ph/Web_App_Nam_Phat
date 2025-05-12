@@ -57,8 +57,6 @@ public class Order {
 //    @JsonBackReference
     Customer customer;
 
-    boolean isNew;
-
     @PrePersist
     protected void onCreate() {
         dateCreate = LocalDateTime.now();

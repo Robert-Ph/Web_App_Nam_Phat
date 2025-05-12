@@ -23,7 +23,7 @@ const OrderPage = () => {
   const [orderItems, setOrderItems] = useState<OrderItem[]>([]);
 
   const [invoice, setInvoice] = useState<string>("INDIVIDUAL");
-
+  const [isphone, setisphone] = useState<boolean>(false);
   const [open, setOpen] = useState<boolean>(false);
 
   const [query, setQuery] = useState<string>("");
@@ -152,7 +152,7 @@ const OrderPage = () => {
           dateShip: null,
           pay: null,
           cusomerNameNew: null,
-          isNew: isCutomer,
+          newCustomer: true,
           orderItems: [...orderItems],
         } as Order;
 
@@ -189,63 +189,69 @@ const OrderPage = () => {
         }
       }
     }else{
-      if (customerRetail == null) {
-        toast.error("Thông tin khách hàng không hợp lệ hoặc trống", {
-          autoClose: 1000,
-        });
-      } else if (orderItems.length == 0) {
-        toast.error("Bạn chưa thêm sản phẩm vào đơn hàng", {
-          autoClose: 1000,
-        });
-      } else {
-        const order = {
-          id: null,
-          vat: vat,
-          reduce: reduce,
-          typeOrder: invoice,
-          phone: customerRetailPhone,
-          address: addressRef.current?.value,
-          totalPrice: null,
-          status: null,
-          dateCreate: null,
-          dateShip: null,
-          pay: null,
-          cusomerNameNew: customerRetail,
-          isNew: isCutomer,
-          orderItems: [...orderItems],
-        } as Order;
+      if(isphone){
+        if (customerRetail == null) {
+          toast.error("Thông tin khách hàng không hợp lệ hoặc trống", {
+            autoClose: 1000,
+          });
+        } else if (orderItems.length == 0) {
+          toast.error("Bạn chưa thêm sản phẩm vào đơn hàng", {
+            autoClose: 1000,
+          });
+        } else {
+          const order = {
+            id: null,
+            vat: vat,
+            reduce: reduce,
+            typeOrder: invoice,
+            phone: customerRetailPhone,
+            address: addressRef.current?.value,
+            totalPrice: null,
+            status: null,
+            dateCreate: null,
+            dateShip: null,
+            pay: null,
+            cusomerNameNew: customerRetail,
+            newCustomer: isCutomer,
+            orderItems: [...orderItems],
+          } as Order;
 
-        try {
-          handleReset();
-          console.log(query);
-          OrderService.create(order)
-              .then((response: any) => {
-                console.log(response.data);
-                if (response.data.code == 201) {
-                  toast.success("Tạo đơn hàng thành công!", {
-                    autoClose: 2000,
-                  });
-                  navigate("/order/list");
-                }
-              })
-              .catch((e: any) => {
-                const error = e.response.data;
+          try {
+            handleReset();
+            console.log(query);
+            OrderService.create(order)
+                .then((response: any) => {
+                  console.log(response.data);
+                  if (response.data.code == 201) {
+                    toast.success("Tạo đơn hàng thành công!", {
+                      autoClose: 2000,
+                    });
+                    navigate("/order/list");
+                  }
+                })
+                .catch((e: any) => {
+                  const error = e.response.data;
 
-                if (error.code == 802) {
-                  toast.error("Không tìm thấy khách hàng trong hệ thống!", {
-                    autoClose: 1000,
-                  });
-                } else {
-                  toast.error("Lỗi không xác định!", {
-                    autoClose: 1000,
-                  });
-                }
-              });
-        } catch (error) {
-          console.log(error);
-        } finally {
-          console.log('');
+                  if (error.code == 802) {
+                    toast.error("Không tìm thấy khách hàng trong hệ thống!", {
+                      autoClose: 1000,
+                    });
+                  } else {
+                    toast.error("Lỗi không xác định!", {
+                      autoClose: 1000,
+                    });
+                  }
+                });
+          } catch (error) {
+            console.log(error);
+          } finally {
+            console.log('');
+          }
         }
+      }else {
+        toast.error("Số điện thoại đã tồn tại!", {
+          autoClose: 1000,
+        });
       }
     }
   };
@@ -307,7 +313,6 @@ const OrderPage = () => {
 
         <div className="mt-20">
           <h3>Thông tin khách hàng </h3>
-          <p style={{color:"red"}}>Chú ý: Chỉ tạo được đơn hàng cho khách hàng đã có trong hệ thống, tìm khách hàng thông qua số điện thoại!</p>
           <div className="wrap-form">
             <div className="form-group flex-8">
               <span>Tên khách hàng</span>
@@ -353,8 +358,21 @@ const OrderPage = () => {
                       style={{height: '38px', width: '300px', marginTop:'2px', borderRadius: 7, border: "1px solid #EEEEEE", boxShadow: "0 0 0 2px transparent"}}
                       placeholder="Số điện thoại"
                       value={customerRetailPhone}
-                      onChange={(e) => setCustomerRetailPhone(e.target.value)}
+                      onChange={(e) => {
+                        const value = e.target.value;
+                        const isDuplicate = customers.some(
+                            (c) => c.active && c.phone === value
+                        );
+
+                        if (isDuplicate) {
+                          setisphone(true);
+                        } else {
+                          setCustomerRetailPhone(value);
+                        }
+                      }}
+
                   />
+
               )}
 
 

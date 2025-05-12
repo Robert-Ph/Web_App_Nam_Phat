@@ -137,7 +137,6 @@ const ProductModal = ({ open, onClose, orderItem, handleAdd }: props) => {
               </button>
               <button
                 className="btn btn-primary"
-                style={{ marginRight: "0px;" }}
                 type="submit"
               >
                 Thêm / Cập nhật
