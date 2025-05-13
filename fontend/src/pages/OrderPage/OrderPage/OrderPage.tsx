@@ -29,14 +29,14 @@ const OrderPage = () => {
   const [query, setQuery] = useState<string>("");
   const addressRef = useRef<HTMLInputElement>(null);
 
-  const [_loading, setLoading] = useState(false);
+  // const [_loading, setLoading] = useState(false);
   const [isCutomer, setIsCustomer] = useState(true);
   const [customerRetailPhone, setCustomerRetailPhone] = useState<string>("");
   const [customers, setCustomers] = useState<Customer[]>([]);
   const [selectedCustomer, setSelectedCustomer] = useState<Customer | null>(
     null
   );
-  const [customerRetail, setCustomerRetail] = useState<string>("");
+  const [customerNewRetail, setCustomerRetail] = useState<string>("");
 
 
   const [vat, setVat] = useState<number>(8);
@@ -128,7 +128,7 @@ const OrderPage = () => {
   };
 
   const handleCreate = () => {
-    setLoading(true);
+    // setLoading(true);
     if(isCutomer){
       if (selectedCustomer == null) {
         toast.error("Thông tin khách hàng không hợp lệ hoặc trống", {
@@ -158,9 +158,8 @@ const OrderPage = () => {
 
         try {
           handleReset();
-          console.log(query);
           OrderService.create(order)
-              .then((response: any) => {
+              .then((response) => {
                 console.log(response.data);
                 if (response.data.code == 201) {
                   toast.success("Tạo đơn hàng thành công!", {
@@ -169,7 +168,7 @@ const OrderPage = () => {
                   navigate("/order/list");
                 }
               })
-              .catch((e: any) => {
+              .catch((e) => {
                 const error = e.response.data;
 
                 if (error.code == 802) {
@@ -189,8 +188,9 @@ const OrderPage = () => {
         }
       }
     }else{
-      if(isphone){
-        if (customerRetail == null) {
+      if(!isphone){
+        console.log(customerNewRetail)
+        if (customerNewRetail == null) {
           toast.error("Thông tin khách hàng không hợp lệ hoặc trống", {
             autoClose: 1000,
           });
@@ -211,16 +211,16 @@ const OrderPage = () => {
             dateCreate: null,
             dateShip: null,
             pay: null,
-            cusomerNameNew: customerRetail,
+            cusomerNameNew: customerNewRetail,
             newCustomer: isCutomer,
             orderItems: [...orderItems],
           } as Order;
 
           try {
             handleReset();
-            console.log(query);
+            console.log(customerNewRetail);
             OrderService.create(order)
-                .then((response: any) => {
+                .then((response) => {
                   console.log(response.data);
                   if (response.data.code == 201) {
                     toast.success("Tạo đơn hàng thành công!", {
@@ -229,7 +229,7 @@ const OrderPage = () => {
                     navigate("/order/list");
                   }
                 })
-                .catch((e: any) => {
+                .catch((e) => {
                   const error = e.response.data;
 
                   if (error.code == 802) {
@@ -319,7 +319,7 @@ const OrderPage = () => {
               <input
                   placeholder="Tên khách hàng"
                   disabled={isCutomer}
-                  value={isCutomer ? (selectedCustomer?.fullName || "") : customerRetail}
+                  value={isCutomer ? (selectedCustomer?.fullName || "") : customerNewRetail}
                   onChange={(e) => {
                     if (!isCutomer) {
                       setCustomerRetail(e.target.value);

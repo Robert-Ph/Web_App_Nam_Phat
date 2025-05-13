@@ -90,6 +90,12 @@ const CustomerManagement = () => {
 
             <div style={{ position: "relative", marginRight: "5%" }}>
               <button
+                  className="btn btn-primary"
+                  disabled={true}
+              >
+                Export
+              </button>
+              <button
                 className="btn btn-primary"
                 onClick={() => {
                   navigate("/customer/list/create");

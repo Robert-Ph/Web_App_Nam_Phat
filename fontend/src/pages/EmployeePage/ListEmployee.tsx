@@ -58,7 +58,7 @@ const ListEmployee = () => {
           toast.error("Đã xảy ra lỗi. Vui lòng thử lại!");
         }
       })
-      .catch((_error) => {
+      .catch(() => {
         // const errorReponse = error.response;
 
         toast.error("Lỗi không xác định. Vui lòng thử lại!");
@@ -119,6 +119,12 @@ const ListEmployee = () => {
             </div>
 
             <div style={{ position: "relative", marginRight: "5%" }}>
+              <button
+                  className="btn btn-primary"
+                  disabled={true}
+              >
+                Export
+              </button>
               <button className="btn btn-primary" onClick={handleOpen}>
                 Thêm mới
               </button>

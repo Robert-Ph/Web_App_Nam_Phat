@@ -93,6 +93,12 @@ const WageHousePage = () => {
 
             <div>
               <button
+                  className="btn btn-primary"
+                  disabled={true}
+              >
+                Export
+              </button>
+              <button
                 className="btn btn-warning"
                 onClick={() => {
                   navigate("/warehouse/list/history");

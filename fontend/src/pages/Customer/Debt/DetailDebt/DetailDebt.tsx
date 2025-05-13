@@ -113,7 +113,13 @@ const DetailDebt = () => {
             >
               Quay về
             </button>
-            <button className="btn btn-primary" onClick={() => setOpen(true)}>
+            <button
+                className="btn btn-primary"
+                disabled={true}
+            >
+              Export
+            </button>
+            <button className="btn btn-primary" disabled={true} onClick={() => setOpen(true)}>
               Cập nhật công nợ
             </button>
           </div>

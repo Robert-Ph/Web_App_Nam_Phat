@@ -66,14 +66,13 @@ public class OrderService {
     @Transactional
     public Order create(OrderRequest request) {
         Order order = modelMapper.map(request, Order.class);
-        System.out.println("hhhhhhhhhhhhhhhhhhhhhh: "+request.isNewCustomer());
         if (request.isNewCustomer()){
             Customer customer = customerService.findCustomerByPhone(request.getPhone());
             order.setCustomer(customer);
             order.setPhone(customer.getPhone());
             order.setAddress(Optional.ofNullable(request.getAddress()).orElse(customer.getAddress()));
         }else{
-            CustomerRequest customerRequest = new CustomerRequest(request.getCusomerNameNew(), request.getPhone(), null,null, request.getAddress(),"personally");
+            CustomerRequest customerRequest = new CustomerRequest(request.getCusomerNameNew(), request.getPhone(), "","", request.getAddress(),"personally");
             Customer customer = customerService.create(customerRequest);
             order.setCustomer(customer);
             order.setPhone(request.getPhone());

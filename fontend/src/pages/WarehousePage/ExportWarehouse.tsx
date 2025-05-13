@@ -100,6 +100,12 @@ const ExportWarehouse = () => {
               </Box>
             </div>
             <div style={{ paddingRight: "5%" }}>
+              <button
+                  className="btn btn-primary"
+                  disabled={true}
+              >
+                Export
+              </button>
               <button className="btn btn-primary" onClick={handleOpen}>
                 Thêm mới
               </button>

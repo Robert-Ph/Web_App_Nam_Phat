@@ -99,6 +99,12 @@ const HistoryImportWageHouse = () => {
               >
                 Quay về
               </button>
+              <button
+                  className="btn btn-primary"
+                  disabled={true}
+              >
+                Export
+              </button>
             </div>
           </div>
         </div>
