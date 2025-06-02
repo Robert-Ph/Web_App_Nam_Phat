@@ -68,6 +68,11 @@ const MainLayout = () => {
             id: "1",
             name: "Công việc",
             link: "/work/list-work",
+          },
+          {
+            id: "2",
+            name: "Tính giá tự động",
+            link: "/work/price_calculation",
           }
         ]
       })

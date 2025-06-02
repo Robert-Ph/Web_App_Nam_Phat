@@ -10,6 +10,7 @@ import RequireAuth from "../contexts/RequireAuth.tsx";
 import NotFound from "../pages/404/NotFound.tsx";
 import ListWorkPage from "../pages/Work/ListWork/ListWorkPage.tsx";
 import DetailWorkPage from "../pages/Work/ListWork/DetailWorkPage.tsx";
+import PriceCalculation from "../pages/Work/Tinhgia/PriceCalculation.tsx";
 
 // Sử dụng React.lazy để lazy load các component
 const Login = React.lazy(() => import("../pages/login/Login"));
@@ -412,6 +413,16 @@ const appRoutes: RouteObject[] = [
                 <RequireAuth allowedRoles={["ADMIN", "USER"]}>
                     <Suspense fallback={<Spiner/>}>
                         <DetailWorkPage/>
+                    </Suspense>
+                </RequireAuth>
+            )
+        },
+        {
+            path: "/work/price_calculation",
+            element: (
+                <RequireAuth allowedRoles={["ADMIN", "USER"]}>
+                    <Suspense fallback={<Spiner/>}>
+                        <PriceCalculation/>
                     </Suspense>
                 </RequireAuth>
             )

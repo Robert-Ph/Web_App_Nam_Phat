@@ -1,0 +1,74 @@
+.btn-filter {
+  background-color: #fff;
+  rotate: 180deg;
+  margin-top: 6%;
+}
+.btn-filter:focus {
+  outline: none;
+}
+
+/* filter left */
+.filter-select {
+  background-color: #00bfff;
+  color: white;
+  padding: 4px 10px 4px 10px;
+  font-size: 16px;
+  border: none;
+  border-radius: 5px;
+  -webkit-appearance: none; /* Xóa kiểu mặc định của trình duyệt */
+  -moz-appearance: none; /* Xóa kiểu mặc định của Firefox */
+  appearance: none; /* Xóa kiểu mặc định cho tất cả trình duyệt */
+  cursor: pointer;
+  text-align: left;
+  display: inline-block;
+  align-content: center;
+}
+
+.filter-select option {
+  background-color: #00bfff;
+  color: white;
+}
+
+.icon-filter {
+  rotate: 90deg;
+  position: absolute;
+  top: -2px;
+  right: 10px;
+  color: #fff;
+}
+.btn-more {
+  padding: 0px;
+  background-color: #fff;
+}
+
+.container1 {
+  display: flex;
+  margin-top: 10px;
+}
+.boxprice {
+  flex: 1;
+  padding: 0;
+  margin: 0;
+  margin-left: 10px;
+  /*background-color: lightblue;*/
+  /*border: 1px solid #000; !* Cho dễ nhìn *!*/
+  /*text-align: center;*/
+}
+
+.form-row {
+  display: flex;
+  align-items: center;
+  margin-left: 10px;
+  margin-bottom: 10px;
+}
+.form-row p {
+  margin: 0 10px 0 0;
+  width: 140px; /* hoặc auto nếu không muốn cố định */
+}
+.form-row input {
+  flex: 1;
+  border: 1px solid #999999;
+  border-radius: 10px;
+  font-size: 18px;
+}
+
