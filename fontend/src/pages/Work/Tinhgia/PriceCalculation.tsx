@@ -1,8 +1,8 @@
-
+import { Link } from "react-router-dom";
 import "./PriceCalculation.css";
 
 
-const ListOrderPage = () => {
+const PriceCalculation = () => {
 
   return (
     <div>
@@ -11,17 +11,18 @@ const ListOrderPage = () => {
         <div style={{ marginBottom: "10px" }}>
           <div className="d-flex" style={{ marginTop: "15px", justifyContent: "flex-end" }}>
             <div className="d-flex">
-              <button className="btn btn-primary" disabled={true}>
-                Thiết lập giá
-              </button>
+              <Link to="/work/price_calculation/custom_price" state={{ enableButton: true }}>
+                <button className="btn btn-primary" >
+                  Thiết lập giá
+                </button>
+              </Link>
+
               <button className="btn btn-primary" style={{backgroundColor: "blue"}}>
                 Tính giá
               </button>
             </div>
           </div>
         </div>
-
-
       </div>
 
       <div className="container1">
@@ -79,26 +80,35 @@ const ListOrderPage = () => {
 
         {/*the div 2*/}
         <div className="boxprice" style={{borderLeft: "1px solid black", borderRight: "1px solid black"}}>
-          <div>
+          <div style={{marginLeft: "10px"}}>
             <h4>Chọn cán màng:</h4>
             <div className="form-row" style={{marginLeft:"40px"}}>
               <p>Loại màn:</p>
-              <input style={{height:"35px", marginRight:"10px", }} type="text"/>
+              <select style={{ height: "35px", marginRight: "10px", marginLeft: "0", width:"200px", backgroundColor: "white", color: "black", border: "1px solid #ccc", borderRadius:'10px' }}>
+                <option value="option2">Không</option>
+                <option value="option1">Màn bóng</option>
+                <option value="option2">Màn mờ</option>
+                <option value="option2">Màn keo</option>
+              </select>
             </div>
             <div className="form-row" style={{marginLeft:"40px"}}>
               <p>Số mặt cán:</p>
-              <input style={{height:"35px", marginRight:"10px"}} type="number"/>
+              <select style={{ height: "35px", marginRight: "10px", marginLeft: "0", width:"200px", backgroundColor: "white", color: "black", border: "1px solid #ccc", borderRadius:'10px' }}>
+                <option value="option1">1</option>
+                <option value="option2">2</option>
+              </select>
             </div>
           </div>
 
-          {/*// Loai giay in*/}
-          <div>
+
+          <div style={{marginLeft: "10px"}}>
             <h4>Chọn bế:</h4>
             <div className="form-row" style={{marginLeft:"40px"}}>
               <p>Có/không:</p>
               <select style={{ height: "35px", marginRight: "10px", marginLeft: "0", width:"200px", backgroundColor: "white", color: "black", border: "1px solid #ccc", borderRadius:'10px' }}>
-                <option value="option1">Có</option>
                 <option value="option2">Không</option>
+                <option value="option1">Có</option>
+
               </select>
             </div>
             <div className="form-row" style={{marginLeft:"40px"}}>
@@ -118,7 +128,7 @@ const ListOrderPage = () => {
               </select>
             </div>
           </div>
-          {/*// So mat in*/}
+
           <div className="form-row" style={{fontWeight: "bold"}}>
             <p>Cắt thành phẩm:</p>
             <select style={{ height: "35px", marginRight: "10px", marginLeft: "0", width:"200px", backgroundColor: "white", color: "black", border: "1px solid #ccc", borderRadius:'10px' }}>
@@ -126,7 +136,7 @@ const ListOrderPage = () => {
               <option value="option2">2</option>
             </select>
           </div>
-          {/*// Loai in*/}
+
           <div className="form-row" style={{fontWeight: "bold"}}>
             <p >Loại khách hàng:</p>
             <select style={{ height: "35px", marginRight: "10px", marginLeft: "0", width:"200px", backgroundColor: "white", color: "black", border: "1px solid #ccc", borderRadius:'10px' }}>
@@ -143,24 +153,27 @@ const ListOrderPage = () => {
           <div className="form-row" style={{marginLeft:"40px"}}>
             <p>Đục lỗ:</p>
             <select style={{ height: "35px", marginRight: "10px", marginLeft: "0", width:"200px", backgroundColor: "white", color: "black", border: "1px solid #ccc", borderRadius:'10px' }}>
-              <option value="option1">Có</option>
               <option value="option2">Không</option>
+              <option value="option1">Có</option>
+
             </select>
           </div>
 
           <div className="form-row" style={{marginLeft:"40px"}}>
             <p>Ép kim:</p>
             <select style={{ height: "35px", marginRight: "10px", marginLeft: "0", width:"200px", backgroundColor: "white", color: "black", border: "1px solid #ccc", borderRadius:'10px' }}>
-              <option value="option1">Có</option>
               <option value="option2">Không</option>
+              <option value="option1">Có</option>
+
             </select>
           </div>
 
           <div className="form-row" style={{marginLeft:"40px"}}>
             <p>Dữ liệu biến đổi:</p>
             <select style={{ height: "35px", marginRight: "10px", marginLeft: "0", width:"200px", backgroundColor: "white", color: "black", border: "1px solid #ccc", borderRadius:'10px' }}>
-              <option value="option1">Có</option>
               <option value="option2">Không</option>
+              <option value="option1">Có</option>
+
             </select>
           </div>
 
@@ -201,4 +214,4 @@ const ListOrderPage = () => {
     </div>
   );
 };
-export default ListOrderPage;
+export default PriceCalculation;

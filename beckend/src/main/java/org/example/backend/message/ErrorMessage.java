@@ -40,7 +40,10 @@ public enum ErrorMessage {
 
     MISSING_ARGUMENT(ErrorCode.MISSING_ARGUMENT,"Missing argument for request",HttpStatus.BAD_REQUEST),
     SERVER_NOT_FOUND(ErrorCode.SERVER_NOT_FOUND,"Not found", HttpStatus.BAD_REQUEST),
-    SERVER_ERROR(ErrorCode.SERVER_ERROR,"Server error try again",HttpStatus.INTERNAL_SERVER_ERROR);
+    SERVER_ERROR(ErrorCode.SERVER_ERROR,"Server error try again",HttpStatus.INTERNAL_SERVER_ERROR),
+
+    PAPER_NOT_FOUND(ErrorCode.BAD_REQUEST,"ID EMPLOYEE NOT FOUND",HttpStatus.BAD_REQUEST),
+    PAPER_ALREADY_EXITSTS(ErrorCode.BAD_REQUEST,"ID EMPLOYEE NOT FOUND",HttpStatus.BAD_REQUEST);
 
 
 
