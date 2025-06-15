@@ -3,17 +3,24 @@ import "./PriceCalculation.css";
 import {useEffect, useState} from "react";
 import Paper from "../../../model/automation/paper.tsx";
 import PaperService from "../../../service/automation/PaperService.tsx";
+import MansService from "../../../service/automation/MansService.tsx";
+import Mans from "../../../model/automation/Mans.tsx";
 
 
 const PriceCalculation = () => {
   const [papers, setPaper] = useState<Paper[]>([]);
+  const [mans, setMans] = useState<Mans[]>([])
   const [selectedPaperId, setSelectedPaperId] = useState< number>(0); // ID giấy được chọn
+  const [selectMansID, setSelectMansID] = useState<number>(0);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await PaperService.getBy();
         setPaper(response.data.data);
+
+        const resMans = await  MansService.getBy();
+        setMans(resMans.data.data);
 
       } catch (error) {
         console.error("Error fetching data", error);
@@ -108,7 +115,7 @@ const PriceCalculation = () => {
             <p>Loại in:</p>
             <select style={{ height: "35px", marginRight: "100px", marginLeft: "0", width:"200px", backgroundColor: "white", color: "black", border: "1px solid #ccc", borderRadius:'10px' }}>
               <option value="option1">In màu(CMYK)</option>
-              <option value="option2">In trắng đen</option>
+              <option  value="option2">In trắng đen</option>
             </select>
           </div>
 
@@ -120,16 +127,25 @@ const PriceCalculation = () => {
             <h4>Chọn cán màng:</h4>
             <div className="form-row" style={{marginLeft:"40px"}}>
               <p>Loại màn:</p>
-              <select style={{ height: "35px", marginRight: "10px", marginLeft: "0", width:"200px", backgroundColor: "white", color: "black", border: "1px solid #ccc", borderRadius:'10px' }}>
+              <select
+                  value={selectMansID}
+                  onChange={(e) => {
+                    const id = Number(e.target.value);
+                    setSelectMansID(id);
+                  }}
+
+                  style={{ height: "35px", marginRight: "10px", marginLeft: "0", width:"200px", backgroundColor: "white", color: "black", border: "1px solid #ccc", borderRadius:'10px' }}>
                 <option value="option2">Không</option>
-                <option value="option1">Màn bóng</option>
-                <option value="option2">Màn mờ</option>
-                <option value="option2">Màn keo</option>
+                {mans.map((man)=>(
+                    <option key={man.id} value={man.id ?? 0}>{man.name}</option>
+                ))}
               </select>
             </div>
             <div className="form-row" style={{marginLeft:"40px"}}>
               <p>Số mặt cán:</p>
-              <select style={{ height: "35px", marginRight: "10px", marginLeft: "0", width:"200px", backgroundColor: "white", color: "black", border: "1px solid #ccc", borderRadius:'10px' }}>
+              <select
+
+                  style={{ height: "35px", marginRight: "10px", marginLeft: "0", width:"200px", backgroundColor: "white", color: "black", border: "1px solid #ccc", borderRadius:'10px' }}>
                 <option value="option1">1</option>
                 <option value="option2">2</option>
               </select>

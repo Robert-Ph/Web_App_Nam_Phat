@@ -1,8 +1,8 @@
 package org.example.backend.dto.request.automation;
 
+
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-
 
 @Data
 @AllArgsConstructor
@@ -10,13 +10,9 @@ import lombok.experimental.FieldDefaults;
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 
-public class PaperRequest {
+public class MansRequest {
 
     String name;
-    int height;
-    int weight;
-    Long oneColorPrintPrice;
-    Long twoColorPrintPrice;
-    Long onePrintPrice;
-    Long twoPrintPrice;
+    Long onePrice;
+    Long twoPrice;
 }

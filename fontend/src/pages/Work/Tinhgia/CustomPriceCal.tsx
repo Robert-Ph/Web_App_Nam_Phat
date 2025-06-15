@@ -5,15 +5,23 @@
 
 import {useEffect, useState} from "react";
 import CalModal from "./CalModal.tsx";
+import MansModal from "./MansModal.tsx";
 import Paper from "../../../model/automation/paper.tsx";
 import PaperService from "../../../service/automation/PaperService.tsx";
+import Mans from "../../../model/automation/Mans.tsx";
+import MansService from "../../../service/automation/MansService.tsx";
 
 const CustomPriceCalculation = () => {
 
   const [paper, setPaper] = useState<Paper[]>([]);
+  const [mans, setMans] = useState<Mans[]>([])
   const [open, setOpen] = useState<boolean>(false);
+  const [mansbo, setMansBo] = useState<boolean>(false);
   const handleOpen = () => {
     setOpen(true);
+  };
+  const handleMansBo = () => {
+    setMansBo(true);
   };
   const handleOnclose = () => {
     setOpen(false);
@@ -24,6 +32,9 @@ const CustomPriceCalculation = () => {
       try {
         const response = await PaperService.getBy();
         setPaper(response.data.data);
+
+        const resMans = await MansService.getBy();
+        setMans(resMans.data.data);
 
       } catch (error) {
         console.error("Error fetching data", error);
@@ -141,7 +152,7 @@ const CustomPriceCalculation = () => {
         <div style={{ marginBottom: "10px" }}>
           <div className="d-flex" style={{ marginTop: "15px", justifyContent: "flex-end" }}>
             <div className="d-flex">
-              <button className="btn btn-primary" disabled={true}>
+              <button className="btn btn-primary" onClick={() => handleMansBo()} >
                 Thêm
               </button>
               <button className="btn btn-primary" style={{backgroundColor: "orange"}}>
@@ -168,23 +179,28 @@ const CustomPriceCalculation = () => {
               </tr>
               </thead>
               <tbody className="border-header-table">
-              <tr
-                  className="border-header-table"
-                  style={{ lineHeight: "1.5" }}
-              >
-                <td className="pb-7 pt-7 font-size-small td-table font-w-500 ">
-                  -
-                </td>
-                <td className="pb-7 pt-7 font-size-small font-w-500 ">
-                  -
-                </td>
-                <td
-                    className="pb-7 pt-7 font-size-small td-table font-w-500"
-                    style={{ paddingRight: "20px", paddingLeft: "0px" }}
-                >
-                  -
-                </td>
-              </tr>
+              {mans?.length > 0 &&
+                  mans.map((man) =>(
+                      <tr
+                          key={man.id}
+                          className="border-header-table"
+                          style={{ lineHeight: "1.5" }}
+                      >
+                        <td className="pb-7 pt-7 font-size-small td-table font-w-500 ">
+                          {man.name}
+                        </td>
+                        <td className="pb-7 pt-7 font-size-small font-w-500 ">
+                          {man.onePrice}
+                        </td>
+                        <td
+                            className="pb-7 pt-7 font-size-small td-table font-w-500"
+                            style={{ paddingRight: "20px", paddingLeft: "0px" }}
+                        >
+                          {man.twoPrice}
+                        </td>
+                      </tr>
+                  ))}
+
               </tbody>
             </table>
           </div>
@@ -344,6 +360,8 @@ const CustomPriceCalculation = () => {
           // update={"update"}
           // handleSubmit={createAccount }
       ></CalModal>
+
+      <MansModal open={mansbo} onClose={handleOnclose} tittle={"Màn"}></MansModal>
     </div>
 
 
