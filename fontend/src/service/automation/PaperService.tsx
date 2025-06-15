@@ -5,14 +5,16 @@ const BASE_URL = "/automation";
 
 const getBy = () => {
     return api.get(
-        `${BASE_URL}`
-    );
+        `${BASE_URL}`);
 };
 
 const create = (paper : Paper) => {
     return api.post(`${BASE_URL}`, paper);
 }
 
+const getById = (id: number) => {
+    return api.get(`${BASE_URL}/${id}`);
+};
 // const deletePaper = (paper1 : Paper) => {
 //     return api.delete(`${BASE_URL}`, paper1);
 // }
@@ -20,6 +22,7 @@ const create = (paper : Paper) => {
 const PaperService = {
     getBy,
     create,
+    getById
     // deletePaper,
 };
 

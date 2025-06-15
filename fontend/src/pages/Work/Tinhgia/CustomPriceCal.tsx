@@ -3,15 +3,34 @@
 
 
 
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import CalModal from "./CalModal.tsx";
+import Paper from "../../../model/automation/paper.tsx";
+import PaperService from "../../../service/automation/PaperService.tsx";
 
 const CustomPriceCalculation = () => {
 
+  const [paper, setPaper] = useState<Paper[]>([]);
   const [open, setOpen] = useState<boolean>(false);
   const handleOpen = () => {
     setOpen(true);
   };
+  const handleOnclose = () => {
+    setOpen(false);
+  };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await PaperService.getBy();
+        setPaper(response.data.data);
+
+      } catch (error) {
+        console.error("Error fetching data", error);
+      }
+    };
+    fetchData();
+  },[]);
   return (
     <div>
       <div className="main-body">
@@ -70,41 +89,45 @@ const CustomPriceCalculation = () => {
               </tr>
               </thead>
               <tbody className="border-header-table">
-                  <tr
+              {paper?.length > 0 &&
+                paper.map((paper)=>(
+                  <tr key={paper.id}
                       className="border-header-table"
                       style={{ lineHeight: "1.5" }}
                   >
                     <td className="pb-7 pt-7 font-size-small td-table font-w-500 ">
-                     -
+                      {paper.name}
                     </td>
                     <td className="pb-7 pt-7 font-size-small font-w-500 ">
-                      -
+                      {paper.weight}
                     </td>
                     <td
                         className="pb-7 pt-7 font-size-small td-table font-w-500"
                         style={{ paddingRight: "20px", paddingLeft: "0px" }}
                     >
-                      -
+                      {paper.height}
                     </td>
                     <td className="pb-7 pt-7 font-size-small td-table font-w-500">
-                     -
+                      {paper.onePrintPrice}
                     </td>
                     <td
                         className="pb-7 pt-7 font-size-small td-table font-w-500"
                         style={{ textAlign: "justify" }}
                     >
-                      -
+                      {paper.twoPrintPrice}
                     </td>
                     <td className="pb-7 pt-7 font-size-small td-table font-w-500">
-                      -
+                      {paper.oneColorPrintPrice}
                     </td>
                     <td
                         className="pb-7 pt-7 font-size-small td-table font-w-500"
                         style={{ textAlign: "justify" }}
                     >
-                      -
+                      {paper.twoColorPrintPrice}
                     </td>
                   </tr>
+              ))}
+
               </tbody>
             </table>
           </div>
@@ -317,7 +340,7 @@ const CustomPriceCalculation = () => {
       <CalModal
           tittle={"Giấy in"}
           open={open}
-          // onClose={"handleOnclose"}
+          onClose={handleOnclose}
           // update={"update"}
           // handleSubmit={createAccount }
       ></CalModal>

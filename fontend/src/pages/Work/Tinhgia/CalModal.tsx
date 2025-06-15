@@ -28,7 +28,7 @@ const style = {
 
 type props = {
     open: boolean;
-    // onClose: () => void;
+    onClose: () => void;
     // update:  null;
     tittle: string;
     // handleSubmit: (account: account) => void;
@@ -36,7 +36,7 @@ type props = {
 
 
 
-const CalModal = ({open, tittle}: props) => {
+const CalModal = ({open,onClose, tittle}: props) => {
 
     const [name, setName] = useState("");
     const [height, setHeight] = useState<number>(0);
@@ -48,16 +48,13 @@ const CalModal = ({open, tittle}: props) => {
 
     const handleCreate = ()=>{
         console.log(name);
-        if(name == ""){
+        if(name === ""){
             toast.error("Tên giấy không được bỏ trống!", {
-                autoClose: 1000,
-            });
-        }else if (height === 0 || weight === 0 || oneColor === 0 || onePaper === 0 || twoColor === 0 || twoPaper === 0 ){
-            toast.error("Kích thước và giá phải khác 0!", {
                 autoClose: 1000,
             });
         }else {
             const paper = {
+                id: null,
                 name : name,
                 height: height,
                 weight: weight,
@@ -76,7 +73,10 @@ const CalModal = ({open, tittle}: props) => {
                         });
                     }
                 });
-                // open = false;
+                // ✅ Reload trang sau 1.5s để toast hiển thị
+                setTimeout(() => {
+                    window.location.reload();
+                }, 100);
 
             }catch (error){
                 console.log(error);
@@ -90,7 +90,7 @@ const CalModal = ({open, tittle}: props) => {
     return (
         <Modal
             open={open}
-            // onClose={onClose}
+            onClose={onClose}
             aria-labelledby="modal-modal-title"
             aria-describedby="modal-modal-description"
         >
@@ -98,7 +98,10 @@ const CalModal = ({open, tittle}: props) => {
                 <div className="mt-10">
                     <h3 className="text-center">{tittle}</h3>
                 </div>
-                <form>
+                <form onSubmit={(e) => {
+                    e.preventDefault();
+                    handleCreate();
+                }}>
                     <div
                         className="d-flex dicrect-col"
                         style={{paddingLeft: "20px", paddingRight: "10px"}}
@@ -137,7 +140,6 @@ const CalModal = ({open, tittle}: props) => {
                 </span>
                                 <input
                                     type="number"
-                                    name="employeeId"
                                     className="shadow"
                                     onChange={(e) => {
                                         setHeight(Number(e.target.value));
@@ -150,7 +152,6 @@ const CalModal = ({open, tittle}: props) => {
                 </span>
                             <input
                                 type="number"
-                                name="employeeId"
                                 className="shadow"
                                 onChange={(e) => {
                                     setOnePaper(Number(e.target.value));
@@ -198,10 +199,10 @@ const CalModal = ({open, tittle}: props) => {
 
 
                             <div className="d-flex mt-30 justify-space-arround ">
-                                <button className="btn btn-danger">
+                                <button className="btn btn-danger" onClick={onClose}>
                                     Hủy
                                 </button>
-                                <button className="btn btn-primary" onClick={()=>{handleCreate()}}>
+                                <button className="btn btn-primary" type="submit">
                                     Thêm
                                 </button>
                             </div>

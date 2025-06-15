@@ -14,10 +14,9 @@ import org.example.backend.entity.enums.Permission;
 @NoArgsConstructor
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-@ToString
+
 public class PaperRequest {
-    @NotNull(message = "Username  is require")
-    @NotEmpty(message = "Username is not emtry")
+
     String name;
     int height;
     int weight;

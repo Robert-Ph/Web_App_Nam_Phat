@@ -1,8 +1,29 @@
 import { Link } from "react-router-dom";
 import "./PriceCalculation.css";
+import {useEffect, useState} from "react";
+import Paper from "../../../model/automation/paper.tsx";
+import PaperService from "../../../service/automation/PaperService.tsx";
 
 
 const PriceCalculation = () => {
+  const [papers, setPaper] = useState<Paper[]>([]);
+  const [selectedPaperId, setSelectedPaperId] = useState< number>(0); // ID giấy được chọn
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await PaperService.getBy();
+        setPaper(response.data.data);
+
+      } catch (error) {
+        console.error("Error fetching data", error);
+      }
+    };
+    fetchData();
+  }, []);
+
+  // Tìm ra giấy đang được chọn
+  const selectedPaper = papers.find((p) => p.id === selectedPaperId);
 
   return (
     <div>
@@ -31,12 +52,12 @@ const PriceCalculation = () => {
             <h4>Kích thước sản phẩm:</h4>
             <div className="form-row" style={{marginLeft:"40px"}}>
               <p>Chiều rộng (W):</p>
-              <input style={{height:"35px", marginRight:"10px", }} type="number"/>
+              <input style={{height:"35px", marginRight:"10px", }} type="number" />
               <p>mm</p>
             </div>
             <div className="form-row" style={{marginLeft:"40px"}}>
               <p>Chiều cao (H):</p>
-              <input style={{height:"35px", marginRight:"10px"}} type="number"/>
+              <input style={{height:"35px", marginRight:"10px"}} type="number" />
               <p>mm</p>
             </div>
           </div>
@@ -46,16 +67,31 @@ const PriceCalculation = () => {
             <h4>Loại giấy in:</h4>
             <div className="form-row" style={{marginLeft:"40px"}}>
               <p>Loại giấy:</p>
-              <input style={{height:"35px", marginRight:"100px"}} type="text"/>
+              <select
+                  value={selectedPaperId ?? ""}
+                  onChange={(e) => {
+                    const id = Number(e.target.value);
+                    setSelectedPaperId(id);
+                  }}
+
+
+                  style={{ height: "35px", marginRight: "0px", marginLeft: "0", width:"300px", backgroundColor: "white", color: "black", border: "1px solid #ccc", borderRadius:'10px' }}>
+                <option value="">-- Chọn loại giấy --</option>
+                {papers.map((paper) => (
+                    <option key={paper.id} value={paper.id ?? 0}>
+                      {paper.name}
+                    </option>
+                ))}
+              </select>
             </div>
             <div className="form-row" style={{marginLeft:"40px"}}>
               <p>Chiều rộng (W):</p>
-              <input style={{height:"35px", marginRight:"10px"}} disabled={true} type="number" />
+              <input style={{height:"35px", marginRight:"10px"}} disabled={true} type="number" value={selectedPaper?.weight ?? ""} />
               <p>mm</p>
             </div>
             <div className="form-row" style={{marginLeft:"40px"}}>
               <p>Chiều cao (H):</p>
-              <input style={{height:"35px", marginRight:"10px"}} disabled={true} type="number"/>
+              <input style={{height:"35px", marginRight:"10px"}} disabled={true} type="number" value={selectedPaper?.height ?? ""}/>
               <p>mm</p>
             </div>
           </div>

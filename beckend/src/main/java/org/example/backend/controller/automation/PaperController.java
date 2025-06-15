@@ -41,4 +41,13 @@ public class PaperController {
     public void deletePaper(@RequestBody Paper paper) {
       paperService.deletePaper(paper);
     }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<ApiResponse> getPaper(@PathVariable Long id) {
+        return ResponseEntity.ok(ApiResponse.builder()
+                .code(SuccessMessage.CREATE_DATA_SUCCESS.getCode())
+                .message(SuccessMessage.CREATE_DATA_SUCCESS.getMessage())
+                .data(paperService.getPaperById(id))
+                .build());
+    }
 }

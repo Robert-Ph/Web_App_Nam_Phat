@@ -1,4 +1,5 @@
 type paper = {
+    id: number | null;
     name: string;
     height: number;
     weight: number;
