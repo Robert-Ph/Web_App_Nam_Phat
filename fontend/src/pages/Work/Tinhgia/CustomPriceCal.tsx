@@ -10,11 +10,20 @@ import Paper from "../../../model/automation/paper.tsx";
 import PaperService from "../../../service/automation/PaperService.tsx";
 import Mans from "../../../model/automation/Mans.tsx";
 import MansService from "../../../service/automation/MansService.tsx";
+import DieCutting from "../../../model/automation/DieCutting.tsx";
+import DieCuttingService from "../../../service/automation/DieCuttingService.tsx";
+import Enhance from "../../../model/automation/Enhance.tsx";
+import EnhanceService from "../../../service/automation/EnhanceService.tsx";
+import TypeCustomer from "../../../model/automation/TypeCustomer.tsx";
+import TypeCustomerService from "../../../service/automation/TypeCustomerService.tsx";
 
 const CustomPriceCalculation = () => {
 
   const [paper, setPaper] = useState<Paper[]>([]);
   const [mans, setMans] = useState<Mans[]>([])
+  const [dieCutting, setDieCutting] = useState<DieCutting[]>([])
+  const [typeCustomer, setTypeCustomer] = useState<TypeCustomer[]>([])
+  const [enahnce, setEnhance] = useState<Enhance[]>([])
   const [open, setOpen] = useState<boolean>(false);
   const [mansbo, setMansBo] = useState<boolean>(false);
   const handleOpen = () => {
@@ -35,6 +44,17 @@ const CustomPriceCalculation = () => {
 
         const resMans = await MansService.getBy();
         setMans(resMans.data.data);
+
+        const resDieCutting = await DieCuttingService.getBy();
+        setDieCutting(resDieCutting.data.data);
+
+        const resTypeCustomer = await TypeCustomerService.getBy();
+        setTypeCustomer(resTypeCustomer.data.data);
+
+        const reEnhance = await EnhanceService.getBy();
+        setEnhance(reEnhance.data.data);
+
+
 
       } catch (error) {
         console.error("Error fetching data", error);
@@ -236,18 +256,25 @@ const CustomPriceCalculation = () => {
               </tr>
               </thead>
               <tbody className="border-header-table">
-              <tr
-                  className="border-header-table"
-                  style={{ lineHeight: "1.5" }}
-              >
-                <td className="pb-7 pt-7 font-size-small td-table font-w-500 ">
-                  -
-                </td>
-                <td className="pb-7 pt-7 font-size-small font-w-500 ">
-                  -
-                </td>
+              {dieCutting?.length > 0 &&
+                  dieCutting.map((diecut)=>(
+                      <tr
+                          key={diecut.id}
+                          className="border-header-table"
+                          style={{ lineHeight: "1.5" }}
+                      >
+                        <td className="pb-7 pt-7 font-size-small td-table font-w-500 ">
+                          {diecut.name}
+                        </td>
+                        <td className="pb-7 pt-7 font-size-small font-w-500 ">
+                          {diecut.price}
+                        </td>
 
-              </tr>
+                      </tr>
+                  ))
+
+              }
+
               </tbody>
             </table>
           </div>
@@ -284,18 +311,26 @@ const CustomPriceCalculation = () => {
               </tr>
               </thead>
               <tbody className="border-header-table">
-              <tr
-                  className="border-header-table"
-                  style={{ lineHeight: "1.5" }}
-              >
-                <td className="pb-7 pt-7 font-size-small td-table font-w-500 ">
-                  -
-                </td>
-                <td className="pb-7 pt-7 font-size-small font-w-500 ">
-                  -
-                </td>
 
-              </tr>
+              {typeCustomer?.length > 0 &&
+                  typeCustomer.map((type)=>(
+                      <tr
+                          key={type.id}
+                          className="border-header-table"
+                          style={{ lineHeight: "1.5" }}
+                      >
+                        <td className="pb-7 pt-7 font-size-small td-table font-w-500 ">
+                          {type.name}
+                        </td>
+                        <td className="pb-7 pt-7 font-size-small font-w-500 ">
+                          {type.precentage}
+                        </td>
+
+                      </tr>
+                  ))
+
+              }
+
               </tbody>
             </table>
           </div>
@@ -335,18 +370,25 @@ const CustomPriceCalculation = () => {
               </tr>
               </thead>
               <tbody className="border-header-table">
-              <tr
-                  className="border-header-table"
-                  style={{ lineHeight: "1.5" }}
-              >
-                <td className="pb-7 pt-7 font-size-small td-table font-w-500 ">
-                  -
-                </td>
-                <td className="pb-7 pt-7 font-size-small font-w-500 ">
-                  -
-                </td>
+              {enahnce?.length > 0 &&
+                  enahnce.map((enha) =>(
+                      <tr
+                          key={enha.id}
+                          className="border-header-table"
+                          style={{ lineHeight: "1.5" }}
+                      >
+                        <td className="pb-7 pt-7 font-size-small td-table font-w-500 ">
+                          {enha.name}
+                        </td>
+                        <td className="pb-7 pt-7 font-size-small font-w-500 ">
+                          {enha.price}
+                        </td>
 
-              </tr>
+                      </tr>
+                  ))
+
+              }
+
               </tbody>
             </table>
           </div>

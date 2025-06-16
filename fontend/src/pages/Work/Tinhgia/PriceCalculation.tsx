@@ -5,13 +5,41 @@ import Paper from "../../../model/automation/paper.tsx";
 import PaperService from "../../../service/automation/PaperService.tsx";
 import MansService from "../../../service/automation/MansService.tsx";
 import Mans from "../../../model/automation/Mans.tsx";
+import DieCutting from "../../../model/automation/DieCutting.tsx";
+import TypeCustomer from "../../../model/automation/TypeCustomer.tsx";
+import Enhance from "../../../model/automation/Enhance.tsx";
+import DieCuttingService from "../../../service/automation/DieCuttingService.tsx";
+import TypeCustomerService from "../../../service/automation/TypeCustomerService.tsx";
+import EnhanceService from "../../../service/automation/EnhanceService.tsx";
 
 
 const PriceCalculation = () => {
   const [papers, setPaper] = useState<Paper[]>([]);
   const [mans, setMans] = useState<Mans[]>([])
+  const [dieCutting, setDieCutting] = useState<DieCutting[]>([])
+  const [typeCustomer, setTypeCustomer] = useState<TypeCustomer[]>([])
+  const [enahnce, setEnhance] = useState<Enhance[]>([])
   const [selectedPaperId, setSelectedPaperId] = useState< number>(0); // ID giấy được chọn
   const [selectMansID, setSelectMansID] = useState<number>(0);
+  const [selectTypeCustomer, setSelectTypeCustomer] = useState<number>(0);
+
+  const [isEnabled, setIsEnabled] = useState(false);
+  const [isEnabledDrilling, setIsEnabledDrilling] = useState(false);
+  const [isEnabledStamping, setIsEnabledStamping] = useState(false);
+  const [isEnabledChange, setIsEnabledChange] = useState(false);
+
+  const handleChange = (e) => {
+    setIsEnabled(e.target.value === 'yes');
+  };
+  const handleChangeDrilling = (e) => {
+    setIsEnabledDrilling(e.target.value === 'yes');
+  };
+  const handleChangeStamping = (e) => {
+    setIsEnabledStamping(e.target.value === 'yes');
+  };
+  const handleChangeChange = (e) => {
+    setIsEnabledChange(e.target.value === 'yes');
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -21,6 +49,16 @@ const PriceCalculation = () => {
 
         const resMans = await  MansService.getBy();
         setMans(resMans.data.data);
+
+        const resDieCutting = await DieCuttingService.getBy();
+        setDieCutting(resDieCutting.data.data);
+
+        const resTypeCustomer = await TypeCustomerService.getBy();
+        setTypeCustomer(resTypeCustomer.data.data);
+
+        const reEnhance = await EnhanceService.getBy();
+        setEnhance(reEnhance.data.data);
+
 
       } catch (error) {
         console.error("Error fetching data", error);
@@ -146,8 +184,8 @@ const PriceCalculation = () => {
               <select
 
                   style={{ height: "35px", marginRight: "10px", marginLeft: "0", width:"200px", backgroundColor: "white", color: "black", border: "1px solid #ccc", borderRadius:'10px' }}>
-                <option value="option1">1</option>
-                <option value="option2">2</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
               </select>
             </div>
           </div>
@@ -157,26 +195,29 @@ const PriceCalculation = () => {
             <h4>Chọn bế:</h4>
             <div className="form-row" style={{marginLeft:"40px"}}>
               <p>Có/không:</p>
-              <select style={{ height: "35px", marginRight: "10px", marginLeft: "0", width:"200px", backgroundColor: "white", color: "black", border: "1px solid #ccc", borderRadius:'10px' }}>
-                <option value="option2">Không</option>
-                <option value="option1">Có</option>
+              <select onChange={handleChange}
+                      style={{ height: "35px", marginRight: "10px", marginLeft: "0", width:"200px", backgroundColor: "white", color: "black", border: "1px solid #ccc", borderRadius:'10px' }}>
+                <option value="no">Không</option>
+                <option value="yes">Có</option>
 
               </select>
             </div>
             <div className="form-row" style={{marginLeft:"40px"}}>
               <p>Hình thức:</p>
-              <select style={{ height: "35px", marginRight: "10px", marginLeft: "0", width:"200px", backgroundColor: "white", color: "black", border: "1px solid #ccc", borderRadius:'10px' }}>
-                <option value="option1">Bế tem</option>
-                <option value="option2">Cắt đứt</option>
-                <option value="option2">Cấn</option>
+              <select disabled={!isEnabled}
+                      style={{ height: "35px", marginRight: "10px", marginLeft: "0", width:"200px", backgroundColor: "white", color: "black", border: "1px solid #ccc", borderRadius:'10px' }}>
+                <option value="betem">Bế tem</option>
+                <option value="catdut">Cắt đứt</option>
+                <option value="can">Cấn</option>
               </select>
             </div>
             <div className="form-row" style={{marginLeft:"40px"}}>
               <p>Khuôn:</p>
-              <select style={{ height: "35px", marginRight: "10px", marginLeft: "0", width:"200px", backgroundColor: "white", color: "black", border: "1px solid #ccc", borderRadius:'10px' }}>
-                <option value="option1">Oval/Hình tròn</option>
-                <option value="option2">Hình chữ nhật/ vuông</option>
-                <option value="option2">Hình đặc biệt</option>
+              <select disabled={!isEnabled}
+                  style={{ height: "35px", marginRight: "10px", marginLeft: "0", width:"200px", backgroundColor: "white", color: "black", border: "1px solid #ccc", borderRadius:'10px' }}>
+                <option value="oval">Oval/Hình tròn</option>
+                <option value="square">Hình chữ nhật/ vuông</option>
+                <option value="special">Hình đặc biệt</option>
               </select>
             </div>
           </div>
@@ -191,9 +232,19 @@ const PriceCalculation = () => {
 
           <div className="form-row" style={{fontWeight: "bold"}}>
             <p >Loại khách hàng:</p>
-            <select style={{ height: "35px", marginRight: "10px", marginLeft: "0", width:"200px", backgroundColor: "white", color: "black", border: "1px solid #ccc", borderRadius:'10px' }}>
-              <option value="option1">Khách lẻ</option>
-              <option value="option2">Đại lý</option>
+            <select
+                value={selectTypeCustomer}
+                onChange={(e) => {
+                  const id = Number(e.target.value);
+                  setSelectTypeCustomer(id);
+                }}
+                style={{ height: "35px", marginRight: "10px", marginLeft: "0", width:"200px", backgroundColor: "white", color: "black", border: "1px solid #ccc", borderRadius:'10px' }}>
+              {typeCustomer?.length > 0 &&
+                  typeCustomer.map((type)=>(
+                      <option key={type.id} value={type.id ?? 0}>{type.name}</option>
+                  ))
+              }
+
             </select>
           </div>
 
@@ -204,34 +255,37 @@ const PriceCalculation = () => {
           <h4>Tùy chọn nâng cao:</h4>
           <div className="form-row" style={{marginLeft:"40px"}}>
             <p>Đục lỗ:</p>
-            <select style={{ height: "35px", marginRight: "10px", marginLeft: "0", width:"200px", backgroundColor: "white", color: "black", border: "1px solid #ccc", borderRadius:'10px' }}>
-              <option value="option2">Không</option>
-              <option value="option1">Có</option>
+            <select onChange={handleChangeDrilling}
+                style={{ height: "35px", marginRight: "10px", marginLeft: "0", width:"200px", backgroundColor: "white", color: "black", border: "1px solid #ccc", borderRadius:'10px' }}>
+              <option value="no">Không</option>
+              <option value="yes">Có</option>
 
             </select>
           </div>
 
           <div className="form-row" style={{marginLeft:"40px"}}>
             <p>Ép kim:</p>
-            <select style={{ height: "35px", marginRight: "10px", marginLeft: "0", width:"200px", backgroundColor: "white", color: "black", border: "1px solid #ccc", borderRadius:'10px' }}>
-              <option value="option2">Không</option>
-              <option value="option1">Có</option>
+            <select onChange={handleChangeStamping}
+                    style={{ height: "35px", marginRight: "10px", marginLeft: "0", width:"200px", backgroundColor: "white", color: "black", border: "1px solid #ccc", borderRadius:'10px' }}>
+              <option value="no">Không</option>
+              <option value="yes">Có</option>
 
             </select>
           </div>
 
           <div className="form-row" style={{marginLeft:"40px"}}>
             <p>Dữ liệu biến đổi:</p>
-            <select style={{ height: "35px", marginRight: "10px", marginLeft: "0", width:"200px", backgroundColor: "white", color: "black", border: "1px solid #ccc", borderRadius:'10px' }}>
-              <option value="option2">Không</option>
-              <option value="option1">Có</option>
+            <select onChange={handleChangeChange}
+                    style={{ height: "35px", marginRight: "10px", marginLeft: "0", width:"200px", backgroundColor: "white", color: "black", border: "1px solid #ccc", borderRadius:'10px' }}>
+              <option value="no">Không</option>
+              <option value="yes">Có</option>
 
             </select>
           </div>
 
           <div className="form-row" style={{marginLeft:"40px"}}>
             <p>Số lượng biến đổi:</p>
-            <input style={{height:"35px", marginRight:"170px"}} type="number"/>
+            <input disabled={!isEnabledChange} style={{height:"35px", marginRight:"170px"}} type="number"/>
           </div>
         </div>
       </div>
