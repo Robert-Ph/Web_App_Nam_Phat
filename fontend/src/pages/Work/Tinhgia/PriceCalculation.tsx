@@ -12,6 +12,7 @@ import DieCuttingService from "../../../service/automation/DieCuttingService.tsx
 import TypeCustomerService from "../../../service/automation/TypeCustomerService.tsx";
 import EnhanceService from "../../../service/automation/EnhanceService.tsx";
 import {toast} from "react-toastify";
+import {formatCurrency} from "../../../utils/Utils.tsx";
 
 
 const PriceCalculation = () => {
@@ -22,24 +23,28 @@ const PriceCalculation = () => {
   const [enahnce, setEnhance] = useState<Enhance[]>([])
   const [selectedPaperId, setSelectedPaperId] = useState< number>(0); // ID giấy được chọn
   const [selectMansID, setSelectMansID] = useState<number>(0);
-  const [numberMan, setNumberMan] = useState<number>(0);
+  const [numberMan, setNumberMan] = useState<number>(1);
   const [selectTypeCustomer, setSelectTypeCustomer] = useState<number>(0);
   const [numberTem, setNumberTem] = useState<number>(0);
+  const [numberChange, setNumberChange ] = useState<number>(1);
 
   const [isEnabled, setIsEnabled] = useState(false);
   const [isEnabledDrilling, setIsEnabledDrilling] = useState(false);
   const [isEnabledStamping, setIsEnabledStamping] = useState(false);
   const [isEnabledChange, setIsEnabledChange] = useState(false);
+  const [isMan, setIsMan] = useState(false);
   const [isCutFinished, setIsCutFinished] = useState(false);
   const [khuon, setKhuon] = useState("oval"); // giá trị mặc định
+  const [methodCutting, setMetodCutting] = useState("be_tem");
 
   const [heightTem, setHeightTem] = useState<number>(0);
   const [weightTem, setWeightTem] = useState<number>(0);
-  const [numberPrint, setNumberPrint] = useState<number>(1);
-  const [typePrint, setTypePrint] = useState<string>("CMYK");
-  const [coating, setCoating] = useState<Mans>();
-  const [numberCoating, setNumberCoating] = useState<number>(1);
-  const [surcharge, setSurcharge] = useState<number>(20000);
+  const [numberPrint, _setNumberPrint] = useState<number>(1);
+  // const [typePrint, setTypePrint] = useState<string>("CMYK");
+  // const [coating, setCoating] = useState<Mans>();
+  // const [numberCoating, setNumberCoating] = useState<number>(1);
+  const [surcharge, _setSurcharge] = useState<number>(20000);
+  const [discount, setdiscount] = useState<number>(0);
 
   const [numberTemInPaper, setNumberTeminPaper] = useState<number>(0);
   const [totalPaper, setTotalPage] = useState<number>(0);
@@ -48,8 +53,10 @@ const PriceCalculation = () => {
   // Tìm ra giấy đang được chọn
   const selectedPaper = papers.find((p) => p.id === selectedPaperId);
   const selectMan = mans.find((m)=> m.id === selectMansID);
+  const selectTypeCus = typeCustomer.find((t) => t.id === selectTypeCustomer);
 
   const handCalculator = () => {
+    setdiscount(0);
     if (heightTem === 0 || weightTem === 0) {
       toast.error("Kích thước tem không được bỏ trống!", { autoClose: 1000 });
       return;
@@ -90,11 +97,11 @@ const PriceCalculation = () => {
     let total = totalPages * (selectedPaper?.oneColorPrintPrice || 0);
 
     if (totalPages< 5){
-      total += 50000;
+      total += 80000;
     }else if (totalPages <= 50){
-      total += 30000;
+      total += 60000;
     }else if (totalPages <= 100){
-      total += 25000;
+      total += 30000;
     }else if (total <= 500){
       total += 20000;
     }else if (totalPages <= 1000){
@@ -107,18 +114,18 @@ const PriceCalculation = () => {
     if (totalPages<= 20){
       total += surcharge;
     }else if (totalPages <= 100){
-      total += surcharge * 0.95;
-    }else if (total <= 500){
-      total += surcharge * 0.9;
+      total += surcharge * 1.2;
+    }else if (totalPages <= 500){
+      total += surcharge * 2;
     }else if (totalPages <= 1000){
-      total += surcharge * 0.85;
+      total += surcharge * 5;
     }
     else {
-      total += surcharge * 0.8;
+      total += surcharge * 7;
     }
 
     if (selectMansID !== 0) {
-      total += totalPages * (selectMan?.onePrice || 0);
+      total += totalPages * (selectMan?.onePrice || 0) * numberMan;
     }
 
     if (isEnabled) {
@@ -131,10 +138,28 @@ const PriceCalculation = () => {
       total += totalPages * (cut?.price || 0);
     }
 
-    if (selectTypeCustomer !== 1){
-      const type = typeCustomer.find((t)=>t.id = selectTypeCustomer);
-      const percent = type?.precentage ?? 0; // nếu type hoặc precentage là undefined => 0
-      total *= 1 + (percent / 100);
+    if (selectTypeCustomer === 2){
+      const type = typeCustomer.find((t)=>t.id === selectTypeCustomer);
+
+        const percent = type?.precentage ?? 0; // nếu type hoặc precentage là undefined => 0
+        total *= 1 - (percent / 100);
+        setdiscount(Math.ceil(totalPrice - (totalPrice*(1 - (percent / 100)))));
+
+    }
+
+    if (isEnabledDrilling){
+       const drilling = enahnce.find((d) => d.id===1);
+       total += numberTem*(drilling?.price || 0);
+    }
+
+    if (isEnabledStamping){
+      const drilling = enahnce.find((d) => d.id===2);
+      total += numberTem*(drilling?.price || 0);
+    }
+
+    if (isEnabledChange){
+      const drilling = enahnce.find((d) => d.id===3);
+      total += totalPages*((drilling?.price || 0) * numberChange);
     }
 
     setTotalPrice(total);
@@ -149,19 +174,20 @@ const PriceCalculation = () => {
 
 
 
-  const handleChange = (e) => {
+  const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setIsEnabled(e.target.value === 'yes');
   };
-  const handleChangeDrilling = (e) => {
+
+  const handleChangeDrilling = (e : React.ChangeEvent<HTMLSelectElement>) => {
     setIsEnabledDrilling(e.target.value === 'yes');
   };
-  const handleChangeStamping = (e) => {
+  const handleChangeStamping = (e : React.ChangeEvent<HTMLSelectElement>) => {
     setIsEnabledStamping(e.target.value === 'yes');
   };
-  const handleChangeChange = (e) => {
+  const handleChangeChange = (e : React.ChangeEvent<HTMLSelectElement>) => {
     setIsEnabledChange(e.target.value === 'yes');
   };
-  const handleChangeCutFinished = (e) => {
+  const handleChangeCutFinished = (e : React.ChangeEvent<HTMLSelectElement>) => {
     setIsCutFinished(e.target.value === 'yes');
   };
 
@@ -309,12 +335,19 @@ const PriceCalculation = () => {
               <select
                   value={selectMansID}
                   onChange={(e) => {
-                    const id = Number(e.target.value);
-                    setSelectMansID(id);
+                    const value = e.target.value;
+                    if (value === "no") {
+                      setSelectMansID(0); // hoặc null tùy theo logic của bạn
+                      setIsMan(false);
+                    } else {
+                      const id = Number(value);
+                      setSelectMansID(id);
+                      setIsMan(true);
+                    }
                   }}
 
                   style={{ height: "35px", marginRight: "10px", marginLeft: "0", width:"200px", backgroundColor: "white", color: "black", border: "1px solid #ccc", borderRadius:'10px' }}>
-                <option value="option2">Không</option>
+                <option value="no">Không</option>
                 {mans.map((man)=>(
                     <option key={man.id} value={man.id ?? 0}>{man.name}</option>
                 ))}
@@ -323,7 +356,10 @@ const PriceCalculation = () => {
             <div className="form-row" style={{marginLeft:"40px"}}>
               <p>Số mặt cán:</p>
               <select
-
+                  disabled={!isMan}
+                  onChange={(e)=>{
+                    setNumberMan(Number(e.target.value));
+                  }}
                   style={{ height: "35px", marginRight: "10px", marginLeft: "0", width:"200px", backgroundColor: "white", color: "black", border: "1px solid #ccc", borderRadius:'10px' }}>
                 <option value="1">1</option>
                 <option value="2">2</option>
@@ -346,9 +382,12 @@ const PriceCalculation = () => {
             <div className="form-row" style={{marginLeft:"40px"}}>
               <p>Hình thức:</p>
               <select disabled={!isEnabled}
+                      onChange={(e)=>{
+                        setMetodCutting(e.target.value);
+                      }}
                       style={{ height: "35px", marginRight: "10px", marginLeft: "0", width:"200px", backgroundColor: "white", color: "black", border: "1px solid #ccc", borderRadius:'10px' }}>
-                <option value="betem">Bế tem</option>
-                <option value="catdut">Cắt đứt</option>
+                <option value="be_tem">Bế tem</option>
+                <option value="cat_dut">Cắt đứt</option>
                 <option value="can">Cấn</option>
               </select>
             </div>
@@ -384,6 +423,7 @@ const PriceCalculation = () => {
                   setSelectTypeCustomer(id);
                 }}
                 style={{ height: "35px", marginRight: "10px", marginLeft: "0", width:"200px", backgroundColor: "white", color: "black", border: "1px solid #ccc", borderRadius:'10px' }}>
+              <option value="">-- Chọn loại khách --</option>
               {typeCustomer?.length > 0 &&
                   typeCustomer.map((type)=>(
                       <option key={type.id} value={type.id ?? 0}>{type.name}</option>
@@ -430,12 +470,16 @@ const PriceCalculation = () => {
 
           <div className="form-row" style={{marginLeft:"40px"}}>
             <p>Số lượng biến đổi:</p>
-            <input disabled={!isEnabledChange} style={{height:"35px", marginRight:"170px"}} type="number"/>
+            <input disabled={!isEnabledChange}
+                   onChange={(e)=>{
+                     setNumberChange(Number(e.target.value));
+                   }}
+                   style={{height:"35px", marginRight:"170px"}} type="number"/>
           </div>
         </div>
       </div>
       <div style={{textAlign: "center", marginTop:"20px", color: "blue"}}>
-        <h3>Giá: {totalPrice} vnđ</h3>
+        <h3>Giá: {formatCurrency(totalPrice)} vnđ</h3>
       </div>
       <div style={{ marginTop:"20px"}}>
         <h3 style={{textAlign: "center"}}>Thông tin chi tiết</h3>
@@ -446,19 +490,18 @@ const PriceCalculation = () => {
             <h4>Kích thước giấy(WxH): <span style={{color:"blue"}}>{selectedPaper?.weight}x{selectedPaper?.height} (mm)</span></h4>
             <h4>Số mặt in:  <span style={{color:"blue"}}>{numberPrint}</span></h4>
             <h4>Cán màng:  <span style={{color:"blue"}}>{selectMan?.name}</span></h4>
-            <h4>Số mặt Cán màng:  1 or 2</h4>
-            <h4>Bế:  có or không</h4>
-            <h4>Loại bế:  tên</h4>
-            <h4>Cắt thành phẩm:  có or không</h4>
+            <h4>Số mặt Cán màng:  <span style={{color:"blue"}}>{numberMan}</span></h4>
+            <h4>Bế:  <span style={{color:"blue"}}>{isEnabled ? "có (" + methodCutting+" - "  + khuon +")" : "không"}</span></h4>
+            <h4>Cắt thành phẩm: <span style={{color:"blue"}}>{isCutFinished ? "Có"  : "không"}</span></h4>
             <h4>Tùy chọn nâng cao:  tên</h4>
           </div>
           <div className="boxprice">
-            <h4>Giá 1 tem:  xxx  vnđ</h4>
-            <h4>Số tờ giấy: {totalPaper}</h4>
+            <h4>Giá 1 tem:  <span style={{color:"blue"}}>{ Math.ceil(totalPrice / numberTem) || 0} vnđ</span></h4>
+            <h4>Số tờ giấy: <span style={{color: "blue"}}>{totalPaper}</span></h4>
             <h4>Số lượng/1 tờ:  <span style={{color:"blue"}}>{numberTemInPaper}</span></h4>
-            <h4>Phụ phí:  xxx.xxx vnđ</h4>
-            <h4>Loại khách hàng:  tên</h4>
-            <h4>Giảm giá:  xxx.xxx vnđ</h4>
+            <h4>Phụ phí:  <span style={{color:"blue"}}>{formatCurrency(surcharge)}</span> vnđ</h4>
+            <h4>Loại khách hàng:  <span style={{color:"blue"}}>{selectTypeCus?.name}</span></h4>
+            <h4>Giảm giá:  <span style={{color:"blue"}}>{formatCurrency(discount)}</span> vnđ</h4>
           </div>
         </div>
       </div>
