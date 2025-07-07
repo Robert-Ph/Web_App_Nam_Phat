@@ -64,11 +64,11 @@ import Order from "../../model/order.model.tsx";
 
             <div className="container">
                 <div className="hearder">
-                    <div className="box">
+                    <div className="box" style={{background: "var(--color-doanhthu)" }}>
                         <div className="icon">
-                            <TrendingUpIcon className="icon-size"></TrendingUpIcon>
+                            <TrendingUpIcon className="icon-size" style={{ color: "var(--text-doanhthu)"}}></TrendingUpIcon>
                         </div>
-                        <div className="icon textbox font-size-16">
+                        <div className="icon textbox font-size-16" style={{color:"var(--text-doanhthu)"}}>
                             <p style={{fontSize:'20px'}}>Doanh thu/năm</p>
                             <p>{formatCurrency(calculateTotalRevenueAmount(dashboard.orders))} vnđ</p>
                         </div>

@@ -105,7 +105,7 @@ const appRoutes: RouteObject[] = [
   {
     path: "/",
     element: (
-      <RequireAuth allowedRoles={["ADMIN", "USER"]}>
+      <RequireAuth allowedRoles={["ADMIN", "USER", "PRICE"]}>
         <MainLayout />
       </RequireAuth>
     ),
@@ -401,7 +401,7 @@ const appRoutes: RouteObject[] = [
         {
             path: "/work/list-work",
             element: (
-                <RequireAuth allowedRoles={["ADMIN", "USER"]}>
+                <RequireAuth allowedRoles={["ADMIN", "USER", "PRICE"]}>
                     <Suspense fallback={<Spiner/>}>
                         <ListWorkPage/>
                     </Suspense>
@@ -421,7 +421,7 @@ const appRoutes: RouteObject[] = [
         {
             path: "/work/price_calculation",
             element: (
-                <RequireAuth allowedRoles={["ADMIN", "USER"]}>
+                <RequireAuth allowedRoles={["ADMIN", "USER", "PRICE"]}>
                     <Suspense fallback={<Spiner/>}>
                         <PriceCalculation/>
                     </Suspense>
@@ -431,7 +431,7 @@ const appRoutes: RouteObject[] = [
         {
             path: "/work/price_calculation/custom_price",
             element: (
-                <RequireAuth allowedRoles={["ADMIN", "USER"]}>
+                <RequireAuth allowedRoles={["ADMIN", "USER","PRICE"]}>
                     <Suspense fallback={<Spiner/>}>
                         <CustomPriceCal/>
                     </Suspense>

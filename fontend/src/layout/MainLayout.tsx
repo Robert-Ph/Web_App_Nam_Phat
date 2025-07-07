@@ -191,7 +191,7 @@ const MainLayout = () => {
       <ScrollToTop></ScrollToTop>
       <Header></Header>
       <div className="d-flex main-layout">
-        <div className="flex-2">
+        <div className="flex-1">
           <Navbar></Navbar>
         </div>
         <div className="flex-4">

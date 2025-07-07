@@ -50,4 +50,13 @@ public class PaperController {
                 .data(paperService.getPaperById(id))
                 .build());
     }
+
+    @PutMapping
+    public ResponseEntity<ApiResponse> updatePaper(@RequestBody Paper paper) {
+        return ResponseEntity.ok(ApiResponse.builder()
+                .code(SuccessMessage.CREATE_DATA_SUCCESS.getCode())
+                .message(SuccessMessage.CREATE_DATA_SUCCESS.getMessage())
+                .data(paperService.updatePaper(paper))
+                .build());
+    }
 }

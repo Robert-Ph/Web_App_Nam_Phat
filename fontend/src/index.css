@@ -13,13 +13,18 @@
   -moz-osx-font-smoothing: grayscale;
   --color-main: #0db6ff;
   --color-gray: #ebebeb;
-  --color-bg-header: #0000ff;
+  --color-bg-header: #0066ff;
   --color-bg-box: #1a55ee;
   --color-main-text: #fff;
   --color-black: #000;
   --color-bg-navbar: #f7ffc7;
   --color-danger: #fb3737;
   --color-warning: #e2d347;
+
+
+  --color-doanhthu: #DCFCE7;
+
+  --text-doanhthu: #166534;
 }
 
 a {

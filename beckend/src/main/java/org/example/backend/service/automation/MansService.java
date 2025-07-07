@@ -33,11 +33,10 @@ public class MansService {
         return mans1;
     }
 
-    public Mans updateMans(MansRequest mans) {
-        Optional<Mans> optional = mansRepository.findMansByName(mans.getName());
-        Mans mans1 = modelMapper.map(mans, Mans.class);
-        if (optional.isPresent()) {
-            mans1 = mansRepository.save(mans1);
+    public Mans updateMans(Mans mans) {
+        Mans mans1 = mansRepository.findById(mans.getId()).orElse(null);
+        if (mans1 != null) {
+            mansRepository.save(mans);
         }else {
             throw new AppException(ErrorMessage.MAN_NOT_FOUND);
         }

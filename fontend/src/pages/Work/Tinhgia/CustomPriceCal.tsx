@@ -5,7 +5,13 @@
 
 import {useEffect, useState} from "react";
 import CalModal from "./CalModal.tsx";
+import UpdateCalModal from "./UpdateCalModal.tsx";
 import MansModal from "./MansModal.tsx";
+import UpdateMansModal from "./UpdateMansModal.tsx";
+import UpdateDieCuttingModal from "./UpdateDieCuttingModal.tsx";
+import UpdateTypeCustomerModal from "./UpdateTypeCustomerModal.tsx";
+import UpdateEnhanceModal from "./UpdateEnhanceModal.tsx";
+
 import Paper from "../../../model/automation/paper.tsx";
 import PaperService from "../../../service/automation/PaperService.tsx";
 import Mans from "../../../model/automation/Mans.tsx";
@@ -16,6 +22,7 @@ import Enhance from "../../../model/automation/Enhance.tsx";
 import EnhanceService from "../../../service/automation/EnhanceService.tsx";
 import TypeCustomer from "../../../model/automation/TypeCustomer.tsx";
 import TypeCustomerService from "../../../service/automation/TypeCustomerService.tsx";
+import {formatCurrency} from "../../../utils/Utils.tsx";
 
 const CustomPriceCalculation = () => {
 
@@ -25,16 +32,59 @@ const CustomPriceCalculation = () => {
   const [typeCustomer, setTypeCustomer] = useState<TypeCustomer[]>([])
   const [enahnce, setEnhance] = useState<Enhance[]>([])
   const [open, setOpen] = useState<boolean>(false);
+  const [openUpdate, setOpenUpdate] = useState<boolean>(false);
+  const [openUpdateMans, setOpenUpdateMans] = useState<boolean>(false);
+  const [openUpdateDieCutting, setOpenUpdateDieCutting] = useState<boolean>(false);
+  const [openTypeCustomer, setOpenTypeCustomer] = useState<boolean>(false);
+  const [openEnhance, setOpenEnhance] = useState<boolean>(false);
   const [mansbo, setMansBo] = useState<boolean>(false);
+
+
   const handleOpen = () => {
     setOpen(true);
+  };
+  const handleOpenUpdate = () => {
+    setOpenUpdate(true);
+  };
+  const handleOpenUpdateMans = () => {
+    setOpenUpdateMans(true);
   };
   const handleMansBo = () => {
     setMansBo(true);
   };
+  const handleopenDieCutting = () => {
+    setOpenUpdateDieCutting(true);
+  };
+  const handleopenTypeCustomer = () => {
+    setOpenTypeCustomer(true);
+  };
+  const handleOpenEnhance = () => {
+    setOpenEnhance(true);
+  };
+
+
   const handleOnclose = () => {
     setOpen(false);
+    setOpenUpdate(false);
+    setOpenUpdateMans(false);
+    setOpenUpdateDieCutting(false);
+    setOpenTypeCustomer(false);
   };
+  const handleOncloseMans = () => {
+    setOpen(false);
+    setOpenUpdateMans(false);
+  };
+
+  const handleOncloseDieCutting = () => {
+    setOpenUpdateDieCutting(false);
+  };
+  const handleOncloseTypeCustomer = () => {
+    setOpenTypeCustomer(false);
+  };
+  const handleOncloseEnhance = () => {
+    setOpenEnhance(false);
+  };
+
 
   useEffect(() => {
     const fetchData = async () => {
@@ -79,7 +129,9 @@ const CustomPriceCalculation = () => {
               }}>
                 Thêm
               </button>
-              <button className="btn btn-primary" style={{backgroundColor: "orange"}}>
+              <button className="btn btn-primary"
+                      onClick={()=> {handleOpenUpdate();}}
+                      style={{backgroundColor: "orange"}}>
                 Cập nhật
               </button>
             </div>
@@ -139,22 +191,22 @@ const CustomPriceCalculation = () => {
                       {paper.height}
                     </td>
                     <td className="pb-7 pt-7 font-size-small td-table font-w-500">
-                      {paper.onePrintPrice}
+                      {formatCurrency(paper.onePrintPrice)}
                     </td>
                     <td
                         className="pb-7 pt-7 font-size-small td-table font-w-500"
                         style={{ textAlign: "justify" }}
                     >
-                      {paper.twoPrintPrice}
+                      {formatCurrency(paper.twoPrintPrice)}
                     </td>
                     <td className="pb-7 pt-7 font-size-small td-table font-w-500">
-                      {paper.oneColorPrintPrice}
+                      {formatCurrency(paper.oneColorPrintPrice)}
                     </td>
                     <td
                         className="pb-7 pt-7 font-size-small td-table font-w-500"
                         style={{ textAlign: "justify" }}
                     >
-                      {paper.twoColorPrintPrice}
+                      {formatCurrency(paper.twoColorPrintPrice)}
                     </td>
                   </tr>
               ))}
@@ -167,15 +219,15 @@ const CustomPriceCalculation = () => {
 
 
       {/*Màn*/}
-      <div className="main-body">
-        <h4>Màn</h4>
+      <div className="main-body" style={{backgroundColor: "azure"}}>
+        <h4>Màng</h4>
         <div style={{ marginBottom: "10px" }}>
           <div className="d-flex" style={{ marginTop: "15px", justifyContent: "flex-end" }}>
             <div className="d-flex">
               <button className="btn btn-primary" onClick={() => handleMansBo()} >
                 Thêm
               </button>
-              <button className="btn btn-primary" style={{backgroundColor: "orange"}}>
+              <button className="btn btn-primary" style={{backgroundColor: "orange"}} onClick={() => handleOpenUpdateMans()}>
                 Cập nhật
               </button>
             </div>
@@ -210,13 +262,13 @@ const CustomPriceCalculation = () => {
                           {man.name}
                         </td>
                         <td className="pb-7 pt-7 font-size-small font-w-500 ">
-                          {man.onePrice}
+                          {formatCurrency(man.onePrice)}
                         </td>
                         <td
                             className="pb-7 pt-7 font-size-small td-table font-w-500"
                             style={{ paddingRight: "20px", paddingLeft: "0px" }}
                         >
-                          {man.twoPrice}
+                          {formatCurrency(man.twoPrice)}
                         </td>
                       </tr>
                   ))}
@@ -234,7 +286,7 @@ const CustomPriceCalculation = () => {
         <div style={{ marginBottom: "10px" }}>
           <div className="d-flex" style={{ marginTop: "15px", justifyContent: "flex-end" }}>
             <div className="d-flex">
-              <button className="btn btn-primary" style={{backgroundColor: "orange"}}>
+              <button className="btn btn-primary" style={{backgroundColor: "orange"}} onClick={() =>handleopenDieCutting()}>
                 Cập nhật
               </button>
             </div>
@@ -267,7 +319,7 @@ const CustomPriceCalculation = () => {
                           {diecut.name}
                         </td>
                         <td className="pb-7 pt-7 font-size-small font-w-500 ">
-                          {diecut.price}
+                          {formatCurrency(diecut.price)}
                         </td>
 
                       </tr>
@@ -284,12 +336,12 @@ const CustomPriceCalculation = () => {
 
 
       {/*Loại khách hàng*/}
-      <div className="main-body">
+      <div className="main-body" style={{backgroundColor: "azure"}}>
         <h4>Loại khách hàng</h4>
         <div style={{ marginBottom: "10px" }}>
           <div className="d-flex" style={{ marginTop: "15px", justifyContent: "flex-end" }}>
             <div className="d-flex">
-              <button className="btn btn-primary" style={{backgroundColor: "orange"}}>
+              <button className="btn btn-primary" style={{backgroundColor: "orange"}} onClick={()=>handleopenTypeCustomer()}>
                 Cập nhật
               </button>
             </div>
@@ -345,10 +397,10 @@ const CustomPriceCalculation = () => {
         <div style={{ marginBottom: "10px" }}>
           <div className="d-flex" style={{ marginTop: "15px", justifyContent: "flex-end" }}>
             <div className="d-flex">
-              <button className="btn btn-primary" disabled={true}>
-                Thêm
-              </button>
-              <button className="btn btn-primary" style={{backgroundColor: "orange"}}>
+              {/*<button className="btn btn-primary" disabled={true}>*/}
+              {/*  Thêm*/}
+              {/*</button>*/}
+              <button className="btn btn-primary" style={{backgroundColor: "orange"}} onClick={()=>handleOpenEnhance()}>
                 Cập nhật
               </button>
             </div>
@@ -381,7 +433,7 @@ const CustomPriceCalculation = () => {
                           {enha.name}
                         </td>
                         <td className="pb-7 pt-7 font-size-small font-w-500 ">
-                          {enha.price}
+                          {formatCurrency(enha.price)}
                         </td>
 
                       </tr>
@@ -399,11 +451,38 @@ const CustomPriceCalculation = () => {
           tittle={"Giấy in"}
           open={open}
           onClose={handleOnclose}
-          // update={"update"}
-          // handleSubmit={createAccount }
-      ></CalModal>
 
-      <MansModal open={mansbo} onClose={handleOnclose} tittle={"Màn"}></MansModal>
+      ></CalModal>
+      <UpdateCalModal
+          tittle={"Giấy in"}
+          open={openUpdate}
+          onClose={handleOnclose}
+      ></UpdateCalModal>
+
+      <MansModal open={mansbo} onClose={handleOncloseMans} tittle={"Màn"}></MansModal>
+      <UpdateMansModal
+          open={openUpdateMans}
+          onClose={handleOncloseMans}
+          tittle={"Màn"}
+      ></UpdateMansModal>
+
+      <UpdateDieCuttingModal
+          open={openUpdateDieCutting}
+          onClose={handleOncloseDieCutting}
+          tittle={"Bế/ cắt thành phẩm"}
+      ></UpdateDieCuttingModal>
+
+      <UpdateTypeCustomerModal
+          open={openTypeCustomer}
+          onClose={handleOncloseTypeCustomer}
+          tittle={"Loại khách hàng"}
+      ></UpdateTypeCustomerModal>
+
+      <UpdateEnhanceModal
+          open={openEnhance}
+          onClose={handleOncloseEnhance}
+          tittle={"Tùy chọn nâng cao"}
+      ></UpdateEnhanceModal>
     </div>
 
 

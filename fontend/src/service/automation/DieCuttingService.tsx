@@ -1,6 +1,7 @@
 import api from "../../api/APIConfig";
 import DieCutting from "../../model/automation/DieCutting.tsx";
 
+
 const BASE_URL = "/automation/diecutting";
 
 const getBy = () => {
@@ -15,6 +16,10 @@ const create = (man: DieCutting) => {
 const getById = (id: number) => {
     return api.get(`${BASE_URL}/${id}`);
 };
+
+const updateDieCutting = (mans: DieCutting) => {
+    return api.put(`${BASE_URL}`, mans);
+}
 // const deletePaper = (paper1 : Paper) => {
 //     return api.delete(`${BASE_URL}`, paper1);
 // }
@@ -22,7 +27,8 @@ const getById = (id: number) => {
 const DieCuttingService = {
     getBy,
     create,
-    getById
+    getById,
+    updateDieCutting,
     // deletePaper,
 };
 

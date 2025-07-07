@@ -1,6 +1,7 @@
 import api from "../../api/APIConfig";
 import Mans from "../../model/automation/Mans.tsx";
 
+
 const BASE_URL = "/automation/mans";
 
 const getBy = () => {
@@ -15,6 +16,9 @@ const create = (man: Mans) => {
 const getById = (id: number) => {
     return api.get(`${BASE_URL}/${id}`);
 };
+const updateMans = (mans: Mans) => {
+    return api.put(`${BASE_URL}`, mans);
+}
 // const deletePaper = (paper1 : Paper) => {
 //     return api.delete(`${BASE_URL}`, paper1);
 // }
@@ -22,7 +26,8 @@ const getById = (id: number) => {
 const MansService = {
     getBy,
     create,
-    getById
+    getById,
+    updateMans,
     // deletePaper,
 };
 

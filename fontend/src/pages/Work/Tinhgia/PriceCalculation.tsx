@@ -32,18 +32,18 @@ const PriceCalculation = () => {
   const [isEnabledDrilling, setIsEnabledDrilling] = useState(false);
   const [isEnabledStamping, setIsEnabledStamping] = useState(false);
   const [isEnabledChange, setIsEnabledChange] = useState(false);
-  const [isMan, setIsMan] = useState(false);
+  const [_isMan, setIsMan] = useState(false);
   const [isCutFinished, setIsCutFinished] = useState(false);
   const [khuon, setKhuon] = useState("oval"); // giá trị mặc định
   const [methodCutting, setMetodCutting] = useState("be_tem");
 
   const [heightTem, setHeightTem] = useState<number>(0);
   const [weightTem, setWeightTem] = useState<number>(0);
-  const [numberPrint, _setNumberPrint] = useState<number>(1);
+  const [numberPrint, setNumberPrint] = useState<number>(1);
   // const [typePrint, setTypePrint] = useState<string>("CMYK");
   // const [coating, setCoating] = useState<Mans>();
   // const [numberCoating, setNumberCoating] = useState<number>(1);
-  const [surcharge, _setSurcharge] = useState<number>(20000);
+  const [surcharge, setSurcharge] = useState<number>(20000);
   const [discount, setdiscount] = useState<number>(0);
 
   const [numberTemInPaper, setNumberTeminPaper] = useState<number>(0);
@@ -57,13 +57,24 @@ const PriceCalculation = () => {
 
   const handCalculator = () => {
     setdiscount(0);
+    setSurcharge(20000)
     if (heightTem === 0 || weightTem === 0) {
       toast.error("Kích thước tem không được bỏ trống!", { autoClose: 1000 });
       return;
     }
 
     if (selectedPaperId === 0) {
+      toast.error("Vui lòng chọn số lượng cần in!", { autoClose: 1000 });
+      return;
+    }
+
+    if (numberTem === 0) {
       toast.error("Vui lòng chọn loại giấy in!", { autoClose: 1000 });
+      return;
+    }
+
+    if (selectTypeCustomer === 0){
+      toast.error("Vui lòng chọn loại khách hàng!", { autoClose: 1000 });
       return;
     }
 
@@ -97,9 +108,9 @@ const PriceCalculation = () => {
     let total = totalPages * (selectedPaper?.oneColorPrintPrice || 0);
 
     if (totalPages< 5){
-      total += 80000;
+      total += 50000;
     }else if (totalPages <= 50){
-      total += 60000;
+      total += 35000;
     }else if (totalPages <= 100){
       total += 30000;
     }else if (total <= 500){
@@ -113,15 +124,20 @@ const PriceCalculation = () => {
 
     if (totalPages<= 20){
       total += surcharge;
-    }else if (totalPages <= 100){
-      total += surcharge * 1.2;
-    }else if (totalPages <= 500){
-      total += surcharge * 2;
-    }else if (totalPages <= 1000){
-      total += surcharge * 5;
     }
+    // else if (totalPages <= 100){
+    //   setSurcharge(surcharge * 1.2);
+    //   total += surcharge * 1.2;
+    // }else if (totalPages <= 500){
+    //   setSurcharge(surcharge * 1.5);
+    //   total += surcharge * 1.5;
+    // }else if (totalPages <= 1000){
+    //   setSurcharge(surcharge * 3);
+    //   total += surcharge * 3;
+    // }
     else {
-      total += surcharge * 7;
+      setSurcharge(0);
+      // total += surcharge * 4;
     }
 
     if (selectMansID !== 0) {
@@ -191,6 +207,11 @@ const PriceCalculation = () => {
     setIsCutFinished(e.target.value === 'yes');
   };
 
+  const handleChangePrintSide = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setNumberPrint(Number(e.target.value)); // ép kiểu về number
+
+  };
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -244,9 +265,9 @@ const PriceCalculation = () => {
       <div className="container1">
         <div className="boxprice">
           <div>
-            <h4>Kích thước sản phẩm:</h4>
+            <h4>Kích thước sản phẩm<span style={{color: "red"}}>*</span>:</h4>
             <div className="form-row" style={{marginLeft:"40px"}}>
-              <p>Chiều rộng (W):</p>
+              <p>Chiều rộng (W)<span style={{color: "red"}}>*</span>:</p>
               <input
                   onChange={(e) =>{
                   setWeightTem(Number(e.target.value));
@@ -255,7 +276,7 @@ const PriceCalculation = () => {
               <p>mm</p>
             </div>
             <div className="form-row" style={{marginLeft:"40px"}}>
-              <p>Chiều cao (H):</p>
+              <p>Chiều cao (H)<span style={{color: "red"}}>*</span>:</p>
               <input
                   onChange={(e) =>{
                     setHeightTem(Number(e.target.value));
@@ -264,7 +285,7 @@ const PriceCalculation = () => {
               <p>mm</p>
             </div>
             <div className="form-row" style={{marginLeft:"40px"}}>
-              <p>Số lượng tem:</p>
+              <p>Số lượng tem<span style={{color: "red"}}>*</span>:</p>
               <input
                   onChange={(e) =>{
                     setNumberTem(Number(e.target.value));
@@ -276,9 +297,9 @@ const PriceCalculation = () => {
 
           {/*// Loai giay in*/}
           <div>
-            <h4>Loại giấy in:</h4>
+            <h4>Loại giấy in<span style={{color: "red"}}>*</span>:</h4>
             <div className="form-row" style={{marginLeft:"40px"}}>
-              <p>Loại giấy:</p>
+              <p>Loại giấy<span style={{color: "red"}}>*</span>:</p>
               <select
                   value={selectedPaperId ?? ""}
                   onChange={(e) => {
@@ -310,15 +331,19 @@ const PriceCalculation = () => {
           {/*// So mat in*/}
           <div className="form-row" style={{fontWeight: "bold"}}>
             <p>Số mặt in:</p>
-            <select style={{ height: "35px", marginRight: "100px", marginLeft: "0", width:"200px", backgroundColor: "white", color: "black", border: "1px solid #ccc", borderRadius:'10px' }}>
-              <option value="option1">1</option>
-              <option value="option2">2</option>
+            <select
+                disabled={true}
+                value={numberPrint}
+                onChange={handleChangePrintSide}
+                style={{ height: "35px", marginRight: "100px", marginLeft: "0", width:"200px", backgroundColor: "white", color: "black", border: "1px solid #ccc", borderRadius:'10px' }}>
+              <option value="1">1</option>
+              <option value="2">2</option>
             </select>
           </div>
           {/*// Loai in*/}
           <div className="form-row" style={{fontWeight: "bold"}}>
             <p>Loại in:</p>
-            <select style={{ height: "35px", marginRight: "100px", marginLeft: "0", width:"200px", backgroundColor: "white", color: "black", border: "1px solid #ccc", borderRadius:'10px' }}>
+            <select disabled={true} style={{ height: "35px", marginRight: "100px", marginLeft: "0", width:"200px", backgroundColor: "white", color: "black", border: "1px solid #ccc", borderRadius:'10px' }}>
               <option value="option1">In màu(CMYK)</option>
               <option  value="option2">In trắng đen</option>
             </select>
@@ -356,7 +381,7 @@ const PriceCalculation = () => {
             <div className="form-row" style={{marginLeft:"40px"}}>
               <p>Số mặt cán:</p>
               <select
-                  disabled={!isMan}
+                  disabled={true}
                   onChange={(e)=>{
                     setNumberMan(Number(e.target.value));
                   }}
@@ -415,7 +440,7 @@ const PriceCalculation = () => {
           </div>
 
           <div className="form-row" style={{fontWeight: "bold"}}>
-            <p >Loại khách hàng:</p>
+            <p >Loại khách hàng<span style={{color: "red"}}>*</span>:</p>
             <select
                 value={selectTypeCustomer}
                 onChange={(e) => {

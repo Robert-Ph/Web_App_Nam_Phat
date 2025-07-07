@@ -8,7 +8,7 @@ import Select, { SelectChangeEvent } from "@mui/material/Select";
 import account from "../../../../model/account.model";
 
 const style = {
-  position: "absolute" as "absolute",
+  position: "absolute",
   top: "50%",
   left: "53%",
   transform: "translate(-50%, -50%)",
@@ -176,6 +176,9 @@ const AccountModal = ({
                     </MenuItem>
                     <MenuItem value="ADMIN" style={{ padding: "10px 12px" }}>
                       Quản lý
+                    </MenuItem>
+                    <MenuItem value="PRICE" style={{ padding: "10px 12px" }}>
+                      Tính giá tự động
                     </MenuItem>
                   </Select>
                 </FormControl>

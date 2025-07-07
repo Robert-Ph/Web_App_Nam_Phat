@@ -1,5 +1,5 @@
 .navbar {
-  padding-left: 4px;
+  padding-left: 0px;
   height: 100%;
 }
 .navbar-item {
@@ -34,7 +34,7 @@
 }
 
 .pd-20-px {
-  padding-top: 20px;
+  padding-top: 0px;
 }
 .text-black {
   color: var(--color-black);
@@ -45,13 +45,13 @@
   font-weight: 400;
 }
 .mt-20 {
-  margin-top: 25px;
+  margin-top: 15px;
 }
 .mb-20-px {
   margin-bottom: 30px;
 }
 .pd-8 {
-  padding: 8px;
+  padding: 0px;
 }
 .wrap-nav-item {
   border-right: 1px solid #ccc;

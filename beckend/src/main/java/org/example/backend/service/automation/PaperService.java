@@ -33,13 +33,14 @@ public class PaperService {
         return paper2;
     }
 
-    public void updatePaper(Paper paper) {
+    public Paper updatePaper(Paper paper) {
         Paper paper1 = pagerRepository.findById(paper.getId()).orElse(null) ;
         if(paper1 != null) {
             pagerRepository.save(paper);
         }else {
             throw new AppException(ErrorMessage.PAPER_NOT_FOUND);
         }
+        return paper;
     }
 
     public void deletePaper(Paper paper) {

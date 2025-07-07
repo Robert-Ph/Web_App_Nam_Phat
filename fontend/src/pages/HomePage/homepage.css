@@ -8,6 +8,8 @@
     float: left;
     margin-left: 5%;
     background: var(--color-bg-box);
+    border-radius: 5px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
     .icon{
       float: left;
       width: 20%;

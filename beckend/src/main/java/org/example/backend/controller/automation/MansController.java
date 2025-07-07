@@ -2,6 +2,7 @@ package org.example.backend.controller.automation;
 
 import org.example.backend.dto.request.automation.MansRequest;
 import org.example.backend.dto.response.ApiResponse;
+import org.example.backend.entity.automation.Mans;
 import org.example.backend.message.SuccessMessage;
 import org.example.backend.repository.automation.MansRepository;
 import org.example.backend.service.automation.MansService;
@@ -47,7 +48,7 @@ public class MansController {
     }
 
     @PutMapping
-    public ResponseEntity<ApiResponse> updateMans(@RequestBody MansRequest mans) {
+    public ResponseEntity<ApiResponse> updateMans(@RequestBody Mans mans) {
         return ResponseEntity.ok(ApiResponse.builder()
                 .code(SuccessMessage.CREATE_DATA_SUCCESS.getCode())
                 .message(SuccessMessage.CREATE_DATA_SUCCESS.getMessage())

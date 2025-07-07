@@ -27,24 +27,32 @@ const Navbar = () => {
 
   return (
     <div className="d-flex dicrect-col bg-navbar navbar pd-20-px">
-      <Link
-        to={"/"}
-        className={`navbar-item color-black ${
-          isActive("/", location.pathname) ? " active" : ""
-        }`}
-        title="Tổng quan"
-      >
-        <HomeIcon className="icon-size"></HomeIcon>
-      </Link>
-      <Link
-        to={"/order/create"}
-        className={`navbar-item color-black ${
-          isActive("/order", location.pathname) ? " active" : ""
-        }`}
-        title="Đơn hàng"
-      >
-        <ShoppingCartOutlinedIcon className="icon-size"></ShoppingCartOutlinedIcon>
-      </Link>
+        {role &&  role !== "PRICE" && (
+            <Link
+                to={"/"}
+                className={`navbar-item color-black ${
+                    isActive("/", location.pathname) ? " active" : ""
+                }`}
+                title="Tổng quan"
+            >
+                <HomeIcon className="icon-size"></HomeIcon>
+            </Link>
+        )}
+
+        {role &&  role !== "PRICE" && (
+            <Link
+                to={"/order/create"}
+                className={`navbar-item color-black ${
+                    isActive("/order", location.pathname) ? " active" : ""
+                }`}
+                title="Đơn hàng"
+            >
+                <ShoppingCartOutlinedIcon className="icon-size"></ShoppingCartOutlinedIcon>
+            </Link>
+
+        )}
+
+
       <Link  to={"/work/list-work"}
              className={`navbar-item color-black ${
                  isActive("/work", location.pathname) ? " active" : ""
@@ -52,15 +60,21 @@ const Navbar = () => {
              title="Công việc">
           <WorkIcon className="icon-size"></WorkIcon>
       </Link>
-      <Link
-        to={"/customer/list"}
-        className={`navbar-item color-black ${
-          isActive("/customer", location.pathname) ? " active" : ""
-        }`}
-        title="Khách hàng"
-      >
-        <Groups2OutlinedIcon className="icon-size"></Groups2OutlinedIcon>
-      </Link>
+
+        {role &&  role !== "PRICE" && (
+            <Link
+                to={"/customer/list"}
+                className={`navbar-item color-black ${
+                    isActive("/customer", location.pathname) ? " active" : ""
+                }`}
+                title="Khách hàng"
+            >
+                <Groups2OutlinedIcon className="icon-size"></Groups2OutlinedIcon>
+            </Link>
+
+
+        )}
+
         {role && role == "ADMIN" && (
             <Link
                 to={"/employees/list"}
@@ -93,15 +107,20 @@ const Navbar = () => {
       {/*>*/}
       {/*  <QueryStatsOutlinedIcon className="icon-size"></QueryStatsOutlinedIcon>*/}
       {/*</Link>*/}
-      <Link
-        to={"/warehouse/list"}
-        className={`navbar-item color-black ${
-          isActive("/warehouse", location.pathname) ? " active" : ""
-        }`}
-        title="Kho hàng"
-      >
-        <DvrOutlinedIcon className="icon-size"></DvrOutlinedIcon>
-      </Link>
+
+        {role &&  role !== "PRICE" && (
+            <Link
+                to={"/warehouse/list"}
+                className={`navbar-item color-black ${
+                    isActive("/warehouse", location.pathname) ? " active" : ""
+                }`}
+                title="Kho hàng"
+            >
+                <DvrOutlinedIcon className="icon-size"></DvrOutlinedIcon>
+            </Link>
+            
+        )}
+
       {role && role == "ADMIN" && (
         <Link
           to={"/system/log"}

@@ -15,6 +15,9 @@ const create = (man: TypeCustomer) => {
 const getById = (id: number) => {
     return api.get(`${BASE_URL}/${id}`);
 };
+const updateTypeCustomer = (mans: TypeCustomer) => {
+    return api.put(`${BASE_URL}`, mans);
+}
 // const deletePaper = (paper1 : Paper) => {
 //     return api.delete(`${BASE_URL}`, paper1);
 // }
@@ -22,7 +25,8 @@ const getById = (id: number) => {
 const TypeCustomerService = {
     getBy,
     create,
-    getById
+    getById,
+    updateTypeCustomer,
     // deletePaper,
 };
 

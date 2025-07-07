@@ -20,7 +20,22 @@ const Login = () => {
 
     try {
       await loginUser(username, password);
-      navigate("/");
+      const userRoler = localStorage.getItem("role")
+      switch (userRoler){
+        case "ADMIN":
+          navigate("/");
+          break;
+        case "USER":
+          navigate("/");
+          break;
+        case "PRICE":
+          navigate("/work/price_calculation");
+          break;
+        default:
+          navigate("/");
+          break;
+      }
+
     } catch (err: any) {
       if (err.response.data.code == 422) {
         toast.error("Mật khẩu không chính xác!", {
