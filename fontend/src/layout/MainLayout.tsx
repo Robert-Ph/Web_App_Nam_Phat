@@ -11,7 +11,9 @@ const MainLayout = () => {
   const location = useLocation();
   const [navMore, setNavMore] = useState<MoreNav>({
     title: "Tổng quan",
-    listNav: [],
+    listNav: [
+
+    ],
   });
 
   //Dựa vào url để set thông tin
@@ -45,11 +47,27 @@ const MainLayout = () => {
     } else if (isActive("/", location.pathname)) {
       setNavMore({
         title: "Tổng quan",
-        listNav: [],
+        listNav: [
+          {
+            id: "1",
+            name: "Dasboard",
+            link: "/",
+          },
+          {
+            id: "2",
+            name: "Kinh doanh & Tài chính",
+            link: "",
+          },
+          {
+            id: "3",
+            name: "Kho & Thiết bị",
+            link: "",
+          },
+        ],
       });
     } else if (isActive("/employees", location.pathname)) {
       setNavMore({
-        title: "Quản lí",
+        title: "Nhân sự",
         listNav: [
           {
             id: "1",
@@ -82,7 +100,7 @@ const MainLayout = () => {
     //Nếu đường dẫn là customer
     else if (isActive("/customer", location.pathname)) {
       setNavMore({
-        title: "Quản lí",
+        title: "Khách hàng",
         listNav: [
           {
             id: "1",

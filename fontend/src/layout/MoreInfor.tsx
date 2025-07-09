@@ -27,7 +27,7 @@ const MoreInfor = ({ morenav }: { morenav: MoreNav }) => {
   const location = useLocation();
 
   return (
-    <div className="d-flex bg-more dicrect-col pd-20-px">
+    <div className="d-flex bg-more dicrect-col pd-20-px" style={{color:"blue"}}>
       <h3 style={{ textAlign: "center" }}>{morenav.title}</h3>
 
       <div className="">
@@ -35,7 +35,7 @@ const MoreInfor = ({ morenav }: { morenav: MoreNav }) => {
           return (
             <div
               key={item.id}
-              className={`mt-20 mb-20-px pd-8 wrap-nav-item  ${
+              className={`mt-10 mb-20-px pd-8 wrap-nav-item  ${
                 isActive(item.link, location.pathname) ? "active-item" : ""
               }`}
             >

@@ -1,7 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="7d2c548b-4f43-44fa-88ae-7a8655f1597f" name="Changes" comment="" />
+    <list default="true" id="7d2c548b-4f43-44fa-88ae-7a8655f1597f" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/fontend/src/index.css" beforeDir="false" afterPath="$PROJECT_DIR$/fontend/src/index.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fontend/src/layout/MainLayout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/fontend/src/layout/MainLayout.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fontend/src/layout/MoreInfor.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/fontend/src/layout/MoreInfor.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fontend/src/layout/css/navbar.css" beforeDir="false" afterPath="$PROJECT_DIR$/fontend/src/layout/css/navbar.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fontend/src/pages/HomePage/HomePage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/fontend/src/pages/HomePage/HomePage.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fontend/src/pages/HomePage/homepage.css" beforeDir="false" afterPath="$PROJECT_DIR$/fontend/src/pages/HomePage/homepage.css" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -52,6 +59,7 @@
       <workItem from="1749958627607" duration="22000" />
       <workItem from="1750166029907" duration="13000" />
       <workItem from="1750223538187" duration="10000" />
+      <workItem from="1752067155359" duration="24000" />
     </task>
     <servers />
   </component>

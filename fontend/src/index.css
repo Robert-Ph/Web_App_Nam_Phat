@@ -23,8 +23,22 @@
 
 
   --color-doanhthu: #DCFCE7;
+  --color-chitieu: #FEE2E2;
+  --color-tangtruong:#F0F9FF;
+  --color-nopay: #FFF7ED;
+  --color-order: #DBEAFE;
+  --color-noorder: #FEF9C3;
+  --color-newuser: #E0F2FE;
+  --color-active: #F3F4F6;
 
   --text-doanhthu: #166534;
+  --text-chitieu: #B91C1C;
+  --text-tangtruong:#1D4ED8;
+  --text-nopay: #92400E;
+  --text-order: #1E3A8A;
+  --text-noorder: #636000;
+  --text-newuser: #0369A1;
+  --text-active: #374151;
 }
 
 a {
