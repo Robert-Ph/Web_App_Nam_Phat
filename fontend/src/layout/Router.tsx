@@ -12,6 +12,8 @@ import ListWorkPage from "../pages/Work/ListWork/ListWorkPage.tsx";
 import DetailWorkPage from "../pages/Work/ListWork/DetailWorkPage.tsx";
 import PriceCalculation from "../pages/Work/Tinhgia/PriceCalculation.tsx";
 import CustomPriceCal from "../pages/Work/Tinhgia/CustomPriceCal.tsx";
+import BusinessFinanceManager from "../pages/HomePage/BusinessFinanceManager.tsx";
+import InventoryAssetManager from "../pages/HomePage/InventoryAssetManager.tsx";
 
 // Sử dụng React.lazy để lazy load các component
 const Login = React.lazy(() => import("../pages/login/Login"));
@@ -118,6 +120,26 @@ const appRoutes: RouteObject[] = [
           </Suspense>
         ),
       },
+        {
+          path: "/business_finance_manager",
+          element: (
+              <RequireAuth allowedRoles={["ADMIN", "USER"]}>
+                  <Suspense fallback={<Spiner />}>
+                      <BusinessFinanceManager />
+                  </Suspense>
+              </RequireAuth>
+          )
+        },
+        {
+            path: "/inventory_asset_manager",
+            element: (
+                <RequireAuth allowedRoles={["ADMIN", "USER"]}>
+                    <Suspense fallback={<Spiner />}>
+                        <InventoryAssetManager />
+                    </Suspense>
+                </RequireAuth>
+            )
+        },
       {
         path: "/customer/list",
         element: (

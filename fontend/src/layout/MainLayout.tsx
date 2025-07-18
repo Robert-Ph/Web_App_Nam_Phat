@@ -56,12 +56,12 @@ const MainLayout = () => {
           {
             id: "2",
             name: "Kinh doanh & Tài chính",
-            link: "",
+            link: "/business_finance_manager",
           },
           {
             id: "3",
             name: "Kho & Thiết bị",
-            link: "",
+            link: "/inventory_asset_manager",
           },
         ],
       });
