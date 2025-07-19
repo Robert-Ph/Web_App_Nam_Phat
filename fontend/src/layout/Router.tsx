@@ -1,4 +1,5 @@
-import { createBrowserRouter, Outlet, RouteObject } from "react-router-dom";
+import {createBrowserRouter, Outlet, RouteObject} from "react-router-dom";
+import { Navigate } from "react-router-dom";
 import React, { Suspense } from "react";
 import MainLayout from "./MainLayout";
 import Spiner from "../component/Spiner/Spiner.tsx";
@@ -112,16 +113,23 @@ const appRoutes: RouteObject[] = [
       </RequireAuth>
     ),
     children: [
+        {
+            index: true,
+            element: <Navigate to="/dashboard" replace />,
+        },
       {
-        index: true,
+        // index: true,
+          path: "dashboard",
         element: (
+            <RequireAuth allowedRoles={["ADMIN", "USER"]}>
           <Suspense fallback={<Spiner />}>
             <HomePage />
           </Suspense>
+            </RequireAuth>
         ),
       },
         {
-          path: "/business_finance_manager",
+          path: "business_finance_manager",
           element: (
               <RequireAuth allowedRoles={["ADMIN", "USER"]}>
                   <Suspense fallback={<Spiner />}>
@@ -131,7 +139,7 @@ const appRoutes: RouteObject[] = [
           )
         },
         {
-            path: "/inventory_asset_manager",
+            path: "inventory_asset_manager",
             element: (
                 <RequireAuth allowedRoles={["ADMIN", "USER"]}>
                     <Suspense fallback={<Spiner />}>
@@ -470,5 +478,4 @@ const router = createBrowserRouter([
     children: appRoutes,
   },
 ]);
-
 export default router;

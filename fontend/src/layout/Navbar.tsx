@@ -35,6 +35,7 @@ const Navbar = () => {
                 }`}
                 title="Tổng quan"
             >
+
                 <HomeIcon className="icon-size"></HomeIcon>
             </Link>
         )}

@@ -32,11 +32,6 @@ const MainLayout = () => {
             name: "Danh sách đơn hàng",
             link: "/order/list",
           },
-          // {
-          //   id: "3",
-          //   name: "Đơn hàng chưa hoàn thành",
-          //   link: "/order/unfulfilled",
-          // },
           {
             id: "3",
             name: "Hóa đơn",
@@ -50,8 +45,8 @@ const MainLayout = () => {
         listNav: [
           {
             id: "1",
-            name: "Dasboard",
-            link: "/",
+            name: "Dashboard",
+            link: "/dashboard",
           },
           {
             id: "2",
