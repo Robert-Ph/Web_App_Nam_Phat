@@ -1,6 +1,7 @@
 import "./order.css";
 import React, { useState, useEffect, useRef, Suspense } from "react";
 
+
 const ProductModal = React.lazy(() => import("../ProductModal/ProductModal"));
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
@@ -292,16 +293,18 @@ const OrderPage = () => {
   console.log("Query:" + query);
 
   return (
-    <div>
+    <div >
       <div className="container">
         <div className="d-flex justify-end">
-          <button className="btn btn-danger">Hủy</button>
-          <button className="btn btn-warning" onClick={handleReset}>
+          <button className="btn btn-warning" style={{background:"#EF4444"}}>
+            Hủy
+          </button>
+          <button className="btn btn-warning" style={{background:"#10B981"}} onClick={handleReset}>
             Reset
           </button>
           <button
             className="btn btn-primary"
-            // style={{ marginRight: "0px" }}
+            style={{ background:"#16A34A"}}
             onClick={() => {
               console.log(addressRef.current?.value);
               handleCreate();
@@ -311,11 +314,12 @@ const OrderPage = () => {
           </button>
         </div>
 
-        <div className="mt-20">
-          <h3>Thông tin khách hàng </h3>
+        {/*Thông tin khách hàng*/}
+        <div className="mt-20 custommer">
+          <h3 style={{color:"#0000FF", fontSize: "16px"}}>Thông tin khách hàng </h3>
           <div className="wrap-form">
             <div className="form-group flex-8">
-              <span>Tên khách hàng</span>
+              <span className="text">Tên khách hàng</span>
               <input
                   placeholder="Tên khách hàng"
                   disabled={isCutomer}
@@ -327,7 +331,7 @@ const OrderPage = () => {
                   }}
               />
             </div>
-            <div className="flex-2 " style={{ margin: "0px 20px" }}>
+            <div className="flex-2 " style={{ margin: "0px 10px" }}>
               <span
                 style={{
                   fontSize: "14px",
@@ -419,22 +423,29 @@ const OrderPage = () => {
               <input placeholder="Địa chỉ giao hàng" ref={addressRef}></input>
             </div>
           </div>
+          <div className="wrap-form" style={{ marginTop: "10px" }}>
+            <div className="form-group flex-8">
+              <span>Ghi chú</span>
+              <input placeholder="Ghi chú" ref={addressRef}></input>
+            </div>
+          </div>
         </div>
 
-        <div className="mt-20">
-          <h3>Danh sách sản phẩm</h3>
+
+        <div className="mt-20 order" style={{float: "left", width: "75%", borderRadius:"5px", marginRight: "2%"}}>
+          <h3 style={{color:"#0000FF", fontSize: "16px"}}>Danh sách sản phẩm</h3>
           <div style={{ padding: "20px", height:'180%' }}>
             <div className="table-container" >
               <table style={{ width: "100%", borderCollapse: "collapse" }}>
                 <thead>
-                  <tr className="color-blue header-table text-left border-header-table">
-                    <th className="pb-7 pl-8  font-w-500">STT</th>
-                    <th className="pb-7 pl-8  font-w-500">Tên sản phẩm</th>
-                    <th className="pb-7 pl-8  font-w-500">Số lượng</th>
-                    <th className="pb-7 pl-8  font-w-500">Số lượng giấy in</th>
-                    <th className="pb-7 pl-8  font-w-500">Giá (vnd)</th>
-                    <th className="pb-7 pl-8  font-w-500">Tổng giá</th>
-                    <th className="pb-7 pl-8  font-w-500"></th>
+                  <tr className="color-black header-table text-left border-header-table">
+                    <th className="pb-7 pl-8 color-black font-w-500">STT</th>
+                    <th className="pb-7 pl-8 color-black  font-w-500">Tên sản phẩm</th>
+                    <th className="pb-7 pl-8 color-black font-w-500">Số lượng</th>
+                    <th className="pb-7 pl-8 color-black font-w-500">Số lượng giấy in</th>
+                    <th className="pb-7 pl-8 color-black font-w-500">Giá (vnd)</th>
+                    <th className="pb-7 pl-8 color-black font-w-500">Tổng giá</th>
+                    <th className="pb-7 pl-8 color-black font-w-500"></th>
                   </tr>
                 </thead>
                 <tbody className="border-header-table">
@@ -478,54 +489,60 @@ const OrderPage = () => {
                   alignContent: "center",
                 }}
               >
-                <button className="btn btn-primary mt-20" onClick={handleOpen}>
-                  Thêm sản phẩm
+                <button className="btn btn-primary mt-20"  style={{background:"#059669"}} onClick={handleOpen}>
+                 Thêm sản phẩm
                 </button>
               </div>
 
-              <div className="wrap-vat d-flex">
-                <div
-                    className="form-group"
-                    style={{ flex: "5", marginRight: "10px" }}
-                >
-                  <span>Giảm</span>
-                  <input
-                      type="number"
-                      placeholder="Giảm"
-                      style={{ width: "85%" }}
-                      value={reduce}
-                      onChange={handleChangeReduce}
-                  ></input>
-                </div>
-                <div
-                  className="form-group"
-                  style={{ flex: "5", marginRight: "10px" }}
-                >
-                  <span>Thuế Giá Trị Gia Tăng - VAT (%)</span>
-                  <input
-                    placeholder="Thuế giá trị gia tăng"
-                    type="number"
-                    style={{ width: "85%" }}
-                    value={vat}
-                    onChange={handleChangeVate}
-                  ></input>
-                </div>
-                <div style={{ flex: "5" }}>
-                  <p>Tổng: {formatCurrency(total)} VNĐ</p>
-                  <p>Giảm: {formatCurrency(reduce)}</p>
-                  <p>
-                    Thuế giá trị gia tăng(VAT):{" "}
-                    {formatCurrency((total * vat) / 100)}
-                  </p>
-                  <p>
-                    Thành tiền: {formatCurrency(total - reduce + total * (vat / 100))}{" "}
-                    VNĐ
-                  </p>
-                </div>
-              </div>
+
             </div>
           </div>
         </div>
+
+        <div className="wrap-vat d-flex order" style={{flexDirection: 'column', width: "23%"}}>
+          <div
+              className="form-group"
+              style={{ flex: "5", marginRight: "10px", width:"90%"}}
+          >
+            <span>Giảm</span>
+            <input
+                type="number"
+                placeholder="Giảm"
+                style={{ width: "85%" }}
+                value={reduce}
+                onChange={handleChangeReduce}
+            ></input>
+          </div>
+          <div
+              className="form-group"
+              style={{ flex: "5", marginRight: "10px" }}
+          >
+            <span>Thuế Giá Trị Gia Tăng - VAT (%)</span>
+            <input
+                placeholder="Thuế giá trị gia tăng"
+                type="number"
+                style={{ width: "85%" }}
+                value={vat}
+                onChange={handleChangeVate}
+            ></input>
+          </div>
+          <div style={{ flex: "5" }}>
+            <p><span style={{fontWeight:"bold"}}>Tổng:</span> {formatCurrency(total)} VNĐ</p>
+            <p><span style={{fontWeight:"bold"}}>Giảm:</span> {formatCurrency(reduce)}</p>
+            <p>
+              <span style={{fontWeight:"bold"}}>Thuế GTGT(VAT):</span>
+             {" "}
+              {formatCurrency((total * vat) / 100)}
+            </p>
+            <p>
+              <span style={{fontWeight:"bold"}}>Thành tiền:</span>
+               {formatCurrency(total - reduce + total * (vat / 100))}{" "}
+              VNĐ
+            </p>
+          </div>
+        </div>
+
+
       </div>
       {open && (
         <Suspense fallback={<Spiner></Spiner>}>

@@ -11,7 +11,7 @@ const style = {
   top: "50%",
   left: "53%",
   transform: "translate(-50%, -50%)",
-  width: "75%",
+  width: "50%",
   bgcolor: "background.paper",
   border: "2px solid #000",
   boxShadow: 24,
@@ -89,7 +89,7 @@ const ProductModal = ({ open, onClose, orderItem, handleAdd }: props) => {
 
   console.log(values);
   return (
-    <div>
+    <div style={{width: "500px"}}>
       <Modal
         open={open}
         // onClose={onClose}
@@ -100,7 +100,8 @@ const ProductModal = ({ open, onClose, orderItem, handleAdd }: props) => {
           <form onSubmit={handleAddOrderItem}>
             <div className="d-flex justify-end " >
               <button
-                className="btn btn-danger"
+                className="btn btn-warning"
+                style={{background:"#EF4444"}}
                 type="button"
                 onClick={() => {
                   if (orderItem) {
@@ -132,11 +133,12 @@ const ProductModal = ({ open, onClose, orderItem, handleAdd }: props) => {
               >
                 Hủy
               </button>
-              <button className="btn btn-warning" type="button">
+              <button className="btn btn-warning" style={{background:"#FFC107"}} type="button">
                 Reset
               </button>
               <button
                 className="btn btn-primary"
+                style={{background:"#198754"}}
                 type="submit"
               >
                 Thêm / Cập nhật
@@ -144,10 +146,10 @@ const ProductModal = ({ open, onClose, orderItem, handleAdd }: props) => {
             </div>
 
             <div className="mt-20">
-              <h3>Thông tin sản phẩm</h3>
+              <h3 style={{color:"#2563EB"}}>Thông tin sản phẩm</h3>
 
               {/* Tên Sản phẩm */}
-              <div className="form-group mt-20">
+              <div className="form-group mt-10" style={{float:'left', width:"50%", marginRight:"3%"}}>
                 <span>Tên sản phẩm</span>
                 <input
                   placeholder="Tên sản phẩm"
@@ -189,22 +191,22 @@ const ProductModal = ({ open, onClose, orderItem, handleAdd }: props) => {
 
               {/* Đơn vị tính sản phẩm */}
 
-              <div className="d-flex" style={{ marginTop: "10px" }}>
+              <div className="d-flex" style={{ marginTop: "10px", float:"left", width:"50%" }}>
                 <div
                   className="form-group flex-6"
                   // style={{ marginLeft: "20px" }}
                 >
-                  <span>Kích thước sp (ví dụ: 30x30 mm hoặc 30x30x30mm)</span>
+                  <span>Kích thước sp ( C x R x S)</span>
                   <div>
                     <div>
-                      <span className="align-content-center">Cao:</span>
+                      {/*<span className="align-content-center">Cao:</span>*/}
                       <input
                         type="number"
                         className="size"
                         style={{
                           padding: "12px 4px 10px 4px",
                           width: "10%",
-                          marginLeft: "1%",
+                          // marginLeft: "1%",
                         }}
                         name="heightProudct"
                         onChange={onChange}
@@ -215,9 +217,8 @@ const ProductModal = ({ open, onClose, orderItem, handleAdd }: props) => {
 
                       <span
                         className="align-content-center"
-                        style={{ marginLeft: "3%" }}
-                      >
-                        ,Rộng:
+                        style={{ marginLeft: "1%" }}
+                      >X
                       </span>
                       <input
                         type="number"
@@ -233,12 +234,10 @@ const ProductModal = ({ open, onClose, orderItem, handleAdd }: props) => {
                         required
                         value={values?.widthProduct}
                       ></input>
-                      <span style={{ marginLeft: "1%" }}>(mm)</span>
                       <span
                           className="align-content-center"
-                          style={{ marginLeft: "3%" }}
-                      >
-                        ,Sâu:
+                          style={{ marginLeft: "1%" }}
+                      >X
                       </span>
                       <input
                           type="number"
@@ -257,7 +256,7 @@ const ProductModal = ({ open, onClose, orderItem, handleAdd }: props) => {
                       <span style={{ marginLeft: "1%" }}>(mm)</span>
                     </div>
                     {/* Cán màng */}
-                    <div className="d-flex" style={{ marginTop: "15px" }}>
+                    <div className="d-flex" style={{ marginTop: "15px", width:"50%" }}>
                       <div className="form-group flex-3">
                         <span>Cán màng</span>
                         <input
@@ -271,7 +270,6 @@ const ProductModal = ({ open, onClose, orderItem, handleAdd }: props) => {
                           className="form-group flex-1"
                           style={{ marginLeft: "30px", marginRight: "10px" }}
                       >
-                        <span>Bế</span>
                         <FormControlLabel
                             control={
                               <Checkbox
@@ -285,14 +283,13 @@ const ProductModal = ({ open, onClose, orderItem, handleAdd }: props) => {
                                   }}
                               />
                             }
-                            label="Sử dụng bế"
+                            label="Bế"
                         />
                       </div>
                       <div
                           className="form-group flex-1"
                           style={{ marginLeft: "20px", marginRight: "10px" }}
                       >
-                        <span>Cắt</span>
                         <FormControlLabel
                             control={
                               <Checkbox
@@ -306,7 +303,7 @@ const ProductModal = ({ open, onClose, orderItem, handleAdd }: props) => {
                                   }}
                               />
                             }
-                            label="Cắt thành phẩm"
+                            label="Cắt"
                         />
                       </div>
                       <div
@@ -339,11 +336,12 @@ const ProductModal = ({ open, onClose, orderItem, handleAdd }: props) => {
                   </div>
                 </div>
               </div>
-              <p>____________________________________________________________________________________________________________________________________________________________________________</p>
+              <p>________________________________________________________________________________________________________________________________</p>
 
               {/* Loại giấy */}
+              <h3 style={{color:"#2563EB"}}>Thông tin giấy</h3>
               <div className="d-flex" style={{ marginTop: "15px" }}>
-                <div className="form-group flex-3">
+                <div className="form-group flex-4" style={{width:"25%"}}>
                   <span>Loại giấy</span>
                   <input
                     type="text"
@@ -353,11 +351,12 @@ const ProductModal = ({ open, onClose, orderItem, handleAdd }: props) => {
                     value={values?.typePaper}
                   ></input>
                 </div>
+
                 <div
-                  className="form-group flex-3"
-                  style={{ marginLeft: "20px" }}
+                  className="form-group "
+                  style={{ marginLeft: "10px", width:"10%" }}
                 >
-                  <span>Số lượng cần in</span>
+                  <span>Số lượng in</span>
                   <input
                     type="number"
                     name="qualityPaper"
@@ -368,64 +367,58 @@ const ProductModal = ({ open, onClose, orderItem, handleAdd }: props) => {
                   ></input>
                 </div>
 
-                <div className="flex-3"></div>
-              </div>
-
-              {/* Đơn vị tính giấy */}
-
-              <div className="d-flex" style={{ marginTop: "10px" }}>
-                <div className="form-group flex-3">
+                <div className="form-group " style={{width:"10%", marginLeft:"20px"}}>
                   <span>Đơn vị tính</span>
                   <input
-                    type="text"
-                    name="unitPaper"
-                    required
-                    onChange={onChange}
-                    value={values?.unitPaper}
+                      type="text"
+                      name="unitPaper"
+                      required
+                      onChange={onChange}
+                      value={values?.unitPaper}
                   ></input>
                 </div>
                 <div
-                  className="form-group flex-6"
-                  style={{ marginLeft: "20px" }}
+                    className="form-group flex-6"
+                    style={{ marginLeft: "20px" }}
                 >
                   <span>Kích thước giấy (ví dụ: 30x30 mm)</span>
                   <div>
                     <div>
                       <span className="align-content-center">Cao:</span>
                       <input
-                        type="number"
-                        className="size"
-                        style={{
-                          padding: "12px 4px 10px 4px",
-                          width: "20%",
-                          marginLeft: "1%",
-                        }}
-                        name="heightPaper"
-                        onChange={onChange}
-                        min={0}
-                        required
-                        value={values?.heightPaper}
+                          type="number"
+                          className="size"
+                          style={{
+                            padding: "12px 4px 10px 4px",
+                            width: "20%",
+                            marginLeft: "1%",
+                          }}
+                          name="heightPaper"
+                          onChange={onChange}
+                          min={0}
+                          required
+                          value={values?.heightPaper}
                       ></input>
 
                       <span
-                        className="align-content-center"
-                        style={{ marginLeft: "3%" }}
+                          className="align-content-center"
+                          style={{ marginLeft: "3%" }}
                       >
                         ,Rộng:
                       </span>
                       <input
-                        type="number"
-                        className="size"
-                        style={{
-                          padding: "12px 4px 10px 4px",
-                          width: "20%",
-                          marginLeft: "1%",
-                        }}
-                        name="widthPaper"
-                        onChange={onChange}
-                        min={0}
-                        required
-                        value={values?.widthPaper}
+                          type="number"
+                          className="size"
+                          style={{
+                            padding: "12px 4px 10px 4px",
+                            width: "20%",
+                            marginLeft: "1%",
+                          }}
+                          name="widthPaper"
+                          onChange={onChange}
+                          min={0}
+                          required
+                          value={values?.widthPaper}
                       ></input>
                       <span style={{ marginLeft: "1%" }}>(mm)</span>
                     </div>
@@ -434,7 +427,6 @@ const ProductModal = ({ open, onClose, orderItem, handleAdd }: props) => {
                   </div>
                 </div>
               </div>
-
 
 
             </div>
