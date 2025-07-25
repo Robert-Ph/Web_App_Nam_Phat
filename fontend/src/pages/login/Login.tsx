@@ -23,16 +23,16 @@ const Login = () => {
       const userRoler = localStorage.getItem("role")
       switch (userRoler){
         case "ADMIN":
-          navigate("/dashboard");
+          navigate("/");
           break;
         case "USER":
-          navigate("/dashboard");
+          navigate("/");
           break;
         case "PRICE":
           navigate("/work/price_calculation");
           break;
         default:
-          navigate("/dashboard");
+          navigate("/");
           break;
       }
 

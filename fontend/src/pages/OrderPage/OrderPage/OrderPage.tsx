@@ -316,7 +316,7 @@ const OrderPage = () => {
 
         {/*Thông tin khách hàng*/}
         <div className="mt-20 custommer">
-          <h3 style={{color:"#0000FF", fontSize: "16px"}}>Thông tin khách hàng </h3>
+          <h3 style={{color:"#0000FF", fontSize: "1rempx"}}>Thông tin khách hàng </h3>
           <div className="wrap-form">
             <div className="form-group flex-8">
               <span className="text">Tên khách hàng</span>
