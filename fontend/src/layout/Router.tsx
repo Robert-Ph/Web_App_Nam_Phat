@@ -15,6 +15,7 @@ import PriceCalculation from "../pages/Work/Tinhgia/PriceCalculation.tsx";
 import CustomPriceCal from "../pages/Work/Tinhgia/CustomPriceCal.tsx";
 import BusinessFinanceManager from "../pages/HomePage/BusinessFinanceManager.tsx";
 import InventoryAssetManager from "../pages/HomePage/InventoryAssetManager.tsx";
+import Transaction from "../pages/OrderPage/Transaction.tsx";
 
 // Sử dụng React.lazy để lazy load các component
 const Login = React.lazy(() => import("../pages/login/Login"));
@@ -269,6 +270,16 @@ const appRoutes: RouteObject[] = [
           </RequireAuth>
         ),
       },
+        {
+            path: "/order/transaction",
+            element: (
+                <RequireAuth allowedRoles={["ADMIN", "USER"]}>
+                    <Suspense fallback={<Spiner />}>
+                        <Transaction />
+                    </Suspense>
+                </RequireAuth>
+            ),
+        },
       {
         path: "/employees/list",
         element: (

@@ -39,14 +39,14 @@ const DetailOrderPage = () => {
   const navigate = useNavigate();
 
 
-  const handleStatusChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    console.log("Selected status:", e.target.value);  // Log giá trị khi người dùng chọn
-    if (order) {
-      setOrder({ ...order, status: e.target.value });
-      setQuery(order.phone);
-    }
-
-  };
+  // const handleStatusChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+  //   console.log("Selected status:", e.target.value);  // Log giá trị khi người dùng chọn
+  //   if (order) {
+  //     setOrder({ ...order, status: e.target.value });
+  //     setQuery(order.phone);
+  //   }
+  //
+  // };
 
   //   Sự kiện mở đóng modal chỉnh sửa sản phẩm
   const handleOnclose = () => {
@@ -89,7 +89,7 @@ const DetailOrderPage = () => {
 
         try {
           OrderService.update(orders.id ?? 0, orders)
-              .then((response: any) => {
+              .then((response) => {
                 console.log(response.data);
                 if (response.data.code == 201) {
                   toast.success("Tạo đơn hàng thành công!", {
@@ -98,7 +98,7 @@ const DetailOrderPage = () => {
                   navigate("/order/list");
                 }
               })
-              .catch((e: any) => {
+              .catch((e) => {
                 const error = e.response.data;
 
                 if (error.code == 802) {
@@ -169,35 +169,39 @@ const DetailOrderPage = () => {
 
       {!loading && (
         <div className="container">
-          <div className="d-flex justify-space-bettwen">
-            <div className="d-flex dicrect-col">
+          <div className="d-flex justify-space-bettwen" style={{color:"#92400E"}}>
+            <div className="d-flex" style={{ alignItems: "center", gap: "20px" }}>
               <div>
                 <strong>Mã đơn hàng:</strong>
-                <span> #{order?.id}</span>
-
+                <span> #DH{order?.id}</span>
               </div>
+
               <div>
                 <strong>Ngày:</strong>
-                <span>
-                  {" "}
-                  {order?.dateCreate ? formatDateTime(order?.dateCreate) : ""}
-                </span>
+                <span>{order?.dateCreate ? " " + formatDateTime(order?.dateCreate) : ""}</span>
               </div>
-              <p style={{ fontWeight: "bold", color: order?.status !=="CANCELLED" ? "green" : "red" }}>
-                {order?.status !=="CANCELLED" ? "" : "Đã bị hủy"}
+
+              <p style={{
+                fontWeight: "bold",
+                color: order?.status !== "CANCELLED" ? "green" : "red",
+                margin: 0
+              }}>
+                {order?.status !== "CANCELLED" ? "" : "Đã bị hủy"}
               </p>
             </div>
+
             <div>
               {isEdit ? (
                 <button
                   className="btn btn-danger"
+                  style={{background:"#EF4444"}}
                   onClick={() => setIsEdit(false)}
                 >
                   Hủy
                 </button>
               ) : (
-                <button className="btn btn-black" onClick={goBack}>
-                  Trở về
+                <button className="btn btn-black" style={{background:"#10B981"}} onClick={goBack}>
+                  Reset
                 </button>
               )}
               {!isEdit && order?.status !=="CANCELLED"  ? (
@@ -213,7 +217,7 @@ const DetailOrderPage = () => {
                   isEdit ? (
                       <button
                           className="btn btn-warning"
-                          style={{ marginRight: "10px" }}
+                          style={{ marginRight: "10px", background:"#16A34A" }}
                           onClick={() => handleUpdate(order?.id ?? 0)}
                       >
                         Cập nhật
@@ -236,8 +240,8 @@ const DetailOrderPage = () => {
             </div>
           </div>
 
-          <div className="mt-15">
-            <h3>Thông tin khách hàng </h3>
+          <div className="mt-15 custommer">
+            <h3 style={{color:"#0000FF", fontSize: "1rem"}}>Thông tin khách hàng </h3>
             <div className="wrap-form">
               <div className="form-group flex-8">
                 <span>Tên khách hàng</span>
@@ -248,7 +252,7 @@ const DetailOrderPage = () => {
                 ></input>
               </div>
 
-              <div className="form-group flex-2" style={{ margin: "0px 20px" }}>
+              <div className="form-group flex-2" style={{ margin: "0px 10px" }}>
                 <span>Số điện thoại</span>
                 <input
                   placeholder="Số điện thoại"
@@ -288,18 +292,25 @@ const DetailOrderPage = () => {
                 ></input>
               </div>
 
-              <div className="form-group flex-8" style={{ marginLeft: "20px" }}>
+              <div className="form-group flex-8" style={{ marginLeft: "10px" }}>
                 <span>Địa chỉ giao hàng</span>
                 <input
-                  placeholder="Số điện thoại"
+                  placeholder="Địa chỉ giao hàng"
                   disabled={!isEdit}
                   value={order?.address}
                 ></input>
               </div>
+
+            </div>
+            <div className="wrap-form" style={{ marginTop: "10px" }}>
+              <div className="form-group flex-8">
+                <span>Ghi chú</span>
+                <input placeholder="Ghi chú" ref={addressRef}></input>
+              </div>
             </div>
           </div>
 
-          <div className="mt-20">
+          <div className="mt-20 order" style={{float: "left", width: "75%", borderRadius:"5px", marginRight: "2%"}}>
             <h3>Danh sách sản phẩm</h3>
             <div style={{ padding: "20px" }}>
               <div className="table-container">
@@ -347,94 +358,64 @@ const DetailOrderPage = () => {
                   </tbody>
                 </table>
               </div>
-
-              <div className="mt-30 d-flex">
-                <div
-                  style={{
-                    flex: "3",
-                    alignContent: "center",
-                    marginTop: "12px",
-                  }}
-                  className="form-group "
-                >
-                  <span>Trạng thái</span>
-                  <select
-                      disabled={!isEdit}
-                      style={{ width: "80%" }}
-                      value={order?.status || ""}
-                      onChange={handleStatusChange}
-                  >
-                    <option value="">-- Chọn trạng thái --</option>
-                    <option value="DELIVERED">Chờ</option>
-                    <option value="FISNISHED">Hoàn thành</option>
-                    <option value="CONFIM">Xác nhận</option>
-                  </select>
-
-
-
-
-
-                </div>
-
-                <div className="wrap-vat d-flex">
-                  <div
-                      className="form-group"
-                      style={{ flex: "5", marginRight: "10px" }}
-                  >
-                    <span>Giảm</span>
-                    <input
-                        placeholder="Giảm"
-                        style={{ width: "85%" }}
-                        disabled={!isEdit}
-                        value={order?.reduce ? order.reduce : 0}
-                        onChange={(e)=> setReduce(Number(e.target.value))}
-                    ></input>
-                  </div>
-                  <div
-                    className="form-group"
-                    style={{ flex: "5", marginRight: "10px" }}
-                  >
-                    <span>Thuế Giá Trị Gia Tăng - VAT (%)</span>
-                    <input
-                      placeholder="Thuế giá trị gia tăng"
-                      style={{ width: "85%" }}
-                      disabled={!isEdit}
-                      value={order?.vat}
-                      onChange={(e)=> setVat(Number(e.target.value))}
-                    ></input>
-                  </div>
-                  <div style={{ flex: "5" }}>
-                    <p>
-                      Tổng:{" "}
-                      {formatCurrency(order?.totalPrice ? order.totalPrice : 0)}{" "}
-                      VNĐ
-                    </p>
-                    <p>Giảm:{" "}
-                      {formatCurrency(order?.reduce ? order.reduce : 0)}{" "}
-                      VNĐ
-                    </p>
-                    <p>
-                      Thuế giá trị gia tăng(VAT):{" "}
-                      {formatCurrency(
-                        order?.totalPrice
-                          ? (order.totalPrice * order.vat) / 100
-                          : 0
-                      )}{" "}
-                      VNĐ
-                    </p>
-                    <p>
-                      Thành tiền:{" "}
-                      {formatCurrency(
-                        order?.totalPrice
-                          ? (order.totalPrice - (order.reduce ?? 0) +
+            </div>
+          </div>
+          <div className="wrap-vat d-flex order" style={{flexDirection: 'column', width: "23%"}}>
+            <div
+                className="form-group"
+                style={{ flex: "5", marginRight: "10px" }}
+            >
+              <span>Giảm</span>
+              <input
+                  placeholder="Giảm"
+                  style={{ width: "85%" }}
+                  disabled={!isEdit}
+                  value={order?.reduce ? order.reduce : 0}
+                  onChange={(e)=> setReduce(Number(e.target.value))}
+              ></input>
+            </div>
+            <div
+                className="form-group"
+                style={{ flex: "5", marginRight: "10px" }}
+            >
+              <span>Thuế Giá Trị Gia Tăng - VAT (%)</span>
+              <input
+                  placeholder="Thuế giá trị gia tăng"
+                  style={{ width: "85%" }}
+                  disabled={!isEdit}
+                  value={order?.vat}
+                  onChange={(e)=> setVat(Number(e.target.value))}
+              ></input>
+            </div>
+            <div style={{ flex: "5" }}>
+              <p>
+                <span style={{fontWeight:"bold"}}>Tổng: </span>
+                {formatCurrency(order?.totalPrice ? order.totalPrice : 0)}{" "}
+                VNĐ
+              </p>
+              <p><span style={{fontWeight:"bold"}}>Giảm: </span>
+                {formatCurrency(order?.reduce ? order.reduce : 0)}{" "}
+                VNĐ
+              </p>
+              <p>
+                <span style={{fontWeight:"bold"}}>Thuế GTGT(VAT): </span>
+                {formatCurrency(
+                    order?.totalPrice
+                        ? (order.totalPrice * order.vat) / 100
+                        : 0
+                )}{" "}
+                VNĐ
+              </p>
+              <p>
+                <span style={{fontWeight:"bold"}}>Thành tiền: </span>
+                {formatCurrency(
+                    order?.totalPrice
+                        ? (order.totalPrice - (order.reduce ?? 0) +
                             ((order.totalPrice * order.vat) / 100) )
-                          : 0
-                      )}{" "}
-                      VNĐ
-                    </p>
-                  </div>
-                </div>
-              </div>
+                        : 0
+                )}{" "}
+                VNĐ
+              </p>
             </div>
           </div>
         </div>

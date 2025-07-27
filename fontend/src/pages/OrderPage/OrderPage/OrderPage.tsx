@@ -316,7 +316,7 @@ const OrderPage = () => {
 
         {/*Thông tin khách hàng*/}
         <div className="mt-20 custommer">
-          <h3 style={{color:"#0000FF", fontSize: "1rempx"}}>Thông tin khách hàng </h3>
+          <h3 style={{color:"#0000FF", fontSize: "1rem"}}>Thông tin khách hàng </h3>
           <div className="wrap-form">
             <div className="form-group flex-8">
               <span className="text">Tên khách hàng</span>
@@ -527,15 +527,15 @@ const OrderPage = () => {
             ></input>
           </div>
           <div style={{ flex: "5" }}>
-            <p><span style={{fontWeight:"bold"}}>Tổng:</span> {formatCurrency(total)} VNĐ</p>
-            <p><span style={{fontWeight:"bold"}}>Giảm:</span> {formatCurrency(reduce)}</p>
+            <p><span style={{fontWeight:"bold"}}>Tổng: </span> {formatCurrency(total)} VNĐ</p>
+            <p><span style={{fontWeight:"bold"}}>Giảm: </span> {formatCurrency(reduce)}</p>
             <p>
-              <span style={{fontWeight:"bold"}}>Thuế GTGT(VAT):</span>
+              <span style={{fontWeight:"bold"}}>Thuế GTGT(VAT): </span>
              {" "}
               {formatCurrency((total * vat) / 100)}
             </p>
             <p>
-              <span style={{fontWeight:"bold"}}>Thành tiền:</span>
+              <span style={{fontWeight:"bold"}}>Thành tiền: </span>
                {formatCurrency(total - reduce + total * (vat / 100))}{" "}
               VNĐ
             </p>

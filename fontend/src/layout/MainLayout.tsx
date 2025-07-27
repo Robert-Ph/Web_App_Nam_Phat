@@ -37,6 +37,11 @@ const MainLayout = () => {
             name: "Hóa đơn",
             link: "/order/invoice",
           },
+          {
+            id: "4",
+            name: "Giao dịch",
+            link: "/order/transaction",
+          },
         ],
       });
     } else if (isActive("/", location.pathname)) {

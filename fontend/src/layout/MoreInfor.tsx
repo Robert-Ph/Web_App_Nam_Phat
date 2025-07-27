@@ -27,7 +27,7 @@ const MoreInfor = ({ morenav }: { morenav: MoreNav }) => {
   const location = useLocation();
 
   return (
-    <div className="d-flex bg-more dicrect-col pd-20-px" style={{color:"blue"}}>
+    <div className="d-flex bg-more dicrect-col pd-16-px" style={{color:"blue", fontSize:"1rem"}}>
       <h3 style={{ textAlign: "center" }}>{morenav.title}</h3>
 
       <div className="">
